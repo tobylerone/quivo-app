@@ -38,7 +38,7 @@ const StandardTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
         activeOpacity={1}
         style={{
-            top: 12,
+            top: -2,
             flexDirection: "row",
             flex: 1,
             justifyContent: "center",

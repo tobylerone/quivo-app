@@ -97,7 +97,8 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
 
 const styles = StyleSheet.create({
     topContainer: {
-        width: "100%"
+        width: "100%",
+        marginTop: 10
     },
     middleContainer: {
         //width: "100%",
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     settingsButton: {
-        marginTop: 20,
+        marginTop: 40,
         marginRight: 20,
         alignSelf: 'flex-end'
     },

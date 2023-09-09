@@ -130,7 +130,7 @@ export default function FollowListScreen({route}: any) {
 const styles = StyleSheet.create({
     followListContainer: {
         height: "100%",
-        margin: 10
+        margin: 15
     },
     followList: {
 

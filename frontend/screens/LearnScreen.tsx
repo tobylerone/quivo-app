@@ -124,6 +124,11 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.topContainer}>
+                <TouchableOpacity activeOpacity={1} style={styles.filterButton}>
+                    <FontAwesome name="filter" size={25} color={constants.SECONDARYCOLOR} />
+                </TouchableOpacity>
+            </View>
             <View style={styles.contentContainer}>
                 <View style={styles.sentenceContainer}>
                     {splitSentence(sentence).map((word, index) => (
@@ -144,7 +149,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             </View>
             <TouchableOpacity
                 activeOpacity={1}
-                style={{...styles.button, marginBottom: 100}}
+                style={{...styles.nextButton, marginBottom: 120}}
                 onPress={() => changeSentence()}
             >
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -184,14 +189,32 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
 const styles= StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        //borderWidth: 1
+    },
+    topContainer: {
+        marginTop: 60,
+        //borderWidth: 1
     },
     contentContainer: {
         flexDirection: "column",
         justifyContent: "center",
-        margin: 20,
+        margin: 15,
         flexWrap: "wrap",
         flex: 1,
+        //borderWidth: 1
+    },
+    filterButton: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        flexDirection: 'column',
+        marginTop: 0,
+        marginRight: 15,
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     sentenceContainer: {
         flexDirection: "row",
@@ -217,7 +240,7 @@ const styles= StyleSheet.create({
         fontWeight: "bold",
         color: constants.OFFWHITE
     },
-    button: {
+    nextButton: {
         backgroundColor: constants.PRIMARYCOLOR,
         paddingTop: 11,
         margin: 10,

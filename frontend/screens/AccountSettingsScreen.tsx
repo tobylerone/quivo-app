@@ -42,23 +42,28 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: StatusBar.currentHeight,
+        //paddingTop: StatusBar.currentHeight,
         marginHorizontal: 16,
     },
     item: {
         backgroundColor: constants.PRIMARYCOLOR,
         fontSize: constants.CONTENTFONTSIZE,
         padding: 10,
+        borderRadius: 15,
+        marginBottom: 5,
         marginVertical: 0
     },
     header: {
-        fontSize: constants.H2FONTSIZE,
+        fontSize: constants.H2FONTSIZE + 2,
+        color: constants.PRIMARYCOLOR,
+        fontWeight: "bold",
+        padding: 10,
         backgroundColor: constants.SECONDARYCOLOR,
-        paddingTop: 10,
+        paddingTop: 20,
         paddingBottom: 10
     },
     title: {
         fontSize: constants.H2FONTSIZE,
-        color: constants.OFFWHITE
+        color: constants.SECONDARYCOLOR
     },
 });

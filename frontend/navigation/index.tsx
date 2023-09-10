@@ -56,7 +56,7 @@ const CentralTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
         activeOpacity={1}
         style={{
-            top: -10,
+            top: -20,
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",

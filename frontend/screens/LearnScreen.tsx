@@ -1,9 +1,10 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image } from "react-native"
 import { useEffect, useState } from "react"
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import { FontAwesome } from '@expo/vector-icons'
 import * as constants from "../constants"
 
+/*
 const sentences = [
     "привет! я ира, и это мой канал “о русском по-русски”",
     "сегодня в этом видео мы будем учиться разговаривать с продавцом в магазине, а именно в магазине, где вы хотите купить одежду или обувь",
@@ -13,6 +14,7 @@ const sentences = [
     "здесь будет диалог уже в примерочной",
     "вам подошли платья? – первое мне велико"
 ]
+*/
 
 interface WordProps {
     word: string;
@@ -92,9 +94,32 @@ const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
+    const [sentences, setSentences] = useState(['']);
+    
     useEffect(() =>{
-        console.log("Rendering Learnscreen")
+        console.log("Rendering Learnscreen");
+        fetchData();
     }, [])
+
+    useEffect(() => {
+        
+        // A chaque fois q'on recois un nouveau groupe de phrases,
+        // il faut mettre a jour la phrase affiche sur l'ecran
+        if (sentences.length > 0) {
+            setSentence(sentences[0]);
+        }
+    }, [sentences]);
+
+    const fetchData = async() => {
+        //const response = await fetch("http://127.0.0.1:8000/api/rusentences/");
+        //const response = await fetch("https://10.0.2.2:8000/api/rusentences/");
+        const response = await fetch("http://192.168.1.232:8000/api/rusentences/");
+        const data = await response.json();
+
+        //setSentences(data.map(item => item.sentence));
+        setSentences(data.map(item => item.sentence));
+
+    }
 
     function splitSentence(input: string): string[] {
         const parts: string[] = input.split(/(\s+)/);
@@ -125,11 +150,21 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <TouchableOpacity activeOpacity={1} style={styles.filterButton}>
-                    <FontAwesome name="filter" size={25} color={constants.SECONDARYCOLOR} />
-                </TouchableOpacity>
+                <View style={styles.topButtonsContainer}>
+                    <TouchableOpacity activeOpacity={1}>
+                        <View style={styles.flagImageContainer}>
+                            <Image
+                                source={require("../assets/ru.png")}
+                                style={styles.flagImage}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1} style={styles.filterButton}>
+                        <FontAwesome name="filter" size={25} color={constants.SECONDARYCOLOR} />
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={styles.contentContainer}>
+            <View style={[styles.contentContainer, styles.shadow]}>
                 <View style={styles.sentenceContainer}>
                     {splitSentence(sentence).map((word, index) => (
                         <>
@@ -194,15 +229,33 @@ const styles= StyleSheet.create({
     },
     topContainer: {
         marginTop: 60,
-        //borderWidth: 1
+        flexDirection: "row",
+        alignContent: "flex-end"
+    },
+    topButtonsContainer: {
+        flexDirection: "row",
+        alignSelf: 'flex-end'
     },
     contentContainer: {
         flexDirection: "column",
         justifyContent: "center",
         margin: 15,
+        padding: 10,
         flexWrap: "wrap",
-        flex: 1,
-        //borderWidth: 1
+        flex: 1
+    },
+    flagImageContainer: {
+        borderRadius: 10,
+        borderWidth: 4,
+        borderColor: constants.PRIMARYCOLOR,
+        overflow: "hidden",
+        height: 50,
+        width: 70,
+        marginLeft: 10,
+    },
+    flagImage: {
+        width: "100%",
+        height: "100%",
     },
     filterButton: {
         backgroundColor: constants.PRIMARYCOLOR,
@@ -211,15 +264,15 @@ const styles= StyleSheet.create({
         borderRadius: 25,
         flexDirection: 'column',
         marginTop: 0,
+        marginLeft: 10,
         marginRight: 15,
-        alignSelf: 'flex-end',
         justifyContent: 'center',
         alignItems: 'center'
     },
     sentenceContainer: {
         flexDirection: "row",
         justifyContent: "center",
-        flexWrap: "wrap"
+        flexWrap: "wrap",
     },
     mainText: {
         fontSize: constants.H1FONTSIZE,
@@ -250,5 +303,15 @@ const styles= StyleSheet.create({
         marginRight: "auto",
         marginLeft: "auto",
         textAlign: "center"
+    },
+    shadow: {
+        shadowColor: constants.PRIMARYCOLOR,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 1,
+        elevation: 3
     }
 });

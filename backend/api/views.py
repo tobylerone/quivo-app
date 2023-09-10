@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from ..models import RuSentence
-from .serializers import RuSentenceModelSerializer
+from language_app.models import FrSentence
+from .serializers import FrSentenceModelSerializer
 
-class RuSentencesViewSet(viewsets.ModelViewSet):
-    queryset = RuSentence.objects.all()
-    serializer_class = RuSentenceModelSerializer
+class FrSentencesViewSet(viewsets.ModelViewSet):
+    queryset = FrSentence.objects.all()
+    serializer_class = FrSentenceModelSerializer

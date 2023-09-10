@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import RuSentence
+from .models import FrSentence
 
 # Register your models here.
-admin.site.register(RuSentence)
+admin.site.register(FrSentence)

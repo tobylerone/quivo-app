@@ -1,3 +1,7 @@
+import {Dimensions} from 'react-native'
+
+export const SCREEN_WIDTH = Dimensions.get('window').width
+
 // Schémas
 export const PRIMARYCOLOR = "#444365"
 export const SECONDARYCOLOR = "#ffffff"//"#b4d7d5"

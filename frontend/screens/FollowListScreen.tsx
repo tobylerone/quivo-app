@@ -68,7 +68,8 @@ const following = [
 function FollowersScreen() {
     return (
         <View style={styles.followListContainer}>
-            <FlatList 
+            <FlatList
+                style={styles.followList}
                 data={followers}
                 renderItem={({item}) => <FollowItem user={item} />}
             />
@@ -79,7 +80,8 @@ function FollowersScreen() {
 function FollowingScreen() {
     return (
         <View style={styles.followListContainer}>
-            <FlatList style={styles.followList}
+            <FlatList
+                style={styles.followList}
                 data={following}
                 renderItem={({item}) => <FollowItem user={item} />}
             />
@@ -98,27 +100,40 @@ export default function FollowListScreen({route}: any) {
             initialRouteName={initialTab}
             screenOptions={{
                 tabBarActiveTintColor: constants.PRIMARYCOLOR,
+                tabBarInactiveTintColor: constants.SECONDARYCOLOR,
                 tabBarIndicatorStyle: {
-                    backgroundColor: constants.PRIMARYCOLOR,
-                    height: 4
+                    backgroundColor: constants.SECONDARYCOLOR,
+                    height: 40,
+                    width: (constants.SCREEN_WIDTH / 2) - 30,
+                    marginLeft: 25,
+                    marginBottom: 10,
+                    borderRadius: 15
                 },
                 tabBarScrollEnabled: true,
                 tabBarLabelStyle: {
                     fontSize: constants.H2FONTSIZE,
                     fontWeight: "bold",
-                    textTransform: "none",
+                    textTransform: "none"
                 },
                 tabBarItemStyle: {
-                    width: "auto",
-                    flex: 1
+                    //backgroundColor: constants.SECONDARYCOLOR,
+                    height: 60,
+                    width: (constants.SCREEN_WIDTH / 2) - 20
                 },
                 tabBarStyle: {
-                    //height: 60,
-                    backgroundColor: constants.SECONDARYCOLOR,
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    shadowOpacity: 0
-                },
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: constants.PRIMARYCOLOR,
+                    //borderRadius: 15,
+                    marginTop: 10,
+                    //marginLeft: 15,
+                    //marginRight: 15,
+                    shadowOpacity: 0,
+                    shadowRadius: 0,
+                    shadowOffset: 0,
+                    shadowColor: constants.SECONDARYCOLOR
+                }
             }}
         >
             <Tab.Screen name="Followers" component={FollowersScreen} />

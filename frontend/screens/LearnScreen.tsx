@@ -4,18 +4,6 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import { FontAwesome } from '@expo/vector-icons'
 import * as constants from "../constants"
 
-/*
-const sentences = [
-    "привет! я ира, и это мой канал “о русском по-русски”",
-    "сегодня в этом видео мы будем учиться разговаривать с продавцом в магазине, а именно в магазине, где вы хотите купить одежду или обувь",
-    "если эта тема вам интересна, продолжайте смотреть видео",
-    "итак, давайте посмотрим с вами на первый вопрос, на который мы научимся отвечать: 'что вам нужно?' когда вы приходите в магазин с одеждой или с обувью, вам нужно объяснить продавцу, что вам нужно",
-    "так читаем дальше",
-    "здесь будет диалог уже в примерочной",
-    "вам подошли платья? – первое мне велико"
-]
-*/
-
 interface WordProps {
     word: string;
     index: number;
@@ -111,7 +99,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     }, [sentences]);
 
     const fetchData = async() => {
-        //const response = await fetch("http://127.0.0.1:8000/api/rusentences/");
         //const response = await fetch("https://10.0.2.2:8000/api/rusentences/");
         const response = await fetch("http://192.168.1.232:8000/api/rusentences/");
         const data = await response.json();

@@ -158,11 +158,11 @@ function BottomTabNavigator() {
                 tabBarActiveTintColor: constants.TERTIARYCOLOR,
                 tabBarStyle: {
                     position: "absolute",
-                    bottom: 25,
-                    left: 20,
-                    right: 20,
+                    //bottom: 25,
+                    //left: 20,
+                    //right: 20,
                     backgroundColor: constants.PRIMARYCOLOR,
-                    borderRadius: 20,
+                    ///borderRadius: 20,
                     marginTop: 20,
                     height: 60,
                     //... styles.shadow

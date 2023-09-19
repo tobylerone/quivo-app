@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         marginRight: "auto"
     },
     knownWordsSubheader: {
-        fontSize: constants.H2FONTSIZE,
+        fontSize: constants.H3FONTSIZE,
         color: constants.PRIMARYCOLOR,
         fontWeight: "bold",
         marginLeft: "auto",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
         marginRight: "auto"
     },
     followCountSubheader: {
-        fontSize: constants.H2FONTSIZE,
+        fontSize: constants.H3FONTSIZE,
         color: constants.PRIMARYCOLOR,
         fontWeight: "bold",
         marginLeft: "auto",

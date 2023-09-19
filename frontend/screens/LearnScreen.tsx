@@ -107,8 +107,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     }, [items]);
 
     const fetchData = async() => {
-        //const response = await fetch("https://10.0.2.2:8000/api/frsentences/");
-        const response = await fetch("http://192.168.1.232:8000/api/frsentences/");
+
+        const response = await fetch(constants.HOST_ADDRESS + ":8000/api/frsentences/");
         const data = await response.json();
 
         //setSentences(data.map(item => item.sentence));

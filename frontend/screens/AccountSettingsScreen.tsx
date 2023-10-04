@@ -4,10 +4,11 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import { FontAwesome } from "@expo/vector-icons"
 import * as constants from "../constants";
 
+/*
 const DATA = [
     {
       title: "Account Settings",
-      data: ["Change password", "Change language"],
+      data: ["Change password", "Change language", "Log out"],
     },
     {
       title: "General",
@@ -17,26 +18,57 @@ const DATA = [
       title: "Social",
       data: ["FAQs", "Rate and comment", "Share", "Contact us", "Confidentiality"],
     },
-  ];
+  ];*/
+
+const DATA = [
+{
+    title: "Account Settings",
+    data: [
+    { text: "Change password", action: () => {} },
+    { text: "Change language", action: () => {} },
+    { text: "Log out", action: () => {console.log('logging out')} },
+    ],
+},
+{
+    title: "General",
+    data: [
+    { text: "Choose language", action: () => {} },
+    { text: "Voice narration", action: () => {} },
+    { text: "-----", action: () => {} },
+    ],
+},
+{
+    title: "Social",
+    data: [
+    { text: "FAQs", action: () => {} },
+    { text: "Rate and comment", action: () => {} },
+    { text: "Share", action: () => {} },
+    { text: "Contact us", action: () => {} },
+    { text: "Confidentiality", action: () => {} },
+    ],
+},
+];
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <SectionList
-                sections={DATA}
-                keyExtractor={(item, index) => item + index}
-                renderItem={({item}) => (
+          <SectionList
+            sections={DATA}
+            keyExtractor={(item, index) => item.text + index}
+            renderItem={({item}) => (
+              <TouchableOpacity onPress={item.action}>
                 <View style={styles.item}>
-                    <Text style={styles.title}>{item}</Text>
+                  <Text style={styles.title}>{item.text}</Text>
                 </View>
-                )}
-                renderSectionHeader={({section: {title}}) => (
-                <Text style={styles.header}>{title}</Text>
-                )}
-            />
+              </TouchableOpacity>
+            )}
+            renderSectionHeader={({section: {title}}) => (
+              <Text style={styles.header}>{title}</Text>
+            )}
+          />
         </SafeAreaView>
-    );
+      );
 };
 
 const styles = StyleSheet.create({
@@ -46,10 +78,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 16,
     },
     item: {
-        backgroundColor: constants.PRIMARYCOLOR,
+        //backgroundColor: constants.PRIMARYCOLOR,
         fontSize: constants.CONTENTFONTSIZE,
+        borderColor: constants.PRIMARYCOLOR,
+        borderWidth: 2,
         padding: 10,
-        borderRadius: 15,
+        //borderRadius: 15,
         marginBottom: 5,
         marginVertical: 0
     },
@@ -64,6 +98,6 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: constants.H2FONTSIZE,
-        color: constants.SECONDARYCOLOR
+        color: constants.PRIMARYCOLOR
     },
 });

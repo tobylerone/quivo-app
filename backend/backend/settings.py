@@ -30,17 +30,27 @@ ALLOWED_HOSTS = [
     '10.0.2.2'
     ]
 
+CORS_ALLOWED_ORIGINS = [
+    'http://192.168.1.232',
+    'http://192.168.0.22',
+    'http://10.0.2.2'   
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    #"django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "language_app"
+    "language_app",
+    "api",#".apps.UserApiConfig"
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
@@ -82,6 +92,21 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
+}
+
+# User model
+AUTH_USER_MODEL = "api.AppUser"
+
+# User model authentication backend
+AUTHENTICATION_BACKENDS = ['api.backends.AppUserModelBackend']
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
 }
 
 

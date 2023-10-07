@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
 from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
@@ -57,5 +59,13 @@ class UserView(APIView):
 
 
 class FrSentencesViewSet(viewsets.ModelViewSet):
-    queryset = FrSentence.objects.all()
-    serializer_class = FrSentenceModelSerializer
+	queryset = FrSentence.objects.all()
+	serializer_class = FrSentenceModelSerializer
+
+
+def csrf(request):
+	# CSRF sert a proteger contre des attaques dans un navigateur. Or,
+	# cette api ne sera utilise que pour cette application mobile, mais
+	# je le garderai quand-meme au cas ou je veux reutiliser l'api pour
+	# un site web
+	return JsonResponse({'csrfToken': get_token(request)})

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import { FontAwesome } from '@expo/vector-icons'
 import * as constants from "../constants"
+import client from "../utils/axios"
 
 interface WordProps {
     word: string;
@@ -108,11 +109,22 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const fetchData = async() => {
 
-        const response = await fetch(constants.HOST_ADDRESS + ":8000/api/frsentences/");
-        const data = await response.json();
+        //const response = await fetch(constants.HOST_ADDRESS + ":8000/api/frsentences/");
+        //const data = await response.json();
+
+        // Il faut fournir l'utilisateur pour avoir acces aux donnees. J'utiliserai axios ici.
+        //console.log(data)
 
         //setSentences(data.map(item => item.sentence));
-        setItems(data);
+        //setItems(data);
+
+        client.get("/api/frsentences", { withCredentials: true })
+        .then(function(res) {
+          setItems(res.data);
+        })
+        .catch(function(error) {
+        });
+
 
     }
 

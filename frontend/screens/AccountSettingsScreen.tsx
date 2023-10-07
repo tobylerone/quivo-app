@@ -1,56 +1,46 @@
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList, StatusBar } from "react-native"
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import { FontAwesome } from "@expo/vector-icons"
 import * as constants from "../constants";
-
-/*
-const DATA = [
-    {
-      title: "Account Settings",
-      data: ["Change password", "Change language", "Log out"],
-    },
-    {
-      title: "General",
-      data: ["Choose language", "Voice narration", "-----"],
-    },
-    {
-      title: "Social",
-      data: ["FAQs", "Rate and comment", "Share", "Contact us", "Confidentiality"],
-    },
-  ];*/
-
-const DATA = [
-{
-    title: "Account Settings",
-    data: [
-    { text: "Change password", action: () => {} },
-    { text: "Change language", action: () => {} },
-    { text: "Log out", action: () => {console.log('logging out')} },
-    ],
-},
-{
-    title: "General",
-    data: [
-    { text: "Choose language", action: () => {} },
-    { text: "Voice narration", action: () => {} },
-    { text: "-----", action: () => {} },
-    ],
-},
-{
-    title: "Social",
-    data: [
-    { text: "FAQs", action: () => {} },
-    { text: "Rate and comment", action: () => {} },
-    { text: "Share", action: () => {} },
-    { text: "Contact us", action: () => {} },
-    { text: "Confidentiality", action: () => {} },
-    ],
-},
-];
+import UserContext from '../contexts/UserContext';
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
+    const { submitLogout } = useContext(UserContext);
+
+    const DATA = [
+        {
+            title: "Account Settings",
+            data: [
+            { text: "Change password", action: () => {} },
+            { text: "Change language", action: () => {} },
+            { text: "Log out", action: () => {
+                console.log("Logging out")
+                submitLogout()
+            }},
+            ],
+        },
+        {
+            title: "General",
+            data: [
+            { text: "Choose language", action: () => {} },
+            { text: "Voice narration", action: () => {} },
+            { text: "-----", action: () => {} },
+            ],
+        },
+        {
+            title: "Social",
+            data: [
+            { text: "FAQs", action: () => {} },
+            { text: "Rate and comment", action: () => {} },
+            { text: "Share", action: () => {} },
+            { text: "Contact us", action: () => {} },
+            { text: "Confidentiality", action: () => {} },
+            ],
+        },
+        ];
+    
     return (
         <SafeAreaView style={styles.container}>
           <SectionList

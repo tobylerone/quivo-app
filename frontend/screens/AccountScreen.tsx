@@ -1,14 +1,18 @@
-import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity } from "react-native"
-import { useEffect } from "react"
-import { NativeStackHeaderProps } from "@react-navigation/native-stack"
-import { FontAwesome } from '@expo/vector-icons'
+import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import { useEffect, useContext } from "react";
+import UserContext from '../contexts/UserContext';
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { FontAwesome } from '@expo/vector-icons';
 import * as constants from "../constants";
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
+
+    const { currentUser } = useContext(UserContext);
     
     useEffect(() =>{
-        console.log("Rendering Accountscreeen")
+        console.log("Rendering Accountscreen")
+        console.log(currentUser)
 
     }, [])
     return (
@@ -30,7 +34,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </View>
                 <View style={styles.profileNameBubble}>
                     <View style={styles.profileNameContainer}>
-                        <Text style={styles.profileName}>tobylerone5</Text>
+                        <Text style={styles.profileName}>{currentUser.username}</Text>
                     </View>
                     <TouchableOpacity
                         activeOpacity={1}

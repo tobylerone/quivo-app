@@ -5,3 +5,6 @@ ml_notebooks/fra_mixed_2009_1M
 
 # react dependencies
 frontend/node_modules
+
+# ml model weights etc.
+ml_notebooks/sentence_categorisation/kmeans.pkl

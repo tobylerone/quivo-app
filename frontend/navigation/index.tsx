@@ -4,6 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { FontAwesome, Entypo } from '@expo/vector-icons'
 
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 import HomeScreen from "../screens/HomeScreen";
 import LearnScreen from "../screens/LearnScreen";
 import WorkoutDetailScreen from "../screens/WorkoutDetailScreen";
@@ -24,15 +26,106 @@ const greenBackground = {
     },
   };
 
-export default function Navigation () {
+export function AuthNavigation () {
+    return(
+        <NavigationContainer theme={greenBackground}>
+            <AuthNavigator/>
+        </NavigationContainer>
+    )
+}
+
+export function Navigation () {
 return(
     <NavigationContainer theme={greenBackground}>
-    <RootNavigator/>
+        <MainNavigator/>
     </NavigationContainer>
     )
 }
 
-const Stack= createNativeStackNavigator()
+const AuthStack = createNativeStackNavigator()
+const MainStack= createNativeStackNavigator()
+
+function AuthNavigator() {
+    return (
+        <AuthStack.Navigator>
+            <MainStack.Screen
+                name="LoginScreen"
+                component={LoginScreen as any}
+                options={{headerShown: false}}
+            />
+            <MainStack.Screen
+                name="RegisterScreen"
+                component={RegisterScreen as any}
+                options={{headerShown: false}}
+            />
+        </AuthStack.Navigator>
+    );
+}
+
+function MainNavigator() {
+    return (
+        <MainStack.Navigator>
+            <MainStack.Screen
+                name="Root"
+                component={BottomTabNavigator}
+                options={{headerShown: false}}
+            />
+            <MainStack.Screen
+                name="WorkoutDetail"
+                component={WorkoutDetailScreen as any}
+                options={{title: ""}}
+            />
+            <MainStack.Screen
+                name="AccountSettings"
+                component={AccountSettingsScreen as any}
+                options={{
+                    title: "Settings",
+                    headerStyle: {
+                        backgroundColor: constants.SECONDARYCOLOR
+                    },
+                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerShadowVisible: false
+                }}
+            />
+            <MainStack.Screen
+                name="AccountLanguages"
+                component={AccountLanguagesScreen as any}
+                options={{
+                    title: "Your Languages",
+                    headerStyle: {
+                        backgroundColor: constants.SECONDARYCOLOR
+                    },
+                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerShadowVisible: false
+                }}
+            />
+            <MainStack.Screen
+                name="FollowList"
+                component={FollowListScreen as any}
+                options={{
+                    title: "Relations",
+                    headerStyle: {
+                        backgroundColor: constants.SECONDARYCOLOR
+                    },
+                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerShadowVisible: false
+                }}
+            />
+            <MainStack.Screen
+                name="WordList"
+                component={WordListScreen as any}
+                options={{
+                    title: "Your Known Words",
+                    headerStyle: {
+                        backgroundColor: constants.SECONDARYCOLOR
+                    },
+                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerShadowVisible: false
+                }}
+            />
+        </MainStack.Navigator>
+        )
+}
 
 const StandardTabBarButton = ({children, onPress}) => (
     <TouchableOpacity
@@ -80,71 +173,6 @@ const CentralTabBarButton = ({children, onPress}) => (
         </View>
     </TouchableOpacity>
 );
-
-function RootNavigator() {
-    return (
-        <Stack.Navigator>
-            <Stack.Screen
-                name="Root"
-                component={BottomTabNavigator}
-                options={{headerShown: false}}
-            />
-            <Stack.Screen
-                name="WorkoutDetail"
-                component={WorkoutDetailScreen as any}
-                options={{title: ""}}
-            />
-            <Stack.Screen
-                name="AccountSettings"
-                component={AccountSettingsScreen as any}
-                options={{
-                    title: "Settings",
-                    headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
-                    },
-                    headerTintColor: constants.PRIMARYCOLOR,
-                    headerShadowVisible: false
-                }}
-            />
-            <Stack.Screen
-                name="AccountLanguages"
-                component={AccountLanguagesScreen as any}
-                options={{
-                    title: "Your Languages",
-                    headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
-                    },
-                    headerTintColor: constants.PRIMARYCOLOR,
-                    headerShadowVisible: false
-                }}
-            />
-            <Stack.Screen
-                name="FollowList"
-                component={FollowListScreen as any}
-                options={{
-                    title: "Relations",
-                    headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
-                    },
-                    headerTintColor: constants.PRIMARYCOLOR,
-                    headerShadowVisible: false
-                }}
-            />
-            <Stack.Screen
-                name="WordList"
-                component={WordListScreen as any}
-                options={{
-                    title: "Your Known Words",
-                    headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
-                    },
-                    headerTintColor: constants.PRIMARYCOLOR,
-                    headerShadowVisible: false
-                }}
-            />
-        </Stack.Navigator>
-        )
-}
 
 const BottomTab= createBottomTabNavigator()
 

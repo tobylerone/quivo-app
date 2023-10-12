@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import Navigation from './navigation/index';
+import { AuthNavigation, Navigation } from './navigation/index';
 import useCachedResources from "./hooks/useCashedResources"
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthProvider } from './contexts/UserContext';
@@ -10,7 +10,7 @@ function UserComponent() {
 
   const { currentUser } = useContext(UserContext);
 
-  return currentUser ? <Navigation /> : <LoginScreen />;
+  return currentUser ? <Navigation /> : <AuthNavigation />;
 
 }
 

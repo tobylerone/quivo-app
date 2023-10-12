@@ -5,14 +5,15 @@ import * as constants from '../constants';
 // app, and CSRF protects against browser attacks but
 // I might create a website in the future so I'll keep it
 // in for now
+axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.withCredentials = true;
 
 // Fetch CSRF token and set default csrf header for all post requests
 axios.get(constants.HOST_ADDRESS + ':8000/api/csrf/')
   .then(response => {
     const csrfToken = response.data.csrfToken;
+    console.log(csrfToken);
 
     axios.defaults.headers.post['X-CSRFToken'] = csrfToken;
   })

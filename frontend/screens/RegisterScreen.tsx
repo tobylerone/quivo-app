@@ -13,12 +13,13 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import UserContext from '../contexts/UserContext';
 import * as constants from '../constants'
 
-export default function LoginScreen({navigation}: NativeStackHeaderProps) {
+export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { submitLogin } = useContext(UserContext);
+  const { submitRegistration } = useContext(UserContext);
 
   return (
   <View style={styles.container}>
@@ -33,6 +34,14 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
         placeholderTextColor="#003f5c"
         onChangeText={(username) => setUsername(username)}
       /> 
+    </View>
+    <View style={styles.inputView}>
+      <TextInput
+        style={styles.TextInput}
+        placeholder="Email"
+        placeholderTextColor="#003f5c"
+        onChangeText={(email) => setEmail(email)}
+      /> 
     </View> 
     <View style={styles.inputView}>
       <TextInput
@@ -43,25 +52,31 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
         onChangeText={(password) => setPassword(password)}
       />
     </View>
-    <TouchableOpacity>
-      <Text style={styles.forgot_button}>Forgot Password?</Text>
-    </TouchableOpacity>
+    <View style={styles.inputView}>
+      <TextInput
+        style={styles.TextInput}
+        placeholder="Re-type password"
+        placeholderTextColor="#003f5c"
+        secureTextEntry={true}
+        onChangeText={() => {}}
+      />
+    </View>
     <TouchableOpacity
-      onPress={() => navigation.navigate("RegisterScreen")}
+      onPress={() => navigation.navigate("LoginScreen")}
     >
-      <Text style={styles.forgot_button}>Don't have an account yet? Register</Text>
+      <Text style={styles.forgot_button}>Already have an account? Login</Text>
     </TouchableOpacity>
     <TouchableOpacity
-      style={styles.loginBtn}
+      style={styles.registerBtn}
       onPress={async () => {
-        const success = await submitLogin(username, password);
+        const success = await submitRegistration(username, password);
         setErrorMessage('');
         if (!success) {
-          setErrorMessage('*Username or password incorrect')
+          //setErrorMessage('*Username or password incorrect')
         }
       }}
       >
-      <Text style={styles.loginText}>LOGIN</Text> 
+      <Text style={styles.registerText}>Register</Text> 
     </TouchableOpacity> 
   </View> 
   );
@@ -106,7 +121,7 @@ const styles = StyleSheet.create({
     height: 30,
     marginBottom: 30,
   },
-  loginBtn: {
+  registerBtn: {
     width: "70%",
     borderRadius: 10,
     height: 50,
@@ -115,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     backgroundColor: constants.PRIMARYCOLOR,//"#FF1493",
   },
-  loginText: {
+  registerText: {
     color: constants.SECONDARYCOLOR
   },
 });

@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const submitRegistration = (e) => {
+
         //e.preventDefault();
         client.post(
           "/api/register",
@@ -39,14 +40,18 @@ export const AuthProvider = ({ children }) => {
             }
           ).then(function(res) {
             setCurrentUser(res.data.user);
-          }).catch(function(error) {
+          }).catch(function(e) {
             setCurrentUser(null);
-            console.log(error.response.data)
+            // Ecrire un message a l'ecran
+            console.log(e.response.data)
           });
         });
     };
     
     const submitLogin = (username, password) => {
+        
+        const wasSuccessful = false
+
         client.post(
             "/api/login",
             {
@@ -56,10 +61,13 @@ export const AuthProvider = ({ children }) => {
             }
         ).then(function(res) {
             setCurrentUser(res.data.user);
+            wasSuccessful = true
         }).catch(function(error) {
             setCurrentUser(null);
             console.log(error.response.data)
         });
+
+        return wasSuccessful
     };
     
     const submitLogout = (e) => {

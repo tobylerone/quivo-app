@@ -20,12 +20,24 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             <View style={styles.topContainer}>
                 <TouchableOpacity
                     activeOpacity={1}
-                    onPress={() => navigation.navigate("AccountSettings")}
+                    onPress={() => navigation.navigate("SearchUser")}
+                    style={styles.addUserButtonContainer}
                     >
-                    <View style={styles.settingsButton}>
-                        <FontAwesome name="gear" size={40} color={constants.PRIMARYCOLOR} />
+                    <View style={styles.addUserButton}>
+                        <FontAwesome name="user-plus" size={constants.H1FONTSIZE} color={constants.PRIMARYCOLOR} />
                     </View>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => navigation.navigate("AccountSettings")}
+                    style={styles.settingsButtonContainer}
+                    >
+                    <View style={styles.settingsButton}>
+                        <FontAwesome name="gear" size={constants.H1FONTSIZE} color={constants.PRIMARYCOLOR} />
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.profileContainer}>
                 <View style={styles.profileImageContainer}>
                     <Image
                         source={require("../assets/profile.jpg")}
@@ -95,14 +107,23 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                     </TouchableOpacity>
                 </View>
             </View>
+            <View style={styles.mainContainer}>
+            </View>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     topContainer: {
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        marginLeft: "5%",
+        marginRight: "5%",
+        marginTop: 50  
+    },
+    profileContainer: {
         width: "100%",
-        marginTop: 10
+        marginTop: 10,
     },
     middleContainer: {
         //width: "100%",
@@ -116,9 +137,17 @@ const styles = StyleSheet.create({
         height: 60,
         flex: 1
     },
-    settingsButton: {
-        marginTop: 40,
-        marginRight: 20,
+    mainContainer: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        marginLeft: "5%",
+        marginRight: "5%",
+        marginTop: 10
+    },
+    addUserButtonContainer: {
+        alignSelf: 'flex-start'
+    },
+    settingsButtonContainer: {
         alignSelf: 'flex-end'
     },
     profileImageContainer: {
@@ -127,7 +156,6 @@ const styles = StyleSheet.create({
         borderColor: constants.PRIMARYCOLOR,
         marginLeft: "auto",
         marginRight: "auto",
-        marginTop: -20,
         marginBottom: 20,
         overflow: "hidden",
         width: 100,
@@ -216,5 +244,5 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
-    }
+    },
 });

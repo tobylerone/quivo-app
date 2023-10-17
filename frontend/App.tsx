@@ -3,7 +3,6 @@ import { AuthNavigation, Navigation } from './navigation/index';
 import useCachedResources from "./hooks/useCashedResources"
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthProvider } from './contexts/UserContext';
-import LoginScreen from './screens/LoginScreen';
 import UserContext from './contexts/UserContext';
 
 function UserComponent() {

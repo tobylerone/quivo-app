@@ -17,6 +17,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [secondPassword, setSecondPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const { submitRegistration } = useContext(UserContext);
@@ -24,6 +25,10 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
   return (
   <View style={styles.container}>
     <StatusBar style="auto" />
+    <Image
+      source={require("../assets/icon_tight.png")}
+      style={styles.logo}
+    />
     <View style={styles.errorBox}>
       <Text style={styles.errorText}>{errorMessage}</Text>
     </View>
@@ -58,7 +63,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
         placeholder="Re-type password"
         placeholderTextColor="#003f5c"
         secureTextEntry={true}
-        onChangeText={() => {}}
+        onChangeText={(password) => setSecondPassword(password)}
       />
     </View>
     <TouchableOpacity
@@ -69,10 +74,20 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     <TouchableOpacity
       style={styles.registerBtn}
       onPress={async () => {
-        const success = await submitRegistration(username, password);
-        setErrorMessage('');
+        
+        //verifier que le mot de passe est correct
+        if(password!=secondPassword){
+            setErrorMessage('Passwords don\'t match');
+            return;
+        };
+
+        // TODO: Verifier que l'utilisateur n'existe pas deja
+
+        const success = await submitRegistration(username, email, password);
+
         if (!success) {
-          //setErrorMessage('*Username or password incorrect')
+            //Il faut donner des indices a l'utilisateur
+            setErrorMessage('Registration failed. Try against later')
         }
       }}
       >
@@ -90,6 +105,12 @@ const styles = StyleSheet.create({
   },
   image: {
     marginBottom: 40,
+  },
+  logo: {
+    width: 200,
+    height: 53,
+    //height: "7%",
+    marginBottom: 10
   },
   errorBox: {
     backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",

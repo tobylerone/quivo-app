@@ -22,20 +22,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-17yum(vu2sa%ladg9^ed)w_il!rrn5@j2_thwg(ra(eof44-ew"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '192.168.1.232',
     '192.168.0.22',
     '10.159.130.244',
-    '10.0.2.2'
+    '10.2.15.49'
     ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://192.168.1.232',
     'http://192.168.0.22',
     'http://10.159.130.244',
-    'http://10.0.2.2'   
+    'http://10.2.15.49'   
 ]
 
 CORS_ALLOW_CREDENTIALS = True

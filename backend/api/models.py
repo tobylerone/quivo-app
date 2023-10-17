@@ -31,8 +31,20 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
 	email = models.EmailField(max_length=50, unique=True)
 	username = models.CharField(max_length=50, unique=True)
+	following = models.ManyToManyField(
+		'self',
+		through='UserFollow',
+		related_name='followed_by',
+		symmetrical=False
+		)
+	
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
 	objects = AppUserManager()
 	def __str__(self):
 		return self.username
+	
+class UserFollow(models.Model):
+    user = models.ForeignKey(AppUser, related_name='user', on_delete=models.CASCADE)
+    following = models.ForeignKey(AppUser, related_name='is_following', on_delete=models.CASCADE)
+	# Maybe add a field for when followed

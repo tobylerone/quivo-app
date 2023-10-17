@@ -1,9 +1,9 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image } from "react-native"
-import { useEffect, useState } from "react"
-import { NativeStackHeaderProps } from "@react-navigation/native-stack"
-import { FontAwesome } from '@expo/vector-icons'
-import * as constants from "../constants"
-import client from "../utils/axios"
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image } from "react-native";
+import { useEffect, useState } from "react";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { FontAwesome } from '@expo/vector-icons';
+import * as constants from "../constants";
+import client from "../utils/axios";
 
 interface WordProps {
     word: string;

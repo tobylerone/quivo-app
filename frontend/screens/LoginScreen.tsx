@@ -23,6 +23,10 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
   return (
   <View style={styles.container}>
     <StatusBar style="auto" />
+    <Image
+      source={require("../assets/icon_tight.png")}
+      style={styles.logo}
+    />
     <View style={styles.errorBox}>
       <Text style={styles.errorText}>{errorMessage}</Text>
     </View>
@@ -73,8 +77,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  image: {
-    marginBottom: 40,
+  logo: {
+    width: 200,
+    height: 53,
+    //height: "7%",
+    marginBottom: 10
   },
   errorBox: {
     backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
@@ -112,7 +119,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 10,
     backgroundColor: constants.PRIMARYCOLOR,//"#FF1493",
   },
   loginText: {

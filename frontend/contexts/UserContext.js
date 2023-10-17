@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        client.get("/api/user")
+        client.get("/api/users/me")
         .then(function(res) {
           setCurrentUser(res.data.user);
         })
@@ -21,31 +21,36 @@ export const AuthProvider = ({ children }) => {
         });
     }, []);
 
-    const submitRegistration = (e) => {
+    const submitRegistration = (username, email, password) => {
+
+        const wasSuccessful = false;
 
         //e.preventDefault();
         client.post(
           "/api/register",
           {
-            email: email,
             username: username,
+            email: email,
             password: password
           }
         ).then(function(res) {
           client.post(
             "/api/login",
             {
-              email: email,
+              username: username,
               password: password
             }
           ).then(function(res) {
             setCurrentUser(res.data.user);
+            wasSuccessful = true
           }).catch(function(e) {
             setCurrentUser(null);
             // Ecrire un message a l'ecran
             console.log(e.response.data)
           });
         });
+
+        return wasSuccessful;
     };
     
     const submitLogin = (username, password) => {
@@ -62,9 +67,9 @@ export const AuthProvider = ({ children }) => {
         ).then(function(res) {
             setCurrentUser(res.data.user);
             wasSuccessful = true
-        }).catch(function(error) {
+        }).catch(function(e) {
             setCurrentUser(null);
-            console.log(error.response.data)
+            console.log(e.response.data)
         });
 
         return wasSuccessful

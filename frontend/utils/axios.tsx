@@ -12,10 +12,11 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 // Fetch CSRF token and set default csrf header for all post requests
 axios.get(constants.HOST_ADDRESS + ':8000/api/csrf/')
   .then(response => {
-    const csrfToken = response.data.csrfToken;
-    console.log(csrfToken);
+    //const csrfToken = response.data.csrfToken;
+    //console.log(csrfToken);
+    console.log(response);
 
-    axios.defaults.headers.post['X-CSRFToken'] = csrfToken;
+    //axios.defaults.headers.post['X-CSRFToken'] = csrfToken;
   })
   .catch(error => {
     console.error(error);

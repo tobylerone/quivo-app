@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
+from .models import UserFollow
 from language_app.models import FrSentence
 
 UserModel = get_user_model()
@@ -31,6 +32,15 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
 		fields = ('email', 'username')
+
+
+class UserFollowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFollow
+        fields = ['user', 'following']
+
+    def create(self, validated_data):
+        return UserFollow.objects.create(**validated_data)
 
 class FrSentenceModelSerializer(serializers.ModelSerializer):
     class Meta:

@@ -8,9 +8,11 @@ router.register(r"frsentences", FrSentencesViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path('register', views.UserRegister.as_view(), name='register'),
-	path('login', views.UserLogin.as_view(), name='login'),
-	path('logout', views.UserLogout.as_view(), name='logout'),
-	path('user', views.UserView.as_view(), name='user'),
-    path('csrf', views.csrf, name='csrf')
-]
+    path('register', views.UserRegisterView.as_view(), name='register'),
+	path('login', views.UserLoginView.as_view(), name='login'),
+	path('logout', views.UserLogoutView.as_view(), name='logout'),
+    path('users', views.UserViewSet.as_view(), name='user-list'),
+	path('users/me', views.CurrentUserView.as_view(), name='current-user'),
+	path('follow', views.UserFollowView.as_view(), name='follow-user'),
+	path('csrf', views.csrf, name='csrf')
+	]

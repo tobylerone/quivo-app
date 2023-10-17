@@ -11,6 +11,7 @@ import LearnScreen from "../screens/LearnScreen";
 import WorkoutDetailScreen from "../screens/WorkoutDetailScreen";
 import AccountScreen from "../screens/AccountScreen";
 import AccountSettingsScreen from "../screens/AccountSettingsScreen";
+import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
 import FollowListScreen from "../screens/FollowListScreen";
@@ -80,6 +81,18 @@ function MainNavigator() {
                 component={AccountSettingsScreen as any}
                 options={{
                     title: "Settings",
+                    headerStyle: {
+                        backgroundColor: constants.SECONDARYCOLOR
+                    },
+                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerShadowVisible: false
+                }}
+            />
+            <MainStack.Screen
+                name="SearchUser"
+                component={SearchUserScreen as any}
+                options={{
+                    title: "Search for users",
                     headerStyle: {
                         backgroundColor: constants.SECONDARYCOLOR
                     },

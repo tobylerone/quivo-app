@@ -50,20 +50,41 @@ class UserLogoutView(APIView):
 		return Response(status=status.HTTP_200_OK)
 
 
+class UserFollowingView(generics.ListAPIView):
+	# Cette ligne ne marchera pas. Je vais devoir creer un nouveau serializer
+	# pareil pour UserFollowerView
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        user = AppUser.objects.get(user_id=user_id)
+        return user.following.all()
+	
+class UserFollowersView(generics.ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        user = AppUser.objects.get(user_id=user_id)
+        return user.followed_by.all()
+
 class UserFollowView(APIView):
 	def post(self, request):
-		data = request.data
-		serializer = UserFollowSerializer(data=data)
+		print('hello')
+		print(request.data)
+		serializer = UserFollowSerializer(data=request.data)
 
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CurrentUserView(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 	##
+
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)

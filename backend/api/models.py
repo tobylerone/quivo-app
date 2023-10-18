@@ -41,6 +41,13 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
 	objects = AppUserManager()
+
+	def following_count(self):
+		return self.following.count()
+	
+	def followers_count(self):
+		return self.followed_by.count()
+
 	def __str__(self):
 		return self.username
 	

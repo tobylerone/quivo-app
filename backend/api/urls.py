@@ -12,7 +12,9 @@ urlpatterns = [
 	path('login', views.UserLoginView.as_view(), name='login'),
 	path('logout', views.UserLogoutView.as_view(), name='logout'),
     path('users', views.UserViewSet.as_view(), name='user-list'),
-	path('users/me', views.CurrentUserView.as_view(), name='current-user'),
+	path('users/me', views.CurrentUserView.as_view(), name='current-user'), # Je vais changer ce nom
+	#path('users/<int:user_id>/following/', views.UserFollowingView.as_view(), name='user-following'),
+	#path('users/<int:user_id>/followers/', views.UserFollowersView.as_view(), name='user-followers'),
 	path('follow', views.UserFollowView.as_view(), name='follow-user'),
 	path('csrf', views.csrf, name='csrf')
 	]

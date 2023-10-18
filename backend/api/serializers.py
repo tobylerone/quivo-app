@@ -29,18 +29,37 @@ class UserLoginSerializer(serializers.Serializer):
 		return user
 
 class UserSerializer(serializers.ModelSerializer):
+
+	following_count = serializers.IntegerField(
+		source='following_count',
+		read_only=True
+		)
+	
+	followers_count = serializers.IntegerField(
+		source='followers_count',
+		read_only=True
+		)
+	
 	class Meta:
 		model = UserModel
-		fields = ('email', 'username')
+		fields = (
+			'user_id',
+			'email',
+			'username',
+			'following_count',
+			'followers_count'
+			)
 
 
 class UserFollowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserFollow
-        fields = ['user', 'following']
+	class Meta:
+		model = UserFollow
+		fields = ['user', 'following']
 
-    def create(self, validated_data):
-        return UserFollow.objects.create(**validated_data)
+
+	def create(self, validated_data):
+		print(validated_data)
+		return UserFollow.objects.create(**validated_data)
 
 class FrSentenceModelSerializer(serializers.ModelSerializer):
     class Meta:

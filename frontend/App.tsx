@@ -4,6 +4,7 @@ import useCachedResources from "./hooks/useCashedResources"
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthProvider } from './contexts/UserContext';
 import UserContext from './contexts/UserContext';
+import client from './utils/axios';
 
 function UserComponent() {
 

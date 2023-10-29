@@ -15,7 +15,7 @@ function UserComponent() {
 }
 
 export default function App() {
-  const isLoaded= useCachedResources()
+  const isLoaded= useCachedResources();
 
   if (!isLoaded) {
     return null; // or a loading spinner

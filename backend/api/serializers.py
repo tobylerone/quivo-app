@@ -31,12 +31,12 @@ class UserLoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
 
 	following_count = serializers.IntegerField(
-		source='following_count',
+		#source='following_count',
 		read_only=True
 		)
 	
 	followers_count = serializers.IntegerField(
-		source='followers_count',
+		#source='followers_count',
 		read_only=True
 		)
 	

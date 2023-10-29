@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-17yum(vu2sa%ladg9^ed)w_il!rrn5@j2_thwg(ra(eof44-ew"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '192.168.1.232',
@@ -66,7 +66,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
-    {
+   {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
         "APP_DIRS": True,

@@ -12,6 +12,10 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
+        getUser();
+    }, []);
+
+    const getUser = () => {
         client.get("/api/users/me")
         .then(function(res) {
           setCurrentUser(res.data.user);
@@ -19,7 +23,7 @@ export const AuthProvider = ({ children }) => {
         .catch(function(error) {
           setCurrentUser(null);
         });
-    }, []);
+    };
 
     const submitRegistration = (username, email, password) => {
 
@@ -42,6 +46,8 @@ export const AuthProvider = ({ children }) => {
             }
           ).then(function(res) {
             setCurrentUser(res.data.user);
+            console.log(res.data.user);
+            console.log(currentUser);
             wasSuccessful = true
           }).catch(function(e) {
             setCurrentUser(null);
@@ -54,25 +60,33 @@ export const AuthProvider = ({ children }) => {
     };
     
     const submitLogin = (username, password) => {
-        
-        const wasSuccessful = false
 
-        client.post(
-            "/api/login",
-            {
-            username: username,
-            password: password,
-            withCredentials: true
-            }
-        ).then(function(res) {
-            setCurrentUser(res.data.user);
-            wasSuccessful = true
-        }).catch(function(e) {
-            setCurrentUser(null);
-            console.log(e.response.data)
+        return new Promise((resolve, reject) => {
+
+            client.post(
+                "/api/login",
+                {
+                username: username,
+                password: password,
+                withCredentials: true
+                }
+            ).then(function(res) {
+                //setCurrentUser(res.data.user);
+                // Get the current user data and set the context
+                getUser();
+                wasSuccessful = true
+                console.log('Login successful!')
+                resolve(true);
+
+            }).catch(function(e) {
+
+                setCurrentUser(null);
+                console.log('Login unsuccessful');
+                reject(false);
+
+            });
+
         });
-
-        return wasSuccessful
     };
     
     const submitLogout = (e) => {

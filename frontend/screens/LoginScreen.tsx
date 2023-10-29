@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,14 +12,23 @@ import {
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import UserContext from '../contexts/UserContext';
 import * as constants from '../constants'
+import client from "../utils/axios"
 
 export default function LoginScreen({navigation}: NativeStackHeaderProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { submitLogin } = useContext(UserContext);
+  const { currentUser, submitLogin } = useContext(UserContext);
 
+  useEffect(() =>{
+    // Login screen (and auth stack) should only be shown when currentUser = null
+    console.log("Rendering Login screen")
+
+    console.log(client.defaults.headers)
+
+  }, [])
+  
   return (
   <View style={styles.container}>
     <StatusBar style="auto" />
@@ -58,11 +67,16 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
     <TouchableOpacity
       style={styles.loginBtn}
       onPress={async () => {
-        const success = await submitLogin(username, password);
-        setErrorMessage('');
-        if (!success) {
-          setErrorMessage('*Username or password incorrect')
-        }
+
+        submitLogin(username, password).then(success => {
+            // Login was successful
+            setErrorMessage('');
+            console.log(success);
+        }).catch(success => {
+            // Login was unsuccessful
+            setErrorMessage('*Username or password incorrect')
+            console.log(success);
+        });
       }}
       >
       <Text style={styles.loginText}>LOGIN</Text> 
@@ -80,7 +94,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 200,
     height: 53,
-    //height: "7%",
     marginBottom: 10
   },
   errorBox: {

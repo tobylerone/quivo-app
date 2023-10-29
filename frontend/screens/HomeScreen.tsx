@@ -5,7 +5,7 @@ import WorkoutItem from "../components/WorkoutItem"
 import { useWorkouts } from "../hooks/useWorkouts"
 
 export default function HomeScreen({navigation}: NativeStackHeaderProps) {
-const workouts= useWorkouts()
+const workouts = useWorkouts()
 
     return (
         <SafeAreaView style={styles.container}>

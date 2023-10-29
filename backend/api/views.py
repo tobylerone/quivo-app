@@ -39,7 +39,9 @@ class UserLoginView(APIView):
 
 			user = serializer.check_user(data)
 			login(request, user)
-			return Response(serializer.data, status=status.HTTP_200_OK)
+			#return Response(serializer.data, status=status.HTTP_200_OK)
+			# User is logged in, but don't need to return any user data
+			return Response(status=status.HTTP_200_OK)
 
 
 class UserLogoutView(APIView):

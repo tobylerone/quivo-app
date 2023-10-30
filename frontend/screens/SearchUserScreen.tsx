@@ -58,7 +58,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                                     withCredentials: true
                                     }
                                 ).then(function(res) {  
-                                    console.log(res) 
+                                    console.log(res.data) 
                                 }).catch(function(e) {
                                     console.log(e.response.data)
                                 });

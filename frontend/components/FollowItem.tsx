@@ -5,31 +5,38 @@
     
     interface IFollowItemProps {
         user: {
-            name: string;
-            wordsKnown: {
-                language: string;
-                words: number
-            }[]
+            email: string,
+            followers_count: number,
+            following_count: number,
+            user_id: number,
+            username: string
+            //wordsKnown: {
+            //    language: string;
+            //    words: number
+            //}[]
         }
     }
     
     export default function FollowItem ({user}: IFollowItemProps) {
+        
         return (
             <View style={styles.followItemContainer}>
-                <Text style={styles.userName}>{user.name}</Text>
-                <View style={styles.wordsKnownContainer}>
-                    {user.wordsKnown.map(({language, words}) => (
-                        <View style={styles.languageContainer}>
-                            <Image
-                                source={require("../assets/es.png")}
-                                style={styles.flagImage}
-                            />
-                            <Text style={styles.knownWords}>{words}</Text>
-                        </View>
-                    ))}
-                </View>
+                <Text style={styles.userName}>{user.username}</Text>
             </View>
         );
+
+        /*<View style={styles.wordsKnownContainer}>
+            {user.wordsKnown.map(({language, words}) => (
+                <View style={styles.languageContainer}>
+                    <Image
+                        source={require("../assets/es.png")}
+                        style={styles.flagImage}
+                    />
+                    <Text style={styles.knownWords}>{words}</Text>
+                </View>
+            ))}
+        </View>
+        */
     };
     
     const styles= StyleSheet.create({

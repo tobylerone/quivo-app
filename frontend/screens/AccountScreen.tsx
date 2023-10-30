@@ -12,8 +12,6 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     
     useEffect(() =>{
         console.log("Rendering Accountscreen")
-        console.log(currentUser)
-
     }, [])
     return (
         <SafeAreaView>

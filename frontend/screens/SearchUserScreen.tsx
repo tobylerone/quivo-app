@@ -53,8 +53,8 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                                 client.post(
                                     "/api/follow",
                                     {
-                                    user: currentUser.user_id,
-                                    following: item.user_id,
+                                    follower: currentUser.user_id,
+                                    followee: item.user_id,
                                     withCredentials: true
                                     }
                                 ).then(function(res) {  

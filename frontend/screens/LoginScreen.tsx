@@ -12,7 +12,7 @@ import {
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import UserContext from '../contexts/UserContext';
 import * as constants from '../constants'
-import client from "../utils/axios"
+import client, { updateClientCsrfToken } from "../utils/axios"
 
 export default function LoginScreen({navigation}: NativeStackHeaderProps) {
   const [username, setUsername] = useState('');

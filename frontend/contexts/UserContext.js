@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import client from "../utils/axios"
+import client, { updateClientCsrfToken } from "../utils/axios"
 
 const UserContext = React.createContext();
 
@@ -29,34 +29,25 @@ export const AuthProvider = ({ children }) => {
 
         const wasSuccessful = false;
 
-        //e.preventDefault();
-        client.post(
-          "/api/register",
-          {
-            username: username,
-            email: email,
-            password: password
-          }
-        ).then(function(res) {
-          client.post(
-            "/api/login",
-            {
-              username: username,
-              password: password
-            }
-          ).then(function(res) {
-            setCurrentUser(res.data.user);
-            console.log(res.data.user);
-            console.log(currentUser);
-            wasSuccessful = true
-          }).catch(function(e) {
-            setCurrentUser(null);
-            // Ecrire un message a l'ecran
-            console.log(e.response.data)
-          });
-        });
+        return new Promise((resolve, reject) => {
 
-        return wasSuccessful;
+            client.post(
+            "/api/register",
+            {
+                username: username,
+                email: email,
+                password: password
+            }
+            ).then(function(res) {
+                console.log('Account creation successful');
+                submitLogin(username, password);
+            }).catch(function(e) {
+
+                console.log('Account creation unsuccessful');
+                reject(false);
+
+            });
+        });
     };
     
     const submitLogin = (username, password) => {
@@ -71,6 +62,8 @@ export const AuthProvider = ({ children }) => {
                 withCredentials: true
                 }
             ).then(function(res) {
+                // Fetch the new CSRF token from the db and update the axios client header
+                updateClientCsrfToken();
                 //setCurrentUser(res.data.user);
                 // Get the current user data and set the context
                 getUser();
@@ -85,7 +78,6 @@ export const AuthProvider = ({ children }) => {
                 reject(false);
 
             });
-
         });
     };
     

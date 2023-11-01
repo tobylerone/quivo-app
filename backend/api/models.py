@@ -52,6 +52,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		return self.username
 	
 class UserFollow(models.Model):
-    user = models.ForeignKey(AppUser, related_name='user', on_delete=models.CASCADE)
-    following = models.ForeignKey(AppUser, related_name='is_following', on_delete=models.CASCADE)
+    follower = models.ForeignKey(AppUser, related_name='follower', on_delete=models.CASCADE)
+    followee = models.ForeignKey(AppUser, related_name='followee', on_delete=models.CASCADE)
 	# Maybe add a field for when followed

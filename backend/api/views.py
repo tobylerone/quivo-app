@@ -72,14 +72,47 @@ class UserFollowersView(generics.ListAPIView):
 
 class UserFollowView(APIView):
 	def post(self, request):
-		print('hello')
-		print(request.data)
 		serializer = UserFollowSerializer(data=request.data)
 
 		if serializer.is_valid():
+
+			# TODO: Ensure user can't follow themselves
+
+			follower = serializer.validated_data.get('follower')
+			followee = serializer.validated_data.get('followee')
+
+			# Get the follow record
+			follow_record = UserFollow.objects.filter(follower=follower, followee=followee)
+
+            # If the follow record already exists, don't replicate it
+			if follow_record.exists():
+				return Response({"message": "User already being followed by this account"}, status=status.HTTP_409_CONFLICT)
+			
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserUnfollowView(APIView):
+    def delete(self, request):
+        serializer = UserFollowSerializer(data=request.data)
+        if serializer.is_valid():
+
+            follower = serializer.validated_data.get('follower')
+            followee = serializer.validated_data.get('followee')
+
+            # Get the follow record
+            follow_record = UserFollow.objects.filter(follower=follower, followee=followee)
+
+            # If the follow record exists, delete it
+            if follow_record.exists():
+                follow_record.delete()
+                return Response({"message": "Successfully unfollowed"}, status=status.HTTP_200_OK)
+            
+            return Response({"message": "Follow record not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CurrentUserView(APIView):

@@ -42,15 +42,15 @@
     const styles= StyleSheet.create({
         followItemContainer: {
             flexDirection: "column",
-            borderWidth: 2,
-            borderColor: constants.PRIMARYCOLOR,
-            borderRadius: 5,
+            backgroundColor: constants.SECONDARYCOLOR,
+            borderRadius: 10,
             margin: 5,
             padding: 10
         },
         userName: {
             fontSize: constants.H2FONTSIZE,
-            fontWeight: "bold",
+            color: constants.BLACK,
+            marginTop: 10,
             marginBottom: 10
         },
         wordsKnownContainer: {

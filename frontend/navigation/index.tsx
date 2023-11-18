@@ -19,17 +19,17 @@ import { blue } from "react-native-reanimated";
 import * as constants from "../constants";
 
 
-const greenBackground = {
+const whiteBackground = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: constants.SECONDARYCOLOR
+      background: constants.TERTIARYCOLOR
     },
   };
 
 export function AuthNavigation () {
     return(
-        <NavigationContainer theme={greenBackground}>
+        <NavigationContainer theme={whiteBackground}>
             <AuthNavigator/>
         </NavigationContainer>
     )
@@ -37,7 +37,7 @@ export function AuthNavigation () {
 
 export function Navigation () {
 return(
-    <NavigationContainer theme={greenBackground}>
+    <NavigationContainer theme={whiteBackground}>
         <MainNavigator/>
     </NavigationContainer>
     )
@@ -82,9 +82,9 @@ function MainNavigator() {
                 options={{
                     title: "Settings",
                     headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
+                        backgroundColor: constants.TERTIARYCOLOR
                     },
-                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerTintColor: constants.BLACK,
                     headerShadowVisible: false
                 }}
             />
@@ -94,9 +94,9 @@ function MainNavigator() {
                 options={{
                     title: "Search for users",
                     headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
+                        backgroundColor: constants.TERTIARYCOLOR
                     },
-                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerTintColor: constants.BLACK,
                     headerShadowVisible: false
                 }}
             />
@@ -106,9 +106,9 @@ function MainNavigator() {
                 options={{
                     title: "Your Languages",
                     headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
+                        backgroundColor: constants.TERTIARYCOLOR
                     },
-                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerTintColor: constants.BLACK,
                     headerShadowVisible: false
                 }}
             />
@@ -118,9 +118,9 @@ function MainNavigator() {
                 options={{
                     title: "Relations",
                     headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
+                        backgroundColor: constants.TERTIARYCOLOR
                     },
-                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerTintColor: constants.BLACK,
                     headerShadowVisible: false
                 }}
             />
@@ -130,9 +130,9 @@ function MainNavigator() {
                 options={{
                     title: "Your Known Words",
                     headerStyle: {
-                        backgroundColor: constants.SECONDARYCOLOR
+                        backgroundColor: constants.TERTIARYCOLOR
                     },
-                    headerTintColor: constants.PRIMARYCOLOR,
+                    headerTintColor: constants.BLACK,
                     headerShadowVisible: false
                 }}
             />
@@ -149,7 +149,7 @@ const StandardTabBarButton = ({children, onPress}) => (
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            shadowOpacity: 0
+            shadowOpacity: 0,
             //... styles.shadow
         }}
         onPress={onPress}
@@ -167,7 +167,6 @@ const CentralTabBarButton = ({children, onPress}) => (
             alignItems: "center",
             flexDirection: "row",
             flex: 1
-
             //... styles.shadow
         }}
         onPress={onPress}
@@ -177,9 +176,10 @@ const CentralTabBarButton = ({children, onPress}) => (
                 width: 70,
                 height: 70,
                 borderRadius: 35,
-                borderColor: constants.SECONDARYCOLOR,
-                borderWidth: 3,
-                backgroundColor: constants.PRIMARYCOLOR,
+                //borderColor: constants.BLACK,
+                //borderWidth: 3,
+                backgroundColor: constants.SECONDARYCOLOR,
+                ...styles.shadow
             }}
         >
             {children}
@@ -187,23 +187,22 @@ const CentralTabBarButton = ({children, onPress}) => (
     </TouchableOpacity>
 );
 
-const BottomTab= createBottomTabNavigator()
+const BottomTab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
     return(
         <BottomTab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Learn"
             screenOptions={{
                 tabBarShowLabel: false,
-                tabBarInactiveTintColor: constants.OFFWHITE,
-                tabBarActiveTintColor: constants.TERTIARYCOLOR,
+                tabBarInactiveTintColor: constants.BLACK,
+                tabBarActiveTintColor: constants.PRIMARYCOLOR,
                 tabBarStyle: {
                     position: "absolute",
                     //bottom: 25,
                     //left: 20,
                     //right: 20,
-                    backgroundColor: constants.PRIMARYCOLOR,
-                    ///borderRadius: 20,
+                    backgroundColor: constants.SECONDARYCOLOR,
                     marginTop: 20,
                     height: 60,
                     //... styles.shadow
@@ -255,13 +254,13 @@ function BottomTabNavigator() {
 
 const styles = StyleSheet.create({
     shadow: {
-        shadowColor: "#7F5DF0",
+        shadowColor: constants.BLACK,
         shadowOffset: {
             width: 0,
             height: 0
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.5,
-        elevation: 5
+        elevation: 3
     }
 });

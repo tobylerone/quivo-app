@@ -1,9 +1,12 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image } from "react-native";
-import { useEffect, useState } from "react";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
+import { useEffect, useState, useRef } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
+import CheckBox from "../components/CheckBox";
 import * as constants from "../constants";
 import client from "../utils/axios";
+
+const windowHeight = Dimensions.get('window').height;
 
 interface WordProps {
     word: string;
@@ -13,7 +16,7 @@ interface WordProps {
 
 const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
 
-    const [textColor, setTextColor] = useState(constants.PRIMARYCOLOR);
+    const [textColor, setTextColor] = useState(constants.BLACK);
     // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot
     // Initialiser à 0 millisecondes
     const [lastPress, setLastPress] = useState(0);
@@ -31,7 +34,7 @@ const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
 
             // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
-            setTextColor(textColor === constants.PRIMARYCOLOR ? constants.OFFWHITE : constants.PRIMARYCOLOR);
+            setTextColor(textColor === constants.BLACK ? constants.PRIMARYCOLOR : constants.BLACK);
 
             setWordTranslationVisible(false);
 
@@ -92,9 +95,11 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }]);
     
     const [item, setItem] = useState(items[0]);
-
-    const [translationVisible, setTranslationVisible] = useState(false)
+    const [translationVisible, setTranslationVisible] = useState(false);
+    const [filterPopupVisible, setFilterPopupVisible] = useState(false);
     
+    const slideAnimation = useRef(new Animated.Value(windowHeight)).current;
+
     useEffect(() =>{
         console.log("Rendering Learnscreen");
         fetchData();
@@ -146,11 +151,20 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const changeSentence = () => {
 
         const randomIndex = Math.floor(Math.random() * items.length);
-
         const newItem = items[randomIndex];
 
         setItem(newItem);
     };
+
+    const togglePopup = () => {
+        setFilterPopupVisible(!filterPopupVisible);
+        Animated.timing(slideAnimation, {
+        toValue: filterPopupVisible ? windowHeight : 0.2 * windowHeight,
+        duration: 200,
+        useNativeDriver: false,
+        }).start();
+    };
+
 
     return (
         <SafeAreaView style={styles.container}>
@@ -164,8 +178,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={1} style={styles.filterButton}>
-                        <FontAwesome name="filter" size={25} color={constants.SECONDARYCOLOR} />
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        style={styles.filterButton}
+                        onPress={() => { togglePopup() }}
+                        >
+                        <FontAwesome name="filter" size={25} color={constants.BLACK} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -189,8 +207,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                                 {word !== " " && (
                                     <Word
                                         word={word}
-                                        initialColor={constants.PRIMARYCOLOR}
+                                        initialColor={constants.BLACK}
                                         index={index}
+                                        key={`${item.id}-${index}`}
                                     />
                                 )}
                             </>
@@ -205,7 +224,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     onPressIn={() => setTranslationVisible(true)}
                     onPressOut={() => setTranslationVisible(false)}
                     >
-                    <FontAwesome name="language" size={25} color={constants.SECONDARYCOLOR} />
+                    <FontAwesome name="repeat" size={25} color={constants.BLACK} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -213,10 +232,37 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     onPress={() => changeSentence()}
                 >
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <FontAwesome name="arrow-right" size={25} color={constants.OFFWHITE} />
+                        <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
                     </View>
                 </TouchableOpacity>
             </View>
+            <Animated.View style={[styles.filterPopupContainer, { top: slideAnimation }]}>
+                <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={true} size={30} />
+                    <Text style={styles.checkBoxLabel}>1000 most common words</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Art and culture</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Technology</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Fashion</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Politics</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Finance</Text>
+                </View>
+            </Animated.View>
         </SafeAreaView>
     )
 }
@@ -237,8 +283,10 @@ const styles= StyleSheet.create({
     contentContainer: {
         flexDirection: "column",
         justifyContent: "center",
+        backgroundColor: constants.TERTIARYCOLOR,
         margin: 20,
         padding: 15,
+        borderRadius: 30,
         flexWrap: "wrap",
         flex: 1
     },
@@ -247,10 +295,19 @@ const styles= StyleSheet.create({
         height: 50,
         marginBottom: 120
     },
+    filterPopupContainer: {
+        backgroundColor: constants.SECONDARYCOLOR,
+        position: 'absolute',
+        padding: 20,
+        width: '100%',
+        height: '80%',
+        borderRadius: 60,
+        zIndex: 1
+    },
     flagImageContainer: {
         borderRadius: 10,
-        borderWidth: 4,
-        borderColor: constants.PRIMARYCOLOR,
+        //borderWidth: 4,
+        //borderColor: constants.SECONDARYCOLOR,
         overflow: "hidden",
         height: 50,
         width: 70,
@@ -260,7 +317,7 @@ const styles= StyleSheet.create({
         height: "100%",
     },
     filterButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.SECONDARYCOLOR,
         height: 50,
         width: 50,
         borderRadius: 25,
@@ -285,8 +342,7 @@ const styles= StyleSheet.create({
     mainText: {
         fontSize: constants.H1FONTSIZE,
         fontWeight: "bold",
-        textAlign: "center",
-        color: constants.PRIMARYCOLOR
+        textAlign: "center"
     },
     definitionBox: {
         backgroundColor: constants.PRIMARYCOLOR,
@@ -301,10 +357,10 @@ const styles= StyleSheet.create({
     definitionText: {
         fontSize: constants.H1FONTSIZE - 8,
         fontWeight: "bold",
-        color: constants.OFFWHITE
+        color: constants.TERTIARYCOLOR
     },
     translateButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.SECONDARYCOLOR,
         height: 50,
         width: 50,
         borderRadius: 25,
@@ -320,13 +376,33 @@ const styles= StyleSheet.create({
         paddingTop: 11,
         width: 100,
         height: 50,
-        borderRadius: 60,
+        borderRadius: 30,
         marginRight: "auto",
         marginLeft: "auto",
         textAlign: "center"
     },
+    filterPopupHeader: {
+        fontSize: constants.H1FONTSIZE,
+        textAlign: 'center',
+        color: constants.BLACK,
+        marginBottom: 10
+    },
+    checkBoxContainer: {
+        flexDirection: 'row',
+        padding: 5,
+        backgroundColor: constants.TERTIARYCOLOR,
+        borderRadius: 10,
+        marginBottom: 10
+    },
+    checkBoxLabel: {
+        color: constants.BLACK,
+        fontSize: constants.H2FONTSIZE,
+        marginLeft: 10,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
     shadow: {
-        shadowColor: constants.PRIMARYCOLOR,
+        shadowColor: constants.BLACK,
         shadowOffset: {
             width: 0,
             height: 0

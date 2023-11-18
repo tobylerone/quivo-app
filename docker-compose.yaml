@@ -15,17 +15,17 @@ services:
       context: ./frontend
     volumes:
       - frontend:/app/build
-  nginx:
-    build:
-      context: ./nginx
-    volumes:
-      - static:/static
-      - frontend:/var/www/frontend
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
-      - frontend
+  #nginx:
+  #  build:
+  #    context: ./nginx
+  #  volumes:
+  #    - static:/static
+  #    - frontend:/var/www/frontend
+  #  ports:
+  #    - "80:80"
+  #  depends_on:
+  #    - backend
+  #    - frontend
 
 volumes:
   static:

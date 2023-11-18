@@ -91,7 +91,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
         }
       }}
       >
-      <Text style={styles.registerText}>Register</Text> 
+      <Text style={styles.registerText}>REGISTER</Text> 
     </TouchableOpacity> 
   </View> 
   );
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   errorBox: {
-    backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
+    backgroundColor: constants.TERTIARYCOLOR,
     width: "70%",
     height: 30,
     marginBottom: 0,
@@ -123,10 +123,8 @@ const styles = StyleSheet.create({
     color: constants.ERRORCOLOR
   },
   inputView: {
-    backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
+    backgroundColor: constants.SECONDARYCOLOR,
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: constants.PRIMARYCOLOR,
     width: "70%",
     height: 45,
     marginBottom: 20,
@@ -148,7 +146,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
     backgroundColor: constants.PRIMARYCOLOR,//"#FF1493",
   },
   registerText: {

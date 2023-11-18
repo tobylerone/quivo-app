@@ -5,4 +5,6 @@ COPY . .
 
 RUN npm install --legacy-peer-deps
 
-CMD ["npm", "run"]
+#CMD ["npm", "run"]
+
+CMD ["npx", "expo", "start"]

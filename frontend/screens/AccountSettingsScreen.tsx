@@ -70,8 +70,9 @@ const styles = StyleSheet.create({
     item: {
         //backgroundColor: constants.PRIMARYCOLOR,
         fontSize: constants.CONTENTFONTSIZE,
-        borderColor: constants.PRIMARYCOLOR,
-        borderWidth: 2,
+        //borderColor: constants.PRIMARYCOLOR,
+        //borderWidth: 2,
+        backgroundColor: constants.SECONDARYCOLOR,
         padding: 10,
         borderRadius: 10,
         marginBottom: 5,
@@ -79,15 +80,15 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: constants.H2FONTSIZE + 2,
-        color: constants.PRIMARYCOLOR,
+        color: constants.BLACK,
         fontWeight: "bold",
         padding: 10,
-        backgroundColor: constants.SECONDARYCOLOR,
+        backgroundColor: constants.TERTIARYCOLOR,
         paddingTop: 20,
         paddingBottom: 10
     },
     title: {
         fontSize: constants.H2FONTSIZE,
-        color: constants.PRIMARYCOLOR
+        color: constants.BLACK
     },
 });

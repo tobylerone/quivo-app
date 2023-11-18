@@ -9,7 +9,8 @@ import client from "../utils/axios";
 
 export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser } = useContext(UserContext);
+    //Not sure if you can import hook setters like this but it didn't seem to work
+    const { currentUser, setCurrentUser } = useContext(UserContext);
     
     // pour l'instant je veux simplement montrer une liste de tous les utilisateurs
     const [users, setUsers] = useState([]);
@@ -29,13 +30,22 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <SearchBar
-                inputStyle={{backgroundColor: constants.SECONDARYCOLOR}}
-                containerStyle={{backgroundColor: constants.SECONDARYCOLOR, borderWidth: 1, padding: 0}}
-                inputContainerStyle={{backgroundColor: constants.SECONDARYCOLOR}}
-                placeholderTextColor={constants.PRIMARYCOLOR}
-                placeholder={'Enter username'}
-            />
+            <View style={styles.searchFieldContainer}>
+                <View style={styles.searchBarContainer}>
+                    <SearchBar
+                        inputStyle={{backgroundColor: constants.SECONDARYCOLOR}}
+                        containerStyle={{backgroundColor: constants.SECONDARYCOLOR, borderWidth: 0, padding: 0}}
+                        inputContainerStyle={{backgroundColor: constants.SECONDARYCOLOR}}
+                        placeholderTextColor={constants.GREY}
+                        placeholder={'Search by username'}
+                    />
+                </View>
+                <TouchableOpacity style={styles.searchButton}>
+                    <View style={styles.searchButtonIconContainer}>
+                        <FontAwesome name="search" size={25} color={constants.TERTIARYCOLOR} />
+                        </View>
+                </TouchableOpacity>
+            </View>
             <FlatList
                 style={styles.userList}
                 data={users}
@@ -58,7 +68,12 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                                     withCredentials: true
                                     }
                                 ).then(function(res) {  
-                                    console.log(res.data) 
+                                    console.log(res.data)
+                                    //Increase the user's following count on the frontend if post request successful
+                                    //setCurrentUser(prevState => ({
+                                    //    ...prevState,
+                                    //    following_count: currentUser.following_count + 1
+                                    //}));
                                 }).catch(function(e) {
                                     console.log(e.response.data)
                                 });
@@ -79,6 +94,26 @@ const styles = StyleSheet.create({
         //paddingTop: StatusBar.currentHeight,
         marginHorizontal: 20,
     },
+    searchFieldContainer: {
+        flexDirection: 'row',
+        borderWidth: 2
+    },
+    searchBarContainer: {
+        width: 100
+    },
+    searchButton: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        alignSelf: "flex-end",
+        width: 60,
+        borderRadius: 10,
+        height: 60,
+        justifyContent: 'center',
+        
+    },
+    searchButtonIconContainer: {
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
     userList: {
         height: "100%",
         marginTop: 10,
@@ -86,8 +121,8 @@ const styles = StyleSheet.create({
     userListItem: {
         flexDirection: "row",
         justifyContent: 'space-between',
-        borderWidth: 2,
-        borderColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.SECONDARYCOLOR,
+        borderRadius: 10,
         //borderRadius: 5,
         marginBottom: 5,
         padding: 10
@@ -100,11 +135,12 @@ const styles = StyleSheet.create({
     },
     followButton: {
         alignSelf: "flex-end",
-        backgroundColor: constants.TERTIARYCOLOR,
-        padding: 5,
-        borderRadius: 5
+        backgroundColor: constants.PRIMARYCOLOR,
+        padding: 10,
+        borderRadius: 10
     },
     followButtonText: {
-        fontSize: constants.CONTENTFONTSIZE
+        fontSize: constants.CONTENTFONTSIZE,
+        color: constants.TERTIARYCOLOR
     }
 });

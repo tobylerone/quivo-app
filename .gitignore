@@ -1,8 +1,7 @@
 venv/
 
 # large files
-ml_notebooks/fra_mixed_2009_1M
-ml_notebooks/translations/fra-eng.tei
+ml_notebooks_uncleaned
 
 # react dependencies
 frontend/node_modules

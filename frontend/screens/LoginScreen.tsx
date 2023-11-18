@@ -74,7 +74,7 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
             console.log(success);
         }).catch(success => {
             // Login was unsuccessful
-            setErrorMessage('*Username or password incorrect')
+            setErrorMessage('*Username or password incorrect');
             console.log(success);
         });
       }}
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   errorBox: {
-    backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
+    backgroundColor: constants.TERTIARYCOLOR,
     width: "70%",
     height: 30,
     marginBottom: 0,
@@ -109,8 +109,6 @@ const styles = StyleSheet.create({
   inputView: {
     backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: constants.PRIMARYCOLOR,
     width: "70%",
     height: 45,
     marginBottom: 20,

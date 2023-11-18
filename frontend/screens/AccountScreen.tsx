@@ -13,6 +13,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() =>{
         console.log("Rendering Accountscreen")
     }, [])
+
     return (
         <SafeAreaView>
             <View style={styles.topContainer}>
@@ -22,7 +23,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.addUserButtonContainer}
                     >
                     <View style={styles.addUserButton}>
-                        <FontAwesome name="user-plus" size={constants.H1FONTSIZE} color={constants.PRIMARYCOLOR} />
+                        <FontAwesome name="user-plus" size={constants.H1FONTSIZE} color={constants.BLACK} />
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -31,7 +32,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.settingsButtonContainer}
                     >
                     <View style={styles.settingsButton}>
-                        <FontAwesome name="gear" size={constants.H1FONTSIZE} color={constants.PRIMARYCOLOR} />
+                        <FontAwesome name="gear" size={constants.H1FONTSIZE} color={constants.BLACK} />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -143,15 +144,30 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     addUserButtonContainer: {
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        backgroundColor: constants.SECONDARYCOLOR,
+        padding: 15,
+        width: 60,
+        borderRadius: 10
+    },
+    addUserButton: {
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     settingsButtonContainer: {
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        justifyContent: 'center',
+        backgroundColor: constants.SECONDARYCOLOR,
+        padding: 15,
+        width: 60,
+        borderRadius: 10
+    },
+    settingsButton: {
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     profileImageContainer: {
         borderRadius: 50,
-        borderWidth: 4,
-        borderColor: constants.PRIMARYCOLOR,
         marginLeft: "auto",
         marginRight: "auto",
         marginBottom: 20,
@@ -165,13 +181,13 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     profileNameBubble: {
-        height: 40,
+        height: 50,
         backgroundColor: constants.PRIMARYCOLOR,
         borderRadius: 10,
-        paddingLeft: 10,
-        paddingRight: 5,
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingLeft: 15,
+        paddingRight: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
         flexDirection: "row",
         justifyContent: "center",
         flexWrap: "wrap",
@@ -181,15 +197,13 @@ const styles = StyleSheet.create({
     profileNameContainer: {
         height: "100%",
         marginRight: 10,
-        textAlignVertical: "bottom",
         flexDirectio: "column",
         justifyContent: "center",
     },
     profileName: {
         fontSize: constants.H2FONTSIZE,
         color: constants.SECONDARYCOLOR,
-        fontWeight: "bold",
-        textAlignVertical: "bottom"
+        fontWeight: "bold"
     },
     flagImageContainer: {
         borderRadius: 10,
@@ -211,14 +225,14 @@ const styles = StyleSheet.create({
     },
     knownWords: {
         fontSize: constants.H1FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.BLACK,
         fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
     },
     knownWordsSubheader: {
         fontSize: constants.H3FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.GREY,
         fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
@@ -231,14 +245,14 @@ const styles = StyleSheet.create({
     },
     followCount: {
         fontSize: constants.H1FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.BLACK,
         fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
     },
     followCountSubheader: {
         fontSize: constants.H3FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.GREY,
         fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"

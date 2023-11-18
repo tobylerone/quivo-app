@@ -142,7 +142,7 @@ export default function FollowListScreen({route}: any) {
                     width: (constants.SCREEN_WIDTH / 2) - 30,
                     marginLeft: 25,
                     marginBottom: 10,
-                    borderRadius: 15
+                    borderRadius: 10
                 },
                 tabBarScrollEnabled: true,
                 tabBarLabelStyle: {

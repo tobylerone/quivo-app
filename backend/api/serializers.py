@@ -68,5 +68,7 @@ class FrSentenceModelSerializer(serializers.ModelSerializer):
             "id",
             "sentence",
             "translated_sentence",
-            "difficulty_score"
+            "words",
+			"average_count",
+			"min_count"
             )

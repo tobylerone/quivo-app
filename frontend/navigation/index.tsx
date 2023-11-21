@@ -199,6 +199,7 @@ function BottomTabNavigator() {
                 tabBarActiveTintColor: constants.PRIMARYCOLOR,
                 tabBarStyle: {
                     position: "absolute",
+                    zIndex: 0,
                     //bottom: 25,
                     //left: 20,
                     //right: 20,

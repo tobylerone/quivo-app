@@ -3,8 +3,10 @@ import { useEffect, useState, useRef } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
 import CheckBox from "../components/CheckBox";
+import LearnScreenWord from "../components/LearnScreenWord";
 import * as constants from "../constants";
 import client from "../utils/axios";
+import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -16,6 +18,8 @@ interface WordProps {
 
 const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
 
+    const wordRef = useRef(null);
+    
     const [textColor, setTextColor] = useState(constants.BLACK);
     // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot
     // Initialiser à 0 millisecondes
@@ -25,6 +29,19 @@ const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
     // setTimeout rend un identifiant numérique unique
     let tapDelayTimeout;
     let definitionDisplayTimeout
+
+    // on n'a plus besoin de trouver ces coordonnes car position: absolute
+    // est par rapport a l'element qui contient le mot et pas a l'ecran
+    /*useEffect(() => {
+        const handle = findNodeHandle(wordRef.current);
+        UIManager.measure(handle, (x, y, w, h, pageX, pageY) => {
+            setXCoord(pageX);
+            setYCoord(pageY);
+            setWidth(w);
+            setHeight(h);
+        });
+    }, []);
+    */
   
     const handlePress = () => {
 
@@ -36,6 +53,7 @@ const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
             // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
             setTextColor(textColor === constants.BLACK ? constants.PRIMARYCOLOR : constants.BLACK);
 
+            setLastPress(0);
             setWordTranslationVisible(false);
 
             // Supprimer les timeOut q'on a initialisés lors de la première tape pour ne
@@ -53,7 +71,13 @@ const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
             // Le timeOut attend la fin de la fenêtre où l'utilisateur pourrait taper une deuxième fois
             // avant d'fficher la traduction pendant la période choisie.
             tapDelayTimeout = setTimeout(() => {
-                setWordTranslationVisible(true);
+
+                // Si l'utilisateur a tape deux fois le timeout lastPress sera remis a zero au moment que
+                // ce timeout va s'activer. Dans ce cas, on ne vaut plus montrer la traduction
+                if (lastPress != 0) {
+                    setWordTranslationVisible(true);
+                };
+
             }, constants.DOUBLETAPDELAY);
 
             // setTimeout n'empêche pas la prochaine partie du code de s'éxécuter pendant le temps
@@ -72,13 +96,13 @@ const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
         <View>
             <>
             {wordTranslationVisible && (
-                <View style={styles.definitionBox}>
-                    <Text style={styles.definitionText}>Definition</Text>
+                <View style={styles.translationBox}>
+                    <Text style={styles.translationText}>Translation</Text>
                 </View>
             )}
             </>
             <TouchableOpacity activeOpacity={1} key={index} onPress={() => handlePress()}>
-                <Text style={{...styles.mainText, color: textColor}}>{word}</Text>
+                <Text style={{...styles.mainText, color: textColor}} ref={wordRef}>{word}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -100,7 +124,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     
     const slideAnimation = useRef(new Animated.Value(windowHeight)).current;
 
-    useEffect(() =>{
+    useEffect(() => {
         console.log("Rendering Learnscreen");
         fetchData();
     }, [])
@@ -160,7 +184,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         setFilterPopupVisible(!filterPopupVisible);
         Animated.timing(slideAnimation, {
         toValue: filterPopupVisible ? windowHeight : 0.2 * windowHeight,
-        duration: 200,
+        duration: 400,
         useNativeDriver: false,
         }).start();
     };
@@ -205,7 +229,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                                     <Text style={styles.mainText} key={index}>{word}</Text>
                                 )}
                                 {word !== " " && (
-                                    <Word
+                                    <LearnScreenWord
                                         word={word}
                                         initialColor={constants.BLACK}
                                         index={index}
@@ -262,6 +286,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <CheckBox initiallySelected={false} size={30} />
                     <Text style={styles.checkBoxLabel}>Finance</Text>
                 </View>
+                <TouchableOpacity
+                    style={styles.filterPopupSubmitButton}
+                    activeOpacity={1}
+                    >
+                    <Text style={styles.filterPopupSubmitButtonText}>Apply Filters</Text>
+                </TouchableOpacity>
             </Animated.View>
         </SafeAreaView>
     )
@@ -339,26 +369,6 @@ const styles= StyleSheet.create({
     translatedSentence: {
         width: "100%"
     },
-    mainText: {
-        fontSize: constants.H1FONTSIZE,
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    definitionBox: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        height: 30,
-        borderRadius: 20,
-        paddingLeft: 10,
-        paddingRight: 10,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    definitionText: {
-        fontSize: constants.H1FONTSIZE - 8,
-        fontWeight: "bold",
-        color: constants.TERTIARYCOLOR
-    },
     translateButton: {
         backgroundColor: constants.SECONDARYCOLOR,
         height: 50,
@@ -400,6 +410,22 @@ const styles= StyleSheet.create({
         marginLeft: 10,
         marginTop: 'auto',
         marginBottom: 'auto'
+    },
+    filterPopupSubmitButton: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        width: 200,
+        padding: 10,
+        borderRadius: 10,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 10
+    },
+    filterPopupSubmitButtonText: {
+        color: constants.TERTIARYCOLOR,
+        fontWeight: 'bold',
+        fontSize: constants.H2FONTSIZE,
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     shadow: {
         shadowColor: constants.BLACK,

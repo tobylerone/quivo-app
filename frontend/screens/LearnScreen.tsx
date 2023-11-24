@@ -115,61 +115,43 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             'id': 1,
             'sentence': '',
             'translated_sentence': 'No translation',
-            'difficulty_score': 1
+            'words': '',
+			'average_count': '',
+			'min_count': ''
         }]);
     
     const [item, setItem] = useState(items[0]);
     const [translationVisible, setTranslationVisible] = useState(false);
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
+    const [sentenceComponents, setSentenceComponents] = useState();
     
     const slideAnimation = useRef(new Animated.Value(windowHeight)).current;
-
+    
     useEffect(() => {
         console.log("Rendering Learnscreen");
         fetchData();
     }, [])
 
+    // A chaque fois q'on recois un nouveau groupe de phrases,
+    // il faut mettre a jour la phrase affiche sur l'ecran
     useEffect(() => {
-        
-        // A chaque fois q'on recois un nouveau groupe de phrases,
-        // il faut mettre a jour la phrase affiche sur l'ecran
         if (items.length > 0) { setItem(items[0]); }
     }, [items]);
 
+    // Need to set new sentence components when item has been updated
+    useEffect(() => {
+        setSentenceComponents(createSentenceComponents());
+    }, [item]);
+
     const fetchData = async() => {
-
-        //const response = await fetch(constants.HOST_ADDRESS + ":8000/api/frsentences/");
-        //const data = await response.json();
-
-        // Il faut fournir l'utilisateur pour avoir acces aux donnees. J'utiliserai axios ici.
-        //console.log(data)
-
-        //setSentences(data.map(item => item.sentence));
-        //setItems(data);
-
         client.get("/api/frsentences", { withCredentials: true })
         .then(function(res) {
           setItems(res.data);
+          changeSentence();
         })
         .catch(function(error) {
         });
 
-
-    }
-
-    function splitSentence(input: string): string[] {
-        const parts: string[] = input.split(/(\s+)/);
-      
-        const result: string[] = parts.map(part => {
-          // Vérifier que l'éspace n'en contient pas plusieurs
-          if (/\s+/.test(part)) {
-            return " ";
-          } else {
-            return part;
-          }
-        });
-      
-        return parts;
     }
 
     const changeSentence = () => {
@@ -189,6 +171,33 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }).start();
     };
 
+    // Split sentence by word boundaries and return either text or a LearnScreenWord if it is to be clickable
+    function createSentenceComponents() {
+        
+        if (item.sentence.length == 0) {
+            return <Text></Text>;
+        };
+        //The sentence is split by matching either strings of alphanumeric (inc. special french chars) or strings of non-alphanumeric chars
+        const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
+    
+        const sentenceComponents = splitSentence.map((word, index) => {
+
+            //const words = JSON.parse(item.words.replace(/'/g, '"'));
+            
+            if (item.words.includes(word.toLowerCase())) {
+                return <LearnScreenWord
+                        word={word}
+                        initialColor={constants.BLACK}
+                        index={index}
+                        key={`${item.id}-${index}`}
+                    />;
+            } else {
+                return <Text style={{ color: constants.GREY, ...styles.mainText }} key={index}>{word}</Text>;
+            }
+            });
+
+        return sentenceComponents;
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -223,22 +232,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         ...styles.realSentence,
                         display: translationVisible ? "none": "visible"
                         }}>
-                        {splitSentence(item.sentence).map((word, index) => (
-                            <>
-                                {word === " " && (
-                                    <Text style={styles.mainText} key={index}>{word}</Text>
-                                )}
-                                {word !== " " && (
-                                    <LearnScreenWord
-                                        word={word}
-                                        initialColor={constants.BLACK}
-                                        index={index}
-                                        key={`${item.id}-${index}`}
-                                    />
-                                )}
-                            </>
-                        ))}
+                        { sentenceComponents }
                     </View>
+                    
                 </View>
             </View>
             <View style={styles.bottomContainer}>
@@ -359,6 +355,11 @@ const styles= StyleSheet.create({
     },
     sentenceContainer: {
         width: "100%"
+    },
+    mainText: {
+        fontSize: constants.H1FONTSIZE,
+        fontWeight: "bold",
+        textAlign: "center"
     },
     realSentence: {
         flexDirection: "row",

@@ -6,7 +6,7 @@ export const SCREEN_WIDTH = Dimensions.get('window').width
 // le manage.py au backend
 //export const HOST_ADDRESS = 'http://192.168.0.22'
 //export const HOST_ADDRESS = 'http://10.159.139.194'
-export const HOST_ADDRESS = 'http://192.168.11.67'
+export const HOST_ADDRESS = 'http://192.168.10.236'
 
 // Schémas
 export const PRIMARYCOLOR = "#337CFF"//"#444365"

@@ -37,7 +37,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		related_name='followed_by',
 		symmetrical=False
 		)
-	known_words = models.ManyToManyField('language_app.FrWordFrequency')
+	known_words = models.ManyToManyField('language_app.FrWordData')
 	
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []

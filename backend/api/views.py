@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow
-from language_app.models import FrSentence, FrWordFrequency
+from language_app.models import FrSentence, FrWordData
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
@@ -15,7 +15,7 @@ from .serializers import (
 	UserToggleKnownWordSerializer,
     UserSerializer,
     FrSentenceModelSerializer,
-    FrWordFrequencyModelSerializer
+    FrWordDataModelSerializer
 	)
 from .validations import custom_validation, validate_username, validate_password
 
@@ -139,7 +139,7 @@ class UserToggleKnownWordView(APIView):
 			word = serializer.validated_data['word']
 
 			user = AppUser.objects.get(user_id=user_id)
-			word_obj = FrWordFrequency.objects.get(word=word)
+			word_obj = FrWordData.objects.get(word=word)
 		
 			# Check if a user knows a word
 			if word_obj in user.known_words.all():
@@ -175,23 +175,28 @@ class FrSentencesViewSet(viewsets.ModelViewSet):
 	serializer_class = FrSentenceModelSerializer
 
 
-class FrWordFrequencyView(generics.RetrieveAPIView):
-    
-	serializer_class = FrWordFrequencyModelSerializer
+class FrWordDataView(APIView):
+	# Trop de donnees pour mettre dans l'url donc il faut
+	# utiliser post
+	def post(self, request, *args, **kwargs):
+		words = request.data.get('words', [])
 
-	def get_object(self):
-		word = self.kwargs['word']
-        
-		# Qu'est-ce qui se passe s'il y a plusieurs mots avec
-		# la meme orthographe ? Cela n'arrivera pas pour
-		# l'instant mais ca pourrait changer a l'avenir
-		word_data = FrWordFrequency.objects.get(word=word)
+		# Remove duplicate words
+		unique_words = list(set(words))
+
+		queryset = FrWordData.objects.filter(word__in=unique_words)
 		
-		return word_data#.first()
-	
-	def get_serializer_context(self):
+		serializer = FrWordDataModelSerializer(
+			queryset,
+			many=True,
+			context={'request': request}
+			)
 
-		return {'request': self.request}
+		# flatten list of dictionaries into single dictionary with word
+		# as the key and word data dictionary as the value
+		word_data = {k: v for d in serializer.data for k, v in d.items()}
+		
+		return Response(word_data)
 
 
 def csrf(request):

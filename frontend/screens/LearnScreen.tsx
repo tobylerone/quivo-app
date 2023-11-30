@@ -26,6 +26,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }]);
     
     const [item, setItem] = useState(items[0]);
+    //const [wordsData, setWordsData] = useState({});
     const [translationVisible, setTranslationVisible] = useState(false);
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
     const [sentenceComponents, setSentenceComponents] = useState();
@@ -43,11 +44,18 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         if (items.length > 0) { setItem(items[0]); }
     }, [items]);
 
+    useEffect(() => {
+        // Split sentence by word boundaries and return either text or a LearnScreenWord if it is to be clickable
+        createSentenceComponents().then(components => {
+            setSentenceComponents(components);
+        });
+    }, [item]);
+
     const fetchData = async() => {
         client.get("/api/frsentences", { withCredentials: true })
         .then(function(res) {
-          setItems(res.data);
-          changeSentence();
+            setItems(res.data);
+            changeSentence();
         })
         .catch(function(error) {
         });
@@ -55,7 +63,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     };
 
     const changeSentence = () => {
-
         const randomIndex = Math.floor(Math.random() * items.length);
         let newItem = items[randomIndex];
 
@@ -75,56 +82,52 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }).start();
     };
 
-    useEffect(() => {
-        // Split sentence by word boundaries and return either text or a LearnScreenWord if it is to be clickable
-        const createSentenceComponents = async() => {
-            if (item.sentence.length == 0) {
-                return [<Text></Text>];
+    const fetchWordsData = async() => {
+        try {
+            const res = await client.post('./api/words', {
+                words: item.words,
+                withCredentials: true
+            });
+            return res.data
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const createSentenceComponents = async() => {
+
+        if (item.sentence.length == 0) {
+            return <Text></Text>;
+        }
+
+        console.log('words object type is:' + typeof(item.words));
+
+        const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
+        
+        //return updateWordsData().then(() => {
+        const wordsData = await fetchWordsData()
+
+        const sentenceComponents = [];
+
+        for (let i = 0; i < splitSentence.length; i++) {
+            let word = splitSentence[i].toLowerCase();
+    
+            if (wordsData.hasOwnProperty(word)) {
+
+                sentenceComponents.push(<LearnScreenWord
+                    word={word}
+                    wordData={wordsData[word]}
+                    initialColor={constants.BLACK}
+                    index={i}
+                    key={`${item.id}-${i}`}
+                />);
+            } else {
+                sentenceComponents.push(<Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{word}</Text>);
             }
-
-            console.log('words object type is:' + typeof(item.words));
-
-            const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
-
-            const sentenceComponents = [];
-
-            for (let i = 0; i < splitSentence.length; i++) {
-                let word = splitSentence[i].toLowerCase();
-
-                if (item.words.includes(word)) {
-                    try {
-                        //TODO: This is a completely ridiculous way to get the data, making a separate API
-                        // request for each individual word, each time I render a sentence. Just doing it
-                        // for proof-of-concept but very important to fix this ASAP.
-                        const res = await client.get("/api/word/" + word, { withCredentials: true });
-                        sentenceComponents.push(
-                            <LearnScreenWord
-                                word={word}
-                                wordData={res.data}
-                                initialColor={constants.BLACK}
-                                index={i}
-                                key={`${item.id}-${i}`}
-                            />
-                        );
-                    } catch (error) {
-                        sentenceComponents.push(
-                            <Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{word}</Text>
-                        );
-                    }
-                } else {
-                    sentenceComponents.push(
-                        <Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{word}</Text>
-                    );
-                }
-            }
-
-            return sentenceComponents;
+            //}
         };
-
-        createSentenceComponents().then(components => {
-            setSentenceComponents(components);
-        });
-    }, [item]);
+        return sentenceComponents;
+    };
 
     return (
         <SafeAreaView style={styles.container}>

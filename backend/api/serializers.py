@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow
-from language_app.models import FrSentence, FrWordFrequency
+from language_app.models import FrSentence, FrWordData
 
 UserModel = get_user_model()
 
@@ -85,11 +85,11 @@ class FrSentenceModelSerializer(serializers.ModelSerializer):
 			"min_count"
             )
 		
-class FrWordFrequencyModelSerializer(serializers.ModelSerializer):
+class FrWordDataModelSerializer(serializers.ModelSerializer):
 	user_knows = serializers.SerializerMethodField()
 
 	class Meta:
-		model = FrWordFrequency
+		model = FrWordData
 		fields = (
             "id",
             "rank",
@@ -105,3 +105,15 @@ class FrWordFrequencyModelSerializer(serializers.ModelSerializer):
 		if request and request.user:
 			return obj.appuser_set.filter(user_id=request.user.user_id).exists()
 		return False
+	
+	# Override representation to have word as dictionary key
+	def to_representation(self, instance):
+
+		# to_representation converts model instance into python dictionary
+		# where keys are field names
+		representation = super().to_representation(instance)
+
+		# Create and return new dictionary where the word has been moved out to
+		# be the key for the entire original dictionary. I then combine this for
+		# each word in the view to return { word: word data } in json format 
+		return {instance.word: representation}

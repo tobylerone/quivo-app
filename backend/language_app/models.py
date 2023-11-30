@@ -11,7 +11,7 @@ class FrSentence(models.Model):
     average_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
     min_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
 
-class FrWordFrequency(models.Model):
+class FrWordData(models.Model):
     rank = models.DecimalField(decimal_places=1, max_digits=10, null=True)
     word = models.TextField(null=True)
     frequency = models.DecimalField(decimal_places=1, max_digits=10, null=True)

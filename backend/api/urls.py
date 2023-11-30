@@ -24,5 +24,5 @@ urlpatterns = [
 
 	# les characteres speciales dans 'word' seront encode et decode automatiquement par django,
 	# mais ce serait une bonne idee de trouver une meilleure approche ici
-	path('word/<str:word>', views.FrWordFrequencyView.as_view(), name='word-frequency')
-	]
+	path('words', views.FrWordDataView.as_view(), name='words-data')   
+]

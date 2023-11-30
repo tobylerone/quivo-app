@@ -37,6 +37,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		related_name='followed_by',
 		symmetrical=False
 		)
+	known_words = models.ManyToManyField('language_app.FrWordFrequency')
 	
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
@@ -47,6 +48,9 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	
 	def followers_count(self):
 		return self.followed_by.count()
+	
+	def known_words_count(self):
+		return self.known_words.count()
 
 	def __str__(self):
 		return self.username

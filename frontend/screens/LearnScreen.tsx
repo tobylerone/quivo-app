@@ -1,114 +1,19 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
 import CheckBox from "../components/CheckBox";
 import LearnScreenWord from "../components/LearnScreenWord";
+import UserContext from '../contexts/UserContext';
 import * as constants from "../constants";
 import client from "../utils/axios";
 import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 const windowHeight = Dimensions.get('window').height;
 
-interface WordProps {
-    word: string;
-    index: number;
-    initialColor: string;
-}
-
-const Word: React.FC<WordProps> = ({ word, index, initialColor }) => {
-
-    const wordRef = useRef(null);
-    
-    const [textColor, setTextColor] = useState(constants.BLACK);
-    // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot
-    // Initialiser à 0 millisecondes
-    const [lastPress, setLastPress] = useState(0);
-    const [wordTranslationVisible, setWordTranslationVisible] = useState(false);
-
-    // setTimeout rend un identifiant numérique unique
-    let tapDelayTimeout;
-    let definitionDisplayTimeout
-
-    // on n'a plus besoin de trouver ces coordonnes car position: absolute
-    // est par rapport a l'element qui contient le mot et pas a l'ecran
-    /*useEffect(() => {
-        const handle = findNodeHandle(wordRef.current);
-        UIManager.measure(handle, (x, y, w, h, pageX, pageY) => {
-            setXCoord(pageX);
-            setYCoord(pageY);
-            setWidth(w);
-            setHeight(h);
-        });
-    }, []);
-    */
-  
-    const handlePress = () => {
-
-        const currentTime = new Date().getTime();
-
-        // L'utilisateur a tapé deux fois
-        if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-
-            // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
-            setTextColor(textColor === constants.BLACK ? constants.PRIMARYCOLOR : constants.BLACK);
-
-            setLastPress(0);
-            setWordTranslationVisible(false);
-
-            // Supprimer les timeOut q'on a initialisés lors de la première tape pour ne
-            // plus afficher la traduction
-            clearTimeout(tapDelayTimeout);
-            clearTimeout(definitionDisplayTimeout);
-
-        } else { // C'est la première fois que l'utilisateur a tapé le mot
-            
-            // Vérifier que DOUBLETAPDELAY est términé avant d'afficher la traduction
-            
-            // Basculer entre traduction visible/pas visible
-            //setTranslationVisible(translationVisible ? false : true);
-
-            // Le timeOut attend la fin de la fenêtre où l'utilisateur pourrait taper une deuxième fois
-            // avant d'fficher la traduction pendant la période choisie.
-            tapDelayTimeout = setTimeout(() => {
-
-                // Si l'utilisateur a tape deux fois le timeout lastPress sera remis a zero au moment que
-                // ce timeout va s'activer. Dans ce cas, on ne vaut plus montrer la traduction
-                if (lastPress != 0) {
-                    setWordTranslationVisible(true);
-                };
-
-            }, constants.DOUBLETAPDELAY);
-
-            // setTimeout n'empêche pas la prochaine partie du code de s'éxécuter pendant le temps
-            // d'attente, même si javascript n'utilise q'un seul thread
-            definitionDisplayTimeout = setTimeout(() => {
-                setWordTranslationVisible(false);
-            }, constants.TRANSLATIONDISPLAYTIME);
-
-        }
-
-        setLastPress(currentTime);
-
-    };
-  
-    return (
-        <View>
-            <>
-            {wordTranslationVisible && (
-                <View style={styles.translationBox}>
-                    <Text style={styles.translationText}>Translation</Text>
-                </View>
-            )}
-            </>
-            <TouchableOpacity activeOpacity={1} key={index} onPress={() => handlePress()}>
-                <Text style={{...styles.mainText, color: textColor}} ref={wordRef}>{word}</Text>
-            </TouchableOpacity>
-        </View>
-    );
-  };
-
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
+
+    const { currentUser } = useContext(UserContext);
 
     const [items, setItems] = useState([
         {
@@ -138,11 +43,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         if (items.length > 0) { setItem(items[0]); }
     }, [items]);
 
-    // Need to set new sentence components when item has been updated
-    useEffect(() => {
-        setSentenceComponents(createSentenceComponents());
-    }, [item]);
-
     const fetchData = async() => {
         client.get("/api/frsentences", { withCredentials: true })
         .then(function(res) {
@@ -152,12 +52,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         .catch(function(error) {
         });
 
-    }
+    };
 
     const changeSentence = () => {
 
         const randomIndex = Math.floor(Math.random() * items.length);
-        const newItem = items[randomIndex];
+        let newItem = items[randomIndex];
+
+        if (typeof newItem.words === 'string') {
+            newItem = { ...newItem, words: JSON.parse(newItem.words) };
+        }
 
         setItem(newItem);
     };
@@ -171,37 +75,67 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }).start();
     };
 
-    // Split sentence by word boundaries and return either text or a LearnScreenWord if it is to be clickable
-    function createSentenceComponents() {
-        
-        if (item.sentence.length == 0) {
-            return <Text></Text>;
-        };
-        //The sentence is split by matching either strings of alphanumeric (inc. special french chars) or strings of non-alphanumeric chars
-        const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
-    
-        const sentenceComponents = splitSentence.map((word, index) => {
-
-            //const words = JSON.parse(item.words.replace(/'/g, '"'));
-            
-            if (item.words.includes(word.toLowerCase())) {
-                return <LearnScreenWord
-                        word={word}
-                        initialColor={constants.BLACK}
-                        index={index}
-                        key={`${item.id}-${index}`}
-                    />;
-            } else {
-                return <Text style={{ color: constants.GREY, ...styles.mainText }} key={index}>{word}</Text>;
+    useEffect(() => {
+        // Split sentence by word boundaries and return either text or a LearnScreenWord if it is to be clickable
+        const createSentenceComponents = async() => {
+            if (item.sentence.length == 0) {
+                return [<Text></Text>];
             }
-            });
 
-        return sentenceComponents;
-    };
+            console.log('words object type is:' + typeof(item.words));
+
+            const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
+
+            const sentenceComponents = [];
+
+            for (let i = 0; i < splitSentence.length; i++) {
+                let word = splitSentence[i].toLowerCase();
+
+                if (item.words.includes(word)) {
+                    try {
+                        //TODO: This is a completely ridiculous way to get the data, making a separate API
+                        // request for each individual word, each time I render a sentence. Just doing it
+                        // for proof-of-concept but very important to fix this ASAP.
+                        const res = await client.get("/api/word/" + word, { withCredentials: true });
+                        sentenceComponents.push(
+                            <LearnScreenWord
+                                word={word}
+                                wordData={res.data}
+                                initialColor={constants.BLACK}
+                                index={i}
+                                key={`${item.id}-${i}`}
+                            />
+                        );
+                    } catch (error) {
+                        sentenceComponents.push(
+                            <Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{word}</Text>
+                        );
+                    }
+                } else {
+                    sentenceComponents.push(
+                        <Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{word}</Text>
+                    );
+                }
+            }
+
+            return sentenceComponents;
+        };
+
+        createSentenceComponents().then(components => {
+            setSentenceComponents(components);
+        });
+    }, [item]);
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
+                <View style={styles.starBox}>
+                    <View style={styles.starContainer}>
+                        <FontAwesome name="star" size={30} color={constants.PRIMARYCOLOR} />
+                    </View>
+                    <Text style={styles.starCountText}>27</Text>
+                    <View style={styles.starBarContainer}></View>
+                </View>
                 <View style={styles.topButtonsContainer}>
                     <TouchableOpacity activeOpacity={1}>
                         <View style={styles.flagImageContainer}>
@@ -299,12 +233,34 @@ const styles= StyleSheet.create({
         //borderWidth: 1
     },
     topContainer: {
-        marginTop: 60
+        marginTop: 60,
+        flexDirection: 'row',
+        paddingLeft: 20,
+        paddingRight: 20
+    },
+    starBox: {
+        flexDirection: 'row',
+        backgroundColor: constants.SECONDARYCOLOR,
+        borderRadius: 10,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    starContainer: {
+        marginRight: 10,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+    },
+    starCountText: {
+        fontSize: constants.H2FONTSIZE,
+        fontWeight: 'bold',
+        marginTop: 'auto',
+        marginBottom: 'auto',
     },
     topButtonsContainer: {
         flexDirection: "row",
         alignSelf: 'flex-end',
-        marginRight: 20
+        //width: 'auto',
+        marginLeft: 'auto',
     },
     contentContainer: {
         flexDirection: "column",

@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class FrSentence(models.Model):
     sentence = models.TextField(null=True)
     translated_sentence = models.TextField(null=True)
@@ -11,3 +10,8 @@ class FrSentence(models.Model):
     min_count = models.DecimalField(decimal_places=4, max_digits=20, null=True)
     average_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
     min_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
+
+class FrWordFrequency(models.Model):
+    rank = models.DecimalField(decimal_places=1, max_digits=10, null=True)
+    word = models.TextField(null=True)
+    frequency = models.DecimalField(decimal_places=1, max_digits=10, null=True)

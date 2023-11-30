@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow
-from language_app.models import FrSentence
+from language_app.models import FrSentence, FrWordFrequency
 
 UserModel = get_user_model()
 
@@ -40,6 +40,11 @@ class UserSerializer(serializers.ModelSerializer):
 		read_only=True
 		)
 	
+	known_words_count = serializers.IntegerField(
+		#source='followers_count',
+		read_only=True
+		)
+	
 	class Meta:
 		model = UserModel
 		fields = (
@@ -47,7 +52,8 @@ class UserSerializer(serializers.ModelSerializer):
 			'email',
 			'username',
 			'following_count',
-			'followers_count'
+			'followers_count',
+			'known_words_count'
 			)
 
 
@@ -60,6 +66,12 @@ class UserFollowSerializer(serializers.ModelSerializer):
 	def create(self, validated_data):
 		print(validated_data)
 		return UserFollow.objects.create(**validated_data)
+	
+
+class UserToggleKnownWordSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField()
+    word = serializers.CharField()
+
 
 class FrSentenceModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,3 +84,24 @@ class FrSentenceModelSerializer(serializers.ModelSerializer):
 			"average_count",
 			"min_count"
             )
+		
+class FrWordFrequencyModelSerializer(serializers.ModelSerializer):
+	user_knows = serializers.SerializerMethodField()
+
+	class Meta:
+		model = FrWordFrequency
+		fields = (
+            "id",
+            "rank",
+            "word",
+            "frequency",
+			"user_knows"
+            )
+
+	def get_user_knows(self, obj):
+
+		request = self.context.get('request')
+
+		if request and request.user:
+			return obj.appuser_set.filter(user_id=request.user.user_id).exists()
+		return False

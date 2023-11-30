@@ -78,7 +78,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate("WordList")}
                         >
                         <View style={styles.knownWordsContainer}>
-                            <Text style={styles.knownWords}>496</Text>
+                            <Text style={styles.knownWords}>{ currentUser.known_words_count }</Text>
                             <Text style={styles.knownWordsSubheader}>Words</Text>
                         </View>
                     </TouchableOpacity>

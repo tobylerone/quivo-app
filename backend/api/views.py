@@ -7,8 +7,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow
-from language_app.models import FrSentence
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserFollowSerializer, UserSerializer, FrSentenceModelSerializer
+from language_app.models import FrSentence, FrWordFrequency
+from .serializers import (
+    UserRegisterSerializer,
+    UserLoginSerializer,
+    UserFollowSerializer,
+	UserToggleKnownWordSerializer,
+    UserSerializer,
+    FrSentenceModelSerializer,
+    FrWordFrequencyModelSerializer
+	)
 from .validations import custom_validation, validate_username, validate_password
 
 class UserRegisterView(APIView):
@@ -115,6 +123,37 @@ class UserUnfollowView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UserToggleKnownWordView(APIView):
+
+	def post(self, request, *args, **kwargs):
+
+		user_id = self.kwargs.get('user_id')
+		word = self.kwargs.get('word')
+
+		#serializer = UserToggleKnownWordSerializer(data=request.data)
+		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
+		
+		if serializer.is_valid():
+
+			user_id = serializer.validated_data['user_id']
+			word = serializer.validated_data['word']
+
+			user = AppUser.objects.get(user_id=user_id)
+			word_obj = FrWordFrequency.objects.get(word=word)
+		
+			# Check if a user knows a word
+			if word_obj in user.known_words.all():
+
+				user.known_words.remove(word_obj)
+			else:
+
+				user.known_words.add(word_obj)
+
+			return Response({"status": "success"})
+		else:
+
+			return Response(serializer.errors, status=400)
+
 class CurrentUserView(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
@@ -134,6 +173,25 @@ class UserViewSet(generics.ListAPIView):
 class FrSentencesViewSet(viewsets.ModelViewSet):
 	queryset = FrSentence.objects.all()
 	serializer_class = FrSentenceModelSerializer
+
+
+class FrWordFrequencyView(generics.RetrieveAPIView):
+    
+	serializer_class = FrWordFrequencyModelSerializer
+
+	def get_object(self):
+		word = self.kwargs['word']
+        
+		# Qu'est-ce qui se passe s'il y a plusieurs mots avec
+		# la meme orthographe ? Cela n'arrivera pas pour
+		# l'instant mais ca pourrait changer a l'avenir
+		word_data = FrWordFrequency.objects.get(word=word)
+		
+		return word_data#.first()
+	
+	def get_serializer_context(self):
+
+		return {'request': self.request}
 
 
 def csrf(request):

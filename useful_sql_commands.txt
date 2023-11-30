@@ -1,0 +1,5 @@
+# Copy in values from a tab-delimited file
+\copy public.language_app_frsentence (id, sentence, translated_sentence, average_count, average_count_rank, cluster, min_count, min_count_rank, words) FROM 'C:/Users/TOBYUS~1/DOWNLO~1/UNTITL~1.TSV' DELIMITER E'\t' ENCODING 'UTF8';
+
+# Delete all rows from table
+DELETE FROM table_name;

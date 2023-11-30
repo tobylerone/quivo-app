@@ -1,25 +1,42 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
+import UserContext from '../contexts/UserContext';
 import * as constants from "../constants";
+import client from "../utils/axios";
 
 interface IWordProps {
     word: string;
-    index: number;
+    wordData: object;
     initialColor: string;
+    index: number;
 }
-export default function LearnScreenWord ({word, index, initialColor}: IWordProps) {
+export default function LearnScreenWord ({word, wordData, index}: IWordProps) {
+
+    const { currentUser } = useContext(UserContext);
 
     const wordRef = useRef(null);
     
-    const [textColor, setTextColor] = useState(constants.BLACK);
+    const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
     // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot
-    // Initialiser à 0 millisecondes
+    // Initialiser à 0 millisecondes. Trouver une meilleure solution qui necessite moins
+    // de variables
     const [lastPress, setLastPress] = useState(0);
     const [wordTranslationVisible, setWordTranslationVisible] = useState(false);
 
+    const [pressedOnce, _setPressedOnce] = useState(false);
+
+    // This seems like a ridiculously convoluted approach but it's the only
+    // way I could find to achieve this behaviour using react's conventions
+    const pressedOnceRef = useRef(pressedOnce);
+
+    const setPressedOnce = (value) => {
+      pressedOnceRef.current = value;
+      _setPressedOnce(value);
+    };
+
     // setTimeout rend un identifiant numérique unique
     let tapDelayTimeout;
-    let definitionDisplayTimeout
+    let definitionDisplayTimeout;
 
     // on n'a plus besoin de trouver ces coordonnes car position: absolute
     // est par rapport a l'element qui contient le mot et pas a l'ecran
@@ -40,11 +57,20 @@ export default function LearnScreenWord ({word, index, initialColor}: IWordProps
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-
+            
+            client.post(
+                'api/users/' + currentUser.user_id + '/toggleknownword/' + word
+            ).then(function(res) {  
+                console.log('word changed in database');
+            }).catch(function(e) {
+                console.log(e.response.data)
+            });
+            
             // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
             setTextColor(textColor === constants.BLACK ? constants.PRIMARYCOLOR : constants.BLACK);
 
             setLastPress(0);
+            setPressedOnce(false);
             setWordTranslationVisible(false);
 
             // Supprimer les timeOut q'on a initialisés lors de la première tape pour ne
@@ -53,21 +79,25 @@ export default function LearnScreenWord ({word, index, initialColor}: IWordProps
             clearTimeout(definitionDisplayTimeout);
 
         } else { // C'est la première fois que l'utilisateur a tapé le mot
-            
-            // Vérifier que DOUBLETAPDELAY est términé avant d'afficher la traduction
-            
-            // Basculer entre traduction visible/pas visible
-            //setTranslationVisible(translationVisible ? false : true);
 
             // Le timeOut attend la fin de la fenêtre où l'utilisateur pourrait taper une deuxième fois
             // avant d'fficher la traduction pendant la période choisie.
+            setPressedOnce(true);
+
+            console.log('single tap');
+            console.log(pressedOnce);
+            
             tapDelayTimeout = setTimeout(() => {
 
                 // Si l'utilisateur a tape deux fois le timeout lastPress sera remis a zero au moment que
-                // ce timeout va s'activer. Dans ce cas, on ne vaut plus montrer la traduction
-                if (lastPress != 0) {
+                // ce timeout va s'activer, et pressedOnce sera faux. Dans ce cas, on ne veut plus afficher
+                // la traduction
+                if (pressedOnceRef.current) {
+                    console.log(pressedOnce);
                     setWordTranslationVisible(true);
                 };
+
+                setPressedOnce(false);
 
             }, constants.DOUBLETAPDELAY);
 
@@ -87,8 +117,9 @@ export default function LearnScreenWord ({word, index, initialColor}: IWordProps
         <View>
             <>
             {wordTranslationVisible && (
-                <View style={styles.translationBox}>
+                <View style={styles.infoBox}>
                     <Text style={styles.translationText}>Translation</Text>
+                    <Text style={styles.frequencyScoreText}>Frequency rank: {wordData.rank}</Text>
                 </View>
             )}
             </>
@@ -105,10 +136,10 @@ export default function LearnScreenWord ({word, index, initialColor}: IWordProps
         fontWeight: "bold",
         textAlign: "center"
     },
-    translationBox: {
+    infoBox: {
         backgroundColor: constants.PRIMARYCOLOR,
-        width: 200,
-        height: 50,
+        width: 250,
+        height: 80,
         marginLeft: -100,
         borderRadius: 20,
         paddingLeft: 10,
@@ -117,12 +148,16 @@ export default function LearnScreenWord ({word, index, initialColor}: IWordProps
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        //zIndex: 1,
-        top: -50
+        zIndex: 1,
+        top: -80
     },
     translationText: {
         fontSize: constants.H1FONTSIZE - 8,
         fontWeight: "bold",
+        color: constants.TERTIARYCOLOR
+    },
+    frequencyScoreText: {
+        fontSize: constants.H2FONTSIZE,
         color: constants.TERTIARYCOLOR
     }
 });

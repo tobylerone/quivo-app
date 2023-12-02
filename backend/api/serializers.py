@@ -73,6 +73,10 @@ class UserToggleKnownWordSerializer(serializers.Serializer):
     word = serializers.CharField()
 
 
+class UserWordCountsSerializer(serializers.Serializer):
+	counts = serializers.IntegerField()
+
+
 class FrSentenceModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = FrSentence

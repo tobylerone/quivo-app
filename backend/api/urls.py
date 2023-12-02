@@ -15,6 +15,8 @@ urlpatterns = [
 	path('users/me', views.CurrentUserView.as_view(), name='current-user'), # Il y aura un changement de nom
 	path('users/<int:user_id>/following/', views.UserFollowingView.as_view(), name='user-following'),
 	path('users/<int:user_id>/followers/', views.UserFollowersView.as_view(), name='user-followers'),
+    #path('users/<int:user_id>/words/', views.UserWordsView.as_view(), name='user-words'),
+	path('users/<int:user_id>/wordcounts/', views.UserWordCountsView.as_view(), name='user-word-counts'),
     path('users/<int:user_id>/toggleknownword/<str:word>', views.UserToggleKnownWordView.as_view(), name='user-toggle-word'),
 	path('follow', views.UserFollowView.as_view(), name='follow-user'),
     path('unfollow', views.UserUnfollowView.as_view(), name='unfollow-user'),
@@ -24,5 +26,5 @@ urlpatterns = [
 
 	# les characteres speciales dans 'word' seront encode et decode automatiquement par django,
 	# mais ce serait une bonne idee de trouver une meilleure approche ici
-	path('words', views.FrWordDataView.as_view(), name='words-data')   
+	path('words', views.FrWordDataView.as_view(), name='words-data')
 ]

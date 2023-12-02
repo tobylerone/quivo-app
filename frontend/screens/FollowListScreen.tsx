@@ -89,6 +89,7 @@ function FollowersScreen() {
             <FlatList
                 style={styles.followList}
                 data={followers}
+                bounces={false}
                 renderItem={({item}) => <FollowItem user={item} />}
             />
         </View>
@@ -118,6 +119,7 @@ function FollowingScreen() {
             <FlatList
                 style={styles.followList}
                 data={following}
+                bounces={false}
                 renderItem={({item}) => <FollowItem user={item} />}
             />
         </View>

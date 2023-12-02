@@ -128,7 +128,7 @@ function MainNavigator() {
                 name="WordList"
                 component={WordListScreen as any}
                 options={{
-                    title: "Your Known Words",
+                    title: "Known Words",
                     headerStyle: {
                         backgroundColor: constants.TERTIARYCOLOR
                     },

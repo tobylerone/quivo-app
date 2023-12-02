@@ -16,7 +16,10 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
     const [users, setUsers] = useState([]);
       
     useEffect(() => {
-        const getUsers = async () => {
+        getUsers();
+    }, []);
+
+    const getUsers = async () => {
         try {
             const res = await client.get('api/users');
             setUsers(res.data);
@@ -24,9 +27,6 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
             console.error(e);
         }
         };
-
-        getUsers();
-    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -49,6 +49,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
             <FlatList
                 style={styles.userList}
                 data={users}
+                bounces={false}
                 //keyExtractor={(item) => item.username}
                 renderItem={({ item }) => (
                     <View style={styles.userListItem}>

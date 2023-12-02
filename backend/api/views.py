@@ -1,4 +1,5 @@
 from rest_framework import viewsets, generics
+from django.db.models import Exists, OuterRef
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model, login, logout
@@ -8,11 +9,13 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow
 from language_app.models import FrSentence, FrWordData
+# TODO: Just import serializers
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
     UserFollowSerializer,
 	UserToggleKnownWordSerializer,
+	UserWordCountsSerializer,
     UserSerializer,
     FrSentenceModelSerializer,
     FrWordDataModelSerializer
@@ -63,20 +66,34 @@ class UserLogoutView(APIView):
 class UserFollowingView(generics.ListAPIView):
 	# Cette ligne ne marchera pas. Je vais devoir creer un nouveau serializer
 	# pareil pour UserFollowerView
-    serializer_class = UserSerializer
+	serializer_class = UserSerializer
 
-    def get_queryset(self):
-        user_id = self.kwargs['user_id']
-        user = AppUser.objects.get(user_id=user_id)
-        return user.following.all()
+	def get_queryset(self):
+		user_id = self.kwargs['user_id']
+		user = AppUser.objects.get(user_id=user_id)
+		
+		return user.following.all()
 	
-class UserFollowersView(generics.ListAPIView):
-    serializer_class = UserSerializer
 
-    def get_queryset(self):
-        user_id = self.kwargs['user_id']
-        user = AppUser.objects.get(user_id=user_id)
-        return user.followed_by.all()
+class UserFollowersView(generics.ListAPIView):
+	serializer_class = UserSerializer
+
+	def get_queryset(self):
+		user_id = self.kwargs['user_id']
+		user = AppUser.objects.get(user_id=user_id)
+
+		return user.followed_by.all()
+	
+
+class UserWordsView(generics.ListAPIView):
+	serializer_class = FrWordDataModelSerializer
+
+	def get_queryset(self):
+		user_id = self.kwargs['user_id']
+		user = AppUser.objects.get(user_id=user_id)
+
+		return user.known_words.all()
+
 
 class UserFollowView(APIView):
 	def post(self, request):
@@ -154,6 +171,45 @@ class UserToggleKnownWordView(APIView):
 
 			return Response(serializer.errors, status=400)
 
+
+class UserWordCountsView(APIView):
+	"""Returns the total number of words the user knows in each 'bucket'
+	of word frequency. I.e. how many words they know out of the 1000
+	most frequent words, 1001-2000 most frequent etc.
+	"""
+
+	serializer_class = UserWordCountsSerializer()
+
+	def get(self, request, *args, **kwargs):
+		user_id = self.kwargs['user_id']
+		user_words = AppUser.objects.filter(user_id=user_id, known_words=OuterRef('pk'))
+        
+		# queryset contains all words in FrWordData with annotation to say whether
+		# the current user knows each word
+		queryset = FrWordData.objects.annotate(user_knows=Exists(user_words))
+		
+		ranges = [
+			(1, 1000),
+			(1001, 2000),
+			(2001, 3000),
+			(3001, 4000),
+			(4001, 5000)
+			]
+
+		counts = {}
+
+		for start, end in ranges:
+
+			count = queryset.filter(id__range=(start, end), user_knows=True).count()
+			counts[f'{start}-{end}'] = count
+
+		# For 5000+
+		count = queryset.filter(id__gt=5000, user_knows=True).count()
+		counts['5000+'] = count
+
+		return Response(counts)
+
+
 class CurrentUserView(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
@@ -162,6 +218,7 @@ class CurrentUserView(APIView):
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+
 
 class UserViewSet(generics.ListAPIView):
     queryset = AppUser.objects.all()
@@ -179,13 +236,22 @@ class FrWordDataView(APIView):
 	# Trop de donnees pour mettre dans l'url donc il faut
 	# utiliser post
 	def post(self, request, *args, **kwargs):
+
+		# Deux manieres de chercher des mots. Soit on peut specifier
+		# quels mots on veut chercher, soit on fournit deux index
 		words = request.data.get('words', [])
+		start_index = request.data.get('start_index', 0)
+		end_index = request.data.get('end_index', 100)
 
-		# Remove duplicate words
-		unique_words = list(set(words))
-
-		queryset = FrWordData.objects.filter(word__in=unique_words)
-		
+		if words == []:
+			queryset = FrWordData.objects.filter(
+				id__range=(start_index, end_index)
+			)
+		else:
+			# Remove duplicate words
+			unique_words = list(set(words))
+			queryset = FrWordData.objects.filter(word__in=unique_words)
+	
 		serializer = FrWordDataModelSerializer(
 			queryset,
 			many=True,

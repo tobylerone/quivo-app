@@ -46,6 +46,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
           <SectionList
             sections={DATA}
             keyExtractor={(item, index) => item.text + index}
+            bounces={false}
             renderItem={({item}) => (
               <TouchableOpacity onPress={item.action}>
                 <View style={styles.item}>

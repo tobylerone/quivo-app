@@ -1,5 +1,7 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
 import { useEffect, useState, useRef, useContext } from "react";
+//import Tts from 'react-native-tts';
+import * as Speech from 'expo-speech';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
 import CheckBox from "../components/CheckBox";
@@ -129,6 +131,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         return sentenceComponents;
     };
 
+    const speak = () => {
+        //Tts.voices().then(
+        //    voices => console.log(voices)
+        //    );
+        Speech.speak(
+            item.sentence,
+            {language: 'fr'}
+            );
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
@@ -191,6 +203,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
                     </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={styles.speakButton}
+                    onPress={() => {speak()}}
+                    >
+                    <FontAwesome name="comment" size={25} color={constants.PRIMARYCOLOR} />
                 </TouchableOpacity>
             </View>
             <Animated.View style={[styles.filterPopupContainer, { top: slideAnimation }]}>
@@ -337,7 +356,7 @@ const styles= StyleSheet.create({
         flexDirection: 'column',
         marginTop: 0,
         marginLeft: 20,
-        marginRight: -70,
+        //marginRight: -70,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -350,6 +369,18 @@ const styles= StyleSheet.create({
         marginRight: "auto",
         marginLeft: "auto",
         textAlign: "center"
+    },
+    speakButton: {
+        backgroundColor: constants.SECONDARYCOLOR,
+        height: 50,
+        width: 50,
+        borderRadius: 25,
+        flexDirection: 'column',
+        marginTop: 0,
+        //marginLeft: -70,
+        marginRight: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     filterPopupHeader: {
         fontSize: constants.H1FONTSIZE,

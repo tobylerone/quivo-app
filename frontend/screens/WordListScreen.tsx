@@ -10,6 +10,71 @@ const capitalizeFirstLetter = (word: string) => {
     return word.charAt(0).toUpperCase() + word.slice(1);
     }
 
+/*
+
+How to fix the issue of only hilighting one button at a time:
+If each highlighted button is its own component, you can still manage the highlighted state at a higher level component and pass it down as props to the button components. Here’s an example:
+
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import HighlightedButton from './HighlightedButton'; // import your button component
+
+const MyComponent = () => {
+  const [highlightedButton, setHighlightedButton] = useState(null);
+
+  const handlePress = (buttonId) => {
+    setHighlightedButton(buttonId);
+  };
+
+  return (
+    <View>
+      <HighlightedButton 
+        id='button1' 
+        isHighlighted={highlightedButton === 'button1'} 
+        onPress={handlePress} 
+      />
+      <HighlightedButton 
+        id='button2' 
+        isHighlighted={highlightedButton === 'button2'} 
+        onPress={handlePress} 
+      />
+    </View>
+  );
+};
+
+export default MyComponent;
+
+And here’s how you might define the HighlightedButton component:
+
+import React from 'react';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+
+const HighlightedButton = ({ id, isHighlighted, onPress }) => {
+  return (
+    <TouchableOpacity 
+      style={isHighlighted ? styles.highlighted : styles.button} 
+      onPress={() => onPress(id)}
+    >
+      <Text>{id}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  button: {
+    // your normal button styles
+  },
+  highlighted: {
+    // your highlighted button styles
+  },
+});
+
+export default HighlightedButton;
+
+In this example, the HighlightedButton component receives its id, whether it’s highlighted, and the onPress function as props. When the button is pressed, it calls the onPress function with its id as an argument. The MyComponent component keeps track of which button is currently highlighted and passes this information down to each HighlightedButton. I hope this helps! 😊
+
+*/
+
 const ProgressBarButton = ({label, currentValue, maxValue, defaultActive}) => {
 
     const [borderColor, setBorderColor] = useState(defaultActive ? constants.BLACK: constants.SECONDARYCOLOR);

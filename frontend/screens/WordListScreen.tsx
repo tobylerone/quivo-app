@@ -1,14 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, StatusBar } from "react-native"
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, StatusBar } from "react-native"
 import { useEffect, useState, useContext } from "react"
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
 import { FontAwesome } from "@expo/vector-icons"
 import UserContext from '../contexts/UserContext';
 import * as constants from "../constants";
 import client from "../utils/axios";
-
-const capitalizeFirstLetter = (word: string) => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-    }
+import { capitalizeFirstLetter } from "../utils/text";
 
 /*
 
@@ -190,7 +187,14 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.topButtonContainer}>
+            <ScrollView
+                style={styles.topButtonContainer}
+                horizontal={true}
+                bounces={false}
+                showsVerticalScrollIndicator={false} 
+                showsHorizontalScrollIndicator={false}
+                overScrollMode="never"
+                >
                 <ProgressBarButton 
                     label={'0-1k (' + wordCounts['1-1000'] + ')' }
                     currentValue={wordCounts['1-1000']}
@@ -227,11 +231,14 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                     maxValue={1000}
                     defaultActive={false}
                 />
-            </View>
+            </ScrollView>
             <FlatList
                 style={styles.wordList}
                 data={words}
                 bounces={false}
+                showsVerticalScrollIndicator={false} 
+                showsHorizontalScrollIndicator={false}
+                overScrollMode="never"
                 //keyExtractor={(item) => item.username}
                 renderItem={({ item }) => (<WordItem item={item}></WordItem>)}
                 />
@@ -249,7 +256,8 @@ const styles = StyleSheet.create({
     },
     topButtonContainer: {
         flexDirection: 'row',
-        flexWrap: 'wrap'
+        padding: 5
+        //flexWrap: 'wrap'
     },
     wordList: {
         height: "100%",
@@ -272,7 +280,7 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     numberText: {
-        fontWeight: 'bold',
+        fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H3FONTSIZE
     },
     word: {
@@ -280,12 +288,13 @@ const styles = StyleSheet.create({
         marginBottom: 'auto'
     },
     wordText: {
+        fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE
     },
 
     // ProgressBarButton
     progressBarButton: {
-        width: '30%',
+        //width: '30%',
         backgroundColor: constants.SECONDARYCOLOR,
         borderWidth: 2,
         borderRadius: 10,
@@ -302,7 +311,7 @@ const styles = StyleSheet.create({
     },
     progressBarButtonText: {
         fontSize: constants.H2FONTSIZE,
-        fontWeight: 'bold'
+        fontFamily: constants.FONTFAMILYBOLD
     },
     progressBar: {
         position: 'absolute',

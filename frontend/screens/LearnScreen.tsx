@@ -1,6 +1,6 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
 import { useEffect, useState, useRef, useContext } from "react";
-//import Tts from 'react-native-tts';
+import useCachedResources from "../hooks/useCachedResources";
 import * as Speech from 'expo-speech';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,11 +9,14 @@ import LearnScreenWord from "../components/LearnScreenWord";
 import UserContext from '../contexts/UserContext';
 import * as constants from "../constants";
 import client from "../utils/axios";
+import { capitalizeFirstLetter } from "../utils/text";
 import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 const windowHeight = Dimensions.get('window').height;
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
+
+    //const loadingComplete = useCachedResources();
 
     const { currentUser } = useContext(UserContext);
 
@@ -30,10 +33,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const [item, setItem] = useState(items[0]);
     //const [wordsData, setWordsData] = useState({});
     const [translationVisible, setTranslationVisible] = useState(false);
+    const [languagePopupVisible, setLanguagePopupVisible] = useState(false);
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
     const [sentenceComponents, setSentenceComponents] = useState();
     
-    const slideAnimation = useRef(new Animated.Value(windowHeight)).current;
+    const languagePopupAnimation = useRef(new Animated.Value(0)).current;
+    const filterPopupAnimation = useRef(new Animated.Value(windowHeight)).current;
     
     useEffect(() => {
         console.log("Rendering Learnscreen");
@@ -75,9 +80,22 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         setItem(newItem);
     };
 
-    const togglePopup = () => {
+    const toggleLanguagePopup = () => {
+        Animated.timing(languagePopupAnimation, {
+        toValue: languagePopupVisible ? 0 : 70,
+        duration: 400,
+        useNativeDriver: false,
+        }).start(() => {
+            setLanguagePopupVisible(!languagePopupVisible);
+        });
+        if (languagePopupVisible) {
+            setLanguagePopupVisible(false);
+        }
+    };
+
+    const toggleFilterPopup = () => {
         setFilterPopupVisible(!filterPopupVisible);
-        Animated.timing(slideAnimation, {
+        Animated.timing(filterPopupAnimation, {
         toValue: filterPopupVisible ? windowHeight : 0.2 * windowHeight,
         duration: 400,
         useNativeDriver: false,
@@ -97,7 +115,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     }
 
     const createSentenceComponents = async() => {
-
+        
         if (item.sentence.length == 0) {
             return <Text></Text>;
         }
@@ -119,12 +137,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 sentenceComponents.push(<LearnScreenWord
                     word={word}
                     wordData={wordsData[word]}
-                    initialColor={constants.BLACK}
+                    isFirstWord={i==0}
                     index={i}
                     key={`${item.id}-${i}`}
                 />);
             } else {
-                sentenceComponents.push(<Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{word}</Text>);
+                sentenceComponents.push(<Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{i==0 ? capitalizeFirstLetter(word) : word}</Text>);
             }
             //}
         };
@@ -152,9 +170,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <View style={styles.starBarContainer}></View>
                 </View>
                 <View style={styles.topButtonsContainer}>
-                    <TouchableOpacity activeOpacity={1}>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => { toggleLanguagePopup() }}
+                        >
                         <View style={styles.flagImageContainer}>
-                            <Image
+                          <Image
                                 source={require("../assets/ru.png")}
                                 style={styles.flagImage}
                             />
@@ -163,12 +184,43 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <TouchableOpacity
                         activeOpacity={1}
                         style={styles.filterButton}
-                        onPress={() => { togglePopup() }}
+                        onPress={() => { toggleFilterPopup() }}
                         >
                         <FontAwesome name="filter" size={25} color={constants.BLACK} />
                     </TouchableOpacity>
                 </View>
             </View>
+            <Animated.View style={{ height: languagePopupAnimation, ...styles.languagePopupAnimatedContainer}}>
+                <View style={{opacity: languagePopupVisible ? 1: 0, ...styles.languagePopupContainer}}>
+                    <TouchableOpacity activeOpacity={1}>
+                        <View style={{
+                            ...styles.flagImageContainer,
+                            ...styles.flagImageContainerPopup,
+                            borderColor: constants.PRIMARYCOLOR
+                            }}>
+                            <Image
+                                source={require("../assets/es.png")}
+                                style={styles.flagImage}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1}>
+                        <View style={{
+                            ...styles.flagImageContainer,
+                            ...styles.flagImageContainerPopup,
+                            borderColor: constants.TERTIARYCOLOR
+                        }}>
+                            <Image
+                                source={require("../assets/ru.png")}
+                                style={styles.flagImage}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={1} style={styles.languagePopupAddButton}>
+                        <FontAwesome name='plus' size={25} color={constants.TERTIARYCOLOR} />
+                    </TouchableOpacity>
+                </View>
+            </Animated.View>
             <View style={[styles.contentContainer, styles.shadow]}>
                 <View style={styles.sentenceContainer}>
                     <View style={{
@@ -209,10 +261,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.speakButton}
                     onPress={() => {speak()}}
                     >
-                    <FontAwesome name="comment" size={25} color={constants.PRIMARYCOLOR} />
+                    <FontAwesome name="comment" size={25} color={constants.BLACK} />
                 </TouchableOpacity>
             </View>
-            <Animated.View style={[styles.filterPopupContainer, { top: slideAnimation }]}>
+            <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
                 <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
                 <View style={[styles.checkBoxContainer, styles.shadow]}>
                     <CheckBox initiallySelected={true} size={30} />
@@ -274,7 +326,7 @@ const styles= StyleSheet.create({
     },
     starCountText: {
         fontSize: constants.H2FONTSIZE,
-        fontWeight: 'bold',
+        fontFamily: constants.FONTFAMILYBOLD,
         marginTop: 'auto',
         marginBottom: 'auto',
     },
@@ -284,11 +336,22 @@ const styles= StyleSheet.create({
         //width: 'auto',
         marginLeft: 'auto',
     },
+    languagePopupAnimatedContainer: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        marginTop: 10,
+    },
+    languagePopupContainer: {
+        paddingVertical: 10,
+        paddingLeft: 10,
+        flexDirection: 'row',
+    },
     contentContainer: {
         flexDirection: "column",
         justifyContent: "center",
         backgroundColor: constants.TERTIARYCOLOR,
-        margin: 20,
+        marginHorizontal: 20,
+        marginBottom: 20,
+        marginTop: 10,
         padding: 15,
         borderRadius: 30,
         flexWrap: "wrap",
@@ -310,11 +373,27 @@ const styles= StyleSheet.create({
     },
     flagImageContainer: {
         borderRadius: 10,
+        marginRight: 10,
         //borderWidth: 4,
         //borderColor: constants.SECONDARYCOLOR,
         overflow: "hidden",
         height: 50,
         width: 70,
+    },
+    flagImageContainerPopup: {
+        borderWidth: 3
+    },
+    languagePopupAddButton: {
+        borderWidth: 3,
+        borderColor: constants.TERTIARYCOLOR,
+        padding: 5,
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     flagImage: {
         width: "100%",
@@ -327,7 +406,6 @@ const styles= StyleSheet.create({
         borderRadius: 25,
         flexDirection: 'column',
         marginTop: 0,
-        marginLeft: 10,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -336,7 +414,7 @@ const styles= StyleSheet.create({
     },
     mainText: {
         fontSize: constants.H1FONTSIZE,
-        fontWeight: "bold",
+        fontFamily: constants.FONTFAMILYBOLD,
         textAlign: "center"
     },
     realSentence: {
@@ -384,9 +462,10 @@ const styles= StyleSheet.create({
     },
     filterPopupHeader: {
         fontSize: constants.H1FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
         textAlign: 'center',
         color: constants.BLACK,
-        marginBottom: 10
+        marginBottom: 20
     },
     checkBoxContainer: {
         flexDirection: 'row',
@@ -398,6 +477,7 @@ const styles= StyleSheet.create({
     checkBoxLabel: {
         color: constants.BLACK,
         fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILY,
         marginLeft: 10,
         marginTop: 'auto',
         marginBottom: 'auto'
@@ -413,7 +493,7 @@ const styles= StyleSheet.create({
     },
     filterPopupSubmitButtonText: {
         color: constants.TERTIARYCOLOR,
-        fontWeight: 'bold',
+        fontFamily: constants.FONTFAMILY,
         fontSize: constants.H2FONTSIZE,
         marginLeft: 'auto',
         marginRight: 'auto'

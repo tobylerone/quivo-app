@@ -11,7 +11,9 @@ export default function useCachedResources() {
                 await initWorkouts()
                 await Font.loadAsync({
                     "montserrat": require("../assets/fonts/Montserrat-Regular.ttf"),
-                    "montserrat-bold": require("../assets/fonts/Montserrat-Bold.ttf")
+                    "montserrat-bold": require("../assets/fonts/Montserrat-Bold.ttf"),
+                    "Nunito": require("../assets/fonts/Nunito-Regular.ttf"),
+                    "Nunito-bold": require("../assets/fonts/Nunito-Bold.ttf")
                 })
 
             }catch(err){

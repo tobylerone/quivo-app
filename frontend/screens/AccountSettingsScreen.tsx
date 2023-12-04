@@ -71,8 +71,7 @@ const styles = StyleSheet.create({
     item: {
         //backgroundColor: constants.PRIMARYCOLOR,
         fontSize: constants.CONTENTFONTSIZE,
-        //borderColor: constants.PRIMARYCOLOR,
-        //borderWidth: 2,
+        fontFamily: constants.FONTFAMILY,
         backgroundColor: constants.SECONDARYCOLOR,
         padding: 10,
         borderRadius: 10,
@@ -81,8 +80,8 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: constants.H2FONTSIZE + 2,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK,
-        fontWeight: "bold",
         padding: 10,
         backgroundColor: constants.TERTIARYCOLOR,
         paddingTop: 20,
@@ -90,6 +89,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILY,
         color: constants.BLACK
     },
 });

@@ -197,13 +197,12 @@ const styles = StyleSheet.create({
     profileNameContainer: {
         height: "100%",
         marginRight: 10,
-        flexDirectio: "column",
         justifyContent: "center",
     },
     profileName: {
         fontSize: constants.H2FONTSIZE,
-        color: constants.SECONDARYCOLOR,
-        fontWeight: "bold"
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.SECONDARYCOLOR
     },
     flagImageContainer: {
         borderRadius: 10,
@@ -225,15 +224,15 @@ const styles = StyleSheet.create({
     },
     knownWords: {
         fontSize: constants.H1FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK,
-        fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
     },
     knownWordsSubheader: {
         fontSize: constants.H3FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.GREY,
-        fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
     },
@@ -245,15 +244,15 @@ const styles = StyleSheet.create({
     },
     followCount: {
         fontSize: constants.H1FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK,
-        fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
     },
     followCountSubheader: {
         fontSize: constants.H3FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.GREY,
-        fontWeight: "bold",
         marginLeft: "auto",
         marginRight: "auto"
     },

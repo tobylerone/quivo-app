@@ -1,19 +1,20 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
 import { useState, useRef, useContext } from "react";
+import * as Speech from 'expo-speech';
 import UserContext from '../contexts/UserContext';
 import * as constants from "../constants";
 import client from "../utils/axios";
+import { capitalizeFirstLetter } from "../utils/text";
 
 interface IWordProps {
     word: string;
     wordData: object;
-    initialColor: string;
+    isFirstWord: string;
     index: number;
 }
-export default function LearnScreenWord ({word, wordData, index}: IWordProps) {
+export default function LearnScreenWord ({word, wordData, isFirstWord, index}: IWordProps) {
 
     const { currentUser } = useContext(UserContext);
-
     const wordRef = useRef(null);
     
     const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
@@ -84,8 +85,7 @@ export default function LearnScreenWord ({word, wordData, index}: IWordProps) {
             // avant d'fficher la traduction pendant la période choisie.
             setPressedOnce(true);
 
-            console.log('single tap');
-            console.log(pressedOnce);
+            Speech.speak(word, {language: 'fr'})
             
             tapDelayTimeout = setTimeout(() => {
 
@@ -124,7 +124,12 @@ export default function LearnScreenWord ({word, wordData, index}: IWordProps) {
             )}
             </>
             <TouchableOpacity activeOpacity={1} key={index} onPress={() => handlePress()}>
-                <Text style={{...styles.mainText, color: textColor}} ref={wordRef}>{word}</Text>
+                <Text
+                    style={{...styles.mainText, color: textColor}}
+                    ref={wordRef}
+                    >
+                    {isFirstWord ? capitalizeFirstLetter(word) : word}
+                </Text>
             </TouchableOpacity>
         </View>
     );
@@ -133,7 +138,7 @@ export default function LearnScreenWord ({word, wordData, index}: IWordProps) {
   const styles= StyleSheet.create({
     mainText: {
         fontSize: constants.H1FONTSIZE,
-        fontWeight: "bold",
+        fontFamily: constants.FONTFAMILYBOLD,
         textAlign: "center"
     },
     infoBox: {
@@ -153,11 +158,12 @@ export default function LearnScreenWord ({word, wordData, index}: IWordProps) {
     },
     translationText: {
         fontSize: constants.H1FONTSIZE - 8,
-        fontWeight: "bold",
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.TERTIARYCOLOR
     },
     frequencyScoreText: {
         fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILY,
         color: constants.TERTIARYCOLOR
     }
 });

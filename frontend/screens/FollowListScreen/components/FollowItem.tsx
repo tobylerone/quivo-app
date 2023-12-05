@@ -1,7 +1,5 @@
-    import { View, Text, Image, StyleSheet, StyleProp, ViewStyle } from "react-native"
-    import {secToMin, formatSec} from "../utils/time"
-    import { ReactNode } from "react"
-    import * as constants from "../constants"
+    import { View, Text, StyleSheet } from "react-native"
+    import * as constants from "../../../constants"
     
     interface IFollowItemProps {
         user: {
@@ -24,19 +22,6 @@
                 <Text style={styles.userName}>{user.username}</Text>
             </View>
         );
-
-        /*<View style={styles.wordsKnownContainer}>
-            {user.wordsKnown.map(({language, words}) => (
-                <View style={styles.languageContainer}>
-                    <Image
-                        source={require("../assets/es.png")}
-                        style={styles.flagImage}
-                    />
-                    <Text style={styles.knownWords}>{words}</Text>
-                </View>
-            ))}
-        </View>
-        */
     };
     
     const styles= StyleSheet.create({

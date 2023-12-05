@@ -1,10 +1,10 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
 import { useState, useRef, useContext } from "react";
 import * as Speech from 'expo-speech';
-import UserContext from '../contexts/UserContext';
-import * as constants from "../constants";
-import client from "../utils/axios";
-import { capitalizeFirstLetter } from "../utils/text";
+import UserContext from '../../../contexts/UserContext';
+import * as constants from "../../../constants";
+import client from "../../../utils/axios";
+import { capitalizeFirstLetter } from "../../../utils/text";
 
 interface IWordProps {
     word: string;
@@ -12,7 +12,7 @@ interface IWordProps {
     isFirstWord: string;
     index: number;
 }
-export default function LearnScreenWord ({word, wordData, isFirstWord, index}: IWordProps) {
+export default function Word ({word, wordData, isFirstWord, index}: IWordProps) {
 
     const { currentUser } = useContext(UserContext);
     const wordRef = useRef(null);

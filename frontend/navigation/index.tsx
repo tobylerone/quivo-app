@@ -14,8 +14,7 @@ import AccountSettingsScreen from "../screens/AccountSettingsScreen";
 import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
-import FollowListScreen from "../screens/FollowListScreen";
-import { blue } from "react-native-reanimated";
+import FollowListScreen from "../screens/FollowListScreen/FollowListScreen";
 import * as constants from "../constants";
 
 

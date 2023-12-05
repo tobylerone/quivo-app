@@ -1,22 +1,18 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
 import { useEffect, useState, useRef, useContext } from "react";
-import useCachedResources from "../hooks/useCachedResources";
 import * as Speech from 'expo-speech';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
-import CheckBox from "../components/CheckBox";
-import LearnScreenWord from "../components/LearnScreenWord";
-import UserContext from '../contexts/UserContext';
-import * as constants from "../constants";
-import client from "../utils/axios";
-import { capitalizeFirstLetter } from "../utils/text";
-import { Float } from "react-native/Libraries/Types/CodegenTypes";
+import CheckBox from "../../components/CheckBox";
+import Word from "./components/Word";
+import UserContext from '../../contexts/UserContext';
+import * as constants from "../../constants";
+import client from "../../utils/axios";
+import { capitalizeFirstLetter } from "../../utils/text";
 
 const windowHeight = Dimensions.get('window').height;
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
-
-    //const loadingComplete = useCachedResources();
 
     const { currentUser } = useContext(UserContext);
 
@@ -45,14 +41,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         fetchData();
     }, [])
 
-    // A chaque fois q'on recois un nouveau groupe de phrases,
-    // il faut mettre a jour la phrase affiche sur l'ecran
+    // After updating items, set current item to first one in the list
     useEffect(() => {
         if (items.length > 0) { setItem(items[0]); }
     }, [items]);
 
     useEffect(() => {
-        // Split sentence by word boundaries and return either text or a LearnScreenWord if it is to be clickable
+        // Split sentence by word boundaries and return either text or a Word component if it is to be clickable
         createSentenceComponents().then(components => {
             setSentenceComponents(components);
         });
@@ -123,8 +118,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         console.log('words object type is:' + typeof(item.words));
 
         const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
-        
-        //return updateWordsData().then(() => {
         const wordsData = await fetchWordsData()
 
         const sentenceComponents = [];
@@ -134,7 +127,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     
             if (wordsData.hasOwnProperty(word)) {
 
-                sentenceComponents.push(<LearnScreenWord
+                sentenceComponents.push(<Word
                     word={word}
                     wordData={wordsData[word]}
                     isFirstWord={i==0}
@@ -144,15 +137,11 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             } else {
                 sentenceComponents.push(<Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{i==0 ? capitalizeFirstLetter(word) : word}</Text>);
             }
-            //}
         };
         return sentenceComponents;
     };
 
     const speak = () => {
-        //Tts.voices().then(
-        //    voices => console.log(voices)
-        //    );
         Speech.speak(
             item.sentence,
             {language: 'fr'}
@@ -176,7 +165,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                           <Image
-                                source={require("../assets/ru.png")}
+                                source={require("../../assets/ru.png")}
                                 style={styles.flagImage}
                             />
                         </View>
@@ -199,7 +188,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                             borderColor: constants.PRIMARYCOLOR
                             }}>
                             <Image
-                                source={require("../assets/es.png")}
+                                source={require("../../assets/es.png")}
                                 style={styles.flagImage}
                             />
                         </View>
@@ -211,7 +200,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                             borderColor: constants.TERTIARYCOLOR
                         }}>
                             <Image
-                                source={require("../assets/ru.png")}
+                                source={require("../../assets/ru.png")}
                                 style={styles.flagImage}
                             />
                         </View>

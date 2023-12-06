@@ -1,20 +1,19 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { FontAwesome, Entypo } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import HomeScreen from "../screens/HomeScreen";
 import LearnScreen from "../screens/LearnScreen";
-import WorkoutDetailScreen from "../screens/WorkoutDetailScreen";
 import AccountScreen from "../screens/AccountScreen";
 import AccountSettingsScreen from "../screens/AccountSettingsScreen";
 import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
-import FollowListScreen from "../screens/FollowListScreen/FollowListScreen";
+import FollowListScreen from "../screens/FollowListScreen";
 import * as constants from "../constants";
 
 
@@ -69,11 +68,6 @@ function MainNavigator() {
                 name="Root"
                 component={BottomTabNavigator}
                 options={{headerShown: false}}
-            />
-            <MainStack.Screen
-                name="WorkoutDetail"
-                component={WorkoutDetailScreen as any}
-                options={{title: ""}}
             />
             <MainStack.Screen
                 name="AccountSettings"

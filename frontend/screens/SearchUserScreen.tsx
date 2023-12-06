@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList } from
 import { SearchBar } from "react-native-elements";
 import { useState, useEffect, useContext } from "react";
 import UserContext from '../contexts/UserContext';
+import FollowButton from "../components/FollowButton"
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import * as constants from "../constants";
@@ -58,30 +59,12 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                                 {item.username}
                             </Text>
                         </View>
-                        <TouchableOpacity
-                            style={styles.followButton}
-                            onPress={() => {
-                                client.post(
-                                    "/api/follow",
-                                    {
-                                    follower: currentUser.user_id,
-                                    followee: item.user_id,
-                                    withCredentials: true
-                                    }
-                                ).then(function(res) {  
-                                    console.log(res.data)
-                                    //Increase the user's following count on the frontend if post request successful
-                                    //setCurrentUser(prevState => ({
-                                    //    ...prevState,
-                                    //    following_count: currentUser.following_count + 1
-                                    //}));
-                                }).catch(function(e) {
-                                    console.log(e.response.data)
-                                });
-                            }}
-                            >
-                            <Text style={styles.followButtonText}>Follow</Text>
-                        </TouchableOpacity>
+                        <View style={styles.followButtonContainer}>
+                            <FollowButton 
+                                initUserIsFollowing={item.user_is_following}
+                                followee_id={item.user_id}
+                            />
+                        </View>
                     </View>
                 )}
                 />

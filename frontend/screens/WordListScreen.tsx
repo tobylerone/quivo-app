@@ -86,6 +86,7 @@ const ProgressBarButton = ({label, currentValue, maxValue, defaultActive}) => {
     
     return (
         <TouchableOpacity
+            activeOpacity={1}
             style={{
                 ...styles.progressBarButton,
                 borderColor: borderColor
@@ -95,6 +96,9 @@ const ProgressBarButton = ({label, currentValue, maxValue, defaultActive}) => {
             <View style={{width: progressPercentage + '%', ...styles.progressBar}}></View>
             <View style={styles.progressBarButtonTextContainer}>
                 <Text style={styles.progressBarButtonText}>{label}</Text>
+            </View>
+            <View style={styles.progressBarButtonNumberContainer}>
+                <Text style={styles.progressBarButtonNumberText}>{currentValue}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -196,42 +200,45 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 overScrollMode="never"
                 >
                 <ProgressBarButton 
-                    label={'0-1k (' + wordCounts['1-1000'] + ')' }
+                    label={'0-1k'}
                     currentValue={wordCounts['1-1000']}
                     maxValue={1000}
                     defaultActive={true}
                 />
                 <ProgressBarButton 
-                    label={'1k-2k (' + wordCounts['1001-2000'] + ')' }
+                    label={'1k-2k' }
                     currentValue={wordCounts['1001-2000']}
                     maxValue={1000}
                     defaultActive={false}
                 />
                 <ProgressBarButton 
-                    label={'2k-3k (' + wordCounts['2001-3000'] + ')' }
+                    label={'2k-3k' }
                     currentValue={wordCounts['2001-3000']}
                     maxValue={1000}
                     defaultActive={false}
                 />
                 <ProgressBarButton 
-                    label={'3k-4k (' + wordCounts['3001-4000'] + ')' }
+                    label={'3k-4k' }
                     currentValue={wordCounts['3001-4000']}
                     maxValue={1000}
                     defaultActive={false}
                 />
                 <ProgressBarButton 
-                    label={'4k-5k (' + wordCounts['4001-5000'] + ')' }
+                    label={'4k-5k' }
                     currentValue={wordCounts['4001-5000']}
                     maxValue={1000}
                     defaultActive={false}
                 />
                 <ProgressBarButton 
-                    label={'5k+ (' + wordCounts['5000+'] + ')' }
+                    label={'5k+' }
                     currentValue={wordCounts['5000+']}
                     maxValue={1000}
                     defaultActive={false}
                 />
             </ScrollView>
+            <View style={styles.headerContainer}>
+                <Text style={styles.headerContainerText}>1000 Most Common</Text>
+            </View>
             <FlatList
                 style={styles.wordList}
                 data={words}
@@ -242,6 +249,12 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 //keyExtractor={(item) => item.username}
                 renderItem={({ item }) => (<WordItem item={item}></WordItem>)}
                 />
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.loadMoreButton}
+            >
+                <Text style={styles.loadMoreButtonText}>Load more</Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -256,13 +269,38 @@ const styles = StyleSheet.create({
     },
     topButtonContainer: {
         flexDirection: 'row',
-        padding: 5
+        padding: 5,
+        marginBottom: 10
         //flexWrap: 'wrap'
+    },
+    headerContainer: {
+        marginHorizontal: 10
+    },
+    headerContainerText: {
+        fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.BLACK
     },
     wordList: {
         height: "100%",
         marginTop: 10,
         marginHorizontal: 10
+    },
+    loadMoreButton: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        borderRadius: 10,
+        width: 150,
+        padding: 5,
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: 10
+    },
+    loadMoreButtonText: {
+        fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.TERTIARYCOLOR,
+        marginLeft: "auto",
+        marginRight: "auto"
     },
 
     // WordItem
@@ -294,24 +332,37 @@ const styles = StyleSheet.create({
 
     // ProgressBarButton
     progressBarButton: {
-        //width: '30%',
         backgroundColor: constants.SECONDARYCOLOR,
-        borderWidth: 2,
+        flexDirection: "row",
+        borderWidth: 3,
         borderRadius: 10,
         overflow: 'hidden',
         verticalAlign: 'center',
         marginHorizontal: 5,
-        marginBottom: 5,
+        paddingHorizontal: 5,
+        marginBottom: 15,
         height: 40
     },
     progressBarButtonTextContainer: {
         marginTop: 'auto',
         marginBottom: 'auto',
-        marginLeft: 5
+        marginRight: 10
     },
     progressBarButtonText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD
+    },
+    progressBarButtonNumberContainer: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        paddingHorizontal: 5,
+        borderRadius: 5,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    progressBarButtonNumberText: {
+        fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.TERTIARYCOLOR,
     },
     progressBar: {
         position: 'absolute',

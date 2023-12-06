@@ -18,8 +18,8 @@ urlpatterns = [
     #path('users/<int:user_id>/words/', views.UserWordsView.as_view(), name='user-words'),
 	path('users/<int:user_id>/wordcounts/', views.UserWordCountsView.as_view(), name='user-word-counts'),
     path('users/<int:user_id>/toggleknownword/<str:word>', views.UserToggleKnownWordView.as_view(), name='user-toggle-word'),
-	path('follow', views.UserFollowView.as_view(), name='follow-user'),
-    path('unfollow', views.UserUnfollowView.as_view(), name='unfollow-user'),
+	path('follow/<int:follower_id>/<int:followee_id>', views.UserFollowView.as_view(), name='follow-user'),
+    path('unfollow/<int:follower_id>/<int:followee_id>', views.UserUnfollowView.as_view(), name='unfollow-user'),
 	path('csrf', views.csrf, name='csrf'),
     
 	# Sentences

@@ -2,7 +2,7 @@ from rest_framework import viewsets, generics
 from django.db.models import Exists, OuterRef
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
-from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth import login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -74,6 +74,11 @@ class UserFollowingView(generics.ListAPIView):
 		
 		return user.following.all()
 	
+	def get_serializer_context(self):
+		context = super().get_serializer_context()
+		context.update({"user": self.request.user})
+		return context
+	
 
 class UserFollowersView(generics.ListAPIView):
 	serializer_class = UserSerializer
@@ -84,6 +89,10 @@ class UserFollowersView(generics.ListAPIView):
 
 		return user.followed_by.all()
 	
+	def get_serializer_context(self):
+		context = super().get_serializer_context()
+		context.update({"user": self.request.user})
+		return context
 
 class UserWordsView(generics.ListAPIView):
 	serializer_class = FrWordDataModelSerializer
@@ -96,18 +105,20 @@ class UserWordsView(generics.ListAPIView):
 
 
 class UserFollowView(APIView):
-	def post(self, request):
-		serializer = UserFollowSerializer(data=request.data)
+	def post(self, request, follower_id, followee_id):
+		serializer = UserFollowSerializer(
+			data={
+				'follower': follower_id,
+		 		'followee': followee_id
+				}
+			)
 
 		if serializer.is_valid():
 
 			# TODO: Ensure user can't follow themselves
 
-			follower = serializer.validated_data.get('follower')
-			followee = serializer.validated_data.get('followee')
-
 			# Get the follow record
-			follow_record = UserFollow.objects.filter(follower=follower, followee=followee)
+			follow_record = UserFollow.objects.filter(follower=follower_id, followee=followee_id)
 
             # If the follow record already exists, don't replicate it
 			if follow_record.exists():
@@ -120,15 +131,17 @@ class UserFollowView(APIView):
 
 
 class UserUnfollowView(APIView):
-    def delete(self, request):
-        serializer = UserFollowSerializer(data=request.data)
+    def delete(self, request, follower_id, followee_id):
+        serializer = UserFollowSerializer(
+			data={
+				'follower': follower_id,
+		 		'followee': followee_id
+				}
+			)
         if serializer.is_valid():
 
-            follower = serializer.validated_data.get('follower')
-            followee = serializer.validated_data.get('followee')
-
             # Get the follow record
-            follow_record = UserFollow.objects.filter(follower=follower, followee=followee)
+            follow_record = UserFollow.objects.filter(follower=follower_id, followee=followee_id)
 
             # If the follow record exists, delete it
             if follow_record.exists():
@@ -216,15 +229,31 @@ class CurrentUserView(APIView):
 	##
 
 	def get(self, request):
-		serializer = UserSerializer(request.user)
+		serializer = UserSerializer(
+			request.user,
+			context={
+				'user': request.user,
+				'request': request
+				})
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+	
+	"""def get_serializer_context(self):
+		context = super().get_serializer_context()
+		context.update({"request": self.request})
+		return context
+	"""
 
 
 class UserViewSet(generics.ListAPIView):
-    queryset = AppUser.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
+	queryset = AppUser.objects.all()
+	serializer_class = UserSerializer()
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+
+	def get_serializer_context(self):
+		context = super().get_serializer_context()
+		context.update({"user": self.request.user})
+		return context
 
 
 class FrSentencesViewSet(viewsets.ModelViewSet):

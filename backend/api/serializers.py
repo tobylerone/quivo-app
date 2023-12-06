@@ -44,6 +44,21 @@ class UserSerializer(serializers.ModelSerializer):
 		#source='followers_count',
 		read_only=True
 		)
+
+	user_is_following = serializers.SerializerMethodField()
+
+	def get_user_is_following(self, obj):
+
+		# TODO: When called from UserFollowingView, this is redundant as it will
+		# always return True, but I don't want to have to add a view field to the
+		# context in each view using this serializer to check. Might need to
+		# create a new serializer specifically for UserFollowingView inheriting from
+		# UserSerializer but leaving as is for now
+		# This field is also not required when getting data for the current user
+		# (CurrentUserView), so there is definitely need for a core prototype
+		# UserSerializer with multiple child classes at some point
+		current_user = self.context['user']
+		return current_user.following.filter(user_id=obj.user_id).exists()
 	
 	class Meta:
 		model = UserModel
@@ -53,7 +68,8 @@ class UserSerializer(serializers.ModelSerializer):
 			'username',
 			'following_count',
 			'followers_count',
-			'known_words_count'
+			'known_words_count',
+			'user_is_following'
 			)
 
 

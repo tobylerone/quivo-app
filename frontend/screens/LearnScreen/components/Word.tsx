@@ -9,7 +9,7 @@ import { capitalizeFirstLetter } from "../../../utils/text";
 interface IWordProps {
     word: string;
     wordData: object;
-    isFirstWord: string;
+    isFirstWord: boolean;
     index: number;
 }
 export default function Word ({word, wordData, isFirstWord, index}: IWordProps) {

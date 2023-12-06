@@ -27,7 +27,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }]);
     
     const [item, setItem] = useState(items[0]);
-    //const [wordsData, setWordsData] = useState({});
     const [translationVisible, setTranslationVisible] = useState(false);
     const [languagePopupVisible, setLanguagePopupVisible] = useState(false);
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
@@ -61,7 +60,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         })
         .catch(function(error) {
         });
-
     };
 
     const changeSentence = () => {
@@ -117,7 +115,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
         console.log('words object type is:' + typeof(item.words));
 
-        const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g);
+        const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g) || [];
         const wordsData = await fetchWordsData()
 
         const sentenceComponents = [];
@@ -205,8 +203,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={1} style={styles.languagePopupAddButton}>
-                        <FontAwesome name='plus' size={25} color={constants.TERTIARYCOLOR} />
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate("AccountLanguages")}
+                        style={styles.languagePopupAddButton}
+                        >
+                        <FontAwesome name='plus' size={20} color={constants.TERTIARYCOLOR} />
                     </TouchableOpacity>
                 </View>
             </Animated.View>
@@ -376,8 +378,8 @@ const styles= StyleSheet.create({
         borderWidth: 3,
         borderColor: constants.TERTIARYCOLOR,
         padding: 5,
-        width: 40,
-        height: 40,
+        width: 35,
+        height: 35,
         borderRadius: 10,
         marginTop: 'auto',
         marginBottom: 'auto',

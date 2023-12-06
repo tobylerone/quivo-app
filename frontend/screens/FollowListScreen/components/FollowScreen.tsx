@@ -5,16 +5,17 @@ import FollowItem from "./FollowItem";
 import client from "../../../utils/axios";
 
 interface IFollowScreen {
+    customStyle: StyleSheet,
     type: 'followers' | 'following'
 }
 
-export default function FollowScreen({ type }: IFollowScreen) {
+export default function FollowScreen({ customStyle, type }: IFollowScreen) {
 
     const { currentUser } = useContext(UserContext);
     const [data, setData] = useState(null);
 
     useEffect(() =>{
-        // Get accounts the user is followed by
+        // Get accounts the user is followed by / is following
         client.get(
             'api/users/' + currentUser.user_id + '/' + type + '/'
         ).then(function(res) {  
@@ -26,7 +27,7 @@ export default function FollowScreen({ type }: IFollowScreen) {
     }, []);
 
     return (
-        <View style={styles.followListContainer}>
+        <View style={[styles.followListContainer, customStyle]}>
             <FlatList
                 style={styles.followList}
                 data={data}

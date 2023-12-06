@@ -5,8 +5,6 @@ const UserContext = React.createContext();
 
 export default UserContext;
 
-//const [registrationToggle, setRegistrationToggle] = useState(false);
-
 // Create a provider component
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
@@ -22,12 +20,11 @@ export const AuthProvider = ({ children }) => {
         })
         .catch(function(error) {
           setCurrentUser(null);
+          console.log(error);
         });
     };
 
     const submitRegistration = (username, email, password) => {
-
-        const wasSuccessful = false;
 
         return new Promise((resolve, reject) => {
 
@@ -36,16 +33,16 @@ export const AuthProvider = ({ children }) => {
             {
                 username: username,
                 email: email,
-                password: password
+                password: password,
+                withCredentials: true
             }
             ).then(function(res) {
                 console.log('Account creation successful');
                 submitLogin(username, password);
-            }).catch(function(e) {
-
+                resolve(true);
+            }).catch(function(error) {
                 console.log('Account creation unsuccessful');
-                reject(false);
-
+                reject(error);
             });
         });
     };
@@ -64,24 +61,19 @@ export const AuthProvider = ({ children }) => {
             ).then(function(res) {
                 // Fetch the new CSRF token from the db and update the axios client header
                 updateClientCsrfToken();
-                //setCurrentUser(res.data.user);
                 // Get the current user data and set the context
                 getUser();
-                wasSuccessful = true
                 console.log('Login successful!')
                 resolve(true);
-
-            }).catch(function(e) {
-
+            }).catch(function(error) {
                 setCurrentUser(null);
                 console.log('Login unsuccessful');
-                reject(false);
-
+                reject(error);
             });
         });
     };
     
-    const submitLogout = (e) => {
+    const submitLogout = () => {
         client.post(
             "/api/logout"
         ).then(function(res) {

@@ -266,6 +266,19 @@ class FrWordDataView(APIView):
 	# utiliser post
 	def post(self, request, *args, **kwargs):
 
+		# This must be the same as map used to create word frequency dataset
+		shortened_word_map = {
+			'j': 'je',
+			'l': 'le', # Always replace with le for now. Figure out a better solution here
+			't': 'tu', # This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
+			'd': 'de', # Need to check whether this is ever du
+			'c': 'ce',
+			's': 'se',
+			'qu': 'que',
+			'm': 'me',
+			'n': 'ne',
+		}
+
 		# Deux manieres de chercher des mots. Soit on peut specifier
 		# quels mots on veut chercher, soit on fournit deux index
 		words = request.data.get('words', [])
@@ -279,6 +292,10 @@ class FrWordDataView(APIView):
 		else:
 			# Remove duplicate words
 			unique_words = list(set(words))
+
+			# Replace any shortened words with the full word
+			unique_words = [shortened_word_map.get(word, word) for word in unique_words]
+
 			queryset = FrWordData.objects.filter(word__in=unique_words)
 	
 		serializer = FrWordDataModelSerializer(

@@ -60,7 +60,7 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
             
             client.post(
-                'api/users/' + currentUser.user_id + '/toggleknownword/' + word
+                'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
             ).then(function(res) {  
                 console.log('word changed in database');
             }).catch(function(e) {
@@ -85,7 +85,8 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
             // avant d'fficher la traduction pendant la période choisie.
             setPressedOnce(true);
 
-            Speech.speak(word, {language: 'fr'})
+            // WordData.word contains the full word
+            Speech.speak(wordData.word, {language: 'fr'})
             
             tapDelayTimeout = setTimeout(() => {
 
@@ -118,7 +119,7 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
             <>
             {wordTranslationVisible && (
                 <View style={styles.infoBox}>
-                    <Text style={styles.translationText}>Translation</Text>
+                    <Text style={styles.translationText}>{wordData.word} - Translation</Text>
                     <Text style={styles.frequencyScoreText}>Frequency rank: {wordData.rank}</Text>
                 </View>
             )}

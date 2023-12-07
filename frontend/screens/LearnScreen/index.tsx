@@ -109,25 +109,51 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const createSentenceComponents = async() => {
         
+        const getFullWord = (word: string) => {
+        
+            // TODO: This map gets repeated three times. Need to sort this out
+            let shortened_word_map = {
+                'j': 'je',
+			    'l': 'le', // Always replace with le for now. Figure out a better solution here
+			    't': 'tu', // This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
+			    'd': 'de', // Need to check whether this is ever du
+			    'c': 'ce',
+			    's': 'se',
+			    'qu': 'que',
+			    'm': 'me',
+			    'n': 'ne',
+		    }
+
+            return word in shortened_word_map ? shortened_word_map[word] : word;
+        }
+        
         if (item.sentence.length == 0) {
             return <Text></Text>;
         }
 
         console.log('words object type is:' + typeof(item.words));
 
-        const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g) || [];
+        // Regex used to create word frequency set: \b(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-ZéèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)\b
+        // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
+        //const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g) || [];
+        const splitSentence = item.sentence.match(
+            /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
+            ) || [];
         const wordsData = await fetchWordsData()
 
         const sentenceComponents = [];
 
         for (let i = 0; i < splitSentence.length; i++) {
+            
             let word = splitSentence[i].toLowerCase();
+            // Same as word unless in shortened_word_map
+            let fullWord = getFullWord(word);
     
-            if (wordsData.hasOwnProperty(word)) {
+            if (wordsData.hasOwnProperty(fullWord)) {
 
                 sentenceComponents.push(<Word
                     word={word}
-                    wordData={wordsData[word]}
+                    wordData={wordsData[fullWord]}
                     isFirstWord={i==0}
                     index={i}
                     key={`${item.id}-${i}`}

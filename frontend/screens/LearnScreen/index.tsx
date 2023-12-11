@@ -1,4 +1,4 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions, useWindowDimensions } from "react-native";
 import { useEffect, useState, useRef, useContext } from "react";
 import * as Speech from 'expo-speech';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
@@ -34,6 +34,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     
     const languagePopupAnimation = useRef(new Animated.Value(0)).current;
     const filterPopupAnimation = useRef(new Animated.Value(windowHeight)).current;
+
+    const screenWidth = useWindowDimensions().width;
     
     useEffect(() => {
         console.log("Rendering Learnscreen");
@@ -135,9 +137,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
         // Regex used to create word frequency set: \b(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-ZéèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)\b
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
-        //const splitSentence = item.sentence.match(/([a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g) || [];
         const splitSentence = item.sentence.match(
-            /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
+            /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
             ) || [];
         const wordsData = await fetchWordsData()
 
@@ -145,9 +146,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
         for (let i = 0; i < splitSentence.length; i++) {
             
-            let word = splitSentence[i].toLowerCase();
+            let word = splitSentence[i]
             // Same as word unless in shortened_word_map
-            let fullWord = getFullWord(word);
+            let fullWord = getFullWord(word.toLowerCase());
     
             if (wordsData.hasOwnProperty(fullWord)) {
 
@@ -155,6 +156,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     word={word}
                     wordData={wordsData[fullWord]}
                     isFirstWord={i==0}
+                    screenWidth={screenWidth}
                     index={i}
                     key={`${item.id}-${i}`}
                 />);
@@ -189,7 +191,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                           <Image
-                                source={require("../../assets/ru.png")}
+                                source={require("../../assets/fr.png")}
                                 style={styles.flagImage}
                             />
                         </View>
@@ -224,7 +226,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                             borderColor: constants.TERTIARYCOLOR
                         }}>
                             <Image
-                                source={require("../../assets/ru.png")}
+                                source={require("../../assets/fr.png")}
                                 style={styles.flagImage}
                             />
                         </View>

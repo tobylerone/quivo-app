@@ -16,11 +16,12 @@ export const AuthProvider = ({ children }) => {
     const getUser = () => {
         client.get("/api/users/me")
         .then(function(res) {
-          setCurrentUser(res.data.user);
+            console.log(res.data.user);
+            setCurrentUser(res.data.user);
         })
         .catch(function(error) {
-          setCurrentUser(null);
-          console.log(error);
+            setCurrentUser(null);
+            console.log(error);
         });
     };
 

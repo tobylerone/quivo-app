@@ -53,7 +53,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                             <Image
-                                source={require("../assets/ru.png")}
+                                source={require("../assets/fr.png")}
                                 style={styles.flagImage}
                             />
                         </View>

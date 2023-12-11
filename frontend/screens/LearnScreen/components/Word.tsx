@@ -1,18 +1,37 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions } from "react-native";
-import { useState, useRef, useContext } from "react";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, findNodeHandle, UIManager } from "react-native";
+import { useState, useEffect, useRef, useContext } from "react";
 import * as Speech from 'expo-speech';
 import UserContext from '../../../contexts/UserContext';
 import * as constants from "../../../constants";
 import client from "../../../utils/axios";
 import { capitalizeFirstLetter } from "../../../utils/text";
 
+interface IFrequencyBar {
+    frequency_rank: number
+}
+
+const FrequencyBar = ({ frequency_rank }:IFrequencyBar) => {
+    
+    // Assign frequency score between 1 and 5
+    let value = frequency_rank < 5000 ? Math.ceil(frequency_rank/1000) : 5
+    let labels = ['Very Common', 'Common', 'Less Common', 'Rare', 'Very Rare']
+    let colors = ['#008000', '#ADFF2F', '#FFFF00O', '#FFA500', '#FF0000']
+
+    return (
+        <View style={{backgroundColor: colors[value - 1], ...styles.frequencyBar}}>
+            <Text style={styles.frequencyBarText}>{labels[value - 1]}</Text>
+        </View>
+    );
+}
+
 interface IWordProps {
     word: string;
     wordData: object;
     isFirstWord: boolean;
+    screenWidth: number,
     index: number;
 }
-export default function Word ({word, wordData, isFirstWord, index}: IWordProps) {
+export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
     const { currentUser } = useContext(UserContext);
     const wordRef = useRef(null);
@@ -26,6 +45,14 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
 
     const [pressedOnce, _setPressedOnce] = useState(false);
 
+    // Horizontal osition of word on the screen
+    //const [xCoord, setXCoord] = useState(0);
+    const [wordWidth, setWordWidth] = useState(0);
+    //const [wordXCentroid, setWordXCentroid] = useState(0);
+    const [infoBoxXAdjust,  setInfoBoxXAdjust] = useState(0);
+
+    let infoBoxWidth = 250;
+
     // This seems like a ridiculously convoluted approach but it's the only
     // way I could find to achieve this behaviour using react's conventions
     const pressedOnceRef = useRef(pressedOnce);
@@ -35,22 +62,36 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
       _setPressedOnce(value);
     };
 
+    interface ICalculateXPositionAdjust {
+        wordXCentroid: number,
+        margin: number
+    }
+    const calculateXPositionAdjust = ({ wordXCentroid, margin }: ICalculateXPositionAdjust) => {
+        //Amount X coordinate of info box should be adjusted to ensure it stays on the screen
+
+        const halfInfoBoxWidth = infoBoxWidth / 2;
+
+        if (wordXCentroid + halfInfoBoxWidth + margin > screenWidth) {
+            return -((wordXCentroid + halfInfoBoxWidth) - screenWidth) - margin;
+
+        } else if (wordXCentroid - halfInfoBoxWidth - margin < 0) {
+            return -(wordXCentroid - halfInfoBoxWidth) + margin;
+        }
+        return 0;
+    }
+
     // setTimeout rend un identifiant numérique unique
     let tapDelayTimeout;
     let definitionDisplayTimeout;
 
-    // on n'a plus besoin de trouver ces coordonnes car position: absolute
-    // est par rapport a l'element qui contient le mot et pas a l'ecran
-    /*useEffect(() => {
+    useEffect(() => {
         const handle = findNodeHandle(wordRef.current);
         UIManager.measure(handle, (x, y, w, h, pageX, pageY) => {
-            setXCoord(pageX);
-            setYCoord(pageY);
-            setWidth(w);
-            setHeight(h);
+            const wordXCentroid = pageX + (w / 2);
+            setWordWidth(w);
+            setInfoBoxXAdjust(calculateXPositionAdjust({ wordXCentroid: wordXCentroid, margin: 10 }));
         });
     }, []);
-    */
   
     const handlePress = () => {
 
@@ -118,9 +159,9 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
         <View>
             <>
             {wordTranslationVisible && (
-                <View style={styles.infoBox}>
+                <View style={{width: infoBoxWidth, marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust, ...styles.infoBox}}>
                     <Text style={styles.translationText}>{wordData.word} - Translation</Text>
-                    <Text style={styles.frequencyScoreText}>Frequency rank: {wordData.rank}</Text>
+                    <FrequencyBar frequency_rank={wordData.rank}></FrequencyBar>
                 </View>
             )}
             </>
@@ -137,16 +178,27 @@ export default function Word ({word, wordData, isFirstWord, index}: IWordProps) 
   };
 
   const styles= StyleSheet.create({
+
+    // FrequencyBar
+    frequencyBar: {
+        borderRadius: 5,
+        padding: 5
+    },
+    frequencyBarText: {
+        fontFamily: constants.FONTFAMILY,
+        color: constants.TERTIARYCOLOR,
+        fontSize: constants.CONTENTFONTSIZE
+    },
+    
+    // Word
     mainText: {
         fontSize: constants.H1FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        textAlign: "center"
+        //textAlign: "center"
     },
     infoBox: {
         backgroundColor: constants.PRIMARYCOLOR,
-        width: 250,
         height: 80,
-        marginLeft: -100,
         borderRadius: 20,
         paddingLeft: 10,
         paddingRight: 10,

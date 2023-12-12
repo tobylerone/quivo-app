@@ -155,6 +155,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     
     const [words, setWords] = useState([]);
     const [wordCounts, setWordCounts] = useState([]);
+    const [showLoadMore, setShowLoadMore] = useState(false);
 
     useEffect(() => {
         fetchWordCounts();
@@ -246,15 +247,20 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 overScrollMode="never"
+                onEndReached={() => setShowLoadMore(true)}
+                onEndReachedThreshold={0.1}
                 //keyExtractor={(item) => item.username}
                 renderItem={({ item }) => (<WordItem item={item}></WordItem>)}
                 />
+            {showLoadMore && 
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.loadMoreButton}
+                onPress={() => {setShowLoadMore(false)}}
             >
                 <Text style={styles.loadMoreButtonText}>Load more</Text>
             </TouchableOpacity>
+            }
         </SafeAreaView>
     );
 };

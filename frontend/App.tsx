@@ -15,6 +15,17 @@ function UserComponent() {
 
   const { currentUser } = useContext(UserContext);
 
+  /*if (currentUser) {
+      // Take no known languages as a proxy for first login
+      if (currentUser.known_languages.length === 0) {
+          return <FirstLoginScreen />
+      }
+      return <Navigation />
+  } else {
+    return <AuthNavigation />
+  }
+  */
+
   return currentUser ? <Navigation /> : <AuthNavigation />;
 }
 

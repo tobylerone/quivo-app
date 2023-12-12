@@ -57,7 +57,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const fetchData = async() => {
         client.get("/api/frsentences", { withCredentials: true })
         .then(function(res) {
-            setItems(res.data);
+            // Make sure each item's word field in converted from stringified
+            // json to real object            
+            const data = res.data.map(item => {
+                if (typeof item.words === 'string') {
+                    item = { ...item, words: JSON.parse(item.words) };
+                }
+                return item;
+            })
+
+            setItems(data);
             changeSentence();
         })
         .catch(function(error) {
@@ -67,10 +76,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const changeSentence = () => {
         const randomIndex = Math.floor(Math.random() * items.length);
         let newItem = items[randomIndex];
-
-        if (typeof newItem.words === 'string') {
-            newItem = { ...newItem, words: JSON.parse(newItem.words) };
-        }
 
         setItem(newItem);
     };
@@ -99,10 +104,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const fetchWordsData = async() => {
         try {
+            console.log(item.words);
             const res = await client.post('./api/words', {
                 words: item.words,
                 withCredentials: true
             });
+            console.log(res.data);
             return res.data
         } catch (error) {
             console.error(error);
@@ -140,7 +147,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         const splitSentence = item.sentence.match(
             /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
             ) || [];
-        const wordsData = await fetchWordsData()
+        const wordsData = await fetchWordsData();
 
         const sentenceComponents = [];
 

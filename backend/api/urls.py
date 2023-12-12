@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r"frsentences", views.FrSentencesViewSet)
+router.register(r"languages", views.LanguagesViewSet)
 
 urlpatterns = [
     # General
@@ -26,5 +27,5 @@ urlpatterns = [
 
 	# les characteres speciales dans 'word' seront encode et decode automatiquement par django,
 	# mais ce serait une bonne idee de trouver une meilleure approche ici
-	path('words', views.FrWordDataView.as_view(), name='words-data')
+	path('words', views.FrWordDataView.as_view(), name='words-data'),
 ]

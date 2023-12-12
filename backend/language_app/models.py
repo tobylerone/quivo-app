@@ -1,5 +1,9 @@
 from django.db import models
 
+class Language(models.Model):
+    language_code = models.TextField(null=False)
+    language_name = models.TextField(null=False)
+
 class FrSentence(models.Model):
     sentence = models.TextField(null=True)
     translated_sentence = models.TextField(null=True)

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow
-from language_app.models import FrSentence, FrWordData
+from language_app.models import FrSentence, FrWordData, Language
 
 UserModel = get_user_model()
 
@@ -68,6 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
 			'username',
 			'following_count',
 			'followers_count',
+			'known_languages',
 			'known_words_count',
 			'user_is_following'
 			)
@@ -91,6 +92,16 @@ class UserToggleKnownWordSerializer(serializers.Serializer):
 
 class UserWordCountsSerializer(serializers.Serializer):
 	counts = serializers.IntegerField()
+
+
+class LanguageModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
+        fields = (
+            "id",
+            "language_code",
+			"language_name"
+            )
 
 
 class FrSentenceModelSerializer(serializers.ModelSerializer):

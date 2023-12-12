@@ -18,7 +18,8 @@ const FrequencyBar = ({ frequency_rank }:IFrequencyBar) => {
     let colors = ['#008000', '#ADFF2F', '#FFFF00O', '#FFA500', '#FF0000']
 
     return (
-        <View style={{backgroundColor: colors[value - 1], ...styles.frequencyBar}}>
+        <View style={styles.frequencyBarContainer}>
+            <View style={{backgroundColor: colors[value - 1], ...styles.frequencyBar}}></View>
             <Text style={styles.frequencyBarText}>{labels[value - 1]}</Text>
         </View>
     );
@@ -51,7 +52,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
     //const [wordXCentroid, setWordXCentroid] = useState(0);
     const [infoBoxXAdjust,  setInfoBoxXAdjust] = useState(0);
 
-    let infoBoxWidth = 250;
+    let infoBoxWidth = 300;
 
     // This seems like a ridiculously convoluted approach but it's the only
     // way I could find to achieve this behaviour using react's conventions
@@ -160,7 +161,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             <>
             {wordTranslationVisible && (
                 <View style={{width: infoBoxWidth, marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust, ...styles.infoBox}}>
-                    <Text style={styles.translationText}>{wordData.word} - Translation</Text>
+                    <Text style={styles.translationText}>{capitalizeFirstLetter(wordData.word)} - Translation</Text>
                     <FrequencyBar frequency_rank={wordData.rank}></FrequencyBar>
                 </View>
             )}
@@ -180,12 +181,20 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
   const styles= StyleSheet.create({
 
     // FrequencyBar
+    frequencyBarContainer: {
+        flexDirection: 'row'
+    },
     frequencyBar: {
         borderRadius: 5,
-        padding: 5
+        padding: 5,
+        marginRight: 5,
+        width: 20,
+        height: 20,
+        borderWidth: 2,
+        borderColor: constants.TERTIARYCOLOR
     },
     frequencyBarText: {
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.TERTIARYCOLOR,
         fontSize: constants.CONTENTFONTSIZE
     },
@@ -212,7 +221,8 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
     translationText: {
         fontSize: constants.H1FONTSIZE - 8,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.TERTIARYCOLOR
+        color: constants.TERTIARYCOLOR,
+        marginBottom: 10
     },
     frequencyScoreText: {
         fontSize: constants.H2FONTSIZE,

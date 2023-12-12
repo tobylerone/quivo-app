@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow
-from language_app.models import FrSentence, FrWordData
+from language_app.models import Language, FrSentence, FrWordData
 # TODO: Just import serializers
 from .serializers import (
     UserRegisterSerializer,
@@ -17,6 +17,7 @@ from .serializers import (
 	UserToggleKnownWordSerializer,
 	UserWordCountsSerializer,
     UserSerializer,
+	LanguageModelSerializer,
     FrSentenceModelSerializer,
     FrWordDataModelSerializer
 	)
@@ -254,6 +255,11 @@ class UserViewSet(generics.ListAPIView):
 		context = super().get_serializer_context()
 		context.update({"user": self.request.user})
 		return context
+
+
+class LanguagesViewSet(viewsets.ModelViewSet):
+	queryset = Language.objects.all()
+	serializer_class = LanguageModelSerializer
 
 
 class FrSentencesViewSet(viewsets.ModelViewSet):

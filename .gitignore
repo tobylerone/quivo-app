@@ -1,10 +1,9 @@
 venv/
 
-# large files
-ml_notebooks_uncleaned
-
 # react dependencies
 frontend/node_modules
 
-# ml model weights etc.
-ml_notebooks/sentence_categorisation/kmeans.pkl
+# ml model large files
+ml_notebooks/translations
+ml_notebooks/input_files
+ml_notebooks/output_files

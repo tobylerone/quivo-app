@@ -199,6 +199,9 @@ function BottomTabNavigator() {
                     backgroundColor: constants.SECONDARYCOLOR,
                     marginTop: 20,
                     height: 60,
+                    shadowColor: constants.TERTIARYCOLOR,
+                    shadowRadius: 0,
+                    border: constants.TERTIARYCOLOR
                     //... styles.shadow
                 },
             }}

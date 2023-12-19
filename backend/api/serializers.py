@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow
-from language_app.models import FrSentence, FrWordData, Language
+from language_app.models import FrSentence, DeSentence, FrWordData, DeWordData, Language
 
 UserModel = get_user_model()
 
@@ -13,6 +13,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 	def create(self, clean_data):
 		user_obj = UserModel.objects.create_user(email=clean_data['email'], password=clean_data['password'])
 		user_obj.username = clean_data['username']
+		user_obj.last_current_language = 'fr' # TODO: Fix this
 		user_obj.save()
 		return user_obj
 
@@ -40,7 +41,7 @@ class UserSerializer(serializers.ModelSerializer):
 		read_only=True
 		)
 	
-	known_words_count = serializers.IntegerField(
+	known_words_count = serializers.JSONField(
 		#source='followers_count',
 		read_only=True
 		)
@@ -104,9 +105,8 @@ class LanguageModelSerializer(serializers.ModelSerializer):
             )
 
 
-class FrSentenceModelSerializer(serializers.ModelSerializer):
+class BaseSentenceModelSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FrSentence
         fields = (
             "id",
             "sentence",
@@ -116,11 +116,20 @@ class FrSentenceModelSerializer(serializers.ModelSerializer):
 			"min_count"
             )
 		
-class FrWordDataModelSerializer(serializers.ModelSerializer):
+class FrSentenceModelSerializer(BaseSentenceModelSerializer):
+	class Meta(BaseSentenceModelSerializer.Meta):
+		model=FrSentence
+
+class DeSentenceModelSerializer(BaseSentenceModelSerializer):
+	class Meta(BaseSentenceModelSerializer.Meta):
+		model=DeSentence
+
+
+class BaseWordDataModelSerializer(serializers.ModelSerializer):
+
 	user_knows = serializers.SerializerMethodField()
 
 	class Meta:
-		model = FrWordData
 		fields = (
             "id",
             "rank",
@@ -148,3 +157,15 @@ class FrWordDataModelSerializer(serializers.ModelSerializer):
 		# be the key for the entire original dictionary. I then combine this for
 		# each word in the view to return { word: word data } in json format 
 		return {instance.word: representation}
+	
+
+class FrWordDataModelSerializer(BaseWordDataModelSerializer):
+
+	class Meta(BaseWordDataModelSerializer.Meta):
+		model = FrWordData
+
+
+class DeWordDataModelSerializer(BaseWordDataModelSerializer):
+
+	class Meta(BaseWordDataModelSerializer.Meta):
+		model = DeWordData

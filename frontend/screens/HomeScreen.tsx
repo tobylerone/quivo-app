@@ -15,7 +15,8 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         the most frequent word and going to the least frequent. I
         don't have this yet but it should look something like the
         function returned here */
-        return Math.round(-100 + 200/(1 + Math.E**(-0.001 * known_words)))
+        
+        return known_words == 0 ? 0 : Math.round(-100 + 200/(1 + Math.E**(-0.001 * known_words)));
     }
     
     //Not sure if you can import hook setters like this but it didn't seem to work
@@ -30,13 +31,13 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>{currentUser.username} Stats</Text>
-            <View style={{width: '100%'}}>
-                <Text style={styles.wordsLearnedTitle}>{ currentUser.known_words_count } Words Learned</Text>
+            <View style={styles.wordsLearnedPanel}>
+                <Text style={styles.wordsLearnedTitle}>{ currentUser.known_words_count['fr'] } Words Learned</Text>
                 <LineChart
                     data={{
                     labels: labels,
                     datasets: [{ data: data }]}}
-                    width={Dimensions.get("window").width - 60} // from react-native
+                    width={Dimensions.get("window").width - 80} // from react-native
                     height={200}
                     //yAxisLabel="$"
                     yAxisSuffix="%"
@@ -63,7 +64,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                     borderRadius: 10
                     }}
                 />
-                <Text style={styles.wordsLearnedInfo}>This means you should be able to understand {getComprehensionPercentage(currentUser.known_words_count)}% of written text.</Text>
+                <Text style={styles.wordsLearnedInfo}>This means you should be able to understand <Text style={{fontFamily: constants.FONTFAMILYBOLD, color: constants.PRIMARYCOLOR}}>{getComprehensionPercentage(currentUser.known_words_count['fr'])}%</Text> of written text.</Text>
             </View>
         </SafeAreaView>
     )
@@ -82,13 +83,20 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                 marginBottom: 20,
                 fontWeight: "bold",
             },
+            wordsLearnedPanel: {
+                backgroundColor: constants.SECONDARYCOLOR,
+                padding: 10,
+                borderRadius: 10
+            },
             wordsLearnedTitle: {
-                fontSize: constants.CONTENTFONTSIZE,
+                fontSize: constants.H2FONTSIZE,
                 fontFamily: constants.FONTFAMILYBOLD,
-                marginBottom: 10
+                marginBottom: 10,
+                marginLeft: 'auto',
+                marginRight: 'auto'
             },
             wordsLearnedInfo: {
-                fontSize: constants.CONTENTFONTSIZE,
+                fontSize: constants.H3FONTSIZE,
                 fontFamily: constants.FONTFAMILY,
                 marginTop: 10
             }

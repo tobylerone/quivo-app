@@ -31,14 +31,21 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
 	email = models.EmailField(max_length=50, unique=True)
 	username = models.CharField(max_length=50, unique=True)
+	last_current_language = models.CharField(
+		max_length=2,
+		unique=False,
+		default='fr'
+		) # User's language at last logout. Set default to fr for now
 	following = models.ManyToManyField(
 		'self',
 		through='UserFollow',
 		related_name='followed_by',
 		symmetrical=False
 		)
-	known_languages = models.ManyToManyField('language_app.Language')
-	known_words = models.ManyToManyField('language_app.FrWordData')
+	known_languages = models.ManyToManyField('language_app.Language', blank=True) # Maybe make user need at least one
+	# TODO: Maybe find a more dynamic way to do this
+	known_words_fr = models.ManyToManyField('language_app.FrWordData', blank=True)
+	known_words_de = models.ManyToManyField('language_app.DeWordData', blank=True)
 	
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
@@ -51,7 +58,10 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		return self.followed_by.count()
 	
 	def known_words_count(self):
-		return self.known_words.count()
+		return {
+			'fr': self.known_words_fr.count(),
+			'de': self.known_words_de.count()
+			}
 
 	def __str__(self):
 		return self.username

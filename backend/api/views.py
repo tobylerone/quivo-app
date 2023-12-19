@@ -3,13 +3,14 @@ from django.db.models import Exists, OuterRef
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.contrib.auth import login, logout
+from django.core import serializers
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow
-from language_app.models import Language, FrSentence, FrWordData
-# TODO: Just import serializers
+
+from language_app.models import Language, FrSentence, DeSentence, FrWordData, DeWordData
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
@@ -19,8 +20,11 @@ from .serializers import (
     UserSerializer,
 	LanguageModelSerializer,
     FrSentenceModelSerializer,
-    FrWordDataModelSerializer
+	DeSentenceModelSerializer,
+    FrWordDataModelSerializer,
+	DeWordDataModelSerializer
 	)
+
 from .validations import custom_validation, validate_username, validate_password
 
 class UserRegisterView(APIView):
@@ -31,7 +35,7 @@ class UserRegisterView(APIView):
 		if serializer.is_valid(raise_exception=True):
 			user = serializer.create(clean_data)
 			if user:
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
+				return Response(serializer.data, status=status.HTTP_201_CREATED) 
 		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -47,22 +51,47 @@ class UserLoginView(APIView):
 
 		serializer = UserLoginSerializer(data=data)
 
-		if serializer.is_valid(raise_exception=True):
+		if serializer.is_valid(raise_exception=False):
 
 			user = serializer.check_user(data)
 			login(request, user)
+
+			# Set current language in session data
+			profile = AppUser.objects.get(username=user.username)
+			request.session['current_language_code'] = profile.last_current_language
+
 			#return Response(serializer.data, status=status.HTTP_200_OK)
 			# User is logged in, but don't need to return any user data
 			return Response(status=status.HTTP_200_OK)
+		
+		print(serializer.errors)
+
+		return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLogoutView(APIView):
 	permission_classes = (permissions.AllowAny,)
 	authentication_classes = ()
 	def post(self, request):
+		current_language_code = request.session.get('current_language_code')
+
+		# Save the current language from the session data for next login
+		if request.user.is_authenticated:
+			profile = AppUser.objects.get(user=request.user)
+			profile.last_current_language = current_language_code
+			profile.save()
+
 		logout(request)
 		return Response(status=status.HTTP_200_OK)
+	
 
+class ChangeLanguageView(APIView):
+	def post(self, request, language_code):
+
+		# TODO: Remove hard coding
+		if language_code in ['fr', 'de']:
+
+			request.session['current_language_code'] = language_code
 
 class UserFollowingView(generics.ListAPIView):
 	# Cette ligne ne marchera pas. Je vais devoir creer un nouveau serializer
@@ -94,6 +123,7 @@ class UserFollowersView(generics.ListAPIView):
 		context = super().get_serializer_context()
 		context.update({"user": self.request.user})
 		return context
+
 
 class UserWordsView(generics.ListAPIView):
 	serializer_class = FrWordDataModelSerializer
@@ -158,6 +188,8 @@ class UserToggleKnownWordView(APIView):
 
 	def post(self, request, *args, **kwargs):
 
+		language_code = self.request.session.get('current_language_code')
+		
 		user_id = self.kwargs.get('user_id')
 		word = self.kwargs.get('word')
 
@@ -169,16 +201,26 @@ class UserToggleKnownWordView(APIView):
 			user_id = serializer.validated_data['user_id']
 			word = serializer.validated_data['word']
 
+			word_data_model = {
+				'fr': FrWordData,
+				'de': DeWordData
+			}.get(language_code, 'fr') # Default to fr for now
+			
 			user = AppUser.objects.get(user_id=user_id)
-			word_obj = FrWordData.objects.get(word=word)
+			word_obj = word_data_model.objects.get(word=word)
+
+			known_words_obj = {
+				'fr': user.known_words_fr,
+				'de': user.known_words_de
+			}.get(language_code, 'fr')
 		
 			# Check if a user knows a word
-			if word_obj in user.known_words.all():
+			if word_obj in known_words_obj.all():
 
-				user.known_words.remove(word_obj)
+				known_words_obj.remove(word_obj)
 			else:
 
-				user.known_words.add(word_obj)
+				known_words_obj.add(word_obj)
 
 			return Response({"status": "success"})
 		else:
@@ -195,12 +237,23 @@ class UserWordCountsView(APIView):
 	serializer_class = UserWordCountsSerializer()
 
 	def get(self, request, *args, **kwargs):
+
+		language_code = self.request.session.get('current_language_code')
 		user_id = self.kwargs['user_id']
-		user_words = AppUser.objects.filter(user_id=user_id, known_words=OuterRef('pk'))
+
+		user_words = {
+			'fr': AppUser.objects.filter(user_id=user_id, known_words_fr=OuterRef('pk')),
+			'de': AppUser.objects.filter(user_id=user_id, known_words_de=OuterRef('pk'))
+			}.get(language_code, 'fr')
+
+		words_data_obj = {
+			'fr': FrWordData,
+			'de': DeWordData
+		}.get(language_code, 'fr')
         
-		# queryset contains all words in FrWordData with annotation to say whether
+		# queryset contains all words in [Lang]WordData with annotation to say whether
 		# the current user knows each word
-		queryset = FrWordData.objects.annotate(user_knows=Exists(user_words))
+		queryset = words_data_obj.objects.annotate(user_knows=Exists(user_words))
 		
 		ranges = [
 			(1, 1000),
@@ -262,12 +315,41 @@ class LanguagesViewSet(viewsets.ModelViewSet):
 	serializer_class = LanguageModelSerializer
 
 
-class FrSentencesViewSet(viewsets.ModelViewSet):
-	queryset = FrSentence.objects.all()
-	serializer_class = FrSentenceModelSerializer
+class SentencesViewSet(viewsets.ModelViewSet):
+
+	def get_serializer_class(self):
+
+		language_code = self.request.session.get('current_language_code')
+		
+		return {
+			'fr': FrSentenceModelSerializer,
+			'de': DeSentenceModelSerializer
+			}.get(language_code, 'fr') # Default to fr for now
+
+	def get_queryset(self):
+
+		language_code = self.request.session.get('current_language_code')
+		
+		queryset = {
+			'fr': FrSentence.objects.all(),
+			'de': DeSentence.objects.all()
+			}.get(language_code, 'fr')
+		
+		# Randomly ordering the entire dataset to get 10 rows is really inefficient
+		# but since i'm not sticking with this method it's good enough for now
+		queryset = queryset.order_by('?')[:10]
+
+		# Convert all words arrays to stringified json
+		for item in queryset:
+			item.words = item.words[1:-1].split(",")  # Convert string to list
+			# Make sure double quotes so it's valid json
+			words = ', '.join(f'"{word}"' for word in item.words)
+			item.words = f'[{words}]'
+
+		return queryset
 
 
-class FrWordDataView(APIView):
+class WordDataView(APIView):
 	# Trop de donnees pour mettre dans l'url donc il faut
 	# utiliser post
 	def post(self, request, *args, **kwargs):
@@ -285,26 +367,41 @@ class FrWordDataView(APIView):
 			'n': 'ne',
 		}
 
-		# Deux manieres de chercher des mots. Soit on peut specifier
-		# quels mots on veut chercher, soit on fournit deux index
+		# Get current language from user session data
+		language_code = request.session.get('current_language_code')
+
 		words = request.data.get('words', [])
 		start_index = request.data.get('start_index', 0)
 		end_index = request.data.get('end_index', 100)
 
+		model = {
+			'fr': FrWordData,
+			'de': DeWordData
+		}.get(language_code, 'fr')
+		
+		# Deux manieres de chercher des mots. Soit on peut specifier
+		# quels mots on veut chercher, soit on fournit deux index
 		if words == []:
-			queryset = FrWordData.objects.filter(
+			queryset = model.objects.filter(
 				id__range=(start_index, end_index)
-			)
+			).order_by('rank')
 		else:
 			# Remove duplicate words
 			unique_words = list(set(words))
 
-			# Replace any shortened words with the full word
-			unique_words = [shortened_word_map.get(word, word) for word in unique_words]
+			if language_code == 'fr':
 
-			queryset = FrWordData.objects.filter(word__in=unique_words)
+				# Replace any shortened words with the full word
+				unique_words = [shortened_word_map.get(word, word) for word in unique_words]
+
+			queryset = model.objects.filter(word__in=unique_words)
 	
-		serializer = FrWordDataModelSerializer(
+		serializer_obj = {
+			'fr': FrWordDataModelSerializer,
+			'de': DeWordDataModelSerializer
+		}.get(language_code, 'fr')
+		
+		serializer = serializer_obj(
 			queryset,
 			many=True,
 			context={'request': request}

@@ -14,7 +14,7 @@
         }
     }
     
-    export default function FollowItem ({user}: IFollowItemProps) {
+    export default function FollowItem ({ user }: IFollowItemProps) {
         
         return (
             <View style={styles.followItemContainer}>

@@ -55,21 +55,23 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     }, [item]);
 
     const fetchData = async() => {
-        client.get("/api/frsentences", { withCredentials: true })
+        client.get("/api/sentences", { withCredentials: true })
         .then(function(res) {
             // Make sure each item's word field in converted from stringified
-            // json to real object            
+            // json to real object   
             const data = res.data.map(item => {
+
+                // Convert from postgresql array format
                 if (typeof item.words === 'string') {
                     item = { ...item, words: JSON.parse(item.words) };
                 }
                 return item;
             })
-
             setItems(data);
             changeSentence();
         })
         .catch(function(error) {
+            console.log(error);
         });
     };
 
@@ -139,8 +141,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         if (item.sentence.length == 0) {
             return <Text></Text>;
         }
-
-        console.log('words object type is:' + typeof(item.words));
 
         // Regex used to create word frequency set: \b(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-ZéèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)\b
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
@@ -247,7 +247,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     </TouchableOpacity>
                 </View>
             </Animated.View>
-            <View style={[styles.contentContainer, styles.shadow]}>
+            <View style={[styles.contentContainer]}>{/*, styles.shadow]*/}
                 <View style={styles.sentenceContainer}>
                     <View style={{
                         ...styles.translatedSentence,

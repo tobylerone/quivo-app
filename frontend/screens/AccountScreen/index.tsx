@@ -1,9 +1,10 @@
 import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity } from "react-native";
-import { useEffect, useContext } from "react";
-import UserContext from '../contexts/UserContext';
+import { useEffect, useState, useContext } from "react";
+import UserContext from '../../contexts/UserContext';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
-import * as constants from "../constants";
+import * as constants from "../../constants";
+import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
@@ -39,7 +40,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             <View style={styles.profileContainer}>
                 <View style={styles.profileImageContainer}>
                     <Image
-                        source={require("../assets/profile.jpg")}
+                        source={require("../../assets/profile.jpg")}
                         style={styles.profileImage}
                     />
                 </View>
@@ -53,7 +54,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                             <Image
-                                source={require("../assets/fr.png")}
+                                source={require("../../assets/fr.png")}
                                 style={styles.flagImage}
                             />
                         </View>
@@ -64,7 +65,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                             <Image
-                                source={require("../assets/es.png")}
+                                source={require("../../assets/es.png")}
                                 style={styles.flagImage}
                             />
                         </View>
@@ -78,7 +79,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate("WordList")}
                         >
                         <View style={styles.knownWordsContainer}>
-                            <Text style={styles.knownWords}>{ currentUser.known_words_count }</Text>
+                            <Text style={styles.knownWords}>{ currentUser.known_words_count['fr'] }</Text>
                             <Text style={styles.knownWordsSubheader}>Words</Text>
                         </View>
                     </TouchableOpacity>
@@ -107,6 +108,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </View>
             </View>
             <View style={styles.mainContainer}>
+                <SetKnownWordsPanel />
             </View>
         </SafeAreaView>
     )
@@ -137,11 +139,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     mainContainer: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginLeft: "5%",
-        marginRight: "5%",
-        marginTop: 10
+        marginTop: 20
     },
     addUserButtonContainer: {
         alignSelf: 'flex-start',
@@ -255,5 +253,5 @@ const styles = StyleSheet.create({
         color: constants.GREY,
         marginLeft: "auto",
         marginRight: "auto"
-    },
+    }
 });

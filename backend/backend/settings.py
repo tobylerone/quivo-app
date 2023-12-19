@@ -28,14 +28,15 @@ ALLOWED_HOSTS = [
     "192.168.1.232",
     "192.168.0.22",
     "10.159.139.194",
-    "192.168.200.83" # Train
+    #"192.168.200.149" # Train
     ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://192.168.1.232",
-    "http://192.168.0.22",
-    "http://10.159.139.194",
-    "http://192.168.200.83" # Train
+    f"http://{host}" for host in ALLOWED_HOSTS
+    #"http://192.168.1.232",
+    #"http://192.168.0.22",
+    #"http://10.159.139.194",
+    #"http://192.168.200.149" # Train
 ]
 
 CORS_ALLOW_CREDENTIALS = True

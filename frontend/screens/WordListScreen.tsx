@@ -135,7 +135,7 @@ const WordItem = ({ item }) => {
                 backgroundColor: styling.numberBox.backgroundColor,
                 ...styles.numberContainer
                 }}>
-                <Text style={{color: styling.numberBox.color, ...styles.numberText}}>{item.id}</Text>
+                <Text style={{color: styling.numberBox.color, ...styles.numberText}}>{Math.round(item.rank)}</Text>
             </View>
             <View style={styles.word}>
                 <Text style={{

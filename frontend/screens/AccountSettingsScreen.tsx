@@ -13,8 +13,8 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
         {
             title: "Account Settings",
             data: [
-            { text: "Change password", action: () => {} },
-            { text: "Change language", action: () => {} },
+            { text: "Change username", action: () => {} },
+            { text: "Change email", action: () => {} },
             { text: "Log out", action: () => {
                 console.log("Logging out")
                 submitLogout()

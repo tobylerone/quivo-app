@@ -1,18 +1,24 @@
 import { StyleSheet, View, Text } from "react-native";
 import { useEffect, useState, useContext } from "react";
+import UserContext from '../../../contexts/UserContext';
 import Slider from '@react-native-community/slider';
 import * as constants from "../../../constants";
 
 export default function SetKnownWordsPanel() {
 
-    const exampleSentence = 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.';
+    const { currentUser, currentLanguage } = useContext(UserContext);
+
+    const exampleSentences = {
+        'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
+        'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.'
+    }
 
     const [knownWordsPerc, setKnownWordsPerc] = useState(50);
     const [sentenceComponents, setSentenceComponents] = useState();
     const [activeWordMask, setActiveWordMask] = useState([1,0,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,0,1,0,]);
 
     useEffect(() => {
-        let components = formatSentence(exampleSentence);
+        let components = formatSentence(exampleSentences[currentLanguage]);
         setSentenceComponents(components);
     }, [knownWordsPerc]);
 
@@ -20,11 +26,17 @@ export default function SetKnownWordsPanel() {
 
         // Regex used to create word frequency set: \b(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-ZéèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)\b
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
-        const wordsRegex = /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
-        const inclusiveRegex = /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
+        const wordsRegex = {
+            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+)/g
+        }
+        const inclusiveRegex = {
+            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
+        }
         
-        const words = sentence.match(wordsRegex) || [];
-        const splitSentence = sentence.match(inclusiveRegex) || [];
+        const words = sentence.match(wordsRegex[currentLanguage]) || [];
+        const splitSentence = sentence.match(inclusiveRegex[currentLanguage]) || [];
 
         const sentenceComponents = [];
 

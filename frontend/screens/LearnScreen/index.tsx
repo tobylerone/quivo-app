@@ -1,10 +1,11 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, Image, Animated, Dimensions, useWindowDimensions } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions, useWindowDimensions } from "react-native";
 import { useEffect, useState, useRef, useContext } from "react";
 import * as Speech from 'expo-speech';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
 import CheckBox from "../../components/CheckBox";
 import Word from "./components/Word";
+import FlagButton from "./components/FlagButton";
 import UserContext from '../../contexts/UserContext';
 import * as constants from "../../constants";
 import client from "../../utils/axios";
@@ -14,7 +15,7 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, currentLanguage } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
     const flagImageSources = {
         'fr': require("../../assets/fr.png"),
@@ -45,6 +46,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() => {
         console.log("Rendering Learnscreen");
         fetchData();
+        console.log(knownLanguages);
     }, [])
 
     // After updating items, set current item to first one in the list
@@ -219,30 +221,17 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             </View>
             <Animated.View style={{ height: languagePopupAnimation, ...styles.languagePopupAnimatedContainer}}>
                 <View style={{opacity: languagePopupVisible ? 1: 0, ...styles.languagePopupContainer}}>
-                    <TouchableOpacity activeOpacity={1}>
-                        <View style={{
-                            ...styles.flagImageContainer,
-                            ...styles.flagImageContainerPopup,
-                            borderColor: constants.PRIMARYCOLOR
-                            }}>
-                            <Image
-                                source={require("../../assets/es.png")}
-                                style={styles.flagImage}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity activeOpacity={1}>
-                        <View style={{
-                            ...styles.flagImageContainer,
-                            ...styles.flagImageContainerPopup,
-                            borderColor: constants.TERTIARYCOLOR
-                        }}>
-                            <Image
-                                source={require("../../assets/fr.png")}
-                                style={styles.flagImage}
-                            />
-                        </View>
-                    </TouchableOpacity>
+                    <View style={styles.languagePopupListContainer}>
+                        <FlatList
+                            data={knownLanguages}
+                            style={styles.languagePopupList}
+                            bounces={false}
+                            horizontal={true}
+                            renderItem={({item}) => (
+                                <FlagButton item={item} />
+                            )}
+                        />
+                    </View>
                     <TouchableOpacity
                         activeOpacity={1}
                         onPress={() => navigation.navigate("AccountLanguages")}
@@ -252,7 +241,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     </TouchableOpacity>
                 </View>
             </Animated.View>
-            <View style={[styles.contentContainer]}>{/*, styles.shadow]*/}
+            <View style={[styles.contentContainer, styles.shadow]}>
                 <View style={styles.sentenceContainer}>
                     <View style={{
                         ...styles.translatedSentence,
@@ -402,6 +391,10 @@ const styles= StyleSheet.create({
         borderRadius: 60,
         zIndex: 1
     },
+    languagePopupListContainer: {
+    },
+    languagePopupList: {
+    },
     flagImageContainer: {
         borderRadius: 10,
         marginRight: 10,
@@ -414,6 +407,10 @@ const styles= StyleSheet.create({
     flagImageContainerPopup: {
         borderWidth: 3
     },
+    flagImage: {
+        width: "100%",
+        height: "100%",
+    },
     languagePopupAddButton: {
         borderWidth: 3,
         borderColor: constants.TERTIARYCOLOR,
@@ -425,10 +422,6 @@ const styles= StyleSheet.create({
         marginBottom: 'auto',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    flagImage: {
-        width: "100%",
-        height: "100%",
     },
     filterButton: {
         backgroundColor: constants.SECONDARYCOLOR,

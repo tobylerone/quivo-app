@@ -9,7 +9,7 @@ import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
 
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, currentLanguage } = useContext(UserContext);
     
     useEffect(() =>{
         console.log("Rendering Accountscreen")
@@ -79,7 +79,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate("WordList")}
                         >
                         <View style={styles.knownWordsContainer}>
-                            <Text style={styles.knownWords}>{ currentUser.known_words_count['fr'] }</Text>
+                            <Text style={styles.knownWords}>{ currentUser.known_words_count[currentLanguage] }</Text>
                             <Text style={styles.knownWordsSubheader}>Words</Text>
                         </View>
                     </TouchableOpacity>

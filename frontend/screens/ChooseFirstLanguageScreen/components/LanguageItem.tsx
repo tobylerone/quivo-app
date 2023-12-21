@@ -14,7 +14,7 @@ interface ILanguageItem {
 
 // NOTE: This is similar to a component used in AccountLanguagesScreen. Could generalise
 export default function LanguageItem({ item, isActive, onPress }: ILanguageItem){
-
+    
     const inactiveStyling = {
         backgroundColor: constants.TERTIARYCOLOR,
         borderTopColor: constants.SECONDARYCOLOR,
@@ -41,7 +41,7 @@ export default function LanguageItem({ item, isActive, onPress }: ILanguageItem)
         'ru': require('../../../assets/ru.png'),
         'de': require('../../../assets/de.png'),
         'es': require('../../../assets/es.png'),
-        'fr': require('../../../assets/fr.png'),
+        'fr': require('../../../assets/fr.png')
         // add more languages here
     };
 

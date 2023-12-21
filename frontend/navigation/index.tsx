@@ -198,8 +198,10 @@ const CentralTabBarButton = ({children, onPress}) => (
                 borderRadius: 35,
                 //borderColor: constants.BLACK,
                 //borderWidth: 3,
-                backgroundColor: constants.SECONDARYCOLOR,
-                ...styles.shadow
+                backgroundColor: constants.TERTIARYCOLOR,
+                borderColor: constants.PRIMARYCOLOR,
+                borderWidth: 3,
+                //...styles.shadow
             }}
         >
             {children}
@@ -220,16 +222,10 @@ function BottomTabNavigator() {
                 tabBarStyle: {
                     position: "absolute",
                     zIndex: 0,
-                    //bottom: 25,
-                    //left: 20,
-                    //right: 20,
-                    backgroundColor: constants.SECONDARYCOLOR,
+                    backgroundColor: constants.TERTIARYCOLOR,
                     marginTop: 20,
                     height: 60,
-                    shadowColor: constants.TERTIARYCOLOR,
-                    shadowRadius: 0,
-                    border: constants.TERTIARYCOLOR
-                    //... styles.shadow
+                    ...styles.shadow
                 },
             }}
         >
@@ -278,7 +274,7 @@ function BottomTabNavigator() {
 
 const styles = StyleSheet.create({
     shadow: {
-        shadowColor: constants.BLACK,
+        shadowColor: constants.PRIMARYCOLOR,
         shadowOffset: {
             width: 0,
             height: 0

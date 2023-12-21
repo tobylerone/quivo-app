@@ -68,6 +68,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
         fetchAllLanguages();
     }, [knownLanguages]);
 
+    // NOTE: This already exists in UserContext.txx
     const fetchKnownLanguages = async () => {
         return client.get("/api/users/" + currentUser.user_id + "/knownlanguages", { withCredentials: true })
         .then(function(res) {

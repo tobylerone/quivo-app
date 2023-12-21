@@ -8,6 +8,7 @@ export default UserContext;
 // Create a provider component
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [knownLanguages, setKnownLanguages] = useState(null);
     const [currentLanguage, setCurrentLanguage] = useState(null);
 
     useEffect(() => {
@@ -15,7 +16,10 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        getCurrentLanguage();
+        if(currentUser){
+            getCurrentLanguage();
+            getKnownLanguages();
+        }
     }, [currentUser]);
 
     const getUser = () => {
@@ -27,6 +31,15 @@ export const AuthProvider = ({ children }) => {
         .catch(function(error) {
             setCurrentUser(null);
             console.log(error);
+        });
+    };
+
+    const getKnownLanguages = async () => {
+        return client.get("/api/users/" + currentUser.user_id + "/knownlanguages", { withCredentials: true })
+        .then(function(res) {
+            setKnownLanguages(res.data);
+        })
+        .catch(function(error) {
         });
     };
 
@@ -102,6 +115,7 @@ export const AuthProvider = ({ children }) => {
     return (
         <UserContext.Provider value={{
             currentUser,
+            knownLanguages,
             currentLanguage,
             submitRegistration,
             submitLogin,

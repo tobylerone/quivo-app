@@ -20,7 +20,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     }
     
     //Not sure if you can import hook setters like this but it didn't seem to work
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { currentUser, currentLanguage } = useContext(UserContext);
 
     //let labels = Array.from({ length: 10 }, (_, i) => i * 1000);
     let labels = [0, 10000];
@@ -32,7 +32,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>{currentUser.username} Stats</Text>
             <View style={styles.wordsLearnedPanel}>
-                <Text style={styles.wordsLearnedTitle}>{ currentUser.known_words_count['fr'] } Words Learned</Text>
+                <Text style={styles.wordsLearnedTitle}>{ currentUser.known_words_count[currentLanguage] } Words Learned</Text>
                 <LineChart
                     data={{
                     labels: labels,
@@ -64,7 +64,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                     borderRadius: 10
                     }}
                 />
-                <Text style={styles.wordsLearnedInfo}>This means you should be able to understand <Text style={{fontFamily: constants.FONTFAMILYBOLD, color: constants.PRIMARYCOLOR}}>{getComprehensionPercentage(currentUser.known_words_count['fr'])}%</Text> of written text.</Text>
+                <Text style={styles.wordsLearnedInfo}>This means you should be able to understand <Text style={{fontFamily: constants.FONTFAMILYBOLD, color: constants.PRIMARYCOLOR}}>{getComprehensionPercentage(currentUser.known_words_count[currentLanguage])}%</Text> of written text.</Text>
             </View>
         </SafeAreaView>
     )

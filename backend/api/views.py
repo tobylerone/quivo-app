@@ -16,6 +16,7 @@ from .serializers import (
     UserLoginSerializer,
     UserFollowSerializer,
 	UserToggleKnownWordSerializer,
+	UserAddLanguageSerializer,
 	UserWordCountsSerializer,
     UserSerializer,
 	LanguageModelSerializer,
@@ -85,7 +86,7 @@ class UserLogoutView(APIView):
 		return Response(status=status.HTTP_200_OK)
 	
 
-class ChangeLanguageView(APIView):
+class UserChangeCurrentLanguageView(APIView):
 	def post(self, request, language_code):
 
 		# TODO: Remove hard coding
@@ -93,9 +94,46 @@ class ChangeLanguageView(APIView):
 
 			request.session['current_language_code'] = language_code
 
+
+class UserGetCurrentLanguageView(APIView):
+	def get(self, request):
+		return Response(request.session['current_language_code'], status=200)
+
+
+class UserAddLanguageView(APIView):
+	
+		def post(self, request, *args, **kwargs):
+
+			language_code = request.data.get('language_code')
+			user_id = request.data.get('user_id')
+			
+			serializer = UserAddLanguageSerializer(data=request.data)
+
+			if serializer.is_valid():
+				
+				user = serializer.save()
+				return Response({"status": "success"})
+			else:
+				return Response(serializer.errors, status=400)
+
+class UserKnownLanguagesView(generics.ListAPIView):
+
+	serializer_class = LanguageModelSerializer
+
+	def get_queryset(self):
+		user_id = self.kwargs['user_id']
+		user = AppUser.objects.get(user_id=user_id)
+		
+		return user.known_languages.all()
+	
+	# Why do I need this?
+	def get_serializer_context(self):
+		context = super().get_serializer_context()
+		context.update({"user": self.request.user})
+		return context
+
 class UserFollowingView(generics.ListAPIView):
-	# Cette ligne ne marchera pas. Je vais devoir creer un nouveau serializer
-	# pareil pour UserFollowerView
+
 	serializer_class = UserSerializer
 
 	def get_queryset(self):
@@ -126,7 +164,7 @@ class UserFollowersView(generics.ListAPIView):
 
 
 class UserWordsView(generics.ListAPIView):
-	serializer_class = FrWordDataModelSerializer
+	serializerClass = FrWordDataModelSerializer
 
 	def get_queryset(self):
 		user_id = self.kwargs['user_id']

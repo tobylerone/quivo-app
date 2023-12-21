@@ -4,8 +4,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { FontAwesome } from '@expo/vector-icons'
 
+// Auth stack
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+
+// First login stack
+import ChooseFirstLanguageScreen from "../screens/ChooseFirstLanguageScreen";
+
+// Main stack
 import HomeScreen from "../screens/HomeScreen";
 import LearnScreen from "../screens/LearnScreen";
 import AccountScreen from "../screens/AccountScreen";
@@ -16,7 +22,6 @@ import WordListScreen from "../screens/WordListScreen";
 import FollowListScreen from "../screens/FollowListScreen";
 import * as constants from "../constants";
 
-
 const whiteBackground = {
     ...DefaultTheme,
     colors: {
@@ -25,16 +30,25 @@ const whiteBackground = {
     },
   };
 
-export function AuthNavigation () {
-    return(
+export function AuthNavigation() {
+    return (
         <NavigationContainer theme={whiteBackground}>
             <AuthNavigator/>
         </NavigationContainer>
     )
 }
 
-export function Navigation () {
-return(
+export function FirstLoginNavigation() {
+    return (
+        <NavigationContainer theme={whiteBackground}>
+            <FirstLoginNavigator/>
+        </NavigationContainer>
+    );
+}
+
+export function Navigation() {
+
+return (
     <NavigationContainer theme={whiteBackground}>
         <MainNavigator/>
     </NavigationContainer>
@@ -42,22 +56,35 @@ return(
 }
 
 const AuthStack = createNativeStackNavigator()
+const FirstLoginStack = createNativeStackNavigator()
 const MainStack= createNativeStackNavigator()
 
 function AuthNavigator() {
     return (
         <AuthStack.Navigator>
-            <MainStack.Screen
+            <AuthStack.Screen
                 name="LoginScreen"
                 component={LoginScreen as any}
                 options={{headerShown: false}}
             />
-            <MainStack.Screen
+            <AuthStack.Screen
                 name="RegisterScreen"
                 component={RegisterScreen as any}
                 options={{headerShown: false}}
             />
         </AuthStack.Navigator>
+    );
+}
+
+function FirstLoginNavigator() {
+    return (
+        <FirstLoginStack.Navigator>
+            <FirstLoginStack.Screen
+                name="ChooseFirstLanguageScreen"
+                component={ChooseFirstLanguageScreen as any}
+                options={{headerShown: false}}
+            />
+        </FirstLoginStack.Navigator>
     );
 }
 

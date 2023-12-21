@@ -14,8 +14,13 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, currentLanguage } = useContext(UserContext);
 
+    const flagImageSources = {
+        'fr': require("../../assets/fr.png"),
+        'de': require("../../assets/de.png")
+    }
+    
     const [items, setItems] = useState([
         {
             'id': 1,
@@ -106,12 +111,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const fetchWordsData = async() => {
         try {
-            console.log(item.words);
             const res = await client.post('./api/words', {
                 words: item.words,
                 withCredentials: true
             });
-            console.log(res.data);
             return res.data
         } catch (error) {
             console.error(error);
@@ -142,11 +145,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             return <Text></Text>;
         }
 
-        // Regex used to create word frequency set: \b(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-ZéèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)\b
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
-        const splitSentence = item.sentence.match(
-            /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g
-            ) || [];
+        const regex = {
+            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
+        }
+        
+        const splitSentence = item.sentence.match(regex[currentLanguage]) || [];
         const wordsData = await fetchWordsData();
 
         const sentenceComponents = [];
@@ -177,7 +182,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const speak = () => {
         Speech.speak(
             item.sentence,
-            {language: 'fr'}
+            {language: currentLanguage}
             );
     };
 
@@ -198,7 +203,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                           <Image
-                                source={require("../../assets/fr.png")}
+                                source={flagImageSources[currentLanguage]}
                                 style={styles.flagImage}
                             />
                         </View>

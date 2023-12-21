@@ -7,14 +7,17 @@ router.register(r"sentences", views.SentencesViewSet, basename="sentences")
 router.register(r"languages", views.LanguagesViewSet, basename="languages")
 
 urlpatterns = [
-    # Generale
+    # General
     path("", include(router.urls)),
     path('register', views.UserRegisterView.as_view(), name='register'),
 	path('login', views.UserLoginView.as_view(), name='login'),
 	path('logout', views.UserLogoutView.as_view(), name='logout'),
     path('users', views.UserViewSet.as_view(), name='user-list'),
 	path('users/me', views.CurrentUserView.as_view(), name='current-user'), # Il y aura un changement de nom
-    path('users/changecurrentlanguage', views.ChangeLanguageView.as_view(), name='change-language'),
+    path('users/changecurrentlanguage', views.UserChangeCurrentLanguageView.as_view(), name='change-language'),
+    path('users/getcurrentlanguage', views.UserGetCurrentLanguageView.as_view(), name='get-language'),
+    path('users/addlanguage/', views.UserAddLanguageView.as_view(), name='user-add-language'),
+    path('users/<int:user_id>/knownlanguages', views.UserKnownLanguagesView.as_view(), name='user-languages'),
 	path('users/<int:user_id>/following/', views.UserFollowingView.as_view(), name='user-following'),
 	path('users/<int:user_id>/followers/', views.UserFollowersView.as_view(), name='user-followers'),
 	path('users/<int:user_id>/wordcounts/', views.UserWordCountsView.as_view(), name='user-word-counts'),

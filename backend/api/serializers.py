@@ -91,6 +91,29 @@ class UserToggleKnownWordSerializer(serializers.Serializer):
     word = serializers.CharField()
 
 
+class UserAddLanguageSerializer(serializers.ModelSerializer):
+	user_id = serializers.IntegerField()
+	language_code = serializers.CharField()
+
+	class Meta:
+		model = UserModel
+		fields = ['user_id', 'language_code']
+
+	def create(self, validated_data):
+		user_id = validated_data.get('user_id')
+		language_code = validated_data.get('language_code')
+
+		language = Language.objects.get(language_code=language_code)
+		user = UserModel.objects.get(user_id=user_id)
+
+		if language in user.known_languages.all():
+			return user
+
+		user.known_languages.add(language)
+		
+		return user
+
+
 class UserWordCountsSerializer(serializers.Serializer):
 	counts = serializers.IntegerField()
 

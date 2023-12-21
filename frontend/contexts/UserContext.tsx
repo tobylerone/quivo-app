@@ -8,10 +8,15 @@ export default UserContext;
 // Create a provider component
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    const [currentLanguage, setCurrentLanguage] = useState(null);
 
     useEffect(() => {
         getUser();
     }, []);
+
+    useEffect(() => {
+        getCurrentLanguage();
+    }, [currentUser]);
 
     const getUser = () => {
         client.get("/api/users/me")
@@ -24,6 +29,16 @@ export const AuthProvider = ({ children }) => {
             console.log(error);
         });
     };
+
+    const getCurrentLanguage = () => {
+        client.get("./api/users/getcurrentlanguage")
+        .then(function(res){
+            setCurrentLanguage(res.data);
+        }).catch(function(error){
+            console.log(error);
+            setCurrentLanguage(currentUser.last_current_language);
+        })
+    }
 
     const submitRegistration = (username, email, password) => {
 
@@ -85,7 +100,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ currentUser, submitRegistration, submitLogin, submitLogout }}>
+        <UserContext.Provider value={{
+            currentUser,
+            currentLanguage,
+            submitRegistration,
+            submitLogin,
+            submitLogout
+            }}>
           {children}
         </UserContext.Provider>
       );

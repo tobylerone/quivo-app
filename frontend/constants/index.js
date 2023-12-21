@@ -9,7 +9,7 @@ export const HOST_ADDRESS = 'http://10.159.139.194';
 
 // Schémas
 export const PRIMARYCOLOR = "#66A599"//"#337CFF"
-export const SECONDARYCOLOR = "#F5F6F8"
+export const SECONDARYCOLOR = "#F5F6F8" //"#E6F0E6" LIGHT GREEN IS QUITE GOOD
 export const TERTIARYCOLOR = "#FFFFFF"
 export const BLACK = "#000000"
 export const GREY = "#BBBCBE"

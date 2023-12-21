@@ -57,23 +57,31 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
     const { currentUser } = useContext(UserContext);
     
     // No user languages currently so this is a placeholder
-    const [knownLanguages, setKnownLanguages] = useState([
-        {
-            id: 0,
-            language_code: 'de',
-            language_name: 'German'
-        }, 
-        {
-            id: 0,
-            language_code: 'fr',
-            language_name: 'French'
-        }]);
+    const [knownLanguages, setKnownLanguages] = useState([]);
     const [unknownLanguages, setUnknownLanguages] = useState([]);
+    
+    useEffect(() => {
+        fetchKnownLanguages();
+    }, []);
+
+    useEffect(() => {
+        fetchAllLanguages();
+    }, [knownLanguages]);
+
+    const fetchKnownLanguages = async () => {
+        return client.get("/api/users/" + currentUser.user_id + "/knownlanguages", { withCredentials: true })
+        .then(function(res) {
+            setKnownLanguages(res.data);
+        })
+        .catch(function(error) {
+        });
+    };
     
     // Can definitely cache this rather than fetch it every time
     const fetchAllLanguages = () => {
         client.get("/api/languages", { withCredentials: true })
         .then(function(res) {
+            console.log(knownLanguages);
             const allLanguages = res.data;
             
             // Remove languages user already knows
@@ -88,10 +96,6 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
         .catch(function(error) {
         });
     };
-    
-    useEffect(() => {
-        fetchAllLanguages();
-    }, []);
     
     return (
         <SafeAreaView style={styles.container}>
@@ -117,7 +121,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        //flex: 1,
         borderColor: constants.SECONDARYCOLOR,
         borderWidth: 3,
         borderRadius: 20,
@@ -133,15 +137,15 @@ const styles = StyleSheet.create({
         backgroundColor: constants.SECONDARYCOLOR,
         width: '100%',
         textAlign: 'center',
-        marginBottom: 10,
-        padding: 5
+        //marginBottom: 10,
+        padding: 10
     },
 
     // LanguageItem
     languageItemContainer: {
-        borderBottomColor: constants.SECONDARYCOLOR,
+        borderTopColor: constants.SECONDARYCOLOR,
         flexDirection: 'row',
-        borderBottomWidth: 3,
+        borderTopWidth: 3,
         padding: 10
     },
     languageItemImage: {

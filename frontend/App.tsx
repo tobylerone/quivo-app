@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { AuthNavigation, Navigation } from './navigation/index';
+import { AuthNavigation, FirstLoginNavigation, Navigation } from './navigation/index';
 import useCachedResources from "./hooks/useCachedResources"
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthProvider } from './contexts/UserContext';
@@ -15,23 +15,21 @@ function UserComponent() {
 
   const { currentUser } = useContext(UserContext);
 
-  /*if (currentUser) {
+  if (currentUser) {
       // Take no known languages as a proxy for first login
       if (currentUser.known_languages.length === 0) {
-          return <FirstLoginScreen />
+          return <FirstLoginNavigation />
       }
       return <Navigation />
   } else {
     return <AuthNavigation />
   }
-  */
 
-  return currentUser ? <Navigation /> : <AuthNavigation />;
+  //return currentUser ? <Navigation /> : <AuthNavigation />;
 }
 
 export default function App() {
   const isLoaded = useCachedResources();
-  //const fontsLoaded = useFonts(customFonts);
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {

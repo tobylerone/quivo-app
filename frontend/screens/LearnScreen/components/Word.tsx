@@ -34,7 +34,8 @@ interface IWordProps {
 }
 export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, currentLanguage } = useContext(UserContext);
+
     const wordRef = useRef(null);
     
     const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
@@ -103,8 +104,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             
             client.post(
                 'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
-            ).then(function(res) {  
-                console.log('word changed in database');
+            ).then(function(res) {
             }).catch(function(e) {
                 console.log(e.response.data)
             });
@@ -128,7 +128,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             setPressedOnce(true);
 
             // WordData.word contains the full word
-            Speech.speak(wordData.word, {language: 'fr'})
+            Speech.speak(wordData.word, {language: currentLanguage})
             
             tapDelayTimeout = setTimeout(() => {
 
@@ -136,7 +136,6 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
                 // ce timeout va s'activer, et pressedOnce sera faux. Dans ce cas, on ne veut plus afficher
                 // la traduction
                 if (pressedOnceRef.current) {
-                    console.log(pressedOnce);
                     setWordTranslationVisible(true);
                 };
 

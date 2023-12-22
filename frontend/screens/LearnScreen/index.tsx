@@ -1,12 +1,24 @@
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions, useWindowDimensions } from "react-native";
 import { useEffect, useState, useRef, useContext } from "react";
-import * as Speech from 'expo-speech';
+import {
+    StyleSheet,
+    View,
+    SafeAreaView,
+    Text, 
+    TouchableOpacity,
+    FlatList,
+    Image,
+    Animated,
+    Dimensions,
+    useWindowDimensions
+} from "react-native";
+import PNG from 'pngjs';
+import * as Speech from "expo-speech";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 import CheckBox from "../../components/CheckBox";
 import Word from "./components/Word";
 import FlagButton from "./components/FlagButton";
-import UserContext from '../../contexts/UserContext';
+import UserContext from "../../contexts/UserContext";
 import * as constants from "../../constants";
 import client from "../../utils/axios";
 import { capitalizeFirstLetter } from "../../utils/text";
@@ -17,11 +29,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
-    const flagImageSources = {
+    const flagImageSources: Record<string, PNG> = {
         'fr': require("../../assets/fr.png"),
         'de': require("../../assets/de.png")
     }
     
+    // TODO: Remove this default
     const [items, setItems] = useState([
         {
             'id': 1,
@@ -36,7 +49,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const [translationVisible, setTranslationVisible] = useState(false);
     const [languagePopupVisible, setLanguagePopupVisible] = useState(false);
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
-    const [sentenceComponents, setSentenceComponents] = useState();
+    const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     
     const languagePopupAnimation = useRef(new Animated.Value(0)).current;
     const filterPopupAnimation = useRef(new Animated.Value(windowHeight)).current;
@@ -128,7 +141,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         const getFullWord = (word: string) => {
         
             // TODO: This map gets repeated three times. Need to sort this out
-            let shortened_word_map = {
+            let shortened_word_map: Record<string, string> = {
                 'j': 'je',
 			    'l': 'le', // Always replace with le for now. Figure out a better solution here
 			    't': 'tu', // This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
@@ -148,7 +161,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         }
 
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
-        const regex = {
+        const regex: Record<string, RegExp> = {
             'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
             'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
         }
@@ -196,7 +209,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         <FontAwesome name="star" size={30} color={constants.PRIMARYCOLOR} />
                     </View>
                     <Text style={styles.starCountText}>27</Text>
-                    <View style={styles.starBarContainer}></View>
                 </View>
                 <View style={styles.topButtonsContainer}>
                     <TouchableOpacity
@@ -219,8 +231,14 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     </TouchableOpacity>
                 </View>
             </View>
-            <Animated.View style={{ height: languagePopupAnimation, ...styles.languagePopupAnimatedContainer}}>
-                <View style={{opacity: languagePopupVisible ? 1: 0, ...styles.languagePopupContainer}}>
+            <Animated.View style={{
+                height: languagePopupAnimation,
+                ...styles.languagePopupAnimatedContainer
+                }}>
+                <View style={{
+                    opacity: languagePopupVisible ? 1: 0,
+                    ...styles.languagePopupContainer
+                    }}>
                     <View style={styles.languagePopupListContainer}>
                         <FlatList
                             data={knownLanguages}
@@ -244,16 +262,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             <View style={[styles.contentContainer, styles.shadow]}>
                 <View style={styles.sentenceContainer}>
                     <View style={{
-                        ...styles.translatedSentence,
-                        display: translationVisible ? "visible": "none"
+                        display: translationVisible ? "visible": "none",
+                        ...styles.translatedSentence
                         }}>
                         <Text style={styles.mainText}>{item.translated_sentence}</Text>
                     </View>
                     <View style={{
-                        ...styles.realSentence,
-                        display: translationVisible ? "none": "visible"
+                        display: translationVisible ? "none": "visible",
+                        ...styles.realSentence
                         }}>
-                        { sentenceComponents }
+                        {sentenceComponents}
                     </View>
                     
                 </View>
@@ -287,10 +305,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
                 <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
                 <View style={[styles.checkBoxContainer, styles.shadow]}>
-                    <CheckBox initiallySelected={true} size={30} />
-                    <Text style={styles.checkBoxLabel}>1000 most common words</Text>
-                </View>
-                <View style={[styles.checkBoxContainer, styles.shadow]}>
                     <CheckBox initiallySelected={false} size={30} />
                     <Text style={styles.checkBoxLabel}>Art and culture</Text>
                 </View>
@@ -323,8 +337,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
 const styles= StyleSheet.create({
     container: {
-        flex: 1,
-        //borderWidth: 1
+        flex: 1
     },
     topContainer: {
         marginTop: 60,
@@ -353,7 +366,6 @@ const styles= StyleSheet.create({
     topButtonsContainer: {
         flexDirection: "row",
         alignSelf: 'flex-end',
-        //width: 'auto',
         marginLeft: 'auto',
     },
     languagePopupAnimatedContainer: {
@@ -398,8 +410,6 @@ const styles= StyleSheet.create({
     flagImageContainer: {
         borderRadius: 10,
         marginRight: 10,
-        //borderWidth: 4,
-        //borderColor: constants.SECONDARYCOLOR,
         overflow: "hidden",
         height: 50,
         width: 70,
@@ -458,7 +468,6 @@ const styles= StyleSheet.create({
         flexDirection: 'column',
         marginTop: 0,
         marginLeft: 20,
-        //marginRight: -70,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -479,7 +488,6 @@ const styles= StyleSheet.create({
         borderRadius: 25,
         flexDirection: 'column',
         marginTop: 0,
-        //marginLeft: -70,
         marginRight: 20,
         justifyContent: 'center',
         alignItems: 'center'

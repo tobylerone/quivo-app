@@ -1,14 +1,22 @@
 import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View, SafeAreaView, FlatList, Text, Image, TouchableOpacity } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from '@expo/vector-icons';
-import UserContext from '../../contexts/UserContext';
-import * as constants from '../../constants';
+import { FontAwesome } from "@expo/vector-icons";
+import UserContext from "../../contexts/UserContext";
+import * as constants from "../../constants";
 import client from "../../utils/axios";
 import LanguageItem from "./components/LanguageItem";
 
 export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeaderProps) {
 
+    interface ILanguageItem {
+        item: {
+            id: number,
+            language_code: string,
+            language_name: string
+        }
+    }
+    
     const { currentUser } = useContext(UserContext);
 
     const [languages, setLanguages] = useState([]);
@@ -81,12 +89,21 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
                 <FlatList
                     data={languages}
                     bounces={false}
-                    renderItem={({item}) => <LanguageItem item={item} isActive={activeLanguage === item.language_code} onPress={handleLanguageItemPress} />}
+                    renderItem={({item}: ILanguageItem) => (
+                        <LanguageItem
+                            item={item}
+                            isActive={activeLanguage === item.language_code}
+                            onPress={handleLanguageItemPress}
+                        />
+                    )}
                 />
             </View>
             <TouchableOpacity
                 activeOpacity={1}
-                style={{opacity: submitButtonVisible ? 1 : 0, ...styles.submitButton}}
+                style={{
+                    opacity: submitButtonVisible ? 1 : 0,
+                    ...styles.submitButton
+                }}
                 onPress={() => {handleSubmitButtonPress()}}
                 >
                 <Text style={styles.submitButtonText}>Start Learning</Text>

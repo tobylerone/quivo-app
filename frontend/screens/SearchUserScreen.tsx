@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, FlatList } from
 import { SearchBar } from "react-native-elements";
 import { useState, useEffect, useContext } from "react";
 import UserContext from '../contexts/UserContext';
-import FollowButton from "../components/FollowButton"
+import FollowButton from "../components/FollowButton";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import * as constants from "../constants";
@@ -10,10 +10,21 @@ import client from "../utils/axios";
 
 export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
 
+    interface IUser {
+        email: string,
+        followers_count: number,
+        following_count: number,
+        known_languages: number[], 
+        known_words_count: object,
+        user_id: number,
+        user_is_following: boolean,
+        username: string
+    }
+    
     //Not sure if you can import hook setters like this but it didn't seem to work
     const { currentUser, setCurrentUser } = useContext(UserContext);
     
-    // pour l'instant je veux simplement montrer une liste de tous les utilisateurs
+    // pour l'instant j'aimerais simplement montrer une liste de tous les utilisateurs
     const [users, setUsers] = useState([]);
       
     useEffect(() => {
@@ -51,8 +62,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                 style={styles.userList}
                 data={users}
                 bounces={false}
-                //keyExtractor={(item) => item.username}
-                renderItem={({ item }) => (
+                renderItem={(item: IUser) => (
                     <View style={styles.userListItem}>
                         <View style={styles.username}>
                             <Text style={styles.usernameText}>
@@ -67,7 +77,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                         </View>
                     </View>
                 )}
-                />
+            />
         </SafeAreaView>
     );
 };
@@ -75,7 +85,6 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //paddingTop: StatusBar.currentHeight,
         marginHorizontal: 20,
     },
     searchFieldContainer: {
@@ -107,7 +116,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: constants.SECONDARYCOLOR,
         borderRadius: 10,
-        //borderRadius: 5,
         marginBottom: 5,
         padding: 10
     },
@@ -117,6 +125,7 @@ const styles = StyleSheet.create({
     usernameText: {
         fontSize: constants.H3FONTSIZE
     },
+    followButtonContainer: {},
     followButton: {
         alignSelf: "flex-end",
         backgroundColor: constants.PRIMARYCOLOR,

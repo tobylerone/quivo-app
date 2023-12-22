@@ -23,7 +23,6 @@ export async function updateClientCsrfToken() {
     console.error(error);
   }
 
-  //return csrfToken;
   client.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
 }
@@ -33,10 +32,5 @@ const client = axios.create({
 });
 
 updateClientCsrfToken();
-  
-
-//fetchCsrfToken().then(csrfToken => {
-//  client.defaults.headers.common['X-CSRFToken'] = csrfToken;
-//});
 
 export default client;

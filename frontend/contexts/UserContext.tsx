@@ -1,18 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import client, { updateClientCsrfToken } from "../utils/axios"
 
-const UserContext = React.createContext();
+const UserContext = React.createContext({});
 
 export default UserContext;
 
+interface IUser {
+    email: string,
+    followers_count: number,
+    following_count: number,
+    known_languages: number[], 
+    known_words_count: object,
+    user_id: number,
+    user_is_following: boolean,
+    username: string
+}
+
+interface ILanguage {
+    id: number,
+    language_code: string,
+    language_name: string
+}
+
 // Create a provider component
-export const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null);
-    const [knownLanguages, setKnownLanguages] = useState(null);
-    const [currentLanguage, setCurrentLanguage] = useState(null);
+export const AuthProvider = ({ children }: {children: ReactNode}) => {
+    const [currentUser, setCurrentUser] = useState<IUser|null>(null);
+    const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
+    const [currentLanguage, setCurrentLanguage] = useState<ILanguage|null>(null);
 
     useEffect(() => {
-        getUser();
+        updateUserData();
     }, []);
 
     useEffect(() => {
@@ -22,10 +39,9 @@ export const AuthProvider = ({ children }) => {
         }
     }, [currentUser]);
 
-    const getUser = () => {
+    const updateUserData = () => {
         client.get("/api/users/me")
         .then(function(res) {
-            console.log(res.data.user);
             setCurrentUser(res.data.user);
         })
         .catch(function(error) {
@@ -53,7 +69,11 @@ export const AuthProvider = ({ children }) => {
         })
     }
 
-    const submitRegistration = (username, email, password) => {
+    const submitRegistration = (
+        username: string,
+        email: string,
+        password: string
+        ) => {
 
         return new Promise((resolve, reject) => {
 
@@ -76,7 +96,7 @@ export const AuthProvider = ({ children }) => {
         });
     };
     
-    const submitLogin = (username, password) => {
+    const submitLogin = (username: string, password: string) => {
 
         return new Promise((resolve, reject) => {
 
@@ -109,7 +129,7 @@ export const AuthProvider = ({ children }) => {
             setCurrentUser(null);
         }).catch(
             error => console.log(error)
-            );
+        );
     };
 
     return (
@@ -117,6 +137,7 @@ export const AuthProvider = ({ children }) => {
             currentUser,
             knownLanguages,
             currentLanguage,
+            updateUserData,
             submitRegistration,
             submitLogin,
             submitLogout

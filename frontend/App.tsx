@@ -45,13 +45,8 @@ export default function App() {
   }, []);
 
   if (!isLoaded || !fontsLoaded) {
-    console.log('font not loaded');
     return null; // or a loading spinner
   }
-
-  //Font.loadAsync({
-  //  'Nunito': require('./assets/fonts/Nunito-Regular.ttf'),
-  //});
 
   return (
     <AuthProvider>

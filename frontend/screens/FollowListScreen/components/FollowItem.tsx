@@ -1,6 +1,6 @@
-    import { View, Text, Image, StyleSheet } from "react-native"
-    import * as constants from "../../../constants"
-    import FollowButton from "../../../components/FollowButton"
+    import { View, Text, Image, StyleSheet } from "react-native";
+    import * as constants from "../../../constants";
+    import FollowButton from "../../../components/FollowButton";
     
     interface IFollowItemProps {
         user: {
@@ -121,4 +121,4 @@
             elevation: 1,
             borderWidth: 0
         }
-    })
+    });

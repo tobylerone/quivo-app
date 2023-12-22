@@ -1,8 +1,10 @@
+import { ReactNode } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { FontAwesome } from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons';
+import * as constants from "../constants";
 
 // Auth stack
 import LoginScreen from "../screens/LoginScreen";
@@ -20,7 +22,6 @@ import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
 import FollowListScreen from "../screens/FollowListScreen";
-import * as constants from "../constants";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -47,12 +48,11 @@ export function FirstLoginNavigation() {
 }
 
 export function Navigation() {
-
-return (
-    <NavigationContainer theme={whiteBackground}>
-        <MainNavigator/>
-    </NavigationContainer>
-    )
+    return (
+        <NavigationContainer theme={whiteBackground}>
+            <MainNavigator/>
+        </NavigationContainer>
+        )
 }
 
 const AuthStack = createNativeStackNavigator()
@@ -160,35 +160,26 @@ function MainNavigator() {
         )
 }
 
-const StandardTabBarButton = ({children, onPress}) => (
+const StandardTabBarButton = ({children, onPress}: {
+    children: ReactNode,
+    onPress: Function
+    }) => (
     <TouchableOpacity
         activeOpacity={1}
-        style={{
-            top: -2,
-            flexDirection: "row",
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            shadowOpacity: 0,
-            //... styles.shadow
-        }}
+        style={styles.standardTabBarButton}
         onPress={onPress}
     >
         <View>{children}</View>
     </TouchableOpacity>
 );
 
-const CentralTabBarButton = ({children, onPress}) => (
+const CentralTabBarButton = ({children, onPress}: {
+    children: ReactNode,
+    onPress: Function
+    }) => (
     <TouchableOpacity
         activeOpacity={1}
-        style={{
-            top: -20,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            flex: 1
-            //... styles.shadow
-        }}
+        style={[styles.centralTabBarButton, styles.shadow]}
         onPress={onPress}
     >
         <View
@@ -196,12 +187,8 @@ const CentralTabBarButton = ({children, onPress}) => (
                 width: 70,
                 height: 70,
                 borderRadius: 35,
-                //borderColor: constants.BLACK,
-                //borderWidth: 3,
-                backgroundColor: constants.TERTIARYCOLOR,
-                borderColor: constants.PRIMARYCOLOR,
-                borderWidth: 3,
-                //...styles.shadow
+                backgroundColor: constants.SECONDARYCOLOR,
+                ...styles.shadow
             }}
         >
             {children}
@@ -222,7 +209,7 @@ function BottomTabNavigator() {
                 tabBarStyle: {
                     position: "absolute",
                     zIndex: 0,
-                    backgroundColor: constants.TERTIARYCOLOR,
+                    backgroundColor: constants.SECONDARYCOLOR,
                     marginTop: 20,
                     height: 60,
                     ...styles.shadow
@@ -273,6 +260,21 @@ function BottomTabNavigator() {
 }
 
 const styles = StyleSheet.create({
+    standardTabBarButton: {
+        top: -2,
+        flexDirection: "row",
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        shadowOpacity: 0,
+    },
+    centralTabBarButton: {
+        top: -20,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+        flex: 1,
+    },
     shadow: {
         shadowColor: constants.PRIMARYCOLOR,
         shadowOffset: {

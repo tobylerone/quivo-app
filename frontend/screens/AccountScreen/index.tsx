@@ -13,7 +13,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     
     useEffect(() =>{
         console.log("Rendering Accountscreen")
-    }, [])
+    }, []);
 
     return (
         <SafeAreaView>
@@ -111,7 +111,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 <SetKnownWordsPanel />
             </View>
         </SafeAreaView>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -127,7 +127,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     middleContainer: {
-        //width: "100%",
         flexDirection: "row",
         flexWrap: "wrap",
         marginLeft: "5%",

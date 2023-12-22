@@ -1,7 +1,6 @@
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList, StatusBar } from "react-native"
-import { useEffect, useContext } from "react"
-import { NativeStackHeaderProps } from "@react-navigation/native-stack"
-import { FontAwesome } from "@expo/vector-icons"
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList } from "react-native";
+import { useContext } from "react";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as constants from "../constants";
 import UserContext from '../contexts/UserContext';
 
@@ -65,11 +64,9 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        //paddingTop: StatusBar.currentHeight,
         marginHorizontal: 16,
     },
     item: {
-        //backgroundColor: constants.PRIMARYCOLOR,
         fontSize: constants.CONTENTFONTSIZE,
         fontFamily: constants.FONTFAMILY,
         backgroundColor: constants.SECONDARYCOLOR,

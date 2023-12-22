@@ -1,17 +1,21 @@
-import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, FlatList } from "react-native"
-import { useEffect, useState, useContext } from "react"
-import { NativeStackHeaderProps } from "@react-navigation/native-stack"
-import { FontAwesome } from "@expo/vector-icons"
-import UserContext from '../contexts/UserContext';
+import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, FlatList } from "react-native";
+import { useEffect, useState, useContext } from "react";
+import PNG from 'pngjs';
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { FontAwesome } from "@expo/vector-icons";
+import UserContext from "../contexts/UserContext";
 import * as constants from "../constants";
 import client from "../utils/axios";
 
+// TODO: Naming not great here. Move this to central location
+interface ILanguage {
+    id: number,
+    language_code: string,
+    language_name: string
+}
+
 interface ILanguageItem {
-    item: {
-        id: number,
-        language_code: string,
-        language_name: string
-    },
+    item: ILanguage,
     addButton: boolean
 }
 
@@ -20,12 +24,11 @@ const LanguageItem = ({ item, addButton }: ILanguageItem) => {
     // Can't render image paths dynamically at runtime so I have
     // to map the language codes to their locally stored flag
     // image. Need to look into a better solution
-    const flagImageMap = {
+    const flagImageMap: Record<string, PNG> = {
         'ru': require('../assets/ru.png'),
         'de': require('../assets/de.png'),
         'es': require('../assets/es.png'),
         'fr': require('../assets/fr.png'),
-        // add more languages here
     };
 
     return (
@@ -87,8 +90,8 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
             
             // Remove languages user already knows
             const unknownLanguages = allLanguages.filter(
-                item2 => !knownLanguages.some(
-                    item1 => item1.language_code === item2.language_code
+                (item2: ILanguage) => !knownLanguages.some(
+                    (item1: ILanguage) => item1.language_code === item2.language_code
                 )
             );
 
@@ -122,12 +125,10 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
 
 const styles = StyleSheet.create({
     container: {
-        //flex: 1,
         borderColor: constants.SECONDARYCOLOR,
         borderWidth: 3,
         borderRadius: 20,
         overflow: 'hidden',
-        //marginTop: StatusBar.currentHeight,
         marginHorizontal: 16,
     },
     subContainer: {
@@ -138,7 +139,6 @@ const styles = StyleSheet.create({
         backgroundColor: constants.SECONDARYCOLOR,
         width: '100%',
         textAlign: 'center',
-        //marginBottom: 10,
         padding: 10
     },
 

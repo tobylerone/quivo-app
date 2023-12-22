@@ -1,7 +1,7 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, findNodeHandle, UIManager } from "react-native";
 import { useState, useEffect, useRef, useContext } from "react";
-import * as Speech from 'expo-speech';
-import UserContext from '../../../contexts/UserContext';
+import * as Speech from "expo-speech";
+import UserContext from "../../../contexts/UserContext";
 import * as constants from "../../../constants";
 import client from "../../../utils/axios";
 import { capitalizeFirstLetter } from "../../../utils/text";
@@ -10,7 +10,7 @@ interface IFrequencyBar {
     frequency_rank: number
 }
 
-const FrequencyBar = ({ frequency_rank }:IFrequencyBar) => {
+const FrequencyBar = ({ frequency_rank }: IFrequencyBar) => {
     
     // Assign frequency score between 1 and 5
     let value = frequency_rank < 5000 ? Math.ceil(frequency_rank/1000) : 5
@@ -19,19 +19,33 @@ const FrequencyBar = ({ frequency_rank }:IFrequencyBar) => {
 
     return (
         <View style={styles.frequencyBarContainer}>
-            <View style={{backgroundColor: colors[value - 1], ...styles.frequencyBar}}></View>
+            <View style={{
+                backgroundColor: colors[value - 1],
+                ...styles.frequencyBar
+                }}>
+            </View>
             <Text style={styles.frequencyBarText}>{labels[value - 1]}</Text>
         </View>
     );
 }
 
+// TODO: This should be moved to an interface folder and imported
+interface IWordData {
+    id: number,
+    rank: number,
+    word: string,
+    frequency: number,
+    user_knows: boolean
+}
+
 interface IWordProps {
     word: string;
-    wordData: object;
+    wordData: IWordData;
     isFirstWord: boolean;
     screenWidth: number,
     index: number;
 }
+
 export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
     const { currentUser, currentLanguage } = useContext(UserContext);
@@ -39,27 +53,20 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
     const wordRef = useRef(null);
     
     const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
-    // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot
-    // Initialiser à 0 millisecondes. Trouver une meilleure solution qui necessite moins
-    // de variables
+    // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot. Initialiser à 0 millisecondes
     const [lastPress, setLastPress] = useState(0);
     const [wordTranslationVisible, setWordTranslationVisible] = useState(false);
-
     const [pressedOnce, _setPressedOnce] = useState(false);
 
-    // Horizontal osition of word on the screen
-    //const [xCoord, setXCoord] = useState(0);
     const [wordWidth, setWordWidth] = useState(0);
-    //const [wordXCentroid, setWordXCentroid] = useState(0);
     const [infoBoxXAdjust,  setInfoBoxXAdjust] = useState(0);
 
     let infoBoxWidth = 300;
 
-    // This seems like a ridiculously convoluted approach but it's the only
-    // way I could find to achieve this behaviour using react's conventions
+    // This is super messy but it's the only way I could find to achieve this behaviour
     const pressedOnceRef = useRef(pressedOnce);
 
-    const setPressedOnce = (value) => {
+    const setPressedOnce = (value: boolean) => {
       pressedOnceRef.current = value;
       _setPressedOnce(value);
     };
@@ -79,19 +86,25 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
         } else if (wordXCentroid - halfInfoBoxWidth - margin < 0) {
             return -(wordXCentroid - halfInfoBoxWidth) + margin;
         }
+
         return 0;
     }
 
     // setTimeout rend un identifiant numérique unique
-    let tapDelayTimeout;
-    let definitionDisplayTimeout;
+    let tapDelayTimeout: TimeOut;
+    let definitionDisplayTimeout: TimeOut;
 
     useEffect(() => {
         const handle = findNodeHandle(wordRef.current);
         UIManager.measure(handle, (x, y, w, h, pageX, pageY) => {
             const wordXCentroid = pageX + (w / 2);
             setWordWidth(w);
-            setInfoBoxXAdjust(calculateXPositionAdjust({ wordXCentroid: wordXCentroid, margin: 10 }));
+            setInfoBoxXAdjust(
+                calculateXPositionAdjust({
+                    wordXCentroid:wordXCentroid,
+                    margin: 10 
+                })
+            );
         });
     }, []);
   
@@ -110,7 +123,11 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             });
             
             // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
-            setTextColor(textColor === constants.BLACK ? constants.PRIMARYCOLOR : constants.BLACK);
+            setTextColor(
+                textColor === constants.BLACK
+                ? constants.PRIMARYCOLOR
+                : constants.BLACK
+            );
 
             setLastPress(0);
             setPressedOnce(false);
@@ -121,7 +138,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             clearTimeout(tapDelayTimeout);
             clearTimeout(definitionDisplayTimeout);
 
-        } else { // C'est la première fois que l'utilisateur a tapé le mot
+        } else { // C'est la première fois que l'utilisateur tape le mot
 
             // Le timeOut attend la fin de la fenêtre où l'utilisateur pourrait taper une deuxième fois
             // avant d'fficher la traduction pendant la période choisie.
@@ -157,15 +174,22 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
   
     return (
         <View>
-            <>
             {wordTranslationVisible && (
-                <View style={{width: infoBoxWidth, marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust, ...styles.infoBox}}>
-                    <Text style={styles.translationText}>{capitalizeFirstLetter(wordData.word)} - Translation</Text>
-                    <FrequencyBar frequency_rank={wordData.rank}></FrequencyBar>
+                <View style={{
+                    width: infoBoxWidth,
+                    marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
+                    ...styles.infoBox
+                    }}>
+                    <Text style={styles.translationText}>
+                        {capitalizeFirstLetter(wordData.word)} - Translation
+                    </Text>
+                    <FrequencyBar frequency_rank={wordData.rank} />
                 </View>
             )}
-            </>
-            <TouchableOpacity activeOpacity={1} key={index} onPress={() => handlePress()}>
+            <TouchableOpacity
+                activeOpacity={1}
+                key={index}
+                onPress={() => handlePress()}>
                 <Text
                     style={{...styles.mainText, color: textColor}}
                     ref={wordRef}

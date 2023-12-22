@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import PNG from 'pngjs';
 import * as constants from '../../../constants';
 
 interface ILanguageItem {
@@ -34,19 +35,15 @@ export default function LanguageItem({ item, isActive, onPress }: ILanguageItem)
         setStyling(isActive ? activeStyling : inactiveStyling);
     }, [isActive]);
     
-    // Can't render image paths dynamically at runtime so I have
-    // to map the language codes to their locally stored flag
-    // image. Need to look into a better solution
-    const flagImageMap = {
+    // Should be rendering all the images once and importing
+    const flagImageMap: Record<string, PNG> = {
         'ru': require('../../../assets/ru.png'),
         'de': require('../../../assets/de.png'),
         'es': require('../../../assets/es.png'),
         'fr': require('../../../assets/fr.png')
-        // add more languages here
     };
 
     const handlePress = () => {
-        //setIsActive(!isActive);
         // Trigger the function in the LanguageItem component's onPress
         onPress(item.language_code);
     }

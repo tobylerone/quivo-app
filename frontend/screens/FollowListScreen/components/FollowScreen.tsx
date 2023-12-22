@@ -1,15 +1,14 @@
 import { View, StyleSheet, FlatList } from "react-native";
 import { useState, useEffect, useContext } from "react";
-import UserContext from '../../../contexts/UserContext';
+import UserContext from "../../../contexts/UserContext";
 import FollowItem from "./FollowItem";
 import client from "../../../utils/axios";
 
 interface IFollowScreen {
-    customStyle: StyleSheet,
     type: 'followers' | 'following'
 }
 
-export default function FollowScreen({ customStyle, type }: IFollowScreen) {
+export default function FollowScreen({ type }: IFollowScreen) {
 
     const { currentUser } = useContext(UserContext);
     const [data, setData] = useState(null);
@@ -27,7 +26,7 @@ export default function FollowScreen({ customStyle, type }: IFollowScreen) {
     }, []);
 
     return (
-        <View style={[styles.followListContainer, customStyle]}>
+        <View style={styles.followListContainer}>
             <FlatList
                 style={styles.followList}
                 data={data}
@@ -43,7 +42,5 @@ const styles = StyleSheet.create({
         height: "100%",
         margin: 15
     },
-    followList: {
-
-    }
+    followList: {}
 });

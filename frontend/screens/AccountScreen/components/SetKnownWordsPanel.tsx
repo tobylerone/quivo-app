@@ -8,32 +8,32 @@ export default function SetKnownWordsPanel() {
 
     const { currentUser, currentLanguage } = useContext(UserContext);
 
-    const exampleSentences = {
+    const exampleSentences: Record<string, string> = {
         'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
         'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.'
     }
 
     const [knownWordsPerc, setKnownWordsPerc] = useState(50);
-    const [sentenceComponents, setSentenceComponents] = useState();
+    const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [activeWordMask, setActiveWordMask] = useState([1,0,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,0,1,0,]);
 
     useEffect(() => {
-        let components = formatSentence(exampleSentences[currentLanguage]);
+        let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguage]);
         setSentenceComponents(components);
     }, [knownWordsPerc]);
 
     const formatSentence = (sentence: string) => {
 
-        // Regex used to create word frequency set: \b(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|[a-zA-ZéèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)\b
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
-        const wordsRegex = {
+        const wordsRegex: Record<string, RegExp> = {
             'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
             'de': /(?:[a-zA-ZäöüÄÖÜß]+)/g
-        }
-        const inclusiveRegex = {
+        };
+
+        const inclusiveRegex: Record<string, RegExp> = {
             'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
             'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
-        }
+        };
         
         const words = sentence.match(wordsRegex[currentLanguage]) || [];
         const splitSentence = sentence.match(inclusiveRegex[currentLanguage]) || [];
@@ -44,15 +44,23 @@ export default function SetKnownWordsPanel() {
 
         for (let i = 0; i < splitSentence.length; i++) {
             
-            let substring = splitSentence[i]
+            let substring: string = splitSentence[i];
+            
             // Same as word unless in shortened_word_map
-    
             if (words.includes(substring)) {
                 let wordColor = activeWordMask[wordIndex] ? constants.PRIMARYCOLOR : constants.BLACK
                 wordIndex++;
-                sentenceComponents.push(<Text style={{ color: wordColor, ...styles.exampleSentenceText }} key={i}>{substring}</Text>);
+                sentenceComponents.push(
+                    <Text style={{ color: wordColor, ...styles.exampleSentenceText }} key={i}>
+                        {substring}
+                    </Text>
+                );
             } else {
-                sentenceComponents.push(<Text style={{ color: constants.GREY, ...styles.exampleSentenceText }} key={i}>{substring}</Text>);
+                sentenceComponents.push(
+                    <Text style={{ color: constants.GREY, ...styles.exampleSentenceText }} key={i}>
+                        {substring}
+                    </Text>
+                );
             }
         };
         return sentenceComponents;

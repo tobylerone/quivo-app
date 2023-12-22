@@ -6,14 +6,14 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
 } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack"
-import UserContext from '../contexts/UserContext';
-import * as constants from '../constants'
+import UserContext from "../contexts/UserContext";
+import * as constants from "../constants";
 
 export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,8 +81,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
             return;
         };
 
-        // TODO: Verifier que l'utilisateur n'existe pas deja
-
+        // TODO: Verifier que l'utilisateur n'existe pas
         const success = await submitRegistration(username, email, password);
 
         if (!success) {
@@ -90,12 +89,13 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
             setErrorMessage('Registration failed. Try against later')
         }
       }}
-      >
+    >
       <Text style={styles.registerText}>REGISTER</Text> 
     </TouchableOpacity> 
   </View> 
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -150,5 +150,5 @@ const styles = StyleSheet.create({
   },
   registerText: {
     color: constants.SECONDARYCOLOR
-  },
+  }
 });

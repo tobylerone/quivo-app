@@ -1,6 +1,7 @@
-import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity, FlatList } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import UserContext from '../../contexts/UserContext';
+import PNG from 'pngjs';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from '@expo/vector-icons';
 import * as constants from "../../constants";
@@ -14,6 +15,13 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() =>{
         console.log("Rendering Accountscreen")
     }, []);
+
+    const flagImageMap: Record<string, PNG> = {
+        'ru': require('../../assets/ru.png'),
+        'de': require('../../assets/de.png'),
+        'es': require('../../assets/es.png'),
+        'fr': require('../../assets/fr.png')
+    };
 
     return (
         <SafeAreaView>
@@ -52,21 +60,29 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         activeOpacity={1}
                         onPress={() => navigation.navigate("AccountLanguages")}
                         >
-                        <View style={styles.flagImageContainer}>
-                            <Image
-                                source={require("../../assets/fr.png")}
-                                style={styles.flagImage}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => navigation.navigate("AccountLanguages")}
-                        >
-                        <View style={styles.flagImageContainer}>
-                            <Image
-                                source={require("../../assets/es.png")}
-                                style={styles.flagImage}
+                        <View>
+                            <FlatList
+                                data={Object.keys(currentUser.known_words_count)}
+                                //style={styles.languagePopupList}
+                                bounces={false}
+                                horizontal={true}
+                                renderItem={({item}) => (
+                                    <>
+                                    {currentUser.known_words_count[item] !== 0 &&
+                                    <View>
+                                        <View style={styles.flagImageContainer}>
+                                            <Image
+                                                source={flagImageMap[item]}
+                                                style={styles.flagImage}
+                                            />
+                                        </View>
+                                        <Text>
+                                            {currentUser.known_words_count[item]}
+                                        </Text>
+                                    </View>
+                                    }
+                                    </>
+                                )}
                             />
                         </View>
                     </TouchableOpacity>

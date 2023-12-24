@@ -1,44 +1,62 @@
-    import { View, Text, Image, StyleSheet } from "react-native";
+    import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+    import { useContext } from "react";
+    import PNG from 'pngjs';
+    import UserContext from "../../../contexts/UserContext";
     import * as constants from "../../../constants";
     import FollowButton from "../../../components/FollowButton";
     
-    interface IFollowItemProps {
-        user: {
-			user_id: number,
-			email: string,
-			username: string,
-			following_count: number,
-			followers_count: number,
-			known_words_count: number,
-			user_is_following: boolean // Always true for following items
-        }
+    // TODO: Store this in interface file
+    interface IUser {
+        user_id: number,
+        email: string,
+        username: string,
+        following_count: number,
+        followers_count: number,
+        known_words_count: object,
+        user_is_following: boolean // Always true for following items
+    }
+
+    interface IFollowItem {
+        user: IUser
     }
     
-    export default function FollowItem ({ user }: IFollowItemProps) {
-        
+    export default function FollowItem ({ user }: IFollowItem) {
+
+        const { currentLanguage } = useContext(UserContext);
+
+        const flagImageSources: Record<string, PNG> = {
+            'fr': require("../../../assets/fr.png"),
+            'de': require("../../../assets/de.png")
+        }
+
         return (
             <View style={styles.followItemContainer}>
                 <View style={styles.leftBoxContainer}>
                     <Text style={styles.userName}>{user.username}</Text>
                     <View style={styles.knownWordsContainer}>
-                        <View style={styles.knownWordsPill}>
-                            <View style={styles.flagImageContainer}>
-                                <Image
-                                    source={require("../../../assets/ru.png")}
-                                    style={styles.flagImage}
-                                />
-                            </View>
-                            <Text style={styles.knownWordsText}>{user.known_words_count}</Text>
-                        </View>
-                        <View style={styles.knownWordsPill}>
-                            <View style={styles.flagImageContainer}>
-                                <Image
-                                    source={require("../../../assets/es.png")}
-                                    style={styles.flagImage}
-                                />
-                            </View>
-                            <Text style={styles.knownWordsText}>{user.known_words_count}</Text>
-                        </View>
+                        <FlatList
+                            data={Object.keys(user.known_words_count)}
+                            //style={styles.languagePopupList}
+                            bounces={false}
+                            horizontal={true}
+                            renderItem={({item}) => (
+                                <>
+                                {user.known_words_count[item] !== 0 &&
+                                <View style={styles.knownWordsPill}>
+                                    <View style={styles.flagImageContainer}>
+                                        <Image
+                                            source={flagImageSources[item]}
+                                            style={styles.flagImage}
+                                        />
+                                    </View>
+                                    <Text style={styles.knownWordsText}>
+                                        {user.known_words_count[item]}
+                                    </Text>
+                                </View>
+                                }
+                                </>
+                            )}
+                        />
                     </View>
                 </View>
                 <View style={styles.followButtonContainer}>
@@ -49,6 +67,7 @@
                 </View>
             </View>
         );
+        //return null;
     };
     
     const styles= StyleSheet.create({

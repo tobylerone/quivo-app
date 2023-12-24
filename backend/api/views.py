@@ -162,7 +162,6 @@ class UserFollowersView(generics.ListAPIView):
 		context.update({"user": self.request.user})
 		return context
 
-
 class UserWordsView(generics.ListAPIView):
 	serializerClass = FrWordDataModelSerializer
 
@@ -338,7 +337,7 @@ class CurrentUserView(APIView):
 
 class UserViewSet(generics.ListAPIView):
 	queryset = AppUser.objects.all()
-	serializer_class = UserSerializer()
+	serializer_class = UserSerializer
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 

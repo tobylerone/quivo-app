@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
                 // Fetch the new CSRF token from the db and update the axios client header
                 updateClientCsrfToken();
                 // Get the current user data and set the context
-                getUser();
+                updateUserData();
                 console.log('Login successful!')
                 resolve(true);
             }).catch(function(error) {

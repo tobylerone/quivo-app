@@ -1,4 +1,4 @@
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import UserContext from "../../../contexts/UserContext";
 import FollowItem from "./FollowItem";
@@ -11,13 +11,13 @@ interface IFollowScreen {
 export default function FollowScreen({ type }: IFollowScreen) {
 
     const { currentUser } = useContext(UserContext);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
 
     useEffect(() =>{
         // Get accounts the user is followed by / is following
         client.get(
             'api/users/' + currentUser.user_id + '/' + type + '/'
-        ).then(function(res) {  
+        ).then(function(res) {
             setData(res.data);
         }).catch(function(e) {
             console.log(e.response.data)
@@ -27,12 +27,14 @@ export default function FollowScreen({ type }: IFollowScreen) {
 
     return (
         <View style={styles.followListContainer}>
+            {data.length !== 0 &&
             <FlatList
                 style={styles.followList}
                 data={data}
                 bounces={false}
                 renderItem={({item}) => <FollowItem user={item} />}
             />
+            }
         </View>
     );
 }

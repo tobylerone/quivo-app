@@ -15,14 +15,20 @@ export default function SetKnownWordsPanel() {
 
     const [knownWordsPerc, setKnownWordsPerc] = useState(50);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
-    const [activeWordMask, setActiveWordMask] = useState([1,0,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,0,1,0,]);
+    const [activeWordMask, setActiveWordMask] = useState<(0 | 1)[]>([1,0,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,0,1,0]);
+    //const [activeWordMask, setActiveWordMask] = useState(createInitialActiveWordMask(20, 50))
+
+    useEffect(() => {
+        // activeWordMask getting set to undefined here
+        setActiveWordMask(createActiveWordMask());
+    }, [knownWordsPerc]);
 
     useEffect(() => {
         let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguage]);
         setSentenceComponents(components);
-    }, [knownWordsPerc]);
+    }, [activeWordMask]);
 
-    const formatSentence = (sentence: string) => {
+    function formatSentence(sentence: string) {
 
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
         const wordsRegex: Record<string, RegExp> = {
@@ -63,8 +69,58 @@ export default function SetKnownWordsPanel() {
                 );
             }
         };
-        return sentenceComponents;
 
+        return sentenceComponents;
+    }
+
+    function createInitialActiveWordMask(num_words: number, percentage: number) {
+        let array = Array(num_words).fill(0).map((v, i) => i < num_words * percentage ? 1 : 0);
+        array.sort(() => Math.random() - 0.5);
+        return array;
+    }
+
+    function replaceValues(array: (0 | 1)[], n: number, to_replace: number) {
+        // Get the indices of values to replace
+        var indices = array.reduce(function(result, value, index) {
+            if (value === to_replace) result.push(index);
+            return result;
+        }, []);
+        
+        // Randomly select n indices to replace
+        var indicesToReplace = indices.sort(() => 0.5 - Math.random()).slice(to_replace, n);
+
+        // Replace the selected indices with ones
+        indicesToReplace.forEach(
+            index => array[index] = (to_replace === 0 ? 1 : 0)
+            );
+        
+        // Need to return a copy to trigger hook update
+        return [...array];
+    }
+
+    function createActiveWordMask() {
+        
+        const totalWords = activeWordMask.length;
+        
+        const newActiveWordCount = activeWordMask.filter(num => num === 1).length;
+        // Find new known words percentage to the nearest 10%
+        const newKnownWordsPerc = Math.round((newActiveWordCount / totalWords) * 10) * 10;
+        
+        const percChange = knownWordsPerc - newKnownWordsPerc;
+        const absWordChange = Math.abs(Math.round(percChange * totalWords / 100));
+        
+        if (percChange > 0) {
+            console.log('Percentage has increased by:' + percChange + '%');
+            // Percentage has increased. Need to make new words active
+            return replaceValues(activeWordMask, absWordChange, 0);
+
+        } else if (percChange < 0) {
+            console.log('Percentage has decreased by:' + percChange + '%');
+            // Percentage has decreased, so need to deactivate some active words
+            return replaceValues(activeWordMask, absWordChange, 1);
+        }
+
+        return activeWordMask;
     }
 
     return (

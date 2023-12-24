@@ -12,6 +12,8 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         language_code: string,
         language_name: string
     }
+
+    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
     
     const getComprehensionPercentage = (known_words: number) => {
         /* Returns the percentage of text a user should understand based on the number of words
@@ -22,9 +24,6 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         
         return known_words == 0 ? 0 : Math.round(-100 + 200/(1 + Math.E**(-0.001 * known_words)));
     }
-    
-    //Not sure if you can import hook setters like this but it didn't seem to work
-    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
     // May make this a hook later
     const comprehensionPercentage = getComprehensionPercentage(

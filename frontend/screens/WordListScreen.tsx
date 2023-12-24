@@ -14,7 +14,14 @@ import * as constants from "../constants";
 import client from "../utils/axios";
 import { capitalizeFirstLetter } from "../utils/text";
 
-const ProgressBarButton = ({label, currentValue, maxValue, defaultActive}) => {
+interface IProgressBarButton {
+    label: string,
+    currentValue: number,
+    maxValue: number,
+    defaultActive: boolean
+}
+
+const ProgressBarButton = ({label, currentValue, maxValue, defaultActive}: IProgressBarButton) => {
 
     const progressPercentage = Math.floor((currentValue / maxValue) * 100);
 
@@ -56,6 +63,8 @@ interface IWordData {
 }
 
 const WordItem = (item: IWordData) => {
+
+    console.log(item);
 
     const selectedStyling = {
         'backgroundColor': constants.PRIMARYCOLOR,

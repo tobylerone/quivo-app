@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     shadow: {
-        shadowColor: constants.PRIMARYCOLOR,
+        shadowColor: constants.BLACK,
         shadowOffset: {
             width: 0,
             height: 0

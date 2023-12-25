@@ -372,9 +372,9 @@ class SentencesViewSet(viewsets.ModelViewSet):
 			'de': DeSentence.objects.all()
 			}.get(language_code, 'fr')
 		
-		# Randomly ordering the entire dataset to get 10 rows is really inefficient
+		# Randomly ordering the entire dataset to get 20 rows is really inefficient
 		# but since i'm not sticking with this method it's good enough for now
-		queryset = queryset.order_by('?')[:10]
+		queryset = queryset.order_by('?')[:20]
 
 		# Convert all words arrays to stringified json
 		for item in queryset:

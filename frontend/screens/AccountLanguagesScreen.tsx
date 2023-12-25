@@ -16,10 +16,13 @@ interface ILanguage {
 
 interface ILanguageItem {
     item: ILanguage,
+    navigation,
     addButton: boolean
 }
 
-const LanguageItem = ({ item, addButton }: ILanguageItem) => {
+const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
+
+    const { currentUser, currentLanguage, setCurrentLanguage, updateUserData } = useContext(UserContext);
 
     // Can't render image paths dynamically at runtime so I have
     // to map the language codes to their locally stored flag
@@ -30,6 +33,32 @@ const LanguageItem = ({ item, addButton }: ILanguageItem) => {
         'es': require('../assets/es.png'),
         'fr': require('../assets/fr.png'),
     };
+
+    const handlePress = async(
+        language_code: string
+        ) => {
+        
+        /*
+        try {
+            const res = await client.post('./api/users/addlanguage/', {
+                language_code: language_code,
+                user_id: currentUser.user_id,
+                withCredentials: true
+            });
+            return res.data;
+        } catch (error) {
+            console.error(error);
+        }
+        */
+        // Change currentLanguage
+        //setCurrentLanguage(language_code);
+
+        // Update the user data
+        //updateUserData();
+
+        // Redirect to LearnScreen
+        navigation.navigate('Learn');
+    }
 
     return (
         <View style={styles.languageItemContainer}>
@@ -46,7 +75,7 @@ const LanguageItem = ({ item, addButton }: ILanguageItem) => {
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.languageItemAddButton}
-                onPress={() => {}}
+                onPress={() => {handlePress(navigation, item.language_code)}}
             >
                 <FontAwesome name='plus' size={20} color={constants.PRIMARYCOLOR} />
             </TouchableOpacity>
@@ -108,7 +137,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                 <FlatList
                     data={knownLanguages}
                     bounces={false}
-                    renderItem={({item}) => <LanguageItem item={item} addButton={false}/>}
+                    renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={false}/>}
                 />
             </View>
             <View style={styles.subContainer}>
@@ -116,7 +145,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                 <FlatList
                     data={unknownLanguages}
                     bounces={false}
-                    renderItem={({item}) => <LanguageItem item={item} addButton={true} />}
+                    renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={true} />}
                 />
             </View>
         </SafeAreaView>

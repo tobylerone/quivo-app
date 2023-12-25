@@ -39,11 +39,11 @@ interface IWordData {
 }
 
 interface IWordProps {
-    word: string;
-    wordData: IWordData;
-    isFirstWord: boolean;
+    word: string,
+    wordData: IWordData,
+    isFirstWord: boolean,
     screenWidth: number,
-    index: number;
+    index: number
 }
 
 export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {

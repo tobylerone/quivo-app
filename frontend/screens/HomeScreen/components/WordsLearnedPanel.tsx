@@ -18,7 +18,6 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
         starting at the most frequent word and going to the least frequent. I don't have this yet
         but it should look something like the function returned here
         */
-        
         return known_words == 0 ? 0 : Math.round(-100 + 200/(1 + Math.E**(-0.001 * known_words)));
     }
 
@@ -26,7 +25,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
     const comprehensionPercentage = getComprehensionPercentage(
         currentUser.known_words_count[currentLanguage]
         );
-
+    
     let labels = [0, 10000];
     let numDataPoints = 101;
 
@@ -35,11 +34,21 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
         (_, i) => getComprehensionPercentage(i * 100)
     );
 
+    // Get nearest value on graph to comprehensionPercentage. prev contains
+    // the callback from the previous iteration (the closest value to num so far)
+    function findNearest(num: number, arr: number[]) {
+        return arr.reduce((prev, curr) => {
+            return (Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev);
+        });
+    }
+
+    const nearestDataPoint = findNearest(comprehensionPercentage, data);
+
     // Want to hide all points except index to keep (which is comprehensionPercentage)
     let hiddenIndexes = Array.from(
         {length: numDataPoints},
         (_, i) => i
-        ).filter(i => i !== comprehensionPercentage);
+        ).filter(i => getComprehensionPercentage(i * 100) != nearestDataPoint);
 
     return (
     <View style={styles.wordsLearnedPanel}>

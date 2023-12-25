@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import {
     StyleSheet,
+    Switch,
     View,
     SafeAreaView,
     Text, 
@@ -50,7 +51,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const [languagePopupVisible, setLanguagePopupVisible] = useState(false);
     const [filterPopupVisible, setFilterPopupVisible] = useState(false);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
-    
+    const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
+    const [sentenceIndex, setSentenceIndex] = useState<number>(0);
+
     const languagePopupAnimation = useRef(new Animated.Value(0)).current;
     const filterPopupAnimation = useRef(new Animated.Value(windowHeight)).current;
 
@@ -59,7 +62,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() => {
         console.log("Rendering Learnscreen");
         fetchData();
-        console.log(knownLanguages);
     }, [])
 
     // After updating items, set current item to first one in the list
@@ -96,9 +98,19 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     };
 
     const changeSentence = () => {
-        const randomIndex = Math.floor(Math.random() * items.length);
-        let newItem = items[randomIndex];
+        //const randomIndex = Math.floor(Math.random() * items.length);
+        
+        let newItem = items[sentenceIndex];
 
+        if (sentenceIndex < items.length - 1) {
+            console.log(sentenceIndex);
+            setSentenceIndex(sentenceIndex + 1);
+        } else {
+            // Want to get new sentences and reset index to 0
+            setSentenceIndex(0);
+            //fetchData();
+            console.log(sentenceIndex);
+        }
         setItem(newItem);
     };
 
@@ -294,6 +306,15 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
                     </View>
                 </TouchableOpacity>
+                <View style={{width: 50}}>
+                    <Switch
+                        trackColor={{false: constants.SECONDARYCOLOR, true: constants.PRIMARYCOLOR}}
+                        thumbColor={constants.PRIMARYCOLOR/*autoDictEnabled ? '#f5dd4b' : '#f4f3f4'*/}
+                        ios_backgroundColor={constants.SECONDARYCOLOR}
+                        onValueChange={() => {setAutoDictEnabled(!autoDictEnabled)}}
+                        value={autoDictEnabled}
+                    />
+                </View>
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.speakButton}

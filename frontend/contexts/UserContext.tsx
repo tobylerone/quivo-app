@@ -137,6 +137,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             currentUser,
             knownLanguages,
             currentLanguage,
+            setCurrentLanguage,
             updateUserData,
             submitRegistration,
             submitLogin,

@@ -7,7 +7,7 @@ import {
     SafeAreaView,
     FlatList
 } from "react-native";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import UserContext from "../contexts/UserContext";
 import * as constants from "../constants";
@@ -54,7 +54,7 @@ const ProgressBarButton = ({label, currentValue, maxValue, defaultActive}: IProg
 };
 
 // TODO: Move this to interface folder and import
-interface IWordData {
+interface IWordItem {
     id: number,
     rank: number,
     word: string,
@@ -62,9 +62,14 @@ interface IWordData {
     user_knows: boolean
 }
 
-const WordItem = (item: IWordData) => {
+interface IWordItem {
+    word: string,
+    item: IWordItem,
+}
 
-    console.log(item);
+const WordItem = ({word, item}: IWordItem) => {
+
+    const { currentUser, currentLanguage } = useContext(UserContext);
 
     const selectedStyling = {
         'backgroundColor': constants.PRIMARYCOLOR,
@@ -84,13 +89,71 @@ const WordItem = (item: IWordData) => {
         }
     }
     
-    const [styling, setStyling] = useState(item.user_knows ? selectedStyling: unselectedStyling);
+    const [userKnows, setUserKnows] = useState(item.user_knows);
+    const [styling, setStyling] = useState(item.user_knows ? selectedStyling : unselectedStyling);
+    const [lastPress, setLastPress] = useState(0);
+    const [wordTranslationVisible, setWordTranslationVisible] = useState(false);
+    const [pressedOnce, _setPressedOnce] = useState(false);
 
+    // This is super messy but it's the only way I could find to achieve this behaviour
+    const pressedOnceRef = useRef(pressedOnce);
+
+    useEffect(() => {
+        // Update styling
+        setStyling(userKnows ? selectedStyling : unselectedStyling);
+    }, [userKnows]);
+    
+    const setPressedOnce = (value: boolean) => {
+        pressedOnceRef.current = value;
+        _setPressedOnce(value);
+    };
+    
+    // setTimeout rend un identifiant numérique unique
+    let tapDelayTimeout: TimeOut;
+    let definitionDisplayTimeout: TimeOut;
+
+    const handlePress = () => {
+
+        const currentTime = new Date().getTime();
+
+        // L'utilisateur a tapé deux fois
+        if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
+            console.log('pressed twice');
+            setUserKnows(!userKnows);
+            client.post(
+                'api/users/' + currentUser.user_id + '/toggleknownword/' + item.word
+            ).then(function(res) {
+            }).catch(function(e) {
+                console.log(e.response.data)
+            });
+
+            setLastPress(0);
+            setPressedOnce(false);
+            setWordTranslationVisible(false);
+
+            // Supprimer les timeOut q'on a initialisés lors de la première tape pour ne
+            // plus afficher la traduction
+            clearTimeout(tapDelayTimeout);
+            clearTimeout(definitionDisplayTimeout);
+
+        } else {
+            setPressedOnce(true)
+            console.log('pressed once');
+        }
+
+        setLastPress(currentTime);
+
+    };
+    
     return (
-        <View style={{
-            backgroundColor: styling.backgroundColor,
-            ...styles.wordItem
-            }}>
+        <TouchableOpacity
+            style={{
+                backgroundColor: styling.backgroundColor,
+                ...styles.wordItem
+            }}
+            activeOpacity={1}
+            onPress={() => {handlePress()}}
+            >
             <View style={{
                 backgroundColor: styling.numberBox.backgroundColor,
                 ...styles.numberContainer
@@ -105,7 +168,7 @@ const WordItem = (item: IWordData) => {
                     {capitalizeFirstLetter(item.word)}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 

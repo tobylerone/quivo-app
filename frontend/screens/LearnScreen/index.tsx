@@ -74,6 +74,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         createSentenceComponents().then(components => {
             setSentenceComponents(components);
         });
+
+        if (autoDictEnabled) speak();
     }, [item]);
 
     const fetchData = async() => {
@@ -288,6 +290,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     
                 </View>
             </View>
+            <View style={styles.autoplayContainer}>
+                <Text style={styles.autoplayText}>Autoplay</Text>
+                <Switch
+                    trackColor={{false: constants.SECONDARYCOLOR, true: constants.PRIMARYCOLOR}}
+                    thumbColor={constants.PRIMARYCOLOR/*autoDictEnabled ? '#f5dd4b' : '#f4f3f4'*/}
+                    ios_backgroundColor={constants.SECONDARYCOLOR}
+                    onValueChange={() => {setAutoDictEnabled(!autoDictEnabled)}}
+                    value={autoDictEnabled}
+                />
+            </View>
             <View style={styles.bottomContainer}>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -306,15 +318,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
                     </View>
                 </TouchableOpacity>
-                <View style={{width: 50}}>
-                    <Switch
-                        trackColor={{false: constants.SECONDARYCOLOR, true: constants.PRIMARYCOLOR}}
-                        thumbColor={constants.PRIMARYCOLOR/*autoDictEnabled ? '#f5dd4b' : '#f4f3f4'*/}
-                        ios_backgroundColor={constants.SECONDARYCOLOR}
-                        onValueChange={() => {setAutoDictEnabled(!autoDictEnabled)}}
-                        value={autoDictEnabled}
-                    />
-                </View>
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.speakButton}
@@ -325,6 +328,18 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             </View>
             <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
                 <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>1000 most common words</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>2000 most common words</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>5000 most common words</Text>
+                </View>
                 <View style={[styles.checkBoxContainer, styles.shadow]}>
                     <CheckBox initiallySelected={false} size={30} />
                     <Text style={styles.checkBoxLabel}>Art and culture</Text>
@@ -409,6 +424,23 @@ const styles= StyleSheet.create({
         borderRadius: 30,
         flexWrap: "wrap",
         flex: 1
+    },
+    autoplayContainer: {
+        flexDirection: 'row',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        height: 50,
+        marginTop: -80,
+        marginBottom: 30,
+        marginLeft: 'auto',
+        marginRight: 30,
+        borderRadius: 10,
+    },
+    autoplayText: {
+        fontFamily: constants.FONTFAMILY,
+        fontSize: constants.H3FONTSIZE,
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     bottomContainer: {
         flexDirection: "row",

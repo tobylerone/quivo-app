@@ -420,7 +420,7 @@ class WordDataView(APIView):
 		# quels mots on veut chercher, soit on fournit deux index
 		if words == []:
 			queryset = model.objects.filter(
-				id__range=(start_index, end_index)
+				rank__range=(start_index, end_index)
 			).order_by('rank')
 		else:
 			# Remove duplicate words

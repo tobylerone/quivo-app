@@ -6,7 +6,7 @@ import {
     SafeAreaView,
     FlatList
 } from "react-native";
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import UserContext from "../../contexts/UserContext";
 import * as constants from "../../constants";
@@ -24,12 +24,15 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     const [activeButton, setActiveButton] = useState<string>('1-1000');
 
     const flatListRef = useRef();
+
+    const renderItem = useCallback(({item}) => <WordItem item={item} />, []);
     
     useEffect(() => {
         fetchWordCounts();
         fetchWordsData(1, 100);
     }, []);
 
+    // NOTE: Used in a few places. Should move centrally
     const fetchWordCounts = async() => {
         try {
             const res = await client.get(
@@ -154,7 +157,9 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 showsHorizontalScrollIndicator={false}
                 onEndReached={() => loadMore()}
                 onEndReachedThreshold={0.1}
-                renderItem={({item}) => (<WordItem item={item}></WordItem>)}
+                initialNumToRender={10} // Look into these two
+                maxToRenderPerBatch={10}
+                renderItem={renderItem}
             />
         </SafeAreaView>
     );

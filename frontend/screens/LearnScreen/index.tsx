@@ -435,6 +435,7 @@ const styles= StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 30,
         borderRadius: 10,
+        //elevation: 5
     },
     autoplayText: {
         fontFamily: constants.FONTFAMILY,

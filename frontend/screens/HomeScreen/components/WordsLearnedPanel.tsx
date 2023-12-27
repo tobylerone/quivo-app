@@ -1,6 +1,7 @@
 import { View, Text, Dimensions, StyleSheet } from "react-native";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import UserContext from '../../../contexts/UserContext';
+import client from "../../../utils/axios";
 import * as constants from '../../../constants';
 import { LineChart } from "react-native-chart-kit";
 
@@ -12,26 +13,75 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
-    const getComprehensionPercentage = (known_words: number) => {
-        /* Returns the percentage of text a user should understand based on the number of words
-        they know. This will need to be found by fitting a curve to the cumulative word counts
-        starting at the most frequent word and going to the least frequent. I don't have this yet
-        but it should look something like the function returned here
-        */
-        return known_words == 0 ? 0 : Math.round(-100 + 200/(1 + Math.E**(-0.001 * known_words)));
+    const [wordCounts, setWordCounts] = useState({});
+
+    useEffect(() => {
+        fetchWordCounts();
+    }, []);
+
+    // NOTE: Used in a few places. Should move centrally
+    const fetchWordCounts = async() => {
+        try {
+            const res = await client.get(
+                './api/users/' + currentUser.user_id + '/wordcounts',
+                { withCredentials: true }
+                );
+            setWordCounts(res.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    const f = (n: number) => {
+        // Models the word frequency distribution normalised to between 0-100
+        return n == 0 ? 0 : Math.round(-100 + 200/(1 + Math.E**(-0.001 * n)));
     }
 
-    // May make this a hook later
-    const comprehensionPercentage = getComprehensionPercentage(
-        currentUser.known_words_count[currentLanguage]
-        );
+    const getAccurateComprehensionPercentage = (wordCounts: Record<string, number>) => {
+        /*
+        All words in the corpus are listed in descending order of total appearance, and
+        normalised to between 0-100 to model the percentage of the corpus a user should
+        be able to understand with each additional new word learned, assuming the words
+        were learned from most frequent to least frequent, which is then modelled by 
+        a + b/(1 + e**(c * n)), where n represents the frequency rank of a word in the
+        corpus, and a, b and c are constants that are determined for a given corpus to
+        model its word frequency distribution.
+        If the user learned the words of the corpus in perfect frequency order you could
+        work out their percentage comprehension by taking n to be the total number of
+        words they've learned so far, but since they'll learn new words in an unpredictable
+        order, their total comprehension can be found by summing each word's individual
+        contribution to overall corpus comprehension. For example, if the user knows the
+        nth most frequent word in the corpus, the additional percentage comprehension gained
+        by learning that word will be f(n) - f(n-1). By summing this value for all words
+        that the user knows, you can calculate the percentage of the corpus they should be
+        capable of understanding.
+
+        However, this is computationally expensive, so instead I've counted the number of
+        words a user knows in each section of 1000 words in descending order of frequency:
+        1-1000, 1001-2000, ... 5000+ most frequent etc. I then make the assumption that the
+        user learned the words in this 'bucket' in correct frequency order to arrive at an
+        estimate of the overall comprehension percentage that will still heavily discount
+        the least frequent words.
+        */
+
+        let result = 0;
+
+        for (let i = 1; i <= 4001; i += 1000) {
+            result += f(i + wordCounts[`${i}-${i+999}`]) - f(i);
+        }
+        result += f(5001 + wordCounts['5000+']) - f(5001)
+
+        return result;
+    }
+
+    const comprehensionPercentage = getAccurateComprehensionPercentage(wordCounts);
     
     let labels = [0, 10000];
     let numDataPoints = 101;
 
     let data = Array.from(
         {length: numDataPoints},
-        (_, i) => getComprehensionPercentage(i * 100)
+        (_, i) => f(i * 100)
     );
 
     // Get nearest value on graph to comprehensionPercentage. prev contains
@@ -48,7 +98,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
     let hiddenIndexes = Array.from(
         {length: numDataPoints},
         (_, i) => i
-        ).filter(i => getComprehensionPercentage(i * 100) != nearestDataPoint);
+        ).filter(i => f(i * 100) != nearestDataPoint);
 
     return (
     <View style={styles.wordsLearnedPanel}>
@@ -84,7 +134,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
                 }}
         />
         <Text style={styles.wordsLearnedInfo}>
-            This means you should be able to understand <Text style={{
+            Based on the words you know, you should be able to understand around <Text style={{
                 fontFamily: constants.FONTFAMILYBOLD,
                 color: constants.PRIMARYCOLOR
                 }}>

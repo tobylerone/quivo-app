@@ -3,6 +3,8 @@ from django.db import models
 class Language(models.Model):
     language_code = models.TextField(null=False)
     language_name = models.TextField(null=False)
+    # Parameters a, b, c and d of function a + b / (1 + np.exp(-c * x**d)) used to model frequency distribution
+    params = models.JSONField(null=False, default=[0, 0, 0, 0])
 
 class BaseSentence(models.Model):
 

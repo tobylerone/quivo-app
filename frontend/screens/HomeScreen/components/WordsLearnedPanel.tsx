@@ -34,7 +34,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
     
     const f = (n: number) => {
         // Models the word frequency distribution normalised to between 0-100
-        return n == 0 ? 0 : Math.round(-100 + 200/(1 + Math.E**(-0.001 * n)));
+        return n == 0 ? 0 : Math.round(-83.32317585 + 191.39405783 / (1 + Math.E**(-0.39771826 * n**0.20018198)));
     }
 
     const getAccurateComprehensionPercentage = (wordCounts: Record<string, number>) => {
@@ -76,38 +76,47 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
 
     const comprehensionPercentage = getAccurateComprehensionPercentage(wordCounts);
     
-    let labels = [0, 10000];
+    //let labels = [0, 5000];
     let numDataPoints = 101;
+    let step = 100;
 
     let data = Array.from(
         {length: numDataPoints},
-        (_, i) => f(i * 100)
+        (_, i) => f(i * step)
     );
 
-    // Get nearest value on graph to comprehensionPercentage. prev contains
-    // the callback from the previous iteration (the closest value to num so far)
-    function findNearest(num: number, arr: number[]) {
-        return arr.reduce((prev, curr) => {
-            return (Math.abs(curr - num) < Math.abs(prev - num) ? curr : prev);
-        });
+    function findIndex(array: number[], value: number) {
+        // Given an array of increasing numbers, use binary search
+        // to find appropriate index to insert new number
+        let low = 0, high = array.length;
+        while (low < high) {
+            let mid = Math.floor((low + high) / 2);
+            if (array[mid] < value) low = mid + 1;
+            else high = mid;
+        }
+        return low;
     }
 
-    const nearestDataPoint = findNearest(comprehensionPercentage, data);
+    let indexToInsert = findIndex(data, comprehensionPercentage);
 
-    // Want to hide all points except index to keep (which is comprehensionPercentage)
+    // Add the comprehensionPercentage to the data array at the appropriate index
+    data.splice(indexToInsert, 0, comprehensionPercentage);
+
+    // Hide all indexes except for indexToInsert
     let hiddenIndexes = Array.from(
-        {length: numDataPoints},
+        {length: numDataPoints + 1},
         (_, i) => i
-        ).filter(i => f(i * 100) != nearestDataPoint);
+        ).filter(i => i !== indexToInsert);
 
     return (
     <View style={styles.wordsLearnedPanel}>
         <Text style={styles.wordsLearnedTitle}>
             {currentUser.known_words_count[currentLanguage]} Words Learned
         </Text>
+        {wordCounts &&
         <LineChart
             data={{
-                labels: labels,
+                //labels: labels,
                 datasets: [{ data: data }]}}
                 width={Dimensions.get("window").width - 80} // from react-native
                 height={200}
@@ -133,6 +142,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
                 borderRadius: 10,
                 }}
         />
+        }
         <Text style={styles.wordsLearnedInfo}>
             Based on the words you know, you should be able to understand around <Text style={{
                 fontFamily: constants.FONTFAMILYBOLD,

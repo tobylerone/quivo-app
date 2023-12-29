@@ -17,7 +17,7 @@ export default function NavBar({title, navigation}: INavBarData) {
                 style={styles.backButton}
                 onPress={() => {navigation.goBack()}}
                 >
-                <FontAwesome name="arrow-left" size={20} color={constants.BLACK} />
+                <FontAwesome name="chevron-left" size={20} color={constants.BLACK} />
             </TouchableOpacity>
             {title &&
             <View style={styles.titleContainer}>

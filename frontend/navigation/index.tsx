@@ -100,14 +100,7 @@ function MainNavigator() {
             <MainStack.Screen
                 name="AccountSettings"
                 component={AccountSettingsScreen as any}
-                options={{
-                    title: "Settings",
-                    headerStyle: {
-                        backgroundColor: constants.TERTIARYCOLOR
-                    },
-                    headerTintColor: constants.BLACK,
-                    headerShadowVisible: false
-                }}
+                options={{ headerShown: false }}
             />
             <MainStack.Screen
                 name="SearchUser"

@@ -4,6 +4,6 @@
 # Delete all rows from table
 DELETE FROM table_name;
 
-# Remove word frequency list
-DELETE FROM public.api_appuser_known_words;
+# Remove french word frequency list
+DELETE FROM public.api_appuser_known_words_fr;
 DELETE FROM public.language_app_frworddata;

@@ -22,6 +22,7 @@ import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
 import FollowListScreen from "../screens/FollowListScreen";
+import FaqScreen from "../screens/FaqScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -111,50 +112,27 @@ function MainNavigator() {
             <MainStack.Screen
                 name="SearchUser"
                 component={SearchUserScreen as any}
-                options={{
-                    title: "Search for users",
-                    headerStyle: {
-                        backgroundColor: constants.TERTIARYCOLOR
-                    },
-                    headerTintColor: constants.BLACK,
-                    headerShadowVisible: false
-                }}
+                options={{headerShown: false}}
             />
             <MainStack.Screen
                 name="AccountLanguages"
                 component={AccountLanguagesScreen as any}
-                options={{
-                    title: "Your Languages",
-                    headerStyle: {
-                        backgroundColor: constants.TERTIARYCOLOR
-                    },
-                    headerTintColor: constants.BLACK,
-                    headerShadowVisible: false
-                }}
+                options={{headerShown: false}}
             />
             <MainStack.Screen
                 name="FollowList"
                 component={FollowListScreen as any}
-                options={{
-                    title: "Relations",
-                    headerStyle: {
-                        backgroundColor: constants.TERTIARYCOLOR
-                    },
-                    headerTintColor: constants.BLACK,
-                    headerShadowVisible: false
-                }}
+                options={{ headerShown: false }}
             />
             <MainStack.Screen
                 name="WordList"
                 component={WordListScreen as any}
-                options={{
-                    title: "Known Words",
-                    headerStyle: {
-                        backgroundColor: constants.TERTIARYCOLOR
-                    },
-                    headerTintColor: constants.BLACK,
-                    headerShadowVisible: false
-                }}
+                options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+                name="Faqs"
+                component={FaqScreen as any}
+                options={{ headerShown: false }}
             />
         </MainStack.Navigator>
         )

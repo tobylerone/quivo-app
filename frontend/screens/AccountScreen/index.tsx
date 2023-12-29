@@ -103,7 +103,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 <View style={styles.middleContainerColumn}>
                     <TouchableOpacity
                         activeOpacity={1}
-                        onPress={() => navigation.navigate("FollowList", {initialTab: "Followers"})}
+                        onPress={() => navigation.navigate("FollowList", {initialTab: "followers"})}
                         >
                         <View style={styles.followCountContainer}>
                             <Text style={styles.followCount}>{ currentUser.followers_count }</Text>
@@ -114,7 +114,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 <View style={styles.middleContainerColumn}>
                     <TouchableOpacity
                         activeOpacity={1}
-                        onPress={() => navigation.navigate("FollowList", {initialTab: "Following"})}
+                        onPress={() => navigation.navigate("FollowList", {initialTab: "following"})}
                         >
                         <View style={styles.followCountContainer}>
                             <Text style={styles.followCount}>{ currentUser.following_count }</Text>

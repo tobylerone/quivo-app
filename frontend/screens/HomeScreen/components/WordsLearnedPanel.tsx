@@ -79,6 +79,16 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
     //let labels = [0, 5000];
     let numDataPoints = 101;
     let step = 100;
+    
+    // Short-term solution
+    let labels: string[] = Array.from({length: numDataPoints}, (_, i) => {
+        i = i * step;
+        if (i === 0 || i === 2500 || i === 5000 || i === 7500 || i === 10000) {
+            return `${i}`;
+        } else {
+            return '';
+        }
+    });
 
     let data = Array.from(
         {length: numDataPoints},
@@ -101,6 +111,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
 
     // Add the comprehensionPercentage to the data array at the appropriate index
     data.splice(indexToInsert, 0, comprehensionPercentage);
+    //labels.splice(indexToInsert, 0, `${currentUser.known_words_count[currentLanguage]}`);
 
     // Hide all indexes except for indexToInsert
     let hiddenIndexes = Array.from(
@@ -116,7 +127,7 @@ export default function WordsLearnedPanel({currentLanguageName}: IWordsLearnedPa
         {wordCounts &&
         <LineChart
             data={{
-                //labels: labels,
+                labels: labels,
                 datasets: [{ data: data }]}}
                 width={Dimensions.get("window").width - 80} // from react-native
                 height={200}

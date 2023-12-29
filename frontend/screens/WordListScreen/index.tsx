@@ -11,6 +11,7 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import UserContext from "../../contexts/UserContext";
 import * as constants from "../../constants";
 import client from "../../utils/axios";
+import NavBar from "../../components/NavBar";
 import ProgressBarButton from "./components/ProgressBarButton";
 import WordItem from "./components/WordItem";
 import { endAsyncEvent } from "react-native/Libraries/Performance/Systrace";
@@ -87,6 +88,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     
     return (
         <SafeAreaView style={styles.container}>
+            <NavBar title='Known Words' navigation={navigation}/>
             <ScrollView
                 style={styles.topButtonContainer}
                 horizontal={true}
@@ -168,15 +170,15 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 10,
+        marginTop: 50,
+        marginHorizontal: 20,
     },
     topButtonContainer: {
         flexDirection: 'row',
-        padding: 5,
-        marginBottom: 10
+        marginBottom: 10,
+        //marginHorizontal: 10
     },
     headerContainer: {
-        marginHorizontal: 10
     },
     headerContainerText: {
         fontSize: constants.H2FONTSIZE,
@@ -185,8 +187,7 @@ const styles = StyleSheet.create({
     },
     wordList: {
         height: "100%",
-        marginTop: 10,
-        marginHorizontal: 10
+        marginTop: 10
     },
     loadMoreButton: {
         backgroundColor: constants.PRIMARYCOLOR,

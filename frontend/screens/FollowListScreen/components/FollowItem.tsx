@@ -77,7 +77,8 @@
             borderRadius: 10,
             margin: 5,
             paddingHorizontal: 10,
-            paddingVertical: 5
+            paddingVertical: 5,
+            height: 70
         },
         leftBoxContainer: {
         },

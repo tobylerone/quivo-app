@@ -176,7 +176,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
         const regex: Record<string, RegExp> = {
-            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüÛÜçÇîÎïÏ]+)/g,
+            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
             'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
         }
         
@@ -219,10 +219,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
                 <View style={styles.starBox}>
-                    <View style={styles.starContainer}>
+                    {/*<View style={styles.starContainer}>
                         <FontAwesome name="star" size={30} color={constants.PRIMARYCOLOR} />
+                    </View>*/}
+                    <Text style={styles.starCountText}>Lv. 27</Text>
+                    <View style={styles.progressBarBackground}>
+                        <View style={styles.progressBar}></View>
                     </View>
-                    <Text style={styles.starCountText}>27</Text>
                 </View>
                 <View style={styles.topButtonsContainer}>
                     <TouchableOpacity
@@ -382,8 +385,8 @@ const styles= StyleSheet.create({
         paddingRight: 20
     },
     starBox: {
-        flexDirection: 'row',
-        backgroundColor: constants.SECONDARYCOLOR,
+        flexDirection: 'column',
+        //backgroundColor: constants.SECONDARYCOLOR,
         borderRadius: 10,
         paddingLeft: 10,
         paddingRight: 10
@@ -397,7 +400,24 @@ const styles= StyleSheet.create({
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         marginTop: 'auto',
+        marginRight: 5,
         marginBottom: 'auto',
+    },
+    progressBarBackground: {
+        width: 100,
+        height: 10,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        //backgroundColor: constants.SECONDARYCOLOR,
+        borderWidth: 2,
+        borderColor: constants.PRIMARYCOLOR,
+        borderRadius: 5,
+        overflow: 'hidden'
+    },
+    progressBar: {
+        width: 30,
+        height: 10,
+        backgroundColor: constants.PRIMARYCOLOR,
     },
     topButtonsContainer: {
         flexDirection: "row",

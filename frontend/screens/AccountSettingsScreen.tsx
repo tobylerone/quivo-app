@@ -31,7 +31,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
         {
             title: "Social",
             data: [
-            { text: "FAQs", action: () => {} },
+            { text: "FAQs", action: () => {navigation.navigate('Faqs')} },
             { text: "Rate and comment", action: () => {} },
             { text: "Share", action: () => {} },
             { text: "Contact us", action: () => {} },

@@ -41,8 +41,6 @@ export default function FollowScreen({ type }: IFollowScreen) {
 
 const styles = StyleSheet.create({
     followListContainer: {
-        height: "100%",
-        margin: 15
     },
     followList: {}
 });

@@ -4,6 +4,7 @@ import PNG from 'pngjs';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
 import UserContext from "../contexts/UserContext";
+import NavBar from "../components/NavBar";
 import * as constants from "../constants";
 import client from "../utils/axios";
 
@@ -132,21 +133,24 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
     
     return (
         <SafeAreaView style={styles.container}>
+            <NavBar title={''} navigation={navigation}/>
             <View style={styles.subContainer}>
-                <Text style={styles.title}>Your Languages</Text>
-                <FlatList
-                    data={knownLanguages}
-                    bounces={false}
-                    renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={false}/>}
-                />
-            </View>
-            <View style={styles.subContainer}>
-                <Text style={styles.title}>More Languages</Text>
-                <FlatList
-                    data={unknownLanguages}
-                    bounces={false}
-                    renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={true} />}
-                />
+                <View>
+                    <Text style={styles.title}>Your Languages</Text>
+                    <FlatList
+                        data={knownLanguages}
+                        bounces={false}
+                        renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={false}/>}
+                    />
+                </View>
+                <View>
+                    <Text style={styles.title}>More Languages</Text>
+                    <FlatList
+                        data={unknownLanguages}
+                        bounces={false}
+                        renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={true} />}
+                    />
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -154,13 +158,15 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
 
 const styles = StyleSheet.create({
     container: {
+        marginTop: 50,
+        marginHorizontal: 16,
+    },
+    subContainer: {
+        marginTop: 10,
         borderColor: constants.SECONDARYCOLOR,
         borderWidth: 3,
         borderRadius: 20,
         overflow: 'hidden',
-        marginHorizontal: 16,
-    },
-    subContainer: {
     },
     title: {
         fontSize: constants.H2FONTSIZE,

@@ -3,6 +3,7 @@ import { SearchBar } from "react-native-elements";
 import PNG from 'pngjs';
 import { useState, useEffect, useContext } from "react";
 import UserContext from '../contexts/UserContext';
+import NavBar from "../components/NavBar";
 import FollowButton from "../components/FollowButton";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesome } from "@expo/vector-icons";
@@ -102,6 +103,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <NavBar title={'Search For Users'} navigation={navigation}/>
             <View style={styles.searchFieldContainer}>
                 <View style={styles.searchBarContainer}>
                 <TextInput
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginHorizontal: 20,
+        marginTop: 50
     },
     searchFieldContainer: {
         flexDirection: 'row',

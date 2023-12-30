@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     }, [currentUser]);
 
     const updateUserData = () => {
-        client.get("/api/users/me")
+        client.get('/api/users/me')
         .then(function(res) {
             setCurrentUser(res.data.user);
         })
@@ -49,6 +49,21 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             console.log(error);
         });
     };
+
+    const updateCurrentLanguage = (language_code: string) => {
+        client.post('api/users/changecurrentlanguage', {
+            language_code: language_code,
+            withCredentials: true
+        }).then((res) => {
+            // Only update the hook if language session data changed
+            // Probably don't need two api requests here. Could just
+            // return current language data from changecurrentlanguage
+            // endpoint
+            getCurrentLanguage()
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
 
     const getKnownLanguages = async () => {
         return client.get("/api/users/" + currentUser.user_id + "/knownlanguages", { withCredentials: true })
@@ -137,7 +152,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             currentUser,
             knownLanguages,
             currentLanguage,
-            setCurrentLanguage,
+            updateCurrentLanguage,
             updateUserData,
             submitRegistration,
             submitLogin,

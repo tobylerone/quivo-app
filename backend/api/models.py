@@ -58,10 +58,19 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		return self.followed_by.count()
 	
 	def known_words_count(self):
-		return {
-			'fr': self.known_words_fr.count(),
-			'de': self.known_words_de.count()
-			}
+	
+		# TODO: Make this a bit less hard-coded
+		known_languages = self.known_languages.all()
+		
+		word_counts = {}
+
+		for language in known_languages:
+			if language.language_code == 'fr':
+				word_counts['fr'] = self.known_words_fr.count()
+			elif language.language_code == 'de':
+				word_counts['de'] = self.known_words_de.count()
+
+		return word_counts
 
 	def __str__(self):
 		return self.username

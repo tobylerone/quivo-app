@@ -62,7 +62,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() => {
         console.log("Rendering Learnscreen");
         fetchData();
-    }, [])
+    }, [currentLanguage])
 
     // After updating items, set current item to first one in the list
     useEffect(() => {
@@ -91,6 +91,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 }
                 return item;
             })
+            setSentenceIndex(0);
             setItems(data);
             changeSentence();
         })

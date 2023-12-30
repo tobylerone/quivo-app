@@ -100,6 +100,9 @@ class UserAddLanguageSerializer(serializers.ModelSerializer):
 		user_id = validated_data.get('user_id')
 		language_code = validated_data.get('language_code')
 
+		print(user_id)
+		print(language_code)
+
 		language = Language.objects.get(language_code=language_code)
 		user = UserModel.objects.get(user_id=user_id)
 

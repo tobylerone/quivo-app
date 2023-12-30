@@ -14,9 +14,19 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
         {
             title: "Account",
             data: [
-            { text: "Change username", arrow: true, action: () => {} },
-            { text: "Change email", arrow: true, action: () => {} },
-            { text: "Log out", arrow: false, action: () => {
+            {
+              text: 'Change username',
+              arrow: true,
+              subtext: 'user1',
+              action: () => {}
+            },
+            {
+              text: 'Change email',
+              arrow: true,
+              subtext: 'user1@gmail.com',
+              action: () => {}
+            },
+            { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {
                 console.log("Logging out")
                 submitLogout()
             }},
@@ -26,7 +36,12 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             title: "General",
             data: [
             { text: "Choose language", arrow: false, action: () => {} },
-            { text: "Narration speed", arrow: true, action: () => {} },
+            {
+              text: 'Narration speed', 
+              subtext: 'Fast',
+              arrow: true,
+              action: () => {}
+            },
             { text: "-----", arrow: false, action: () => {} },
             ],
         },
@@ -53,12 +68,19 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             renderItem={({item}) => (
               <TouchableOpacity onPress={item.action} activeOpacity={1}>
                 <View style={styles.item}>
-                  <Text style={styles.title}>{item.text}</Text>
-                  {item.arrow &&
-                  <View style={styles.itemArrow}>
-                    <FontAwesome name="chevron-right" size={20} color={constants.PRIMARYCOLOR} />
+                  <Text style={{color: item.color || constants.BLACK , ...styles.itemText}}>{item.text}</Text>
+                  <View style={styles.itemRightContainer}>
+                  {item.subtext &&
+                    <Text style={styles.itemSubtext}>{
+                      item.subtext.length >= 10 ? item.subtext.substring(0, 7) + '...' : item.subtext
+                      }</Text>
+                    }
+                    {item.arrow &&
+                    <View style={styles.itemArrow}>
+                      <FontAwesome name="chevron-right" size={20} color={constants.PRIMARYCOLOR} />
+                    </View>
+                    }
                   </View>
-                  }
                 </View>
               </TouchableOpacity>
             )}
@@ -85,8 +107,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 0,
         flexDirection: 'row'
-        //borderBottomWidth: 3,
-        //borderBottomColor: constants.PRIMARYCOLOR
     },
     header: {
         fontSize: constants.H2FONTSIZE + 2,
@@ -95,13 +115,21 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: constants.PRIMARYCOLOR
     },
-    title: {
-        fontSize: constants.H2FONTSIZE,
-        fontFamily: constants.FONTFAMILY,
-        color: constants.BLACK
+    itemText: {
+      fontSize: constants.H2FONTSIZE,
+      fontFamily: constants.FONTFAMILY,
+    },
+    itemRightContainer: {
+      marginLeft: 'auto',
+      flexDirection: 'row'
+    },
+    itemSubtext: {
+      fontSize: constants.H2FONTSIZE,
+      fontFamily: constants.FONTFAMILY,
+      color: constants.GREY,
     },
     itemArrow: {
-      marginLeft: 'auto',
+      marginLeft: 10,
       marginTop: 'auto',
       marginBottom: 'auto'
     }

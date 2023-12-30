@@ -87,12 +87,18 @@ class UserLogoutView(APIView):
 	
 
 class UserChangeCurrentLanguageView(APIView):
-	def post(self, request, language_code):
+	def post(self, request, *args, **kwargs):
 
-		# TODO: Remove hard coding
-		if language_code in ['fr', 'de']:
+		try:
+			language_code = request.data.get('language_code')
 
-			request.session['current_language_code'] = language_code
+			# TODO: Remove hard coding
+			if language_code in ['fr', 'de']:
+
+				request.session['current_language_code'] = language_code
+				return Response(status=status.HTTP_200_OK)
+		except Exception as e:
+			print(e)
 
 
 class UserGetCurrentLanguageView(APIView):
@@ -114,6 +120,7 @@ class UserAddLanguageView(APIView):
 				user = serializer.save()
 				return Response({"status": "success"})
 			else:
+				print(serializer.errors)
 				return Response(serializer.errors, status=400)
 
 class UserKnownLanguagesView(generics.ListAPIView):

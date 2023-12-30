@@ -28,6 +28,10 @@ export default function SetKnownWordsPanel() {
         setSentenceComponents(components);
     }, [activeWordMask]);
 
+    useEffect(() => {
+        console.log('current language is ' + currentLanguage);
+    }, [currentLanguage]);
+
     function formatSentence(sentence: string) {
 
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else

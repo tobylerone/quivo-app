@@ -67,8 +67,6 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                                 bounces={false}
                                 horizontal={true}
                                 renderItem={({item}) => (
-                                    <>
-                                    {currentUser.known_words_count[item] !== 0 &&
                                     <View>
                                         <View style={styles.flagImageContainer}>
                                             <Image
@@ -80,8 +78,6 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                                             {currentUser.known_words_count[item]}
                                         </Text>
                                     </View>
-                                    }
-                                    </>
                                 )}
                             />
                         </View>

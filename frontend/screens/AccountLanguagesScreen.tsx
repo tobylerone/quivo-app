@@ -23,7 +23,7 @@ interface ILanguageItem {
 
 const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
 
-    const { currentUser, currentLanguage, setCurrentLanguage, updateUserData } = useContext(UserContext);
+    const { currentUser, currentLanguage, updateCurrentLanguage, updateUserData } = useContext(UserContext);
 
     // Can't render image paths dynamically at runtime so I have
     // to map the language codes to their locally stored flag
@@ -38,27 +38,27 @@ const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
     const handlePress = async(
         language_code: string
         ) => {
+
+        console.log(language_code);
+        console.log(currentUser.user_id);
         
-        /*
-        try {
-            const res = await client.post('./api/users/addlanguage/', {
-                language_code: language_code,
-                user_id: currentUser.user_id,
-                withCredentials: true
-            });
-            return res.data;
-        } catch (error) {
+        const res = await client.post('./api/users/addlanguage/', {
+            language_code: language_code,
+            user_id: currentUser.user_id,
+            withCredentials: true
+        }).then(() => {
+            // Change currentLanguage
+            updateCurrentLanguage(language_code);
+
+            // Update the user data
+            updateUserData()
+
+            navigation.navigate('Learn');
+
+        }).catch((error) => {
             console.error(error);
-        }
-        */
-        // Change currentLanguage
-        //setCurrentLanguage(language_code);
+        });
 
-        // Update the user data
-        //updateUserData();
-
-        // Redirect to LearnScreen
-        navigation.navigate('Learn');
     }
 
     return (
@@ -76,7 +76,7 @@ const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.languageItemAddButton}
-                onPress={() => {handlePress(navigation, item.language_code)}}
+                onPress={() => {handlePress(item.language_code)}}
             >
                 <FontAwesome name='plus' size={20} color={constants.PRIMARYCOLOR} />
             </TouchableOpacity>
@@ -143,6 +143,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                         renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={false}/>}
                     />
                 </View>
+                {unknownLanguages.length > 0 &&
                 <View>
                     <Text style={styles.title}>More Languages</Text>
                     <FlatList
@@ -151,6 +152,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                         renderItem={({item}) => <LanguageItem item={item} navigation={navigation} addButton={true} />}
                     />
                 </View>
+                }
             </View>
         </SafeAreaView>
     );

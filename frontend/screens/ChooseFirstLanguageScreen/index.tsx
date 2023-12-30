@@ -17,7 +17,7 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
         }
     }
     
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, updateUserData } = useContext(UserContext);
 
     const [languages, setLanguages] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -27,6 +27,10 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
     useEffect(() => {
         fetchLanguages();
     }, [])
+
+    useEffect(() => {
+        console.log('active language changed to ' + activeLanguage);
+    }, [activeLanguage]);
     
     // Can definitely cache this rather than fetch it every time
     const fetchLanguages = () => {
@@ -77,6 +81,8 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
 
         // Update current language in session data
         updateCurrentLanguage();
+
+        updateUserData();
     }
     
     if (loading) {

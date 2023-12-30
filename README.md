@@ -1,5 +1,5 @@
-!![Screenshot_1703948964](https://github.com/MyriadWC/quivo-app/assets/5995654/3446320d-eb49-4fb5-bc42-f979598853e0)
-[Screenshot_1703948976](https://github.com/MyriadWC/quivo-app/assets/5995654/485e2128-1759-4de8-80dd-8eb5d1e040f3)
+![Screenshot_1703948964](https://github.com/MyriadWC/quivo-app/assets/5995654/3446320d-eb49-4fb5-bc42-f979598853e0)
+![Screenshot_1703948976](https://github.com/MyriadWC/quivo-app/assets/5995654/485e2128-1759-4de8-80dd-8eb5d1e040f3)
 ![Screenshot_1703948942](https://github.com/MyriadWC/quivo-app/assets/5995654/f3a0feac-be64-4cb6-aac4-189244928ce0)
 ![Screenshot_1703948927](https://github.com/MyriadWC/quivo-app/assets/5995654/fe4475f5-140a-4039-b91f-d4d2552eeb3c)
 ![Screenshot_1703948901](https://github.com/MyriadWC/quivo-app/assets/5995654/d23e9dff-9362-4609-bca9-af904c334b71)

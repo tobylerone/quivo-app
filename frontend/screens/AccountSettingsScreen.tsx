@@ -8,7 +8,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
-    const { submitLogout } = useContext(UserContext);
+    const { currentUser, submitLogout } = useContext(UserContext);
 
     const DATA = [
         {
@@ -17,13 +17,13 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             {
               text: 'Change username',
               arrow: true,
-              subtext: 'user1',
+              subtext: currentUser.username,
               action: () => {}
             },
             {
               text: 'Change email',
               arrow: true,
-              subtext: 'user1@gmail.com',
+              subtext: currentUser.email,
               action: () => {}
             },
             { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {

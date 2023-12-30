@@ -409,7 +409,6 @@ const styles= StyleSheet.create({
         height: 10,
         marginTop: 'auto',
         marginBottom: 'auto',
-        //backgroundColor: constants.SECONDARYCOLOR,
         borderWidth: 2,
         borderColor: constants.PRIMARYCOLOR,
         borderRadius: 5,

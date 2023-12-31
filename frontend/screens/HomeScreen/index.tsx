@@ -1,6 +1,7 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useContext } from "react";
+import PNG from 'pngjs';
 import UserContext from '../../contexts/UserContext';
 import * as constants from '../../constants';
 import { LineChart } from "react-native-chart-kit";
@@ -15,7 +16,16 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         language_name: string
     }
 
+    const flagImageMap: Record<string, PNG> = {
+        'ru': require('../../assets/ru.png'),
+        'de': require('../../assets/de.png'),
+        'es': require('../../assets/es.png'),
+        'fr': require('../../assets/fr.png')
+    };
+
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
+
+    const userStreak = 26;
 
     let currentLanguageName: string = knownLanguages.find(
         (lang: ILanguage) => lang.language_code === currentLanguage
@@ -24,18 +34,13 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     const data = [
         {
             text: 'Words Learned',
-            subText: '243 / 30129',
+            subText: currentUser.known_words_count[currentLanguage] + ' / 30129',
             image: require('../../assets/words_learned.png')
         },
         {
             text: 'Progress',
             subText: '+49 words this week',
             image: require('../../assets/progress.png')
-        },
-        {
-            text: 'Achievements',
-            subText: '2 / 56',
-            image: require('../../assets/achievements.png')
         },
         {
             text: 'Leaderboard',
@@ -46,7 +51,10 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
 
         return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.header}>Your {currentLanguageName} Progress</Text>
+            <View style={styles.topContainer}>
+                <Image source={flagImageMap[currentLanguage]} style={styles.flagImage} />
+                <Text style={styles.header}>Your {currentLanguageName} Progress</Text>
+            </View>
             {/*<WordsLearnedPanel currentLanguageName={currentLanguageName} />
             <DailyProgressPanel />*/}
             <View style={styles.panelContainer}>
@@ -57,6 +65,21 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                     </View>
                     <View style={styles.progressBarBackground}>
                         <View style={styles.progressBar}></View>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.panel}>
+                    <Text style={styles.panelHeader}>Streak</Text>
+                    <View style={styles.streakPanelSubcontainer}>
+                        <Image
+                                source={require('../../assets/streak-rocket.png')}
+                                style={styles.streakPanelImage}
+                            />
+                        <View style={styles.panelStreakNumber}>
+                            <Text style={{
+                                fontSize: userStreak.toString().length === 1 ? 90 : userStreak.toString().length === 2 ? 70 : 60
+                                , ...styles.panelStreakNumberText
+                                }}>{userStreak}</Text>
+                        </View>
                     </View>
                 </TouchableOpacity>
                 {data.map((item, index) => {
@@ -83,6 +106,15 @@ const styles = StyleSheet.create({
         marginTop: 50,
         flex: 1
     },
+    topContainer: {
+        flexDirection: 'row',
+        marginHorizontal: 10
+    },
+    flagImage: {
+        height: 30,
+        width: 50,
+        borderRadius: 5
+    },
     header: {
         textTransform: 'capitalize',
         fontSize: constants.H2FONTSIZE,
@@ -103,7 +135,11 @@ const styles = StyleSheet.create({
     panelHeader: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.BLACK,
+        color: constants.TERTIARYCOLOR,
+        backgroundColor: constants.PRIMARYCOLOR,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 10,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 10
@@ -111,8 +147,7 @@ const styles = StyleSheet.create({
     panelLevelNumber: {
         width: 120,
         height: 120,
-        marginTop: -10,
-        marginBottom: 5,
+        marginTop: -15,
         marginLeft: 'auto',
         marginRight: 'auto',
         padding: 5,
@@ -120,18 +155,17 @@ const styles = StyleSheet.create({
     panelLevelNumberText: {
         fontSize: 90,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.PRIMARYCOLOR,
+        color: constants.GREY,
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 'auto',
-        marginBottom: 'auto',
     },
     progressBarBackground: {
-        height: 10,
+        height: 15,
         marginLeft: 20,
         marginRight: 20,
-        borderWidth: 2,
-        borderColor: constants.BLACK,
+        marginBottom: 15,
+        borderWidth: 3,
+        borderColor: constants.PRIMARYCOLOR,
         borderRadius: 10,
         overflow: 'hidden'
     },
@@ -139,6 +173,27 @@ const styles = StyleSheet.create({
         width: '70%',
         height: 10,
         backgroundColor: constants.PRIMARYCOLOR
+    },
+    streakPanelSubcontainer: {
+        flexDirection: 'row',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    streakPanelImage: {
+        width: 60,
+        height: 60,
+        padding: 5,
+        marginTop: 25,
+        marginBottom: 'auto',
+        marginRight: 10
+    },
+    panelStreakNumber: {
+        marginTop: 25,
+        marginLeft: -20
+    },
+    panelStreakNumberText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.ORANGE,
     },
     panelImage: {
         width: 120,

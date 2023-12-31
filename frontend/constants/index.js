@@ -12,6 +12,7 @@ export const SECONDARYCOLOR = "#F5F6F8" //"#E6F0E6" LIGHT GREEN IS QUITE GOOD
 export const TERTIARYCOLOR = "#FFFFFF"
 export const BLACK = "#212121"//"#000000"
 export const GREY = "#BBBCBE"
+export const ORANGE = "#FF9900"
 export const ERRORCOLOR = "#AB2328"
 export const SUCCESSCOLOR = "#028A0F"
 

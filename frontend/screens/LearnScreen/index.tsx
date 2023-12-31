@@ -228,6 +228,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         <View style={styles.progressBar}></View>
                     </View>
                 </View>
+                <TouchableOpacity style={styles.streakContainer}>
+                    <Image style={styles.streakImage} source={require('../../assets/streak-rocket.png')} />
+                </TouchableOpacity>
                 <View style={styles.topButtonsContainer}>
                     <TouchableOpacity
                         activeOpacity={1}
@@ -405,7 +408,7 @@ const styles= StyleSheet.create({
         marginBottom: 'auto',
     },
     progressBarBackground: {
-        width: 100,
+        width: 60,
         height: 10,
         marginTop: 'auto',
         marginBottom: 'auto',
@@ -418,6 +421,18 @@ const styles= StyleSheet.create({
         width: 30,
         height: 10,
         backgroundColor: constants.PRIMARYCOLOR,
+    },
+    streakContainer: {
+        width: 50,
+        height: 50,
+    },
+    streakImage: {
+        width: 30,
+        height: 30,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     topButtonsContainer: {
         flexDirection: "row",

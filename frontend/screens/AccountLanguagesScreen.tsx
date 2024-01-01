@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, FlatList, ActivityIndicator } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import PNG from 'pngjs';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
@@ -90,8 +90,8 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
     const { currentUser } = useContext(UserContext);
     
     // No user languages currently so this is a placeholder
-    const [knownLanguages, setKnownLanguages] = useState([]);
-    const [unknownLanguages, setUnknownLanguages] = useState([]);
+    const [knownLanguages, setKnownLanguages] = useState(null);
+    const [unknownLanguages, setUnknownLanguages] = useState(null);
     
     useEffect(() => {
         fetchKnownLanguages();
@@ -134,6 +134,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
     return (
         <SafeAreaView style={styles.container}>
             <NavBar title={''} navigation={navigation}/>
+            {knownLanguages && unknownLanguages && <>
             <View style={styles.subContainer}>
                 <View>
                     <Text style={styles.title}>Your Languages</Text>
@@ -154,6 +155,12 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                 </View>
                 }
             </View>
+            </>}
+            {!knownLanguages || !unknownLanguages &&
+            <View style={styles.activityIndicatorContainer}>
+                <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.BLACK} />
+            </View>
+            }
         </SafeAreaView>
     );
 };
@@ -213,5 +220,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-
+    activityIndicatorContainer: {
+        width: '100%',
+        height: '90%',
+    },
+    activityIndicator: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    }
 });

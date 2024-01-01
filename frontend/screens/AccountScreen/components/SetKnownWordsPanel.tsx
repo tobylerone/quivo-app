@@ -138,7 +138,7 @@ export default function SetKnownWordsPanel() {
         <Text style={styles.knownWordsPercText}>{knownWordsPerc}%</Text>
         <View style={styles.sliderContainer}>
             <Slider
-                style={{height: 40, padding: 0, margin: 0}}
+                style={{height: 65, padding: 0, margin: 0, transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }]}}
                 minimumValue={20}
                 maximumValue={80}
                 value={knownWordsPerc}
@@ -177,6 +177,9 @@ const styles = StyleSheet.create({
     },
     sliderContainer: {
         width: '100%',
+        paddingHorizontal: '20%',
+        marginTop: -10,
+        marginBottom: -10,
         flexDirection: 'column',
     },
     knownWordsPercText: {

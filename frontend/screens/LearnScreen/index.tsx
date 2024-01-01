@@ -442,7 +442,6 @@ const styles= StyleSheet.create({
         overflow: 'hidden'
     },
     progressBar: {
-        //width: 30,
         height: 10,
         backgroundColor: constants.PRIMARYCOLOR,
     },

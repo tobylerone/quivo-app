@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, Image, ActivityIndicator } from "react-native";
 import { SearchBar } from "react-native-elements";
 import PNG from 'pngjs';
 import { useState, useEffect, useContext } from "react";
@@ -6,7 +6,8 @@ import UserContext from '../contexts/UserContext';
 import NavBar from "../components/NavBar";
 import FollowButton from "../components/FollowButton";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../constants";
 import client from "../utils/axios";
 
@@ -86,7 +87,7 @@ const UserListItem = ({user}: IUserListItem) => {
 export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
     
     // pour l'instant j'aimerais simplement montrer une liste de tous les utilisateurs
-    const [users, setUsers] = useState<IUser[]>([]);
+    const [users, setUsers] = useState<(IUser[] | null)>(null);
       
     useEffect(() => {
         getUsers();
@@ -112,21 +113,14 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                 placeholderTextColor={constants.GREY}
                 //onChangeText={(password) => setPassword(password)}
                 />
-                    {/*<SearchBar
-                        inputStyle={{backgroundColor: constants.SECONDARYCOLOR}}
-                        containerStyle={{backgroundColor: constants.SECONDARYCOLOR, borderWidth: 0, padding: 0}}
-                        inputContainerStyle={{backgroundColor: constants.SECONDARYCOLOR}}
-                        placeholderTextColor={constants.GREY}
-                        placeholder={'Search by username'}
-                    />*/}
                 </View>
                 <TouchableOpacity style={styles.searchButton}>
                     <View style={styles.searchButtonIconContainer}>
-                        <FontAwesome name="search" size={25} color={constants.TERTIARYCOLOR} />
+                        <FontAwesomeIcon icon={faSearch} size={25} color={constants.TERTIARYCOLOR} />
                         </View>
                 </TouchableOpacity>
             </View>
-            {users.length !== 0 &&
+            {users &&
             <FlatList
                 style={styles.userList}
                 data={users}
@@ -134,6 +128,9 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                 renderItem={({item}: {item: IUser}) => <UserListItem user={item} />}
             />
             }
+            {!users &&<>
+            <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />
+            </>}
         </SafeAreaView>
     );
 };
@@ -236,5 +233,8 @@ const styles = StyleSheet.create({
     followButtonText: {
         fontSize: constants.CONTENTFONTSIZE,
         color: constants.TERTIARYCOLOR
+    },
+    activityIndicator: {
+        marginTop: 20
     }
 });

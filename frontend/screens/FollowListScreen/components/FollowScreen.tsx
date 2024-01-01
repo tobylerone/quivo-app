@@ -28,14 +28,24 @@ export default function FollowScreen({ type }: IFollowScreen) {
 
     return (
         <View style={styles.followListContainer}>
-            {data &&
-            <FlatList
-                style={styles.followList}
-                data={data}
-                bounces={false}
-                renderItem={({item}) => <FollowItem user={item} />}
-            />
-            }
+            {data && <>
+                {data.length > 0 && <>
+                    <FlatList
+                    style={styles.followList}
+                    data={data}
+                    bounces={false}
+                    renderItem={({item}) => <FollowItem user={item} />}
+                />
+                </>}
+                {data.length === 0 && <>
+                    <Text style={styles.noFollowText}>{
+                        type === 'followers'
+                        ? 'No followers'
+                        : 'You haven\'t followed anyone yet!'
+                        }
+                    </Text>
+                </>}
+            </>}
             {!data && <>
             <ActivityIndicator size="large" color={constants.PRIMARYCOLOR} />
             </>}
@@ -47,5 +57,13 @@ export default function FollowScreen({ type }: IFollowScreen) {
 const styles = StyleSheet.create({
     followListContainer: {
     },
-    followList: {}
+    followList: {},
+    noFollowText: {
+        fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILY,
+        color: constants.BLACK,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginVertical: 10
+    }
 });

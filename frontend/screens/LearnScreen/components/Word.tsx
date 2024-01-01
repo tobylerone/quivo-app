@@ -114,7 +114,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-            
+
             client.post(
                 'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
             ).then(function(res) {
@@ -145,6 +145,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             setPressedOnce(true);
 
             // WordData.word contains the full word
+            Speech.stop();
             Speech.speak(wordData.word, {language: currentLanguage})
             
             tapDelayTimeout = setTimeout(() => {

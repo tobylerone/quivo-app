@@ -14,7 +14,7 @@ export const BLACK = "#212121"//"#000000"
 export const GREY = "#BBBCBE"
 export const ORANGE = "#FF9900"
 export const ERRORCOLOR = "#AB2328"
-export const SUCCESSCOLOR = "#028A0F"
+export const SUCCESSCOLOR = "#228B22"
 
 //Police, tailles etc.
 export const FONTFAMILY = 'Nunito'

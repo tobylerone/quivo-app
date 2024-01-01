@@ -2,6 +2,7 @@ venv/
 
 # react dependencies
 frontend/node_modules
+node_modules
 
 # ml model large files
 ml_notebooks/translations

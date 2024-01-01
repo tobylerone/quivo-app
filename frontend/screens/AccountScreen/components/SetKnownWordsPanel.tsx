@@ -10,7 +10,8 @@ export default function SetKnownWordsPanel() {
 
     const exampleSentences: Record<string, string> = {
         'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
-        'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.'
+        'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.',
+        'ru': 'Мама всегда говорила, что жизнь похожа на коробку шоколадных конфет: никогда не знаешь, какую конфету ты достанешь.'
     }
 
     const [knownWordsPerc, setKnownWordsPerc] = useState(50);
@@ -37,12 +38,14 @@ export default function SetKnownWordsPanel() {
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
         const wordsRegex: Record<string, RegExp> = {
             'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
-            'de': /(?:[a-zA-ZäöüÄÖÜß]+)/g
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+)/g,
+            'ru': /(?:[А-Яа-яЁё]+)/g
         };
 
         const inclusiveRegex: Record<string, RegExp> = {
             'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
-            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g,
+            'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g
         };
         
         const words = sentence.match(wordsRegex[currentLanguage]) || [];

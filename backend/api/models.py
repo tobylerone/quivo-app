@@ -46,6 +46,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	# TODO: Maybe find a more dynamic way to do this
 	known_words_fr = models.ManyToManyField('language_app.FrWordData', blank=True)
 	known_words_de = models.ManyToManyField('language_app.DeWordData', blank=True)
+	known_words_ru = models.ManyToManyField('language_app.RuWordData', blank=True)
 	
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
@@ -69,6 +70,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 				word_counts['fr'] = self.known_words_fr.count()
 			elif language.language_code == 'de':
 				word_counts['de'] = self.known_words_de.count()
+			elif language.language_code == 'ru':
+				word_counts['ru'] = self.known_words_ru.count()
 
 		return word_counts
 

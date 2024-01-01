@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../constants";
 
 interface INavBarData {
@@ -17,7 +18,7 @@ export default function NavBar({title, navigation}: INavBarData) {
                 style={styles.backButton}
                 onPress={() => {navigation.goBack()}}
                 >
-                <FontAwesome name="chevron-left" size={20} color={constants.BLACK} />
+                <FontAwesomeIcon icon={faChevronLeft} size={20} color={constants.BLACK} />
             </TouchableOpacity>
             {title &&
             <View style={styles.titleContainer}>

@@ -1,9 +1,10 @@
 import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity, FlatList } from "react-native";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import UserContext from '../../contexts/UserContext';
 import PNG from 'pngjs';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUserPlus, faGear } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../../constants";
 import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
 
@@ -23,6 +24,15 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
         'fr': require('../../assets/fr.png')
     };
 
+    // Only show some of the language flags if user learning lots of languages
+    let visibleFlags = Object.keys(currentUser.known_words_count);
+    let numHiddenFlags = 0;
+
+    if(visibleFlags.length > 3){
+        numHiddenFlags = visibleFlags.length - 2;
+        visibleFlags = visibleFlags.slice(0, 2);
+    }
+
     return (
         <SafeAreaView>
             <View style={styles.topContainer}>
@@ -32,7 +42,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.addUserButtonContainer}
                     >
                     <View style={styles.addUserButton}>
-                        <FontAwesome name="user-plus" size={constants.H1FONTSIZE} color={constants.BLACK} />
+                        <FontAwesomeIcon icon={faUserPlus} size={constants.H1FONTSIZE} color={constants.BLACK} />
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -41,7 +51,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.settingsButtonContainer}
                     >
                     <View style={styles.settingsButton}>
-                        <FontAwesome name="gear" size={constants.H1FONTSIZE} color={constants.BLACK} />
+                        <FontAwesomeIcon icon={faGear} size={constants.H1FONTSIZE} color={constants.BLACK} />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -60,9 +70,9 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         activeOpacity={1}
                         onPress={() => navigation.navigate("AccountLanguages")}
                         >
-                        <View>
+                        <View style={styles.flagContainer}>
                             <FlatList
-                                data={Object.keys(currentUser.known_words_count)}
+                                data={visibleFlags}
                                 //style={styles.languagePopupList}
                                 bounces={false}
                                 horizontal={true}
@@ -80,6 +90,11 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                                     </View>
                                 )}
                             />
+                            {numHiddenFlags > 0 &&
+                                <View style={styles.hiddenFlagsIcon}>
+                                    <Text style={styles.hiddenFlagsIconText}>+{numHiddenFlags}</Text>
+                                </View>
+                            }
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -213,6 +228,9 @@ const styles = StyleSheet.create({
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.SECONDARYCOLOR
     },
+    flagContainer: {
+        flexDirection: 'row'
+    },
     flagImageContainer: {
         borderRadius: 10,
         borderWidth: 4,
@@ -224,6 +242,16 @@ const styles = StyleSheet.create({
     flagImage: {
         width: "100%",
         height: "100%",
+    },
+    hiddenFlagsIcon: {
+        marginHorizontal: 3
+    },
+    hiddenFlagsIconText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.TERTIARYCOLOR,
+        fontSize: constants.H2FONTSIZE,
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     knownWordsContainer: {
         marginLeft: "auto",

@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow
 
-from language_app.models import Language, FrSentence, DeSentence, FrWordData, DeWordData
+from language_app.models import Language, FrSentence, DeSentence, RuSentence, FrWordData, DeWordData, RuWordData
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
@@ -22,8 +22,10 @@ from .serializers import (
 	LanguageModelSerializer,
     FrSentenceModelSerializer,
 	DeSentenceModelSerializer,
+	RuSentenceModelSerializer,
     FrWordDataModelSerializer,
-	DeWordDataModelSerializer
+	DeWordDataModelSerializer,
+	RuWordDataModelSerializer
 	)
 
 from .validations import custom_validation, validate_username, validate_password
@@ -93,7 +95,7 @@ class UserChangeCurrentLanguageView(APIView):
 			language_code = request.data.get('language_code')
 
 			# TODO: Remove hard coding
-			if language_code in ['fr', 'de']:
+			if language_code in ['fr', 'de', 'ru']:
 
 				request.session['current_language_code'] = language_code
 				return Response(status=status.HTTP_200_OK)
@@ -247,7 +249,8 @@ class UserToggleKnownWordView(APIView):
 
 			word_data_model = {
 				'fr': FrWordData,
-				'de': DeWordData
+				'de': DeWordData,
+				'ru': RuWordData
 			}.get(language_code, 'fr') # Default to fr for now
 			
 			user = AppUser.objects.get(user_id=user_id)
@@ -255,7 +258,8 @@ class UserToggleKnownWordView(APIView):
 
 			known_words_obj = {
 				'fr': user.known_words_fr,
-				'de': user.known_words_de
+				'de': user.known_words_de,
+				'ru': user.known_words_ru
 			}.get(language_code, 'fr')
 		
 			# Check if a user knows a word
@@ -287,12 +291,14 @@ class UserWordCountsView(APIView):
 
 		user_words = {
 			'fr': AppUser.objects.filter(user_id=user_id, known_words_fr=OuterRef('pk')),
-			'de': AppUser.objects.filter(user_id=user_id, known_words_de=OuterRef('pk'))
+			'de': AppUser.objects.filter(user_id=user_id, known_words_de=OuterRef('pk')),
+			'ru': AppUser.objects.filter(user_id=user_id, known_words_ru=OuterRef('pk'))
 			}.get(language_code, 'fr')
 
 		words_data_obj = {
 			'fr': FrWordData,
-			'de': DeWordData
+			'de': DeWordData,
+			'ru': RuWordData
 		}.get(language_code, 'fr')
         
 		# queryset contains all words in [Lang]WordData with annotation to say whether
@@ -367,7 +373,8 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		
 		return {
 			'fr': FrSentenceModelSerializer,
-			'de': DeSentenceModelSerializer
+			'de': DeSentenceModelSerializer,
+			'ru': RuSentenceModelSerializer
 			}.get(language_code, 'fr') # Default to fr for now
 
 	def get_queryset(self):
@@ -376,7 +383,8 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		
 		queryset = {
 			'fr': FrSentence.objects.all(),
-			'de': DeSentence.objects.all()
+			'de': DeSentence.objects.all(),
+			'ru': RuSentence.objects.all()
 			}.get(language_code, 'fr')
 		
 		# Randomly ordering the entire dataset to get 20 rows is really inefficient
@@ -420,7 +428,8 @@ class WordDataView(APIView):
 
 		model = {
 			'fr': FrWordData,
-			'de': DeWordData
+			'de': DeWordData,
+			'ru': RuWordData
 		}.get(language_code, 'fr')
 		
 		# Deux manieres de chercher des mots. Soit on peut specifier
@@ -442,7 +451,8 @@ class WordDataView(APIView):
 	
 		serializer_obj = {
 			'fr': FrWordDataModelSerializer,
-			'de': DeWordDataModelSerializer
+			'de': DeWordDataModelSerializer,
+			'ru': RuWordDataModelSerializer
 		}.get(language_code, 'fr')
 		
 		serializer = serializer_obj(

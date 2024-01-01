@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow
-from language_app.models import FrSentence, DeSentence, FrWordData, DeWordData, Language
+from language_app.models import FrSentence, DeSentence, RuSentence, FrWordData, DeWordData, RuWordData, Language
 
 UserModel = get_user_model()
 
@@ -148,6 +148,11 @@ class DeSentenceModelSerializer(BaseSentenceModelSerializer):
 		model=DeSentence
 
 
+class RuSentenceModelSerializer(BaseSentenceModelSerializer):
+	class Meta(BaseSentenceModelSerializer.Meta):
+		model=RuSentence
+
+
 class BaseWordDataModelSerializer(serializers.ModelSerializer):
 
 	user_knows = serializers.SerializerMethodField()
@@ -192,3 +197,9 @@ class DeWordDataModelSerializer(BaseWordDataModelSerializer):
 
 	class Meta(BaseWordDataModelSerializer.Meta):
 		model = DeWordData
+
+
+class RuWordDataModelSerializer(BaseWordDataModelSerializer):
+
+	class Meta(BaseWordDataModelSerializer.Meta):
+		model = RuWordData

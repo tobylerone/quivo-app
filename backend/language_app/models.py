@@ -28,6 +28,9 @@ class FrSentence(BaseSentence):
 class DeSentence(BaseSentence):
     pass
 
+class RuSentence(BaseSentence):
+    pass
+
 class BaseWordData(models.Model):
 
     class Meta:
@@ -43,3 +46,5 @@ class FrWordData(BaseWordData):
 class DeWordData(BaseWordData):
     pass
 
+class RuWordData(BaseWordData):
+    pass

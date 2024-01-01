@@ -7,6 +7,7 @@ import * as constants from '../../constants';
 import { LineChart } from "react-native-chart-kit";
 import WordsLearnedPanel from "./components/WordsLearnedPanel";
 import DailyProgressPanel from "./components/DailyProgressPanel";
+import { calcLevel } from "../../utils/functions";
 
 export default function HomeScreen({navigation}: NativeStackHeaderProps) {
 
@@ -26,6 +27,8 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
     const userStreak = 26;
+
+    const { level, levelResidual } = calcLevel(currentUser.known_words_count[currentLanguage], 30000);
 
     let currentLanguageName: string = knownLanguages.find(
         (lang: ILanguage) => lang.language_code === currentLanguage
@@ -61,10 +64,10 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                 <TouchableOpacity style={styles.panel}>
                     <Text style={styles.panelHeader}>Level</Text>
                     <View style={styles.panelLevelNumber}>
-                        <Text style={styles.panelLevelNumberText}>3</Text>
+                        <Text style={styles.panelLevelNumberText}>{level}</Text>
                     </View>
                     <View style={styles.progressBarBackground}>
-                        <View style={styles.progressBar}></View>
+                        <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.panel}>
@@ -108,10 +111,11 @@ const styles = StyleSheet.create({
     },
     topContainer: {
         flexDirection: 'row',
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        marginBottom: 10
     },
     flagImage: {
-        height: 30,
+        height: 35,
         width: 50,
         borderRadius: 5
     },
@@ -119,7 +123,8 @@ const styles = StyleSheet.create({
         textTransform: 'capitalize',
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        marginBottom: 20,
+        marginBottom: 'auto',
+        marginTop: 'auto',
         marginLeft: 10
     },
     panelContainer: {
@@ -135,8 +140,7 @@ const styles = StyleSheet.create({
     panelHeader: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.TERTIARYCOLOR,
-        backgroundColor: constants.PRIMARYCOLOR,
+        color: constants.BLACK,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 10,
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
     panelLevelNumberText: {
         fontSize: 90,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.GREY,
+        color: constants.PRIMARYCOLOR,
         marginLeft: 'auto',
         marginRight: 'auto',
     },
@@ -170,7 +174,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden'
     },
     progressBar: {
-        width: '70%',
         height: 10,
         backgroundColor: constants.PRIMARYCOLOR
     },

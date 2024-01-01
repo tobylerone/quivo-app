@@ -15,7 +15,9 @@ import {
 import PNG from 'pngjs';
 import * as Speech from "expo-speech";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faLanguage, faFilter, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faComment } from '@fortawesome/free-regular-svg-icons';
 import CheckBox from "../../components/CheckBox";
 import Word from "./components/Word";
 import FlagButton from "./components/FlagButton";
@@ -23,6 +25,7 @@ import UserContext from "../../contexts/UserContext";
 import * as constants from "../../constants";
 import client from "../../utils/axios";
 import { capitalizeFirstLetter } from "../../utils/text";
+import { calcLevel } from "../../utils/functions";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -31,8 +34,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
     const flagImageSources: Record<string, PNG> = {
-        'fr': require("../../assets/fr.png"),
-        'de': require("../../assets/de.png")
+        'fr': require('../../assets/fr.png'),
+        'de': require('../../assets/de.png'),
+        'ru': require('../../assets/ru.png')
     }
     
     // TODO: Remove this default
@@ -53,6 +57,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
     const [sentenceIndex, setSentenceIndex] = useState<number>(0);
+    const [knownWords, setKnownWords] = useState(currentUser.known_words_count[currentLanguage]);
+    const [level, setLevel] = useState(0);
+    const [levelResidual, setLevelResidual] = useState(0);
 
     const languagePopupAnimation = useRef(new Animated.Value(0)).current;
     const filterPopupAnimation = useRef(new Animated.Value(windowHeight)).current;
@@ -66,17 +73,30 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     // After updating items, set current item to first one in the list
     useEffect(() => {
-        if (items.length > 0) { setItem(items[0]); }
+        if (items.length > 0) {
+            setItem(items[0]);
+        }
     }, [items]);
 
     useEffect(() => {
         // Split sentence by word boundaries and return either text or a Word component if it is to be clickable
         createSentenceComponents().then(components => {
+            console.log('setting new components');
             setSentenceComponents(components);
         });
 
         if (autoDictEnabled) speak();
     }, [item]);
+
+    useEffect(() => {
+
+        // TODO: Replace this quick fix
+        const words = knownWords !== undefined ? knownWords : currentUser.known_words_count[currentLanguage];
+
+        const {level, levelResidual} = calcLevel(words, 30000);
+        setLevel(level);
+        setLevelResidual(levelResidual);
+    }, [knownWords]);
 
     const fetchData = async() => {
         client.get("/api/sentences", { withCredentials: true })
@@ -107,7 +127,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
         if (sentenceIndex < items.length - 1) {
             console.log(sentenceIndex);
-            setSentenceIndex(sentenceIndex + 1);
+            setSentenceIndex(prevIndex => prevIndex + 1);
         } else {
             // Want to get new sentences and reset index to 0
             setSentenceIndex(0);
@@ -178,7 +198,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
         const regex: Record<string, RegExp> = {
             'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
-            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g,
+            'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g,
         }
         
         const splitSentence = item.sentence.match(regex[currentLanguage]) || [];
@@ -210,27 +231,31 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     };
 
     const speak = () => {
+        Speech.stop();
         Speech.speak(
             item.sentence,
-            {language: currentLanguage}
+            {
+                language: currentLanguage,
+                rate: 1.3
+            }
             );
     };
+
+
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <View style={styles.starBox}>
-                    {/*<View style={styles.starContainer}>
-                        <FontAwesome name="star" size={30} color={constants.PRIMARYCOLOR} />
-                    </View>*/}
-                    <Text style={styles.starCountText}>Lv. 27</Text>
-                    <View style={styles.progressBarBackground}>
-                        <View style={styles.progressBar}></View>
-                    </View>
-                </View>
                 <TouchableOpacity style={styles.streakContainer}>
                     <Image style={styles.streakImage} source={require('../../assets/streak-rocket.png')} />
+                    <Text style={styles.streakNumberText}>26</Text>
                 </TouchableOpacity>
+                <View style={styles.starBox}>
+                    <Text style={styles.starCountText}>Lv. {level}</Text>
+                    <View style={styles.progressBarBackground}>
+                        <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
+                    </View>
+                </View>
                 <View style={styles.topButtonsContainer}>
                     <TouchableOpacity
                         activeOpacity={1}
@@ -248,7 +273,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         style={styles.filterButton}
                         onPress={() => { toggleFilterPopup() }}
                         >
-                        <FontAwesome name="filter" size={25} color={constants.BLACK} />
+                        <FontAwesomeIcon icon={faFilter} size={25} color={constants.PRIMARYCOLOR} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -276,7 +301,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate("AccountLanguages")}
                         style={styles.languagePopupAddButton}
                         >
-                        <FontAwesome name='plus' size={20} color={constants.TERTIARYCOLOR} />
+                        <FontAwesomeIcon icon={faPlus} size={20} color={constants.TERTIARYCOLOR} />
                     </TouchableOpacity>
                 </View>
             </Animated.View>
@@ -314,7 +339,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     onPressIn={() => setTranslationVisible(true)}
                     onPressOut={() => setTranslationVisible(false)}
                     >
-                    <FontAwesome name="repeat" size={25} color={constants.BLACK} />
+                    <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -322,7 +347,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     onPress={() => changeSentence()}
                 >
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
+                        <FontAwesomeIcon icon={faArrowRight} size={25} color={constants.TERTIARYCOLOR} />
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -330,7 +355,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.speakButton}
                     onPress={() => {speak()}}
                     >
-                    <FontAwesome name="comment" size={25} color={constants.BLACK} />
+                    <FontAwesomeIcon icon={faComment} size={30} color={constants.BLACK} />
                 </TouchableOpacity>
             </View>
             <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
@@ -390,7 +415,6 @@ const styles= StyleSheet.create({
     },
     starBox: {
         flexDirection: 'column',
-        //backgroundColor: constants.SECONDARYCOLOR,
         borderRadius: 10,
         paddingLeft: 10,
         paddingRight: 10
@@ -408,7 +432,7 @@ const styles= StyleSheet.create({
         marginBottom: 'auto',
     },
     progressBarBackground: {
-        width: 60,
+        width: 100,
         height: 10,
         marginTop: 'auto',
         marginBottom: 'auto',
@@ -418,21 +442,31 @@ const styles= StyleSheet.create({
         overflow: 'hidden'
     },
     progressBar: {
-        width: 30,
+        //width: 30,
         height: 10,
         backgroundColor: constants.PRIMARYCOLOR,
     },
     streakContainer: {
-        width: 50,
+        flexDirection: 'row',
         height: 50,
+        borderRadius: 10,
+        backgroundColor: constants.SECONDARYCOLOR,
+        paddingHorizontal: 7
     },
     streakImage: {
         width: 30,
         height: 30,
         marginTop: 'auto',
         marginBottom: 'auto',
-        marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 5
+    },
+    streakNumberText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H1FONTSIZE - 5,
+        color: constants.BLACK,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginRight: 5
     },
     topButtonsContainer: {
         flexDirection: "row",
@@ -481,7 +515,7 @@ const styles= StyleSheet.create({
     bottomContainer: {
         flexDirection: "row",
         height: 50,
-        marginBottom: 120
+        marginBottom: 105
     },
     filterPopupContainer: {
         backgroundColor: constants.SECONDARYCOLOR,

@@ -26,11 +26,17 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
               subtext: currentUser.email,
               action: () => {}
             },
+            {
+              text: "Upgrade to premium",
+              arrow: false,
+              color: constants.SUCCESSCOLOR,
+              action: () => {}
+            },
             { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {
-                console.log("Logging out")
-                submitLogout()
+              console.log("Logging out")
+              submitLogout()
             }},
-            ],
+          ],
         },
         {
             title: "General",

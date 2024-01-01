@@ -3,7 +3,9 @@ import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHome, faAlignJustify, faUser } from '@fortawesome/free-solid-svg-icons';
+//import { faComment } from '@fortawesome/free-regular-svg-icons';
 import * as constants from "../constants";
 
 // Auth stack
@@ -193,7 +195,7 @@ function BottomTabNavigator() {
              options={{
                 headerShown: false,
                 tabBarIcon: ({color, size}) => (
-                    <FontAwesome name="home" size={size} color={color} />
+                    <FontAwesomeIcon icon={faHome} size={size} color={color} />
                 ),
                 tabBarButton: (props) => (
                     <StandardTabBarButton {... props} />
@@ -206,7 +208,7 @@ function BottomTabNavigator() {
              options={{
                 headerShown: false,
                 tabBarIcon: ({color, size}) => (
-                    <FontAwesome name="align-justify" size={size} color={color} />
+                    <FontAwesomeIcon icon={faAlignJustify} size={size} color={color} />
                 ),
                 tabBarButton: (props) => (
                     <CentralTabBarButton {... props} />
@@ -219,7 +221,7 @@ function BottomTabNavigator() {
              options={{
                 headerShown: false,
                 tabBarIcon: ({color, size}) => (
-                    <FontAwesome name="user" size={size} color={color} />
+                    <FontAwesomeIcon icon={faUser} size={size} color={color} />
                 ),
                 tabBarButton: (props) => (
                     <StandardTabBarButton {... props} />

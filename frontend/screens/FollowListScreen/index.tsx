@@ -7,8 +7,6 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import NavBar from "../../components/NavBar";
 
-const Tab = createMaterialTopTabNavigator();
-
 export default function FollowListScreen({route, navigation}: {route: any, navigation: NativeStackHeaderProps}) {
 
     const { initialTab } =  route.params;

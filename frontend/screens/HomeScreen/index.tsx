@@ -38,17 +38,20 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         {
             text: 'Words Learned',
             subText: currentUser.known_words_count[currentLanguage] + ' / 30129',
-            image: require('../../assets/words_learned.png')
+            image: require('../../assets/words_learned.png'),
+            navigateTo: 'Progress'
         },
         {
             text: 'Progress',
             subText: '+49 words this week',
-            image: require('../../assets/progress.png')
+            image: require('../../assets/progress.png'),
+            navigateTo: 'Progress'
         },
         {
             text: 'Leaderboard',
             subText: '6th this week',
-            image: require('../../assets/leaderboard.png')
+            image: require('../../assets/leaderboard.png'),
+            navigateTo: 'Progress'
         },
     ];
 
@@ -87,7 +90,10 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
                 {data.map((item, index) => {
                     return (
-                    <TouchableOpacity style={styles.panel}>
+                    <TouchableOpacity
+                        style={styles.panel}
+                        onPress={() => navigation.navigate(item.navigateTo)}
+                        >
                         <Text style={styles.panelHeader}>{item.text}</Text>
                         <Image
                             source={item.image}

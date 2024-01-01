@@ -25,6 +25,7 @@ import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
 import FollowListScreen from "../screens/FollowListScreen";
 import FaqScreen from "../screens/FaqScreen";
+import ProgressScreen from "../screens/ProgressScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -127,6 +128,11 @@ function MainNavigator() {
             <MainStack.Screen
                 name="Faqs"
                 component={FaqScreen as any}
+                options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+                name="Progress"
+                component={ProgressScreen as any}
                 options={{ headerShown: false }}
             />
         </MainStack.Navigator>

@@ -39,7 +39,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
             text: 'Words Learned',
             subText: currentUser.known_words_count[currentLanguage] + ' / 30129',
             image: require('../../assets/words_learned.png'),
-            navigateTo: 'Progress'
+            navigateTo: 'WordsLearned'
         },
         {
             text: 'Progress',

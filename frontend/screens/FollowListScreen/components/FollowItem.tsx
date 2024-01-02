@@ -25,8 +25,9 @@
         const { currentLanguage } = useContext(UserContext);
 
         const flagImageSources: Record<string, PNG> = {
-            'fr': require("../../../assets/fr.png"),
-            'de': require("../../../assets/de.png")
+            'fr': require('../../../assets/fr.png'),
+            'de': require('../../../assets/de.png'),
+            'ru': require('../../../assets/ru.png')
         }
 
         return (

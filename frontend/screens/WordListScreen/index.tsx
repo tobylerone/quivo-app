@@ -88,7 +88,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     
     return (
         <SafeAreaView style={styles.container}>
-            <NavBar title='Known Words' navigation={navigation}/>
+            <NavBar title='Word List' navigation={navigation}/>
             <ScrollView
                 style={styles.topButtonContainer}
                 horizontal={true}

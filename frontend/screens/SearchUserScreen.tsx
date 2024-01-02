@@ -31,8 +31,9 @@ const UserListItem = ({user}: IUserListItem) => {
     const { currentUser, setCurrentUser } = useContext(UserContext);
 
     const flagImageSources: Record<string, PNG> = {
-        'fr': require("../assets/fr.png"),
-        'de': require("../assets/de.png")
+        'fr': require('../assets/fr.png'),
+        'de': require('../assets/de.png'),
+        'ru': require('../assets/ru.png')
     }
 
     // Current user check not super robust
@@ -120,17 +121,15 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                         </View>
                 </TouchableOpacity>
             </View>
-            {users &&
+            {users ?
             <FlatList
                 style={styles.userList}
                 data={users}
                 bounces={false}
                 renderItem={({item}: {item: IUser}) => <UserListItem user={item} />}
             />
+            : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />
             }
-            {!users &&<>
-            <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />
-            </>}
         </SafeAreaView>
     );
 };

@@ -134,7 +134,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
     return (
         <SafeAreaView style={styles.container}>
             <NavBar title={''} navigation={navigation}/>
-            {knownLanguages && unknownLanguages && <>
+            {knownLanguages && unknownLanguages ?
             <View style={styles.subContainer}>
                 <View>
                     <Text style={styles.title}>Your Languages</Text>
@@ -155,10 +155,8 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                 </View>
                 }
             </View>
-            </>}
-            {!knownLanguages || !unknownLanguages &&
-            <View style={styles.activityIndicatorContainer}>
-                <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.BLACK} />
+            : <View style={styles.activityIndicatorContainer}>
+                <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />
             </View>
             }
         </SafeAreaView>

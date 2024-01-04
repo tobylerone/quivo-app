@@ -27,6 +27,8 @@ import FollowListScreen from "../screens/FollowListScreen";
 import FaqScreen from "../screens/FaqScreen";
 import ProgressScreen from "../screens/ProgressScreen";
 import WordsLearnedScreen from "../screens/WordsLearnedScreen";
+import LevelScreen from "../screens/LevelScreen";
+import StreakScreen from "../screens/StreakScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -139,6 +141,16 @@ function MainNavigator() {
             <MainStack.Screen
                 name="WordsLearned"
                 component={WordsLearnedScreen as any}
+                options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+                name="Level"
+                component={LevelScreen as any}
+                options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+                name="Streak"
+                component={StreakScreen as any}
                 options={{ headerShown: false }}
             />
         </MainStack.Navigator>

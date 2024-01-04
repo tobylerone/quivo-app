@@ -9,7 +9,7 @@ import LanguageItem from "./components/LanguageItem";
 
 export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeaderProps) {
 
-    interface ILanguageItem {
+    interface ILanguageItemProps {
         item: {
             id: number,
             language_code: string,
@@ -27,10 +27,6 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
     useEffect(() => {
         fetchLanguages();
     }, [])
-
-    useEffect(() => {
-        console.log('active language changed to ' + activeLanguage);
-    }, [activeLanguage]);
     
     // Can definitely cache this rather than fetch it every time
     const fetchLanguages = () => {
@@ -95,7 +91,7 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
                 <FlatList
                     data={languages}
                     bounces={false}
-                    renderItem={({item}: ILanguageItem) => (
+                    renderItem={({item}: ILanguageItemProps) => (
                         <LanguageItem
                             item={item}
                             isActive={activeLanguage === item.language_code}

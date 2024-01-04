@@ -1,43 +1,30 @@
 import { useEffect, useState, useRef, useContext } from "react";
-import {
-    StyleSheet,
-    Switch,
-    View,
-    SafeAreaView,
-    Text, 
-    TouchableOpacity,
-    FlatList,
-    Image,
-    Animated,
-    Dimensions,
-    useWindowDimensions
-} from "react-native";
-import PNG from 'pngjs';
+import { StyleSheet, Switch, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions, useWindowDimensions } from "react-native";
 import * as Speech from "expo-speech";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLanguage, faFilter, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
-import CheckBox from "../../components/CheckBox";
-import Word from "./components/Word";
-import FlagButton from "./components/FlagButton";
-import UserContext from "../../contexts/UserContext";
+// Constants
 import * as constants from "../../constants";
+// Assets
+import { flagImageSources } from "../../assets/img/imageSources";
+// Utils
 import client from "../../utils/axios";
 import { capitalizeFirstLetter } from "../../utils/text";
 import { calcLevel } from "../../utils/functions";
+// Contexts
+import UserContext from "../../contexts/UserContext";
+// Components
+import CheckBox from "../../components/CheckBox";
+import Word from "./components/Word";
+import FlagButton from "./components/FlagButton";
 
 const windowHeight = Dimensions.get('window').height;
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
-
-    const flagImageSources: Record<string, PNG> = {
-        'fr': require('../../assets/fr.png'),
-        'de': require('../../assets/de.png'),
-        'ru': require('../../assets/ru.png')
-    }
     
     // TODO: Remove this default
     const [items, setItems] = useState([
@@ -238,24 +225,28 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 language: currentLanguage,
                 rate: 1.3
             }
-            );
+        );
     };
-
-
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <TouchableOpacity style={styles.streakContainer}>
+                <TouchableOpacity
+                    style={styles.streakContainer}
+                    onPress={() => {navigation.navigate('Streak')}}
+                    >
                     <Image style={styles.streakImage} source={require('../../assets/streak-rocket.png')} />
                     <Text style={styles.streakNumberText}>26</Text>
                 </TouchableOpacity>
-                <View style={styles.starBox}>
+                <TouchableOpacity
+                    style={styles.starBox}
+                    onPress={() => {navigation.navigate('Level')}}
+                    >
                     <Text style={styles.starCountText}>Lv. {level}</Text>
                     <View style={styles.progressBarBackground}>
                         <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.topButtonsContainer}>
                     <TouchableOpacity
                         activeOpacity={1}

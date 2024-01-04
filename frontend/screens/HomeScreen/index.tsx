@@ -1,12 +1,9 @@
-import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from "react-native";
+import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useContext } from "react";
-import PNG from 'pngjs';
 import UserContext from '../../contexts/UserContext';
 import * as constants from '../../constants';
-import { LineChart } from "react-native-chart-kit";
-import WordsLearnedPanel from "./components/WordsLearnedPanel";
-import DailyProgressPanel from "./components/DailyProgressPanel";
+import { flagImageSources } from "../../assets/img/imageSources";
 import { calcLevel } from "../../utils/functions";
 
 export default function HomeScreen({navigation}: NativeStackHeaderProps) {
@@ -16,13 +13,6 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         language_code: string,
         language_name: string
     }
-
-    const flagImageMap: Record<string, PNG> = {
-        'ru': require('../../assets/ru.png'),
-        'de': require('../../assets/de.png'),
-        'es': require('../../assets/es.png'),
-        'fr': require('../../assets/fr.png')
-    };
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
@@ -55,16 +45,17 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         },
     ];
 
-        return (
+    return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <Image source={flagImageMap[currentLanguage]} style={styles.flagImage} />
+                <Image source={flagImageSources[currentLanguage]} style={styles.flagImage} />
                 <Text style={styles.header}>Your {currentLanguageName} Progress</Text>
             </View>
-            {/*<WordsLearnedPanel currentLanguageName={currentLanguageName} />
-            <DailyProgressPanel />*/}
             <View style={styles.panelContainer}>
-                <TouchableOpacity style={styles.panel}>
+                <TouchableOpacity
+                    style={styles.panel}
+                    onPress={() => navigation.navigate('Level')}
+                    >
                     <Text style={styles.panelHeader}>Level</Text>
                     <View style={styles.panelLevelNumber}>
                         <Text style={styles.panelLevelNumberText}>{level}</Text>
@@ -73,7 +64,10 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                         <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.panel}>
+                <TouchableOpacity
+                    style={styles.panel}
+                    onPress={() => navigation.navigate('Streak')}
+                    >
                     <Text style={styles.panelHeader}>Streak</Text>
                     <View style={styles.streakPanelSubcontainer}>
                         <Image
@@ -105,7 +99,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                 })}
             </View>
         </SafeAreaView>
-    )
+    );
  }
 
 const styles = StyleSheet.create({

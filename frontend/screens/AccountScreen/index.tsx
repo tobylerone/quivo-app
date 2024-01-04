@@ -6,6 +6,7 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserPlus, faGear } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../../constants";
+import { flagImageSources } from "../../assets/img/imageSources";
 import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
@@ -16,13 +17,6 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() =>{
         console.log("Rendering Accountscreen")
     }, []);
-
-    const flagImageMap: Record<string, PNG> = {
-        'ru': require('../../assets/ru.png'),
-        'de': require('../../assets/de.png'),
-        'es': require('../../assets/es.png'),
-        'fr': require('../../assets/fr.png')
-    };
 
     // Only show some of the language flags if user learning lots of languages
     let visibleFlags = Object.keys(currentUser.known_words_count);
@@ -80,7 +74,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                                     <View>
                                         <View style={styles.flagImageContainer}>
                                             <Image
-                                                source={flagImageMap[item]}
+                                                source={flagImageSources[item]}
                                                 style={styles.flagImage}
                                             />
                                         </View>

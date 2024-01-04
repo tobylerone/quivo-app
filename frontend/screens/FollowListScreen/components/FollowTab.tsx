@@ -1,38 +1,30 @@
-import { View, Text, StyleSheet, FlatList, ActivityIndicator } from "react-native";
-import { useState, useEffect, useContext } from "react";
-import UserContext from "../../../contexts/UserContext";
-import FollowItem from "./FollowItem";
-import client from "../../../utils/axios";
-import * as constants from "../../../constants";
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { useState, useEffect, useContext } from 'react';
+import client from '../../../utils/axios';
+import * as constants from '../../../constants';
+// Contexts
+import UserContext from '../../../contexts/UserContext';
+// Components
+import FollowItem from './FollowItem';
+// Hooks
+import { useFetchUserData } from '../hooks/useFetchUserData';
 
-interface IFollowScreen {
+interface IFollowTabProps {
     type: 'followers' | 'following'
 }
 
-export default function FollowScreen({ type }: IFollowScreen) {
+export default function FollowTab({ type }: IFollowTabProps) {
 
     const { currentUser } = useContext(UserContext);
-    const [data, setData] = useState(null);
-
-    useEffect(() =>{
-        // Get accounts the user is followed by / is following
-        client.get(
-            'api/users/' + currentUser.user_id + '/' + type + '/'
-        ).then(function(res) {
-            setData(res.data);
-        }).catch(function(e) {
-            console.log(e.response.data)
-        });
-
-    }, []);
+    const userData = useFetchUserData('api/users/' + currentUser.user_id + '/' + type + '/');
 
     return (
         <View style={styles.followListContainer}>
-            {data ?
-                data.length > 0 ?
+            {userData ?
+                userData.length > 0 ?
                     <FlatList
                     style={styles.followList}
-                    data={data}
+                    data={userData}
                     bounces={false}
                     renderItem={({item}) => <FollowItem user={item} />}
                     />

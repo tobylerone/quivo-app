@@ -1,12 +1,12 @@
     import { View, Text, Image, StyleSheet, FlatList } from "react-native";
     import { useContext } from "react";
-    import PNG from 'pngjs';
     import UserContext from "../../../contexts/UserContext";
     import * as constants from "../../../constants";
     import FollowButton from "../../../components/FollowButton";
+    import { flagImageSources } from "../../../assets/img/imageSources";
     
     // TODO: Store this in interface file
-    interface IUser {
+    interface IUserProps {
         user_id: number,
         email: string,
         username: string,
@@ -16,19 +16,13 @@
         user_is_following: boolean // Always true for following items
     }
 
-    interface IFollowItem {
-        user: IUser
+    interface IFollowItemProps {
+        user: IUserProps
     }
     
-    export default function FollowItem ({ user }: IFollowItem) {
+    export default function FollowItem ({ user }: IFollowItemProps) {
 
         const { currentLanguage } = useContext(UserContext);
-
-        const flagImageSources: Record<string, PNG> = {
-            'fr': require('../../../assets/fr.png'),
-            'de': require('../../../assets/de.png'),
-            'ru': require('../../../assets/ru.png')
-        }
 
         return (
             <View style={styles.followItemContainer}>
@@ -37,7 +31,6 @@
                     <View style={styles.knownWordsContainer}>
                         <FlatList
                             data={Object.keys(user.known_words_count)}
-                            //style={styles.languagePopupList}
                             bounces={false}
                             horizontal={true}
                             renderItem={({item}) => (
@@ -68,7 +61,6 @@
                 </View>
             </View>
         );
-        //return null;
     };
     
     const styles= StyleSheet.create({
@@ -80,8 +72,6 @@
             paddingHorizontal: 10,
             paddingVertical: 5,
             height: 70
-        },
-        leftBoxContainer: {
         },
         userName: {
             fontSize: constants.H2FONTSIZE,

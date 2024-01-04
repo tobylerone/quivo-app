@@ -1,46 +1,50 @@
 import { StyleSheet, View, Text, SafeAreaView, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
-import { RouteProp } from '@react-navigation/native';
-import FollowScreen from "./components/FollowScreen";
+import { useState } from 'react';
+import FollowTab from "./components/FollowTab";
 import * as constants from "../../constants";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { RouteProp } from '@react-navigation/native';
 import NavBar from "../../components/NavBar";
+import { capitalizeFirstLetter } from '../../utils/text';
 
-export default function FollowListScreen({route, navigation}: {route: any, navigation: NativeStackHeaderProps}) {
+interface RouteParams {
+    initialTab: 'followers' | 'following';
+}
+
+interface IFollowListScreenProps {
+    route: RouteProp<{ params: RouteParams }>,
+    navigation: NativeStackHeaderProps
+}
+
+export default function FollowListScreen({route, navigation}: IFollowListScreenProps) {
 
     const { initialTab } =  route.params;
     const [activeTab, setActiveTab] = useState<string>(initialTab);
 
+    const TABS = ['followers', 'following'];
 
-    useEffect(() => {
-        
-    }, [activeTab])
+    const renderTabButton = (tab: string) => (
+        <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => setActiveTab(tab)}
+            style={{backgroundColor: activeTab === tab ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
+        >
+            <Text style={{color: activeTab === tab ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>
+                {capitalizeFirstLetter(tab)}
+            </Text>
+        </TouchableOpacity>
+    );
 
-    console.log(activeTab);
     return (
         <SafeAreaView style={styles.container}>
             <NavBar title={''} navigation={navigation}/>
             <View style={styles.subContainer}>
                 <View style={styles.titleBar}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {setActiveTab('followers')}}
-                        style={{backgroundColor: activeTab === 'followers' ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
-                    >
-                        <Text style={{color: activeTab === 'followers' ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>Followers</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => {setActiveTab('following')}}
-                        style={{backgroundColor: activeTab === 'following' ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
-                    >
-                        <Text style={{color: activeTab === 'following' ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>Following</Text>
-                    </TouchableOpacity>
+                    {TABS.map(tabHeader => renderTabButton(tabHeader))}
                 </View>
                 <View style={styles.contentTabContainer}>
-                    {activeTab === 'followers' && <FollowScreen type={'followers'} />}
-                    {activeTab === 'following' && <FollowScreen type={'following'} />}
+                    {activeTab === 'followers' && <FollowTab type={'followers'} />}
+                    {activeTab === 'following' && <FollowTab type={'following'} />}
                 </View>
             </View>
         </SafeAreaView>
@@ -59,7 +63,6 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderWidth: 3,
         borderColor: constants.PRIMARYCOLOR,
-        //marginBottom: 300
     },
     titleBar: {
         flexDirection: 'row',

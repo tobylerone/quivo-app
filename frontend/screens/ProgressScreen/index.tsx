@@ -10,45 +10,32 @@ export default function ProgressScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
-    const [activeTab, setActiveTab] = useState<'90 Days' | '30 Days' | '7 Days'>('7 Days');
+    const [activeTab, setActiveTab] = useState<string>('7 Days');
 
     let labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     let numDataPoints = 7;
 
     let data = [5, 14, 2, 35, 52, 29, 31];
 
+    const TABS = ['90 Days', '30 Days', '7 Days'];
+
+    const renderTabButton = (tabTitle: string) => (
+        <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {setActiveTab(tabTitle)}}
+            style={{backgroundColor: activeTab === tabTitle ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
+        >
+            <Text style={{color: activeTab === tabTitle ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>{tabTitle}</Text>
+        </TouchableOpacity>
+    );
+
     return (
     <SafeAreaView style={styles.container}>
         <NavBar title="Progress" navigation={navigation} />
         <View style={styles.subContainer}>
             <View style={styles.titleBar}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {setActiveTab('90 Days')}}
-                    style={{backgroundColor: activeTab === '90 Days' ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
-                >
-                    <Text style={{color: activeTab === '90 Days' ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>90 Days</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {setActiveTab('30 Days')}}
-                    style={{backgroundColor: activeTab === '30 Days' ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
-                >
-                    <Text style={{color: activeTab === '30 Days' ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>30 Days</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => {setActiveTab('7 Days')}}
-                    style={{backgroundColor: activeTab === '7 Days' ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
-                >
-                    <Text style={{color: activeTab === '7 Days' ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>7 Days</Text>
-                </TouchableOpacity>
+                {TABS.map(tabTitle => renderTabButton(tabTitle))}
             </View>
-            {/*<View style={styles.contentTabContainer}>
-                {activeTab === 'followers' && <FollowScreen type={'followers'} />}
-                {activeTab === 'following' && <FollowScreen type={'following'} />}
-            </View>
-            */}
             <View style={styles.wordsLearnedPanel}>
                 <Text style={styles.wordsLearnedTitle}>Previous Week</Text>
                 <LineChart
@@ -57,8 +44,6 @@ export default function ProgressScreen({navigation}: NativeStackHeaderProps) {
                         datasets: [{ data: data }]}}
                         width={Dimensions.get("window").width - 60} // from react-native
                         height={200}
-                        //yAxisSuffix="%"
-                        //yAxisInterval={25} // optional, defaults to 1
                         chartConfig={{
                         backgroundColor: constants.PRIMARYCOLOR,//"#e26a00",
                         backgroundGradientFrom: constants.PRIMARYCOLOR,//"#fb8c00",

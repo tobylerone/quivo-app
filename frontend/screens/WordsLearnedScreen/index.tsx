@@ -1,11 +1,18 @@
 import { View, Text, Dimensions, StyleSheet, ActivityIndicator } from "react-native";
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import UserContext from '../../contexts/UserContext';
-import client from "../../utils/axios";
-import * as constants from '../../constants';
 import { LineChart } from "react-native-chart-kit";
+// Contexts
+import UserContext from '../../contexts/UserContext';
+// Utils
+import { frequencyIndexToComprehensionPercentage as f } from "../../utils/functions";
+// Constants
+import * as constants from '../../constants';
+// Components
 import NavBar from "../../components/NavBar";
+// Hooks
+import { useFetchWordCounts } from "./hooks/useFetchWordCounts";
+import { useComprehensionPercentage } from "./hooks/useComprehensionPercentage";
 
 interface ILanguage {
     id: number,
@@ -17,81 +24,16 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 
-    const [wordCounts, setWordCounts] = useState({});
-    const [comprehensionPercentage, setComprehensionPercentage] = useState<number| null>(null);
+    const wordCounts = useFetchWordCounts(currentUser);
+    const comprehensionPercentage = useComprehensionPercentage(wordCounts);
 
-    let currentLanguageName: string = knownLanguages.find(
-        (lang: ILanguage) => lang.language_code === currentLanguage
-        ).language_name;
-    
-    useEffect(() => {
-        fetchWordCounts();
-    }, []);
-
-    useEffect(() => {
-        setComprehensionPercentage(
-            getComprehensionPercentage(wordCounts)
-            );
-    }, [wordCounts]);
-
-    // NOTE: Used in a few places. Should move centrally
-    const fetchWordCounts = async() => {
-        try {
-            const res = await client.get(
-                './api/users/' + currentUser.user_id + '/wordcounts',
-                { withCredentials: true }
-                );
-            setWordCounts(res.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    
-    const f = (n: number) => {
-        // Models the word frequency distribution normalised to between 0-100
-        return n == 0 ? 0 : Math.round(-83.32317585 + 191.39405783 / (1 + Math.E**(-0.39771826 * n**0.20018198)));
-    }
-
-    const getComprehensionPercentage = (wordCounts: Record<string, number>) => {
-        /*
-        All words in the corpus are listed in descending order of total appearance, and
-        normalised to between 0-100 to model the percentage of the corpus a user should
-        be able to understand with each additional new word learned, assuming the words
-        were learned from most frequent to least frequent, which is then modelled by 
-        a + b/(1 + e**(c * n)), where n represents the frequency rank of a word in the
-        corpus, and a, b and c are constants that are determined for a given corpus to
-        model its word frequency distribution.
-        If the user learned the words of the corpus in perfect frequency order you could
-        work out their percentage comprehension by taking n to be the total number of
-        words they've learned so far, but since they'll learn new words in an unpredictable
-        order, their total comprehension can be found by summing each word's individual
-        contribution to overall corpus comprehension. For example, if the user knows the
-        nth most frequent word in the corpus, the additional percentage comprehension gained
-        by learning that word will be f(n) - f(n-1). By summing this value for all words
-        that the user knows, you can calculate the percentage of the corpus they should be
-        capable of understanding.
-
-        However, this is computationally expensive, so instead I've counted the number of
-        words a user knows in each section of 1000 words in descending order of frequency:
-        1-1000, 1001-2000, ... 5000+ most frequent etc. I then make the assumption that the
-        user learned the words in this 'bucket' in correct frequency order to arrive at an
-        estimate of the overall comprehension percentage that will still heavily discount
-        the least frequent words.
-        */
-
-        let result = 0;
-
-        for (let i = 1; i <= 4001; i += 1000) {
-            result += f(i + wordCounts[`${i}-${i+999}`]) - f(i);
-        }
-        result += f(5001 + wordCounts['5000+']) - f(5001)
-
-        return result;
-    }
-    
     //let labels = [0, 5000];
     let numDataPoints = 101;
     let step = 100;
+    
+    let currentLanguageName: string = knownLanguages.find(
+        (lang: ILanguage) => lang.language_code === currentLanguage
+        ).language_name;
     
     // Short-term solution
     let labels: string[] = Array.from({length: numDataPoints}, (_, i) => {

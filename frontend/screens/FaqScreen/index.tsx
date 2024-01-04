@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, SafeAreaView } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { FontAwesome } from "@expo/vector-icons";
 import * as constants from "../../constants";
 import NavBar from "../../components/NavBar";
 import QACard from "./components/QACard";
@@ -23,9 +22,6 @@ export default function FaqScreen({navigation}: NativeStackHeaderProps) {
             answer: 'Here is my response to the second question'
         }
     ]
-    
-    useEffect(() => {
-    }, [])
 
     return (
         <SafeAreaView style={styles.container}>

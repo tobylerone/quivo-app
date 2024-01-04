@@ -1,20 +1,16 @@
-import {
-    View,
-    ScrollView,
-    Text,
-    StyleSheet,
-    SafeAreaView,
-    FlatList
-} from "react-native";
+import { View, ScrollView, Text, StyleSheet, SafeAreaView, FlatList, ActivityIndicator } from "react-native";
 import { useEffect, useState, useContext, useRef, useCallback } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import UserContext from "../../contexts/UserContext";
+// Constants
 import * as constants from "../../constants";
+// Utils
 import client from "../../utils/axios";
+// Contexts
+import UserContext from "../../contexts/UserContext";
+// Components
 import NavBar from "../../components/NavBar";
 import ProgressBarButton from "./components/ProgressBarButton";
 import WordItem from "./components/WordItem";
-import { endAsyncEvent } from "react-native/Libraries/Performance/Systrace";
 
 export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
@@ -74,6 +70,9 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
             '5000+': [5001, 5100],   
         }
 
+        // Clear words
+        setWords([]);
+
         fetchWordsData(
             wordsRange[activeButton][0],
             wordsRange[activeButton][1]
@@ -85,71 +84,47 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
     const loadMore = () => {
     }
+
+    const buttonData = [
+        {id: '1-1000', label: '0-1k'},
+        {id: '1001-2000', label: '1-2k'},
+        {id: '2001-3000', label: '2-3k'},
+        {id: '3001-4000', label: '3-4k'},
+        {id: '4001-5000', label: '4-5k'},
+        {id: '5000+', label: '5k+'},
+    ];
+
+    const renderProgressBarButton = (id: string, label: string) => (
+        <ProgressBarButton
+            id={id}
+            label={label}
+            currentValue={wordCounts[id]}
+            isActive={activeButton === id}
+            onPress={handlePress}
+            maxValue={1000}
+        />
+    );
     
     return (
         <SafeAreaView style={styles.container}>
             <NavBar title='Word List' navigation={navigation}/>
-            <ScrollView
-                style={styles.topButtonContainer}
-                horizontal={true}
-                bounces={false}
-                showsVerticalScrollIndicator={false} 
-                showsHorizontalScrollIndicator={false}
-                overScrollMode="never"
-                removeClippedSubviews={true}
-                >
-                <ProgressBarButton
-                    id={'1-1000'}
-                    label={'0-1k'}
-                    currentValue={wordCounts['1-1000']}
-                    isActive={activeButton === '1-1000'}
-                    onPress={handlePress}
-                    maxValue={1000}
-                />
-                <ProgressBarButton
-                    id={'1001-2000'}
-                    label={'1k-2k'}
-                    currentValue={wordCounts['1001-2000']}
-                    isActive={activeButton === '1001-2000'}
-                    onPress={handlePress}
-                    maxValue={1000}
-                />
-                <ProgressBarButton
-                    id={'2001-3000'}
-                    label={'2k-3k'}
-                    currentValue={wordCounts['2001-3000']}
-                    isActive={activeButton === '2001-3000'}
-                    onPress={handlePress}
-                    maxValue={1000}
-                />
-                <ProgressBarButton
-                    id={'3001-4000'}
-                    label={'3k-4k'}
-                    currentValue={wordCounts['3001-4000']}
-                    isActive={activeButton === '3001-4000'}
-                    onPress={handlePress}
-                    maxValue={1000}
-                />
-                <ProgressBarButton
-                    id={'4001-5000'}
-                    label={'4k-5k'}
-                    currentValue={wordCounts['4001-5000']}
-                    isActive={activeButton === '4001-5000'}
-                    onPress={handlePress}
-                    maxValue={1000}
-                />
-                <ProgressBarButton
-                    id={'5000+'}
-                    label={'5k+'}
-                    currentValue={wordCounts['5000+']}
-                    isActive={activeButton === '5000+'}
-                    onPress={handlePress}
-                    maxValue={1000}
-                />
-            </ScrollView>
-            <View style={styles.headerContainer}>
-                <Text style={styles.headerContainerText}>{activeButton + ' Most Common'}</Text>
+            <View>
+                <ScrollView
+                    style={styles.topButtonContainer}
+                    horizontal={true}
+                    bounces={false}
+                    showsVerticalScrollIndicator={false} 
+                    showsHorizontalScrollIndicator={false}
+                    overScrollMode="never"
+                    removeClippedSubviews={true}
+                    >
+                    {buttonData.map(({id, label}) => renderProgressBarButton(id, label))}
+                </ScrollView>
+                <View style={styles.headerContainer}>
+                    <Text style={styles.headerContainerText}>{activeButton + ' Most Common'}</Text>
+                </View>
             </View>
+            {words.length !== 0 ?
             <FlatList
                 style={styles.wordList}
                 data={words}
@@ -163,22 +138,16 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 maxToRenderPerBatch={10}
                 renderItem={renderItem}
             />
+            : <ActivityIndicator style={styles.activityIndicator} size='large' color={constants.PRIMARYCOLOR} />
+            }
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         marginTop: 50,
         marginHorizontal: 20,
-    },
-    topButtonContainer: {
-        flexDirection: 'row',
-        marginBottom: 10,
-        //marginHorizontal: 10
-    },
-    headerContainer: {
     },
     headerContainerText: {
         fontSize: constants.H2FONTSIZE,
@@ -186,23 +155,9 @@ const styles = StyleSheet.create({
         color: constants.BLACK
     },
     wordList: {
-        height: "100%",
         marginTop: 10
     },
-    loadMoreButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        borderRadius: 10,
-        width: 150,
-        padding: 5,
-        marginLeft: "auto",
-        marginRight: "auto",
-        marginTop: 10
-    },
-    loadMoreButtonText: {
-        fontSize: constants.H2FONTSIZE,
-        fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.TERTIARYCOLOR,
-        marginLeft: "auto",
-        marginRight: "auto"
+    activityIndicator: {
+        marginTop: 20
     }
 });

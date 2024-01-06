@@ -14,11 +14,11 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         language_name: string
     }
 
-    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguage, knownWords } = useContext(UserContext);
 
     const userStreak = 26;
 
-    const { level, levelResidual } = calcLevel(currentUser.known_words_count[currentLanguage], 30000);
+    const { level, levelResidual, wordsInLevel, knownWordsInLevel } = calcLevel(knownWords, 30000);
 
     let currentLanguageName: string = knownLanguages.find(
         (lang: ILanguage) => lang.language_code === currentLanguage
@@ -27,7 +27,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     const data = [
         {
             text: 'Words Learned',
-            subText: currentUser.known_words_count[currentLanguage] + ' / 30129',
+            subText: knownWords + ' / 30129',
             image: require('../../assets/words_learned.png'),
             navigateTo: 'WordsLearned'
         },
@@ -63,6 +63,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
                     <View style={styles.progressBarBackground}>
                         <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
                     </View>
+                    <Text style={styles.panelSubText}>{knownWordsInLevel}/{wordsInLevel}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.panel}

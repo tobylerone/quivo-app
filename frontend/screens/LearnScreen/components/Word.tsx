@@ -48,7 +48,7 @@ interface IWordProps {
 
 export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
-    const { currentUser, currentLanguage } = useContext(UserContext);
+    const { currentUser, currentLanguage, setKnownWords } = useContext(UserContext);
 
     const wordRef = useRef(null);
     
@@ -118,6 +118,10 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             client.post(
                 'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
             ).then(function(res) {
+                // Update local word count record accordingly
+                res.data.word_added ?
+                setKnownWords(prevKnownWords => prevKnownWords + 1)
+                : setKnownWords(prevKnownWords => prevKnownWords - 1)
             }).catch(function(e) {
                 console.log(e.response.data)
             });

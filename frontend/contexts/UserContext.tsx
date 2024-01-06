@@ -26,6 +26,7 @@ interface ILanguage {
 export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
+    const [knownWords, setKnownWords] = useState<number>(0);
     const [currentLanguage, setCurrentLanguage] = useState<ILanguage|null>(null);
 
     useEffect(() => {
@@ -38,6 +39,12 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             getKnownLanguages();
         }
     }, [currentUser]);
+
+    useEffect(() => {
+        if (currentUser && currentLanguage) {
+            setKnownWords(currentUser.known_words_count[currentLanguage]);
+        }
+    }, [currentLanguage])
 
     const updateUserData = () => {
         client.get('/api/users/me')
@@ -152,8 +159,10 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             currentUser,
             knownLanguages,
             currentLanguage,
+            knownWords,
             updateCurrentLanguage,
             updateUserData,
+            setKnownWords,
             submitRegistration,
             submitLogin,
             submitLogout

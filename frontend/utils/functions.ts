@@ -1,12 +1,15 @@
 export const calcLevel = (n: number, tot_n: number) => {
     // Want to have increasing bucket size as n increases
-    const bucket_size = Math.floor(tot_n / 100);
+    const wordsInLevel = Math.floor(tot_n / 100);
 
-    const floatLevel = n / bucket_size + 1;
-    const level = Math.floor(floatLevel);
+    const floatLevel = n / wordsInLevel;
+    let level = Math.floor(floatLevel);
     const levelResidual = floatLevel - level;
+    const knownWordsInLevel = n - (level * wordsInLevel);
+    // Level should start at 1 not 0
+    level = level + 1;
 
-    return { level, levelResidual};
+    return { level, levelResidual, wordsInLevel, knownWordsInLevel};
 }
 
 export const frequencyIndexToComprehensionPercentage = (n: number) => {

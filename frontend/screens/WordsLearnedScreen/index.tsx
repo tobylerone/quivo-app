@@ -22,7 +22,7 @@ interface ILanguage {
 
 export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
+    const { currentUser, currentLanguage, knownLanguages, knownWords} = useContext(UserContext);
 
     const wordCounts = useFetchWordCounts(currentUser);
     const comprehensionPercentage = useComprehensionPercentage(wordCounts);
@@ -83,7 +83,7 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
         {comprehensionPercentage ?
         <View style={styles.wordsLearnedPanel}>
             <Text style={styles.wordsLearnedTitle}>
-                {currentUser.known_words_count[currentLanguage]} Words Learned
+                {knownWords} Words Learned
             </Text>
             <LineChart
                 data={{

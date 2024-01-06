@@ -264,13 +264,16 @@ class UserToggleKnownWordView(APIView):
 		
 			# Check if a user knows a word
 			if word_obj in known_words_obj.all():
-
+				word_added = False
 				known_words_obj.remove(word_obj)
 			else:
-
+				word_added = True
 				known_words_obj.add(word_obj)
 
-			return Response({"status": "success"})
+			return Response({
+				"status": "success",
+				"word_added": word_added
+				})
 		else:
 
 			return Response(serializer.errors, status=400)

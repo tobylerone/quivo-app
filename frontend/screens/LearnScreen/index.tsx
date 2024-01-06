@@ -18,7 +18,7 @@ import FlagButton from "./components/FlagButton";
 // Hooks
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useFetchItems from './hooks/useFetchItems';
-import useLevel from './hooks/useLevel';
+import useLevelData from './hooks/useLevelData';
 import useFetchWordsData from "./hooks/useFetchWordsData";
 import useSentenceComponents from "./hooks/useSentenceComponents";
 import useFilterPopupVisible from "./hooks/useFilterPopupVisible";
@@ -26,16 +26,16 @@ import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguage, knownWords } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
 
-    const { knownWords } = useKnownWords();
+    //const { knownWords } = useKnownWords(); THIS IS PART OF USER CONTEXT NOW
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
     const { currentItem, changeItem } = useFetchItems();
-    const { level, levelResidual } = useLevel(knownWords);
+    const { level, levelResidual, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
     // TODO: This hook returns jsx which needs fixing
     const { sentenceComponents } =  useSentenceComponents(currentItem, wordsData, autoDictEnabled);
@@ -72,7 +72,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.starBox}
                     onPress={() => {navigation.navigate('Level')}}
                     >
-                    <Text style={styles.starCountText}>Lv. {level}</Text>
+                    <View style={styles.levelTextContainer}>
+                        <Text style={styles.levelText}>Lv. {level}</Text>
+                        <Text style={styles.levelWordText}>{knownWordsInLevel}/{wordsInLevel}</Text>
+                    </View>
                     <View style={styles.progressBarBackground}>
                         <View style={{width: levelResidual ? Math.floor(levelResidual * 100) + '%' : 0, ...styles.progressBar}}></View>
                     </View>
@@ -215,15 +218,25 @@ const styles= StyleSheet.create({
         marginTop: 'auto',
         marginBottom: 'auto',
     },
-    starCountText: {
+    levelTextContainer: {
+        flexDirection: 'row'
+    },
+    levelText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         marginTop: 'auto',
         marginRight: 5,
-        marginBottom: 'auto',
+        //marginBottom: 'auto',
+    },
+    levelWordText: {
+        fontSize: constants.CONTENTFONTSIZE,
+        fontFamily: constants.FONTFAMILY,
+        marginTop: 'auto',
+        marginRight: 5,
+        //marginBottom: 'auto',
     },
     progressBarBackground: {
-        width: 100,
+        width: 120,
         height: 10,
         marginTop: 'auto',
         marginBottom: 'auto',

@@ -11,9 +11,11 @@ export default function useFetchWordsData(currentItem){
     const [wordsData, setWordsData] = useState();
 
     useEffect(() => {
-        fetchWordsData().then((wordsData) => {
-            setWordsData(wordsData);
-        });
+        if (currentItem) {
+            fetchWordsData().then((wordsData) => {
+                setWordsData(wordsData);
+            });
+        }
     }, [currentItem]);
 
     const fetchWordsData = async() => {

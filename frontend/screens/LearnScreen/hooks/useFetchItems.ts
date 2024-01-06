@@ -7,29 +7,15 @@ import UserContext from "../../../contexts/UserContext";
 export default function useFetchItems(){
 
     const { currentLanguage } = useContext(UserContext);
+    const [items, setItems] = useState(null);
 
-    const [items, setItems] = useState([
-        {
-            'id': 1,
-            'sentence': '',
-            'translated_sentence': 'No translation',
-            'words': '',
-            'average_count': '',
-            'min_count': ''
-        }]);
-    const [currentItem, setCurrentItem] = useState(items[0]);
+    //const [currentItem, setCurrentItem] = useState(items[0]);
+    const [currentItem, setCurrentItem] = useState(null);
     const [itemIndex, setItemIndex] = useState<number>(0);
 
     useEffect(() => {
         fetchData();
     }, [currentLanguage])
-
-    // After updating items, set current item to first one in the list
-    useEffect(() => {
-        if (items.length > 0) {
-            setCurrentItem(items[0]);
-        }
-    }, [items]);
 
     const fetchData = async() => {
         client.get("/api/sentences", { withCredentials: true })
@@ -45,8 +31,8 @@ export default function useFetchItems(){
                 return item;
             })
             setItemIndex(0);
+            setCurrentItem(data[0]);
             setItems(data);
-            changeItem();
         })
         .catch(function(error) {
             console.log(error);
@@ -54,17 +40,15 @@ export default function useFetchItems(){
     };
 
     const changeItem = () => {
-        //const randomIndex = Math.floor(Math.random() * items.length);
         
-        let newItem = items[itemIndex];
+        let newItem = items[itemIndex + 1];
 
         if (itemIndex < items.length - 1) {
             console.log(itemIndex);
             setItemIndex(prevIndex => prevIndex + 1);
         } else {
             // Want to get new sentences and reset index to 0
-            setItemIndex(0);
-            //fetchData();
+            fetchData();
             console.log(itemIndex);
         }
         setCurrentItem(newItem);

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';

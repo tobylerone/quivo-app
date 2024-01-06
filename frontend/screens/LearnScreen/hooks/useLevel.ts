@@ -12,11 +12,9 @@ export default function useLevel(knownWords: number){
     const [levelResidual, setLevelResidual] = useState(0);
     
     useEffect(() => {
-
         // TODO: Replace this quick fix
-        const words = knownWords !== undefined ? knownWords : currentUser.known_words_count[currentLanguage];
-
-        const {level, levelResidual} = calcLevel(words, 30000);
+        //const words = knownWords !== undefined ? knownWords : currentUser.known_words_count[currentLanguage];;
+        const {level, levelResidual} = calcLevel(knownWords, 30000);
         setLevel(level);
         setLevelResidual(levelResidual);
     }, [knownWords]);

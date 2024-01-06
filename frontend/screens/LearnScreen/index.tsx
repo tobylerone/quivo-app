@@ -22,6 +22,7 @@ import useLevel from './hooks/useLevel';
 import useFetchWordsData from "./hooks/useFetchWordsData";
 import useSentenceComponents from "./hooks/useSentenceComponents";
 import useFilterPopupVisible from "./hooks/useFilterPopupVisible";
+import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
@@ -29,8 +30,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
-    const [knownWords, setKnownWords] = useState(currentUser.known_words_count[currentLanguage]);
 
+    const { knownWords } = useKnownWords();
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
     const { currentItem, changeItem } = useFetchItems();
@@ -126,6 +127,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 </View>
             </Animated.View>
             <View style={[styles.contentContainer, styles.shadow]}>
+                {currentItem &&
                 <View style={styles.sentenceContainer}>
                     <View style={{
                         display: translationVisible ? "visible": "none",
@@ -139,8 +141,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         }}>
                         {sentenceComponents}
                     </View>
-                    
                 </View>
+                }
             </View>
             <View style={styles.autoplayContainer}>
                 <Text style={styles.autoplayText}>Autoplay</Text>

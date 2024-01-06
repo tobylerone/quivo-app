@@ -18,14 +18,18 @@ export default function useSentenceComponents(currentItem, wordsData, autoDictEn
     const screenWidth = useWindowDimensions().width;
 
     useEffect(() => {
-        // Split sentence by word boundaries and return either text or a Word component if it is to be clickable
-        createSentenceComponents().then(components => {
-            console.log('setting new components');
-            setSentenceComponents(components);
-    });
-    
-    if (autoDictEnabled) speak(currentItem.sentence, currentLanguage.language_code);
-    }, [currentItem]);
+        // This useEffect relies on wordsData consistently updating slower than
+        // currentItem, but it probably needs a rethink
+        if (currentItem && wordsData) {
+            // Split sentence by word boundaries and return either text or a Word component if it is to be clickable
+            createSentenceComponents(currentItem, wordsData).then(components => {
+                console.log('setting new components');
+                setSentenceComponents(components);
+            });
+
+            if (autoDictEnabled) speak(currentItem.sentence, currentLanguage.language_code);
+        }
+    }, [wordsData]);
 
     const createSentenceComponents = async() => {
         

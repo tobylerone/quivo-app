@@ -1,5 +1,6 @@
-import { useState, useRef, useContext } from "react";
-import { StyleSheet, Switch, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
+import { useEffect, useState, useRef, useContext } from "react";
+import { StyleSheet, Switch, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions, useWindowDimensions } from "react-native";
+import * as Speech from "expo-speech";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLanguage, faFilter, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -9,53 +10,223 @@ import * as constants from "../../constants";
 // Assets
 import { flagImageSources } from "../../assets/img/imageSources";
 // Utils
-import { speak } from '../../utils/text';
+import client from "../../utils/axios";
+import { capitalizeFirstLetter } from "../../utils/text";
+import { calcLevel } from "../../utils/functions";
 // Contexts
 import UserContext from "../../contexts/UserContext";
 // Components
 import CheckBox from "../../components/CheckBox";
+import Word from "./components/Word";
 import FlagButton from "./components/FlagButton";
-// Hooks
-import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
-import useFetchItems from './hooks/useFetchItems';
-import useLevel from './hooks/useLevel';
-import useFetchWordsData from "./hooks/useFetchWordsData";
-import useSentenceComponents from "./hooks/useSentenceComponents";
-import useFilterPopupVisible from "./hooks/useFilterPopupVisible";
+
+const windowHeight = Dimensions.get('window').height;
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
     
+    // TODO: Remove this default
+    const [items, setItems] = useState([
+        {
+            'id': 1,
+            'sentence': '',
+            'translated_sentence': 'No translation',
+            'words': '',
+			'average_count': '',
+			'min_count': ''
+        }]);
+    
+    const [item, setItem] = useState(items[0]);
     const [translationVisible, setTranslationVisible] = useState(false);
+    const [languagePopupVisible, setLanguagePopupVisible] = useState(false);
+    const [filterPopupVisible, setFilterPopupVisible] = useState(false);
+    const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
+    const [sentenceIndex, setSentenceIndex] = useState<number>(0);
     const [knownWords, setKnownWords] = useState(currentUser.known_words_count[currentLanguage]);
+    const [level, setLevel] = useState(0);
+    const [levelResidual, setLevelResidual] = useState(0);
 
-    const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
-    const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
-    const { currentItem, changeItem } = useFetchItems();
-    const { level, levelResidual } = useLevel(knownWords);
-    const { wordsData } = useFetchWordsData(currentItem);
-    // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents } =  useSentenceComponents(currentItem, wordsData, autoDictEnabled);
+    const languagePopupAnimation = useRef(new Animated.Value(0)).current;
+    const filterPopupAnimation = useRef(new Animated.Value(windowHeight)).current;
 
-    const popupItemData = [
-        {title: '1000 most common words'},
-        {title: '2000 most common words'},
-        {title: '5000 most common words'},
-        {title: 'Art and culture'},
-        {title: 'Technology'},
-        {title: 'Fashion'},
-        {title: 'Politics'},
-        {title: 'Finance'},
-    ];
+    const screenWidth = useWindowDimensions().width;
+    
+    useEffect(() => {
+        console.log("Rendering Learnscreen");
+        fetchData();
+    }, [currentLanguage])
 
-    const renderPopupItem = (item: Record<string, string>) => (
-        <View style={[styles.checkBoxContainer, styles.shadow]}>
-            <CheckBox initiallySelected={item.initiallySelected ? true : false} size={30} />
-            <Text style={styles.checkBoxLabel}>{item.title}</Text>
-        </View>
-    );
+    // After updating items, set current item to first one in the list
+    useEffect(() => {
+        if (items.length > 0) {
+            setItem(items[0]);
+        }
+    }, [items]);
+
+    useEffect(() => {
+        // Split sentence by word boundaries and return either text or a Word component if it is to be clickable
+        createSentenceComponents().then(components => {
+            console.log('setting new components');
+            setSentenceComponents(components);
+        });
+
+        if (autoDictEnabled) speak();
+    }, [item]);
+
+    useEffect(() => {
+
+        // TODO: Replace this quick fix
+        const words = knownWords !== undefined ? knownWords : currentUser.known_words_count[currentLanguage];
+
+        const {level, levelResidual} = calcLevel(words, 30000);
+        setLevel(level);
+        setLevelResidual(levelResidual);
+    }, [knownWords]);
+
+    const fetchData = async() => {
+        client.get("/api/sentences", { withCredentials: true })
+        .then(function(res) {
+            // Make sure each item's word field in converted from stringified
+            // json to real object   
+            const data = res.data.map(item => {
+
+                // Convert from postgresql array format
+                if (typeof item.words === 'string') {
+                    item = { ...item, words: JSON.parse(item.words) };
+                }
+                return item;
+            })
+            setSentenceIndex(0);
+            setItems(data);
+            changeSentence();
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    };
+
+    const changeSentence = () => {
+        //const randomIndex = Math.floor(Math.random() * items.length);
+        
+        let newItem = items[sentenceIndex];
+
+        if (sentenceIndex < items.length - 1) {
+            console.log(sentenceIndex);
+            setSentenceIndex(prevIndex => prevIndex + 1);
+        } else {
+            // Want to get new sentences and reset index to 0
+            setSentenceIndex(0);
+            //fetchData();
+            console.log(sentenceIndex);
+        }
+        setItem(newItem);
+    };
+
+    const toggleLanguagePopup = () => {
+        Animated.timing(languagePopupAnimation, {
+        toValue: languagePopupVisible ? 0 : 70,
+        duration: 400,
+        useNativeDriver: false,
+        }).start(() => {
+            setLanguagePopupVisible(!languagePopupVisible);
+        });
+        if (languagePopupVisible) {
+            setLanguagePopupVisible(false);
+        }
+    };
+
+    const toggleFilterPopup = () => {
+        setFilterPopupVisible(!filterPopupVisible);
+        Animated.timing(filterPopupAnimation, {
+        toValue: filterPopupVisible ? windowHeight : 0.2 * windowHeight,
+        duration: 400,
+        useNativeDriver: false,
+        }).start();
+    };
+
+    const fetchWordsData = async() => {
+        try {
+            const res = await client.post('./api/words', {
+                words: item.words,
+                withCredentials: true
+            });
+            return res.data
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const createSentenceComponents = async() => {
+        
+        const getFullWord = (word: string) => {
+        
+            // TODO: This map gets repeated three times. Need to sort this out
+            let shortened_word_map: Record<string, string> = {
+                'j': 'je',
+			    'l': 'le', // Always replace with le for now. Figure out a better solution here
+			    't': 'tu', // This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
+			    'd': 'de', // Need to check whether this is ever du
+			    'c': 'ce',
+			    's': 'se',
+			    'qu': 'que',
+			    'm': 'me',
+			    'n': 'ne',
+		    }
+
+            return word in shortened_word_map ? shortened_word_map[word] : word;
+        }
+        
+        if (item.sentence.length == 0) {
+            return <Text></Text>;
+        }
+
+        // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
+        const regex: Record<string, RegExp> = {
+            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
+            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g,
+            'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g,
+        }
+        
+        const splitSentence = item.sentence.match(regex[currentLanguage]) || [];
+        const wordsData = await fetchWordsData();
+
+        const sentenceComponents = [];
+
+        for (let i = 0; i < splitSentence.length; i++) {
+            
+            let word = splitSentence[i]
+            // Same as word unless in shortened_word_map
+            let fullWord = getFullWord(word.toLowerCase());
+    
+            if (wordsData.hasOwnProperty(fullWord)) {
+
+                sentenceComponents.push(<Word
+                    word={word}
+                    wordData={wordsData[fullWord]}
+                    isFirstWord={i==0}
+                    screenWidth={screenWidth}
+                    index={i}
+                    key={`${item.id}-${i}`}
+                />);
+            } else {
+                sentenceComponents.push(<Text style={{ color: constants.GREY, ...styles.mainText }} key={i}>{i==0 ? capitalizeFirstLetter(word) : word}</Text>);
+            }
+        };
+        return sentenceComponents;
+    };
+
+    const speak = () => {
+        Speech.stop();
+        Speech.speak(
+            item.sentence,
+            {
+                language: currentLanguage,
+                rate: 1.3
+            }
+        );
+    };
 
     return (
         <SafeAreaView style={styles.container}>
@@ -73,7 +244,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     >
                     <Text style={styles.starCountText}>Lv. {level}</Text>
                     <View style={styles.progressBarBackground}>
-                        <View style={{width: levelResidual ? Math.floor(levelResidual * 100) + '%' : 0, ...styles.progressBar}}></View>
+                        <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.topButtonsContainer}>
@@ -131,7 +302,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         display: translationVisible ? "visible": "none",
                         ...styles.translatedSentence
                         }}>
-                        <Text style={styles.mainText}>{currentItem.translated_sentence}</Text>
+                        <Text style={styles.mainText}>{item.translated_sentence}</Text>
                     </View>
                     <View style={{
                         display: translationVisible ? "none": "visible",
@@ -164,7 +335,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.nextButton}
-                    onPress={() => changeItem()}
+                    onPress={() => changeSentence()}
                 >
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <FontAwesomeIcon icon={faArrowRight} size={25} color={constants.TERTIARYCOLOR} />
@@ -173,14 +344,45 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.speakButton}
-                    onPress={() => {speak(currentItem.sentence, currentLanguage.language_code);}}
+                    onPress={() => {speak()}}
                     >
                     <FontAwesomeIcon icon={faComment} size={30} color={constants.BLACK} />
                 </TouchableOpacity>
             </View>
             <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
                 <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
-                {popupItemData.map((item) => renderPopupItem(item))}
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>1000 most common words</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>2000 most common words</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>5000 most common words</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Art and culture</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Technology</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Fashion</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Politics</Text>
+                </View>
+                <View style={[styles.checkBoxContainer, styles.shadow]}>
+                    <CheckBox initiallySelected={false} size={30} />
+                    <Text style={styles.checkBoxLabel}>Finance</Text>
+                </View>
                 <TouchableOpacity
                     style={styles.filterPopupSubmitButton}
                     activeOpacity={1}
@@ -291,7 +493,8 @@ const styles= StyleSheet.create({
         marginBottom: 30,
         marginLeft: 'auto',
         marginRight: 30,
-        borderRadius: 10
+        borderRadius: 10,
+        //elevation: 5
     },
     autoplayText: {
         fontFamily: constants.FONTFAMILY,

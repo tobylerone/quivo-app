@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
-from .models import UserFollow
+from .models import UserFollow, UserWord
 from language_app.models import FrSentence, DeSentence, RuSentence, FrWordData, DeWordData, RuWordData, Language
 
 UserModel = get_user_model()
@@ -171,7 +171,13 @@ class BaseWordDataModelSerializer(serializers.ModelSerializer):
 		request = self.context.get('request')
 
 		if request and request.user:
-			return obj.appuser_set.filter(user_id=request.user.user_id).exists()
+
+			language_code = request.session.get('current_language_code')
+			#return obj.appuser_set.filter(user_id=request.user.user_id).exists()
+			return UserWord.objects.filter(
+				user=request.user,
+				**{f'word_{language_code}': obj}
+			).exists()
 		return False
 	
 	# Override representation to have word as dictionary key

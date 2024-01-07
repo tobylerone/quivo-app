@@ -12,14 +12,15 @@ import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
 
-    const { currentUser, currentLanguage, knownWords } = useContext(UserContext);
+    const { currentUser, currentLanguage, knownWords, knownLanguages } = useContext(UserContext);
     
     useEffect(() =>{
         console.log("Rendering Accountscreen")
     }, []);
 
     // Only show some of the language flags if user learning lots of languages
-    let visibleFlags = Object.keys(currentUser.known_words_count);
+    //let visibleFlags = Object.keys(currentUser.known_words_count);
+    let visibleFlags = knownLanguages.map(item => item.language_code);
     let numHiddenFlags = 0;
 
     if(visibleFlags.length > 3){

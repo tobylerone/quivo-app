@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 // Utils
 import { frequencyIndexToComprehensionPercentage as f } from '../../../utils/functions';
+
 export const useComprehensionPercentage = (wordCounts: Record<string, number>) => {
     const [comprehensionPercentage, setComprehensionPercentage] = useState<number | null>(null);
 

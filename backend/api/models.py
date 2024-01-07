@@ -43,11 +43,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		symmetrical=False
 		)
 	known_languages = models.ManyToManyField('language_app.Language', blank=True) # Maybe make user need at least one
-	# TODO: Maybe find a more dynamic way to do this
-	known_words_fr = models.ManyToManyField('language_app.FrWordData', blank=True)
-	known_words_de = models.ManyToManyField('language_app.DeWordData', blank=True)
-	known_words_ru = models.ManyToManyField('language_app.RuWordData', blank=True)
-	
+	known_words = models.ManyToManyField('UserWord', blank=True)
+
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
 	objects = AppUserManager()
@@ -66,12 +63,12 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 		word_counts = {}
 
 		for language in known_languages:
-			if language.language_code == 'fr':
-				word_counts['fr'] = self.known_words_fr.count()
-			elif language.language_code == 'de':
-				word_counts['de'] = self.known_words_de.count()
-			elif language.language_code == 'ru':
-				word_counts['ru'] = self.known_words_ru.count()
+
+			language_code = language.language_code
+
+			# TODO: Not working when I try to access directly, so have to manually filter UserWord to user
+			#word_counts[language_code] = self.known_words.filter(**{f'word_{language_code}__isnull': False}).count()
+			word_counts[language_code] = UserWord.objects.filter(user=self, **{f"word_{language_code}__isnull": False}).count()
 
 		return word_counts
 
@@ -82,3 +79,10 @@ class UserFollow(models.Model):
     follower = models.ForeignKey(AppUser, related_name='follower', on_delete=models.CASCADE)
     followee = models.ForeignKey(AppUser, related_name='followee', on_delete=models.CASCADE)
 	# Maybe add a field for when followed
+
+class UserWord(models.Model):
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    word_fr = models.ForeignKey('language_app.FrWordData', on_delete=models.CASCADE, null=True)
+    word_de = models.ForeignKey('language_app.DeWordData', on_delete=models.CASCADE, null=True)
+    word_ru = models.ForeignKey('language_app.RuWordData', on_delete=models.CASCADE, null=True)
+    known_date = models.DateTimeField(auto_now_add=True)

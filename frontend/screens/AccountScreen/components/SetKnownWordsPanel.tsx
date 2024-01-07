@@ -20,18 +20,14 @@ export default function SetKnownWordsPanel() {
     //const [activeWordMask, setActiveWordMask] = useState(createInitialActiveWordMask(20, 50))
 
     useEffect(() => {
-        // activeWordMask getting set to undefined here
+        // TODO: Changing the language doesn't cause this to update straight away
         setActiveWordMask(createActiveWordMask());
-    }, [knownWordsPerc]);
+    }, [knownWordsPerc, currentLanguage]);
 
     useEffect(() => {
         let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguage]);
         setSentenceComponents(components);
     }, [activeWordMask]);
-
-    useEffect(() => {
-        console.log('current language is ' + currentLanguage);
-    }, [currentLanguage]);
 
     function formatSentence(sentence: string) {
 

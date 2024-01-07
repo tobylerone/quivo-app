@@ -3,7 +3,7 @@ import { StyleSheet, Switch, View, SafeAreaView, Text, TouchableOpacity, FlatLis
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLanguage, faFilter, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { faComment } from '@fortawesome/free-regular-svg-icons';
+import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 // Constants
 import * as constants from "../../constants";
 // Assets
@@ -180,7 +180,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.speakButton}
                     onPress={() => {speak(currentItem.sentence, currentLanguage.language_code);}}
                     >
-                    <FontAwesomeIcon icon={faComment} size={30} color={constants.BLACK} />
+                    <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
                 </TouchableOpacity>
             </View>
             <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
@@ -225,18 +225,15 @@ const styles= StyleSheet.create({
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         marginTop: 'auto',
-        marginRight: 5,
-        //marginBottom: 'auto',
+        marginRight: 5
     },
     levelWordText: {
         fontSize: constants.CONTENTFONTSIZE,
         fontFamily: constants.FONTFAMILY,
-        marginTop: 'auto',
-        marginRight: 5,
-        //marginBottom: 'auto',
+        marginTop: 'auto'
     },
     progressBarBackground: {
-        width: 120,
+        width: 110,
         height: 10,
         marginTop: 'auto',
         marginBottom: 'auto',

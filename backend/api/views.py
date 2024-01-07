@@ -8,7 +8,7 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from .models import AppUser, UserFollow
+from .models import AppUser, UserFollow, UserWord
 
 from language_app.models import Language, FrSentence, DeSentence, RuSentence, FrWordData, DeWordData, RuWordData
 from .serializers import (
@@ -125,6 +125,7 @@ class UserAddLanguageView(APIView):
 				print(serializer.errors)
 				return Response(serializer.errors, status=400)
 
+
 class UserKnownLanguagesView(generics.ListAPIView):
 
 	serializer_class = LanguageModelSerializer
@@ -140,6 +141,7 @@ class UserKnownLanguagesView(generics.ListAPIView):
 		context = super().get_serializer_context()
 		context.update({"user": self.request.user})
 		return context
+
 
 class UserFollowingView(generics.ListAPIView):
 
@@ -170,6 +172,7 @@ class UserFollowersView(generics.ListAPIView):
 		context = super().get_serializer_context()
 		context.update({"user": self.request.user})
 		return context
+
 
 class UserWordsView(generics.ListAPIView):
 	serializerClass = FrWordDataModelSerializer
@@ -242,7 +245,7 @@ class UserToggleKnownWordView(APIView):
 		#serializer = UserToggleKnownWordSerializer(data=request.data)
 		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
 		
-		if serializer.is_valid():
+		'''if serializer.is_valid():
 
 			user_id = serializer.validated_data['user_id']
 			word = serializer.validated_data['word']
@@ -277,6 +280,43 @@ class UserToggleKnownWordView(APIView):
 		else:
 
 			return Response(serializer.errors, status=400)
+		'''
+		if serializer.is_valid():
+
+			user_id = serializer.validated_data['user_id']
+			word = serializer.validated_data['word']
+
+			word_data_model = {
+				'fr': FrWordData,
+				'de': DeWordData,
+				'ru': RuWordData
+			}.get(language_code, 'fr') # Default to fr for now
+
+			user = AppUser.objects.get(user_id=user_id)
+			word_obj = word_data_model.objects.get(word=word)
+
+			# Get the UserWord object for this user and word
+			user_word_obj, created = UserWord.objects.get_or_create(
+				user=user,
+				**{f'word_{language_code}': word_obj}
+			)
+
+			# Check if a user knows a word
+			if created:
+				word_added = True
+				#user.known_words.add(user_word_obj)
+			else:
+				word_added = False
+				user.known_words.remove(user_word_obj)
+
+			return Response({
+				"status": "success",
+				"word_added": word_added
+				})
+
+		else:
+
+			return Response(serializer.errors, status=400)
 
 
 class UserWordCountsView(APIView):
@@ -292,11 +332,10 @@ class UserWordCountsView(APIView):
 		language_code = self.request.session.get('current_language_code')
 		user_id = self.kwargs['user_id']
 
-		user_words = {
-			'fr': AppUser.objects.filter(user_id=user_id, known_words_fr=OuterRef('pk')),
-			'de': AppUser.objects.filter(user_id=user_id, known_words_de=OuterRef('pk')),
-			'ru': AppUser.objects.filter(user_id=user_id, known_words_ru=OuterRef('pk'))
-			}.get(language_code, 'fr')
+		user_words = UserWord.objects.filter(
+    		user_id=user_id,
+    		**{f'word_{language_code}': OuterRef('pk')}
+			)
 
 		words_data_obj = {
 			'fr': FrWordData,
@@ -371,7 +410,7 @@ class LanguagesViewSet(viewsets.ModelViewSet):
 class SentencesViewSet(viewsets.ModelViewSet):
 
 	def get_serializer_class(self):
-
+		# TODO: Not restful. Need to store this state on the frontend
 		language_code = self.request.session.get('current_language_code')
 		
 		return {

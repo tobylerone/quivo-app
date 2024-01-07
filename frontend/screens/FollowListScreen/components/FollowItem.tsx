@@ -22,7 +22,7 @@
     
     export default function FollowItem ({ user }: IFollowItemProps) {
 
-        const { currentLanguage } = useContext(UserContext);
+        const { currentLanguage, knownLanguages } = useContext(UserContext);
 
         return (
             <View style={styles.followItemContainer}>

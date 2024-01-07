@@ -11,7 +11,7 @@ export const speak = (sentence: string, language_code: string) => {
         sentence,
         {
             language: language_code,
-            rate: 1.3
+            rate: 1
         }
     );
 };

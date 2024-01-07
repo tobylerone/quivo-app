@@ -13,7 +13,7 @@ import Word from "../components/Word";
 export default function useSentenceComponents(currentItem, wordsData, autoDictEnabled){
     // NOTE: This hook should not contain tsx
 
-    const { currentLanguage } = useContext(UserContext);
+    const { currentLanguageCode } = useContext(UserContext);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const screenWidth = useWindowDimensions().width;
 
@@ -27,7 +27,7 @@ export default function useSentenceComponents(currentItem, wordsData, autoDictEn
                 setSentenceComponents(components);
             });
 
-            if (autoDictEnabled) speak(currentItem.sentence, currentLanguage.language_code);
+            if (autoDictEnabled) speak(currentItem.sentence, currentLanguageCode);
         }
     }, [wordsData]);
 
@@ -62,7 +62,7 @@ export default function useSentenceComponents(currentItem, wordsData, autoDictEn
             'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g,
         }
         
-        const splitSentence = currentItem.sentence.match(regex[currentLanguage]) || [];
+        const splitSentence = currentItem.sentence.match(regex[currentLanguageCode]) || [];
         const sentenceComponents = [];
 
         for (let i = 0; i < splitSentence.length; i++) {

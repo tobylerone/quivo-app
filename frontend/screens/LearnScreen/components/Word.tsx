@@ -3,7 +3,9 @@ import { useState, useEffect, useRef, useContext } from "react";
 import * as Speech from "expo-speech";
 import UserContext from "../../../contexts/UserContext";
 import * as constants from "../../../constants";
+// Utils
 import client from "../../../utils/axios";
+import { speak } from "../../../utils/text";
 import { capitalizeFirstLetter } from "../../../utils/text";
 
 interface IFrequencyBar {
@@ -48,7 +50,7 @@ interface IWordProps {
 
 export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
-    const { currentUser, currentLanguage, setKnownWords } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords } = useContext(UserContext);
 
     const wordRef = useRef(null);
     
@@ -149,8 +151,7 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
             setPressedOnce(true);
 
             // WordData.word contains the full word
-            Speech.stop();
-            Speech.speak(wordData.word, {language: currentLanguage})
+            speak(wordData.word, currentLanguageCode);
             
             tapDelayTimeout = setTimeout(() => {
 

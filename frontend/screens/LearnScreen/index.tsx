@@ -26,7 +26,7 @@ import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguage, knownWords } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
@@ -87,7 +87,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         >
                         <View style={styles.flagImageContainer}>
                           <Image
-                                source={flagImageSources[currentLanguage]}
+                                source={flagImageSources[currentLanguageCode]}
                                 style={styles.flagImage}
                             />
                         </View>
@@ -178,7 +178,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.speakButton}
-                    onPress={() => {speak(currentItem.sentence, currentLanguage.language_code);}}
+                    onPress={() => {
+                        speak(currentItem.sentence, currentLanguageCode)
+                    }}
                     >
                     <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
                 </TouchableOpacity>

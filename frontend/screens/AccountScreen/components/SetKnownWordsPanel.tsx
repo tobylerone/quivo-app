@@ -6,7 +6,7 @@ import * as constants from "../../../constants";
 
 export default function SetKnownWordsPanel() {
 
-    const { currentUser, currentLanguage } = useContext(UserContext);
+    const { currentUser, currentLanguageCode } = useContext(UserContext);
 
     const exampleSentences: Record<string, string> = {
         'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
@@ -22,10 +22,10 @@ export default function SetKnownWordsPanel() {
     useEffect(() => {
         // TODO: Changing the language doesn't cause this to update straight away
         setActiveWordMask(createActiveWordMask());
-    }, [knownWordsPerc, currentLanguage]);
+    }, [knownWordsPerc, currentLanguageCode]);
 
     useEffect(() => {
-        let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguage]);
+        let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguageCode]);
         setSentenceComponents(components);
     }, [activeWordMask]);
 
@@ -44,8 +44,8 @@ export default function SetKnownWordsPanel() {
             'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g
         };
         
-        const words = sentence.match(wordsRegex[currentLanguage]) || [];
-        const splitSentence = sentence.match(inclusiveRegex[currentLanguage]) || [];
+        const words = sentence.match(wordsRegex[currentLanguageCode]) || [];
+        const splitSentence = sentence.match(inclusiveRegex[currentLanguageCode]) || [];
 
         const sentenceComponents = [];
 

@@ -14,14 +14,14 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         language_name: string
     }
 
-    const { currentUser, knownLanguages, currentLanguage, knownWords } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords } = useContext(UserContext);
 
     const userStreak = 26;
 
     const { level, levelResidual, wordsInLevel, knownWordsInLevel } = calcLevel(knownWords, 30000);
 
     let currentLanguageName: string = knownLanguages.find(
-        (lang: ILanguage) => lang.language_code === currentLanguage
+        (lang: ILanguage) => lang.language_code === currentLanguageCode
         ).language_name;
 
     const data = [
@@ -48,7 +48,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topContainer}>
-                <Image source={flagImageSources[currentLanguage]} style={styles.flagImage} />
+                <Image source={flagImageSources[currentLanguageCode]} style={styles.flagImage} />
                 <Text style={styles.header}>Your {currentLanguageName} Progress</Text>
             </View>
             <View style={styles.panelContainer}>

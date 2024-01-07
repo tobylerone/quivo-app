@@ -7,7 +7,6 @@ import UserContext from "../../../contexts/UserContext";
 
 export default function useFetchWordsData(currentItem){
 
-    const { currentLanguage } = useContext(UserContext);
     const [wordsData, setWordsData] = useState();
 
     useEffect(() => {

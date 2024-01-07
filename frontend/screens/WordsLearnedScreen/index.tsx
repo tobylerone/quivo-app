@@ -22,7 +22,7 @@ interface ILanguage {
 
 export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, currentLanguage, knownLanguages, knownWords} = useContext(UserContext);
+    const { currentUser, currentLanguageCode, knownLanguages, knownWords} = useContext(UserContext);
 
     const wordCounts = useFetchWordCounts(currentUser);
     const comprehensionPercentage = useComprehensionPercentage(wordCounts);
@@ -32,7 +32,7 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
     let step = 100;
     
     let currentLanguageName: string = knownLanguages.find(
-        (lang: ILanguage) => lang.language_code === currentLanguage
+        (lang: ILanguage) => lang.language_code === currentLanguageCode
         ).language_name;
     
     // Short-term solution

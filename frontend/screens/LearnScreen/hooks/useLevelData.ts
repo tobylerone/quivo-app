@@ -6,8 +6,6 @@ import { calcLevel } from "../../../utils/functions";
 
 export default function useLevel(knownWords: number){
 
-    const { currentUser, currentLanguage } = useContext(UserContext);
-
     const [levelData, setLevelData] = useState({
         level: 0,
         levelResidual: 0,

@@ -12,7 +12,7 @@ import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
 
-    const { currentUser, currentLanguage, knownWords, knownLanguages } = useContext(UserContext);
+    const { currentUser, knownWords, knownLanguages } = useContext(UserContext);
     
     useEffect(() =>{
         console.log("Rendering Accountscreen")

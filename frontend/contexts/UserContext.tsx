@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
     const [knownWords, setKnownWords] = useState<number>(0);
-    const [currentLanguage, setCurrentLanguage] = useState<ILanguage|null>(null);
+    const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
 
     useEffect(() => {
         updateUserData();
@@ -35,16 +35,16 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
 
     useEffect(() => {
         if(currentUser){
-            getCurrentLanguage();
+            getCurrentLanguageCode();
             getKnownLanguages();
         }
     }, [currentUser]);
 
     useEffect(() => {
-        if (currentUser && currentLanguage) {
-            setKnownWords(currentUser.known_words_count[currentLanguage]);
+        if (currentUser && currentLanguageCode) {
+            setKnownWords(currentUser.known_words_count[currentLanguageCode]);
         }
-    }, [currentLanguage])
+    }, [currentLanguageCode])
 
     const updateUserData = () => {
         client.get('/api/users/me')
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         });
     };
 
-    const updateCurrentLanguage = (language_code: string) => {
+    const updateCurrentLanguageCode = (language_code: string) => {
         client.post('api/users/changecurrentlanguage', {
             language_code: language_code,
             withCredentials: true
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             // Probably don't need two api requests here. Could just
             // return current language data from changecurrentlanguage
             // endpoint
-            getCurrentLanguage()
+            getCurrentLanguageCode()
         }).catch((error) => {
             console.log(error);
         });
@@ -81,13 +81,14 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         });
     };
 
-    const getCurrentLanguage = () => {
+    const getCurrentLanguageCode = () => {
         client.get("./api/users/getcurrentlanguage")
         .then(function(res){
-            setCurrentLanguage(res.data);
+            console.log('current language: '+res.data);
+            setCurrentLanguageCode(res.data);
         }).catch(function(error){
             console.log(error);
-            setCurrentLanguage(currentUser.last_current_language);
+            setCurrentLanguageCode(currentUser.last_current_language);
         })
     }
 
@@ -158,9 +159,9 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         <UserContext.Provider value={{
             currentUser,
             knownLanguages,
-            currentLanguage,
+            currentLanguageCode,
             knownWords,
-            updateCurrentLanguage,
+            updateCurrentLanguageCode,
             updateUserData,
             setKnownWords,
             submitRegistration,

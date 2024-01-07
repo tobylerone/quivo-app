@@ -6,7 +6,7 @@ import UserContext from "../../../contexts/UserContext";
 
 export default function useFetchItems(){
 
-    const { currentLanguage } = useContext(UserContext);
+    const { currentLanguageCode } = useContext(UserContext);
     const [items, setItems] = useState(null);
 
     //const [currentItem, setCurrentItem] = useState(items[0]);
@@ -15,7 +15,7 @@ export default function useFetchItems(){
 
     useEffect(() => {
         fetchData();
-    }, [currentLanguage])
+    }, [currentLanguageCode])
 
     const fetchData = async() => {
         client.get("/api/sentences", { withCredentials: true })

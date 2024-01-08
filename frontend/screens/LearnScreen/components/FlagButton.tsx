@@ -14,7 +14,7 @@ interface ILanguageItem {
 
 export default function FlagButton({ item }: ILanguageItem){
 
-    const { currentLanguage, updateCurrentLanguage } = useContext(UserContext);
+    const { currentLanguageCode, updateCurrentLanguageCode } = useContext(UserContext);
 
     const flagImageMap: Record<string, PNG> = {
         'ru': require('../../../assets/ru.png'),
@@ -24,7 +24,7 @@ export default function FlagButton({ item }: ILanguageItem){
     };
 
     const handlePress = () => {
-        updateCurrentLanguage(item.language_code);
+        updateCurrentLanguageCode(item.language_code);
     }
 
     return(<>
@@ -35,7 +35,7 @@ export default function FlagButton({ item }: ILanguageItem){
                 ...styles.flagImageContainer,
                 ...styles.flagImageContainerPopup,
                 borderColor: (
-                    currentLanguage == item.language_code
+                    currentLanguageCode == item.language_code
                     ? constants.TERTIARYCOLOR
                     : constants.PRIMARYCOLOR
                     )

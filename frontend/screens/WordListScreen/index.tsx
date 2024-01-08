@@ -14,7 +14,7 @@ import WordItem from "./components/WordItem";
 
 export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, knownWords } = useContext(UserContext);
     
     const [words, setWords] = useState([]);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
@@ -107,7 +107,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     
     return (
         <SafeAreaView style={styles.container}>
-            <NavBar title='Word List' navigation={navigation}/>
+            <NavBar title={'Word List (' + knownWords + ')'} navigation={navigation}/>
             <View>
                 <ScrollView
                     style={styles.topButtonContainer}

@@ -1,14 +1,13 @@
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-} from "react-native";
-import { useEffect, useState, useContext, useRef } from "react";
-import UserContext from "../../../contexts/UserContext";
-import * as constants from "../../../constants";
-import client from "../../../utils/axios";
-import { capitalizeFirstLetter } from "../../../utils/text";
+import { View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { useEffect, useState, useContext, useRef } from 'react';
+// Contexts
+import UserContext from '../../../contexts/UserContext';
+// Constants
+import * as constants from '../../../constants';
+// Utils
+import client from '../../../utils/axios';
+import { speak } from '../../../utils/text';
+import { capitalizeFirstLetter } from '../../../utils/text';
 
 // TODO: Move this to interface folder and import
 interface IWordItem {
@@ -26,7 +25,7 @@ interface IWordItem {
 
 export default function WordItem({word, item}: IWordItem){
 
-    const { currentUser, currentLanguage } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords } = useContext(UserContext);
 
     const selectedStyling = {
         'backgroundColor': constants.PRIMARYCOLOR,
@@ -74,11 +73,13 @@ export default function WordItem({word, item}: IWordItem){
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-            console.log('pressed twice');
             setUserKnows(!userKnows);
             client.post(
                 'api/users/' + currentUser.user_id + '/toggleknownword/' + item.word
             ).then(function(res) {
+                res.data.word_added ?
+                setKnownWords(prevKnownWords => prevKnownWords + 1)
+                : setKnownWords(prevKnownWords => prevKnownWords - 1)
             }).catch(function(e) {
                 console.log(e.response.data)
             });
@@ -92,8 +93,8 @@ export default function WordItem({word, item}: IWordItem){
             clearTimeout(definitionDisplayTimeout);
 
         } else {
-            setPressedOnce(true)
-            console.log('pressed once');
+            setPressedOnce(true);
+            speak(item.word, currentLanguageCode);
         }
 
         setLastPress(currentTime);

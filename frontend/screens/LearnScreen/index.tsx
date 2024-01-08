@@ -65,7 +65,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.streakContainer}
                     onPress={() => {navigation.navigate('Streak')}}
                     >
-                    <Image style={styles.streakImage} source={require('../../assets/streak-rocket.png')} />
+                    <View style={styles.streakImagesContainer}>
+                        <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
+                        <View style={{overflow: 'hidden', height: 30, marginLeft: -30, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
+                    </View>
                     <Text style={styles.streakNumberText}>26</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -97,7 +100,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         style={styles.filterButton}
                         onPress={() => { toggleFilterPopup() }}
                         >
-                        <FontAwesomeIcon icon={faFilter} size={25} color={constants.PRIMARYCOLOR} />
+                        <FontAwesomeIcon icon={faFilter} size={25} color={constants.BLACK} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -255,12 +258,24 @@ const styles= StyleSheet.create({
         backgroundColor: constants.SECONDARYCOLOR,
         paddingHorizontal: 7
     },
+    streakImagesContainer: {
+        flexDirection: 'row',
+        height: 30,
+        width: 30,
+        marginRight: 5,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    streakImageContainer: {
+        marginTop: 'auto'
+    },
     streakImage: {
         width: 30,
         height: 30,
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        marginRight: 5
+        marginTop: 'auto'
+    },
+    streakImageEmpty: {
+        opacity: 0.3,
     },
     streakNumberText: {
         fontFamily: constants.FONTFAMILYBOLD,
@@ -305,7 +320,8 @@ const styles= StyleSheet.create({
         marginBottom: 30,
         marginLeft: 'auto',
         marginRight: 30,
-        borderRadius: 10
+        borderRadius: 10,
+        elevation: 4
     },
     autoplayText: {
         fontFamily: constants.FONTFAMILY,

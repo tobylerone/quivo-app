@@ -5,7 +5,6 @@ export const capitalizeFirstLetter = (word: string) => {
     }
 
 export const speak = (sentence: string, language_code: string) => {
-    console.log(language_code);
     Speech.stop();
     Speech.speak(
         sentence,

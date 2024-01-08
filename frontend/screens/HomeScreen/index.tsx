@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         padding: 5,
-        marginTop: 25,
+        marginTop: 5,
         marginBottom: 'auto',
         marginRight: 10
     },

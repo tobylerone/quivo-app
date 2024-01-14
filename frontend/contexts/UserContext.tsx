@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     };
 
     const getCurrentLanguageCode = () => {
-        client.get("./api/users/getcurrentlanguage")
+        client.get("./api/users/currentlanguage")
         .then(function(res){
             console.log('current language: '+res.data);
             setCurrentLanguageCode(res.data);

@@ -89,14 +89,20 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
     
     // pour l'instant j'aimerais simplement montrer une liste de tous les utilisateurs
     const [users, setUsers] = useState<(IUser[] | null)>(null);
+    const [searchFieldText, setSearchFieldText] = useState<string>('');
       
     useEffect(() => {
-        getUsers();
+        //getUsers();
     }, []);
 
-    const getUsers = async () => {
+    const getUsers = async (search_term?: string | null) => {
+        let res;
         try {
-            const res = await client.get('api/users');
+            if (search_term){
+                res = await client.get('api/users?search=' + search_term);
+            } else {
+                res = await client.get('api/users');
+            }
             setUsers(res.data);
         } catch (e) {
             console.error(e);
@@ -112,23 +118,31 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                 style={styles.searchInput}
                 placeholder="Search by username"
                 placeholderTextColor={constants.GREY}
-                //onChangeText={(password) => setPassword(password)}
+                onChangeText={(text) => setSearchFieldText(text)}
                 />
                 </View>
-                <TouchableOpacity style={styles.searchButton}>
+                <TouchableOpacity
+                    style={styles.searchButton}
+                    onPress={() => getUsers(searchFieldText)}
+                >
                     <View style={styles.searchButtonIconContainer}>
                         <FontAwesomeIcon icon={faSearch} size={25} color={constants.TERTIARYCOLOR} />
                         </View>
                 </TouchableOpacity>
             </View>
             {users ?
-            <FlatList
-                style={styles.userList}
-                data={users}
-                bounces={false}
-                renderItem={({item}: {item: IUser}) => <UserListItem user={item} />}
-            />
-            : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />
+                users.length === 0 ?
+                    <View>
+                        <Image style={styles.parrotImage} source={require('../assets/parrot-confused.png')}/>
+                        <Text style={styles.noUsersMessageText}>No users Found!</Text>
+                    </View>
+                : <FlatList
+                    style={styles.userList}
+                    data={users}
+                    bounces={false}
+                    renderItem={({item}: {item: IUser}) => <UserListItem user={item} />}
+                />
+            : <>{/*<ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />*/}</>
             }
         </SafeAreaView>
     );
@@ -167,6 +181,20 @@ const styles = StyleSheet.create({
         
     },
     searchButtonIconContainer: {
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    noUsersMessageText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        color: constants.PRIMARYCOLOR,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 10
+    },
+    parrotImage: {
+        width: 60,
+        height: 84,
         marginLeft: 'auto',
         marginRight: 'auto'
     },

@@ -8,6 +8,7 @@ from django.utils import timezone
 import datetime
 from django.db.models import Count
 from django.db.models.functions import TruncDate
+from django.db.models import Q
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -439,10 +440,19 @@ class CurrentUserView(APIView):
 
 
 class UserViewSet(generics.ListAPIView):
-	queryset = AppUser.objects.all()
+
 	serializer_class = UserSerializer
-	permission_classes = (permissions.IsAuthenticated,)
-	authentication_classes = (SessionAuthentication,)
+	#permission_classes = (permissions.IsAuthenticated,)
+	#authentication_classes = (SessionAuthentication,)
+
+	def get_queryset(self):
+		queryset = AppUser.objects.all()
+		search_term = self.request.query_params.get('search', None)
+        
+		if search_term is not None:
+			queryset = queryset.filter(Q(username__icontains=search_term))
+
+		return queryset
 
 	def get_serializer_context(self):
 		context = super().get_serializer_context()

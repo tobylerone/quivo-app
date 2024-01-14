@@ -132,6 +132,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             <View style={styles.mainContainer}>
                 <SetKnownWordsPanel />
             </View>
+            <TouchableOpacity onPress={() => navigation.navigate('MaxWordsReached')}><Text>Increase streak</Text></TouchableOpacity>
         </SafeAreaView>
     );
 }

@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
     const [knownWords, setKnownWords] = useState<number>(0);
+    const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
 
     useEffect(() => {
@@ -43,6 +44,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     useEffect(() => {
         if (currentUser && currentLanguageCode) {
             setKnownWords(currentUser.known_words_count[currentLanguageCode]);
+            updateMonthlyWordCounts(currentUser.user_id, currentLanguageCode)
         }
     }, [currentLanguageCode])
 
@@ -56,6 +58,15 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             console.log(error);
         });
     };
+
+    const updateMonthlyWordCounts = (userId: number, languageCode: string) => {
+        client.get('./api/users/' + userId + '/monthlywordcounts/' + languageCode)
+        .then((res) => {
+            setMonthlyWordCounts(res.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
 
     const updateCurrentLanguageCode = (language_code: string) => {
         client.post('api/users/changecurrentlanguage', {
@@ -161,6 +172,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             knownLanguages,
             currentLanguageCode,
             knownWords,
+            monthlyWordCounts,
             updateCurrentLanguageCode,
             updateUserData,
             setKnownWords,

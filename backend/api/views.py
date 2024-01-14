@@ -4,6 +4,10 @@ from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.contrib.auth import login, logout
 from django.core import serializers
+from django.utils import timezone
+import datetime
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,6 +22,7 @@ from .serializers import (
 	UserToggleKnownWordSerializer,
 	UserAddLanguageSerializer,
 	UserWordCountsSerializer,
+	UserMonthlyKnownWordsSerializer,
     UserSerializer,
 	LanguageModelSerializer,
     FrSentenceModelSerializer,
@@ -142,6 +147,49 @@ class UserKnownLanguagesView(generics.ListAPIView):
 		context.update({"user": self.request.user})
 		return context
 
+
+class UserMonthlyKnownWordsView(generics.ListAPIView):
+	
+	serializer_class = UserMonthlyKnownWordsSerializer
+
+	def get_queryset(self):
+		user_id = self.kwargs['user_id']
+		language_code = self.kwargs['language_code']
+
+		# Get the current date
+		now = timezone.now().date()
+
+		days = 30
+
+		# Calculate the date 30 days ago
+		thirty_days_ago = now - datetime.timedelta(days=days)
+
+		# Create a range of dates for the last 30 days
+		date_range = [now - datetime.timedelta(days=x) for x in range(0, days)]
+
+		# TODO: provide option to get known words across all languages
+		queryset = UserWord.objects.filter(
+    		user_id=user_id,
+    		#**{f'word_{language_code}': user_id}, #OuterRef('pk')},
+			known_date__gte=thirty_days_ago
+			).annotate(day=TruncDate('known_date')
+			).values('day'
+			).annotate(word_count=Count('id')
+			)#.order_by('day')
+		
+		# Convert queryset to a list of dictionaries
+		queryset_list = list(queryset)
+
+		# Merge date_range with queryset_list
+		for date in date_range:
+			if not any(d['day'] == date for d in queryset_list):
+				queryset_list.append({'day': date, 'word_count': 0})
+
+		# Sort the list by day
+		queryset_list.sort(key=lambda x: x['day'])
+
+		#return queryset
+		return queryset_list
 
 class UserFollowingView(generics.ListAPIView):
 

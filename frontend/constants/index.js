@@ -13,6 +13,8 @@ export const TERTIARYCOLOR = "#FFFFFF";
 export const BLACK = "#212121";//"#000000"
 export const GREY = "#BBBCBE";
 export const ORANGE = "#CD5D30";
+export const GREEN = "#69EAAA";
+export const LIGHTBLUE = "#96EFE9";
 export const ERRORCOLOR = "#AB2328";
 export const SUCCESSCOLOR = "#228B22";
 

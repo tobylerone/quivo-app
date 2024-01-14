@@ -8,26 +8,43 @@ import NavBar from "../../components/NavBar";
 
 export default function ProgressScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguage, monthlyWordCounts } = useContext(UserContext);
+
+    const wordCounts = monthlyWordCounts.map(item => item.word_count);
+    const dayLabels = monthlyWordCounts.map(item => {
+        let parts = item.day.split('-');
+        return parts[parts.length - 1];
+    });
+    
+    const dataMap: Record<string, number[]> = {
+        '7 Days': wordCounts.slice(-7),
+        '30 Days': wordCounts,
+    }
+
+    const labelsMap: Record<string, string[]> = {
+        '7 Days': dayLabels.slice(-7),
+        '30 Days': dayLabels
+    }
 
     const [activeTab, setActiveTab] = useState<string>('7 Days');
+    const [data, setData] = useState<number[]>(wordCounts.slice(-7));
+    const [labels, setLabels] = useState<string[]>(dayLabels.slice(-7));
 
-    let labels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-    let numDataPoints = 7;
-
-    let data = [5, 14, 2, 35, 52, 29, 31];
-
-    const TABS = ['90 Days', '30 Days', '7 Days'];
+    const TABS = ['30 Days', '7 Days'];
 
     const renderTabButton = (tabTitle: string) => (
         <TouchableOpacity
             activeOpacity={1}
-            onPress={() => {setActiveTab(tabTitle)}}
+            onPress={() => {
+                setActiveTab(tabTitle);
+                setData(dataMap[tabTitle]);
+                setLabels(labelsMap[tabTitle]);
+            }}
             style={{backgroundColor: activeTab === tabTitle ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
         >
             <Text style={{color: activeTab === tabTitle ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>{tabTitle}</Text>
         </TouchableOpacity>
-    );
+        );
 
     return (
     <SafeAreaView style={styles.container}>
@@ -37,8 +54,9 @@ export default function ProgressScreen({navigation}: NativeStackHeaderProps) {
                 {TABS.map(tabTitle => renderTabButton(tabTitle))}
             </View>
             <View style={styles.wordsLearnedPanel}>
-                <Text style={styles.wordsLearnedTitle}>Previous Week</Text>
+                {data && labels &&
                 <LineChart
+                    //key={data.toString()}
                     data={{
                         labels: labels,
                         datasets: [{ data: data }]}}
@@ -63,6 +81,8 @@ export default function ProgressScreen({navigation}: NativeStackHeaderProps) {
                         borderRadius: 10,
                         }}
                 />
+                }
+                <Text style={styles.infoText}>Previous Week</Text>
             </View>
         </View>
     </SafeAreaView>
@@ -79,6 +99,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         height: 'auto',
         marginTop: 10,
+        marginBottom: 20,
         borderWidth: 3,
         borderColor: constants.PRIMARYCOLOR
     },
@@ -92,7 +113,7 @@ const styles = StyleSheet.create({
         borderColor: constants.PRIMARYCOLOR,
         borderBottomWidth: 3,
         //borderRightWidth: 3,
-        width: '33.33%',
+        width: '50%',
     },
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,
@@ -106,16 +127,11 @@ const styles = StyleSheet.create({
         backgroundColor: constants.TERTIARYCOLOR,
         padding: 10
     },
-    wordsLearnedTitle: {
+    infoText: {
         fontSize: constants.H2FONTSIZE,
-        fontFamily: constants.FONTFAMILYBOLD,
-        marginBottom: 10,
+        fontFamily: constants.FONTFAMILY,
+        margin: 10,
         marginLeft: 'auto',
         marginRight: 'auto'
-    },
-    wordsLearnedInfo: {
-        fontSize: constants.H3FONTSIZE,
-        fontFamily: constants.FONTFAMILY,
-        marginTop: 10
-    },
+    }
 });

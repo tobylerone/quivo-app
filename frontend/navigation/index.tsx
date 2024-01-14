@@ -6,16 +6,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHome, faAlignJustify, faUser } from '@fortawesome/free-solid-svg-icons';
-//import { faComment } from '@fortawesome/free-regular-svg-icons';
+import { TransitionSpecs, HeaderStyleInterpolators } from '@react-navigation/stack';
+// Constants
 import * as constants from "../constants";
-
 // Auth stack
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
-
 // First login stack
 import ChooseFirstLanguageScreen from "../screens/ChooseFirstLanguageScreen";
-
 // Main stack
 import HomeScreen from "../screens/HomeScreen";
 import LearnScreen from "../screens/LearnScreen";
@@ -30,6 +28,8 @@ import ProgressScreen from "../screens/ProgressScreen";
 import WordsLearnedScreen from "../screens/WordsLearnedScreen";
 import LevelScreen from "../screens/LevelScreen";
 import StreakScreen from "../screens/StreakScreen";
+import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
+import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -154,6 +154,22 @@ function MainNavigator() {
                 component={StreakScreen as any}
                 options={{ headerShown: false }}
             />
+            <MainStack.Screen
+                name="IncreaseStreak"
+                component={IncreaseStreakScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom'
+                }}
+            />
+            <MainStack.Screen
+                name="MaxWordsReached"
+                component={MaxWordsReachedScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom'
+                }}
+            />    
         </MainStack.Navigator>
         )
 }

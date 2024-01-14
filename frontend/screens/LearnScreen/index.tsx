@@ -95,13 +95,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                             />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
+                    {/*<TouchableOpacity
                         activeOpacity={1}
                         style={styles.filterButton}
                         onPress={() => { toggleFilterPopup() }}
                         >
                         <FontAwesomeIcon icon={faFilter} size={25} color={constants.BLACK} />
-                    </TouchableOpacity>
+                    </TouchableOpacity>*/}
                 </View>
             </View>
             <Animated.View style={{
@@ -188,7 +188,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
                 </TouchableOpacity>
             </View>
-            <Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
+            {/*<Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
                 <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
                 {popupItemData.map((item) => renderPopupItem(item))}
                 <TouchableOpacity
@@ -197,7 +197,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     >
                     <Text style={styles.filterPopupSubmitButtonText}>Apply Filters</Text>
                 </TouchableOpacity>
-            </Animated.View>
+                </Animated.View>*/}
         </SafeAreaView>
     )
 }
@@ -321,7 +321,7 @@ const styles= StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 30,
         borderRadius: 10,
-        elevation: 4
+        //elevation: 4
     },
     autoplayText: {
         fontFamily: constants.FONTFAMILY,
@@ -349,7 +349,7 @@ const styles= StyleSheet.create({
     },
     flagImageContainer: {
         borderRadius: 10,
-        marginRight: 10,
+        //marginRight: 10,
         overflow: "hidden",
         height: 50,
         width: 70,

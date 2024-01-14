@@ -118,6 +118,10 @@ class UserWordCountsSerializer(serializers.Serializer):
 	counts = serializers.IntegerField()
 
 
+class UserMonthlyKnownWordsSerializer(serializers.Serializer):
+	day = serializers.DateField()
+	word_count = serializers.IntegerField()
+
 class LanguageModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Language

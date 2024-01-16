@@ -10,7 +10,7 @@ import { speak } from '../../../utils/text';
 import { capitalizeFirstLetter } from '../../../utils/text';
 
 // TODO: Move this to interface folder and import
-interface IWordItem {
+interface IWord {
     id: number,
     rank: number,
     word: string,
@@ -18,14 +18,14 @@ interface IWordItem {
     user_knows: boolean
 }
 
-interface IWordItem {
-    word: string,
-    item: IWordItem,
+interface IWordItemProps {
+    navigation: any,
+    item: IWord,
 }
 
-export default function WordItem({word, item}: IWordItem){
+export default function WordItem({navigation, item}: IWordItemProps){
 
-    const { currentUser, currentLanguageCode, setKnownWords } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount } = useContext(UserContext);
 
     const selectedStyling = {
         'backgroundColor': constants.PRIMARYCOLOR,
@@ -73,16 +73,24 @@ export default function WordItem({word, item}: IWordItem){
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-            setUserKnows(!userKnows);
-            client.post(
-                'api/users/' + currentUser.user_id + '/toggleknownword/' + item.word
-            ).then(function(res) {
-                res.data.word_added ?
-                setKnownWords(prevKnownWords => prevKnownWords + 1)
-                : setKnownWords(prevKnownWords => prevKnownWords - 1)
-            }).catch(function(e) {
-                console.log(e.response.data)
-            });
+            if (dailyWordCount < 50) {
+                setUserKnows(!userKnows);
+                client.post(
+                    'api/users/' + currentUser.user_id + '/toggleknownword/' + item.word
+                ).then(function(res) {
+                    if (res.data.word_added) {
+                        setKnownWords(prevKnownWords => prevKnownWords + 1)
+                        setDailyWordCount(prevDailyWordCount => prevDailyWordCount + 1)
+                    } else {
+                        setKnownWords(prevKnownWords => prevKnownWords - 1)
+                        setDailyWordCount(prevDailyWordCount => prevDailyWordCount - 1)
+                    }
+                }).catch(function(e) {
+                    console.log(e.response.data)
+                });
+            } else {
+                navigation.navigate('MaxWordsReached');
+            }
 
             setLastPress(0);
             setPressedOnce(false);

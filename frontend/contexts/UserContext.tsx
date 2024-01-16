@@ -23,11 +23,12 @@ interface ILanguage {
 }
 
 // Create a provider component
-export const AuthProvider = ({ children }: {children: ReactNode}) => {
+export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
     const [knownWords, setKnownWords] = useState<number>(0);
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
+    const [dailyWordCount, setDailyWordCount] = useState<number>(0);
     const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
 
     useEffect(() => {
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             setKnownWords(currentUser.known_words_count[currentLanguageCode]);
             updateMonthlyWordCounts(currentUser.user_id, currentLanguageCode)
         }
-    }, [currentLanguageCode])
+    }, [currentLanguageCode]);
 
     const updateUserData = () => {
         client.get('/api/users/me')
@@ -63,6 +64,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         client.get('./api/users/' + userId + '/monthlywordcounts/' + languageCode)
         .then((res) => {
             setMonthlyWordCounts(res.data);
+            setDailyWordCount(res.data[res.data.length - 1].word_count);
         }).catch((error) => {
             console.log(error);
         });
@@ -173,9 +175,11 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             currentLanguageCode,
             knownWords,
             monthlyWordCounts,
+            dailyWordCount,
             updateCurrentLanguageCode,
             updateUserData,
             setKnownWords,
+            setDailyWordCount,
             submitRegistration,
             submitLogin,
             submitLogout

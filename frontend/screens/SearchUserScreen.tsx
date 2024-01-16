@@ -134,7 +134,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                 users.length === 0 ?
                     <View>
                         <Image style={styles.parrotImage} source={require('../assets/parrot-confused.png')}/>
-                        <Text style={styles.noUsersMessageText}>No users Found!</Text>
+                        <Text style={styles.noUsersMessageText}>No users found :(</Text>
                     </View>
                 : <FlatList
                     style={styles.userList}

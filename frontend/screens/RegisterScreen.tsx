@@ -107,10 +107,8 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   logo: {
-    width: 200,
-    height: 53,
-    //height: "7%",
-    marginBottom: 10
+    width: 220,
+    height: 65
   },
   errorBox: {
     backgroundColor: constants.TERTIARYCOLOR,

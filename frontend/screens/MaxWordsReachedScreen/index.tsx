@@ -28,6 +28,7 @@ export default function MaxWordsReachedScreen({navigation}: NativeStackHeaderPro
             <Text style={[styles.subtitleText, styles.subtitleText1]}>50 new words today, not bad!</Text>
             <Text style={[styles.subtitleText, styles.subtitleText2]}>Watch a short ad and unlock 50 more, or wait until tomorrow for your counter to reset</Text>
         </View>
+        <View style={styles.adButtonShadow}></View>
         <TouchableOpacity style={styles.adButton}><Text style={styles.adButtonText}>Watch Ad</Text></TouchableOpacity>
     </View>
     );
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     adButton: {
         backgroundColor: constants.PRIMARYCOLOR,
         width: 250,
+        height: 70,
         padding: 20,
         borderRadius: 10,
         marginLeft: 'auto',
@@ -101,6 +103,15 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto',
 
+    },
+    adButtonShadow: {
+        backgroundColor: constants.PRIMARYCOLORSHADOW,
+        width: 250,
+        height: 70,
+        marginBottom: -77,
+        borderRadius: 10,
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     subtitleContainer: {
         //marginTop: 'auto',

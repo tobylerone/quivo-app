@@ -1,7 +1,10 @@
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, findNodeHandle, UIManager } from "react-native";
 import { useState, useEffect, useRef, useContext } from "react";
-import * as Speech from "expo-speech";
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+import { transliterate } from 'transliteration';
+// Contexts
 import UserContext from "../../../contexts/UserContext";
+// Constants
 import * as constants from "../../../constants";
 // Utils
 import client from "../../../utils/axios";
@@ -41,6 +44,7 @@ interface IWordData {
 }
 
 interface IWordProps {
+    navigation: any,
     word: string,
     wordData: IWordData,
     isFirstWord: boolean,
@@ -48,9 +52,9 @@ interface IWordProps {
     index: number
 }
 
-export default function Word ({word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
+export default function Word ({navigation, word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
-    const { currentUser, currentLanguageCode, setKnownWords } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount } = useContext(UserContext);
 
     const wordRef = useRef(null);
     
@@ -116,24 +120,31 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-
-            client.post(
-                'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
-            ).then(function(res) {
-                // Update local word count record accordingly
-                res.data.word_added ?
-                setKnownWords(prevKnownWords => prevKnownWords + 1)
-                : setKnownWords(prevKnownWords => prevKnownWords - 1)
-            }).catch(function(e) {
-                console.log(e.response.data)
-            });
-            
-            // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
-            setTextColor(
-                textColor === constants.BLACK
-                ? constants.PRIMARYCOLOR
-                : constants.BLACK
-            );
+            if (dailyWordCount < 50) {
+                // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
+                setTextColor(
+                    textColor === constants.BLACK
+                    ? constants.PRIMARYCOLOR
+                    : constants.BLACK
+                );
+                client.post(
+                    'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
+                ).then(function(res) {
+                    // Update local word count record accordingly
+                    if (res.data.word_added) {
+                        // I need a function that does all this together
+                        setKnownWords(prevKnownWords => prevKnownWords + 1)
+                        setDailyWordCount(prevDailyWordCount => prevDailyWordCount + 1)
+                    } else {
+                        setKnownWords(prevKnownWords => prevKnownWords - 1)
+                        setDailyWordCount(prevDailyWordCount => prevDailyWordCount - 1)
+                    }
+                }).catch(function(e) {
+                    console.log(e.response.data)
+                });
+            } else {
+                navigation.navigate('MaxWordsReached');
+            }
 
             setLastPress(0);
             setPressedOnce(false);
@@ -189,6 +200,9 @@ export default function Word ({word, wordData, isFirstWord, screenWidth, index}:
                     <Text style={styles.translationText}>
                         {capitalizeFirstLetter(wordData.word)} - Translation
                     </Text>
+                    {currentLanguageCode === 'ru' &&
+                        <Text>{capitalizeFirstLetter(transliterate(wordData.word))}</Text>
+                    }
                     <FrequencyBar frequency_rank={wordData.rank} />
                 </View>
             )}

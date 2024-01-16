@@ -5,6 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import * as constants from '../../constants';
 import { flagImageSources } from "../../assets/img/imageSources";
 import { calcLevel } from "../../utils/functions";
+import BottomNavBar from '../../components/BottomNavBar';
 
 export default function HomeScreen({navigation}: NativeStackHeaderProps) {
 
@@ -14,9 +15,11 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
         language_name: string
     }
 
-    const { currentUser, knownLanguages, currentLanguageCode, knownWords } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords, monthlyWordCounts } = useContext(UserContext);
 
     const userStreak = 26;
+
+    const wordsThisWeek = monthlyWordCounts.map(item => item.word_count).slice(-7).reduce((a, b) => a + b, 0);
 
     const { level, levelResidual, wordsInLevel, knownWordsInLevel } = calcLevel(knownWords, 30000);
 
@@ -31,12 +34,12 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
             image: require('../../assets/words_learned.png'),
             navigateTo: 'WordsLearned'
         },
-        {
+        /*{
             text: 'Progress',
-            subText: '+49 words this week',
+            subText: wordsThisWeek + ' words this week',
             image: require('../../assets/progress.png'),
             navigateTo: 'Progress'
-        },
+        },*/
         {
             text: 'Leaderboard',
             subText: '6th this week',
@@ -46,60 +49,63 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
     ];
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.topContainer}>
-                <Image source={flagImageSources[currentLanguageCode]} style={styles.flagImage} />
-                <Text style={styles.header}>Your {currentLanguageName} Progress</Text>
-            </View>
-            <View style={styles.panelContainer}>
-                <TouchableOpacity
-                    style={styles.panel}
-                    onPress={() => navigation.navigate('Level')}
-                    >
-                    <Text style={styles.panelHeader}>Level</Text>
-                    <View style={styles.panelLevelNumber}>
-                        <Text style={styles.panelLevelNumberText}>{level}</Text>
-                    </View>
-                    <View style={styles.progressBarBackground}>
-                        <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
-                    </View>
-                    <Text style={styles.panelSubText}>{knownWordsInLevel}/{wordsInLevel}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.panel}
-                    onPress={() => navigation.navigate('Streak')}
-                    >
-                    <Text style={styles.panelHeader}>Streak</Text>
-                    <View style={styles.streakPanelSubcontainer}>
-                        <Image
-                                source={require('../../assets/streak-rocket.png')}
-                                style={styles.streakPanelImage}
-                            />
-                        <View style={styles.panelStreakNumber}>
-                            <Text style={{
-                                fontSize: userStreak.toString().length === 1 ? 90 : userStreak.toString().length === 2 ? 70 : 60
-                                , ...styles.panelStreakNumberText
-                                }}>{userStreak}</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-                {data.map((item, index) => {
-                    return (
-                    <TouchableOpacity
-                        style={styles.panel}
-                        onPress={() => navigation.navigate(item.navigateTo)}
-                        >
-                        <Text style={styles.panelHeader}>{item.text}</Text>
-                        <Image
-                            source={item.image}
-                            style={styles.panelImage}
+    <>
+    <SafeAreaView style={styles.container}>
+        <View style={styles.topContainer}>
+            <Image source={flagImageSources[currentLanguageCode]} style={styles.flagImage} />
+            <Text style={styles.header}>Your {currentLanguageName} Progress</Text>
+        </View>
+        <View style={styles.panelContainer}>
+            <TouchableOpacity
+                style={styles.panel}
+                onPress={() => navigation.navigate('Level')}
+                >
+                <Text style={styles.panelHeader}>Level</Text>
+                <View style={styles.panelLevelNumber}>
+                    <Text style={styles.panelLevelNumberText}>{level}</Text>
+                </View>
+                <View style={styles.progressBarBackground}>
+                    <View style={{width: Math.floor(levelResidual * 100) + '%', ...styles.progressBar}}></View>
+                </View>
+                <Text style={styles.panelSubText}>{knownWordsInLevel}/{wordsInLevel}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.panel}
+                onPress={() => navigation.navigate('Streak')}
+                >
+                <Text style={styles.panelHeader}>Streak</Text>
+                <View style={styles.streakPanelSubcontainer}>
+                    <Image
+                            source={require('../../assets/streak-rocket.png')}
+                            style={styles.streakPanelImage}
                         />
-                        <Text style={styles.panelSubText}>{item.subText}</Text>
-                    </TouchableOpacity>
-                    );
-                })}
-            </View>
-        </SafeAreaView>
+                    <View style={styles.panelStreakNumber}>
+                        <Text style={{
+                            fontSize: userStreak.toString().length === 1 ? 90 : userStreak.toString().length === 2 ? 70 : 60
+                            , ...styles.panelStreakNumberText
+                            }}>{userStreak}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+            {data.map((item, index) => {
+                return (
+                <TouchableOpacity
+                    style={styles.panel}
+                    onPress={() => navigation.navigate(item.navigateTo)}
+                    >
+                    <Text style={styles.panelHeader}>{item.text}</Text>
+                    <Image
+                        source={item.image}
+                        style={styles.panelImage}
+                    />
+                    <Text style={styles.panelSubText}>{item.subText}</Text>
+                </TouchableOpacity>
+                );
+            })}
+        </View>
+    </SafeAreaView>
+    <BottomNavBar hilighted='Home' navigation={navigation} />
+    </>
     );
  }
 

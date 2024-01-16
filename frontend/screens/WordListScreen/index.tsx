@@ -14,7 +14,7 @@ import WordItem from "./components/WordItem";
 
 export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownWords } = useContext(UserContext);
+    const { currentUser, knownWords, dailyWordCount } = useContext(UserContext);
     
     const [words, setWords] = useState([]);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
@@ -22,7 +22,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
     const flatListRef = useRef();
 
-    const renderItem = useCallback(({item}) => <WordItem item={item} />, []);
+    const renderItem = useCallback(({item}) => <WordItem navigation={navigation} item={item} />, []);
     
     useEffect(() => {
         fetchWordCounts();

@@ -157,8 +157,6 @@ export default function SetKnownWordsPanel() {
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: constants.SECONDARYCOLOR,
-        //width: '100%',
-        marginHorizontal: 25,
         padding: 10,
         borderRadius: 10
     },

@@ -10,7 +10,7 @@ import * as constants from '../../../constants'
 // Components
 import Word from "../components/Word";
 
-export default function useSentenceComponents(currentItem, wordsData, autoDictEnabled){
+export default function useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled){
     // NOTE: This hook should not contain tsx
 
     const { currentLanguageCode } = useContext(UserContext);
@@ -74,6 +74,7 @@ export default function useSentenceComponents(currentItem, wordsData, autoDictEn
             if (wordsData.hasOwnProperty(fullWord)) {
 
                 sentenceComponents.push(<Word
+                    navigation={navigation}
                     word={word}
                     wordData={wordsData[fullWord]}
                     isFirstWord={i==0}

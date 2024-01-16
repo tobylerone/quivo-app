@@ -1,8 +1,8 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { StyleSheet, Switch, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLanguage, faFilter, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faLanguage, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 // Constants
 import * as constants from "../../constants";
@@ -11,10 +11,11 @@ import { flagImageSources } from "../../assets/img/imageSources";
 // Utils
 import { speak } from '../../utils/text';
 // Contexts
-import UserContext from "../../contexts/UserContext";
+import UserContext from '../../contexts/UserContext';
 // Components
-import CheckBox from "../../components/CheckBox";
-import FlagButton from "./components/FlagButton";
+import BottomNavBar from '../../components/BottomNavBar';
+import CheckBox from '../../components/CheckBox';
+import FlagButton from './components/FlagButton';
 // Hooks
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useFetchItems from './hooks/useFetchItems';
@@ -26,7 +27,7 @@ import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguageCode, knownWords } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
@@ -37,8 +38,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { currentItem, changeItem } = useFetchItems();
     const { level, levelResidual, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
+
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents } =  useSentenceComponents(currentItem, wordsData, autoDictEnabled);
+    const { sentenceComponents } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
 
     const popupItemData = [
         {title: '1000 most common words'},
@@ -59,158 +61,165 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.topContainer}>
-                <TouchableOpacity
-                    style={styles.streakContainer}
-                    onPress={() => {navigation.navigate('Streak')}}
-                    >
-                    <View style={styles.streakImagesContainer}>
-                        <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
-                        <View style={{overflow: 'hidden', height: 30, marginLeft: -30, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
-                    </View>
-                    <Text style={styles.streakNumberText}>26</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.starBox}
-                    onPress={() => {navigation.navigate('Level')}}
-                    >
-                    <View style={styles.levelTextContainer}>
-                        <Text style={styles.levelText}>Lv. {level}</Text>
-                        <Text style={styles.levelWordText}>{knownWordsInLevel}/{wordsInLevel}</Text>
-                    </View>
-                    <View style={styles.progressBarBackground}>
-                        <View style={{width: levelResidual ? Math.floor(levelResidual * 100) + '%' : 0, ...styles.progressBar}}></View>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.topButtonsContainer}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => { toggleLanguagePopup() }}
-                        >
-                        <View style={styles.flagImageContainer}>
-                          <Image
-                                source={flagImageSources[currentLanguageCode]}
-                                style={styles.flagImage}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    {/*<TouchableOpacity
-                        activeOpacity={1}
-                        style={styles.filterButton}
-                        onPress={() => { toggleFilterPopup() }}
-                        >
-                        <FontAwesomeIcon icon={faFilter} size={25} color={constants.BLACK} />
-                    </TouchableOpacity>*/}
+    <>
+    <SafeAreaView style={styles.container}>
+        <View style={styles.topContainer}>
+            <TouchableOpacity
+                style={styles.streakContainer}
+                onPress={() => {navigation.navigate('Streak')}}
+                >
+                <View style={styles.streakImagesContainer}>
+                    <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
+                    <View style={{overflow: 'hidden', height: 30, marginLeft: -30, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
                 </View>
-            </View>
-            <Animated.View style={{
-                height: languagePopupAnimation,
-                ...styles.languagePopupAnimatedContainer
-                }}>
-                <View style={{
-                    opacity: languagePopupVisible ? 1: 0,
-                    ...styles.languagePopupContainer
-                    }}>
-                    <View style={styles.languagePopupListContainer}>
-                        <FlatList
-                            data={knownLanguages}
-                            style={styles.languagePopupList}
-                            bounces={false}
-                            horizontal={true}
-                            renderItem={({item}) => (
-                                <FlagButton item={item} />
-                            )}
+                <Text style={styles.streakNumberText}>26</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.starBox}
+                onPress={() => {navigation.navigate('Level')}}
+                >
+                <View style={styles.levelTextContainer}>
+                    <Text style={styles.levelText}>Lv. {level}</Text>
+                    <Text style={styles.levelWordText}>{knownWordsInLevel}/{wordsInLevel}</Text>
+                </View>
+                <View style={styles.progressBarBackground}>
+                    <View style={{width: levelResidual ? Math.floor(levelResidual * 100) + '%' : 0, ...styles.progressBar}}></View>
+                </View>
+            </TouchableOpacity>
+            <View style={styles.topButtonsContainer}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => { toggleLanguagePopup() }}
+                    >
+                    <View style={styles.flagImageContainer}>
+                        <Image
+                            source={flagImageSources[currentLanguageCode]}
+                            style={styles.flagImage}
                         />
                     </View>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => navigation.navigate("AccountLanguages")}
-                        style={styles.languagePopupAddButton}
-                        >
-                        <FontAwesomeIcon icon={faPlus} size={20} color={constants.TERTIARYCOLOR} />
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
-            <View style={[styles.contentContainer, styles.shadow]}>
-                {currentItem &&
-                <View style={styles.sentenceContainer}>
-                    <View style={{
-                        display: translationVisible ? "visible": "none",
-                        ...styles.translatedSentence
-                        }}>
-                        <Text style={styles.mainText}>{currentItem.translated_sentence}</Text>
-                    </View>
-                    <View style={{
-                        display: translationVisible ? "none": "visible",
-                        ...styles.realSentence
-                        }}>
-                        {sentenceComponents}
-                    </View>
-                </View>
-                }
-            </View>
-            <View style={styles.autoplayContainer}>
-                <Text style={styles.autoplayText}>Autoplay</Text>
-                <Switch
-                    trackColor={{false: constants.SECONDARYCOLOR, true: constants.PRIMARYCOLOR}}
-                    thumbColor={constants.PRIMARYCOLOR/*autoDictEnabled ? '#f5dd4b' : '#f4f3f4'*/}
-                    ios_backgroundColor={constants.SECONDARYCOLOR}
-                    onValueChange={() => {setAutoDictEnabled(!autoDictEnabled)}}
-                    value={autoDictEnabled}
-                />
-            </View>
-            <View style={styles.bottomContainer}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={styles.translateButton}
-                    onPressIn={() => setTranslationVisible(true)}
-                    onPressOut={() => setTranslationVisible(false)}
-                    >
-                    <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
                 </TouchableOpacity>
+                {/*<TouchableOpacity
+                    activeOpacity={1}
+                    style={styles.filterButton}
+                    onPress={() => { toggleFilterPopup() }}
+                    >
+                    <FontAwesomeIcon icon={faFilter} size={25} color={constants.BLACK} />
+                </TouchableOpacity>*/}
+            </View>
+        </View>
+        <Animated.View style={{
+            height: languagePopupAnimation,
+            ...styles.languagePopupAnimatedContainer
+            }}>
+            <View style={{
+                opacity: languagePopupVisible ? 1: 0,
+                ...styles.languagePopupContainer
+                }}>
+                <View style={styles.languagePopupListContainer}>
+                    <FlatList
+                        data={knownLanguages}
+                        style={styles.languagePopupList}
+                        bounces={false}
+                        horizontal={true}
+                        renderItem={({item}) => (
+                            <FlagButton item={item} />
+                        )}
+                    />
+                </View>
                 <TouchableOpacity
                     activeOpacity={1}
-                    style={styles.nextButton}
-                    onPress={() => changeItem()}
+                    onPress={() => navigation.navigate("AccountLanguages")}
+                    style={styles.languagePopupAddButton}
+                    >
+                    <FontAwesomeIcon icon={faPlus} size={20} color={constants.TERTIARYCOLOR} />
+                </TouchableOpacity>
+            </View>
+        </Animated.View>
+        <View style={styles.contentContainer}>
+            {currentItem &&
+            <View style={styles.sentenceContainer}>
+                <View style={{
+                    display: translationVisible ? "visible": "none",
+                    ...styles.translatedSentence
+                    }}>
+                    <Text style={styles.mainText}>{currentItem.translated_sentence}</Text>
+                </View>
+                <View style={{
+                    display: translationVisible ? "none": "visible",
+                    ...styles.realSentence
+                    }}>
+                    {sentenceComponents}
+                </View>
+            </View>
+            }
+        </View>
+        <View style={styles.autoplayContainer}>
+            <Text style={styles.autoplayText}>Autoplay</Text>
+            <Switch
+                trackColor={{false: constants.SECONDARYCOLOR, true: constants.PRIMARYCOLOR}}
+                thumbColor={constants.PRIMARYCOLOR/*autoDictEnabled ? '#f5dd4b' : '#f4f3f4'*/}
+                ios_backgroundColor={constants.SECONDARYCOLOR}
+                onValueChange={() => {setAutoDictEnabled(!autoDictEnabled)}}
+                value={autoDictEnabled}
+            />
+        </View>
+        <View style={styles.bottomContainer}>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.translateButton}
+                onPressIn={() => setTranslationVisible(true)}
+                onPressOut={() => setTranslationVisible(false)}
                 >
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <FontAwesomeIcon icon={faArrowRight} size={25} color={constants.TERTIARYCOLOR} />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={styles.speakButton}
-                    onPress={() => {
-                        speak(currentItem.sentence, currentLanguageCode)
-                    }}
-                    >
-                    <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
-                </TouchableOpacity>
-            </View>
-            {/*<Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
-                <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
-                {popupItemData.map((item) => renderPopupItem(item))}
-                <TouchableOpacity
-                    style={styles.filterPopupSubmitButton}
-                    activeOpacity={1}
-                    >
-                    <Text style={styles.filterPopupSubmitButtonText}>Apply Filters</Text>
-                </TouchableOpacity>
-                </Animated.View>*/}
-        </SafeAreaView>
+                <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
+            </TouchableOpacity>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.nextButton}
+                onPress={() => changeItem()}
+            >
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <FontAwesomeIcon icon={faArrowRight} size={25} color={constants.TERTIARYCOLOR} />
+                </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.speakButton}
+                onPress={() => {
+                    speak(currentItem.sentence, currentLanguageCode)
+                }}
+                >
+                <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
+            </TouchableOpacity>
+        </View>
+        {/*<Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
+            <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
+            {popupItemData.map((item) => renderPopupItem(item))}
+            <TouchableOpacity
+                style={styles.filterPopupSubmitButton}
+                activeOpacity={1}
+                >
+                <Text style={styles.filterPopupSubmitButtonText}>Apply Filters</Text>
+            </TouchableOpacity>
+            </Animated.View>*/}
+    </SafeAreaView>
+    <BottomNavBar hilighted='Learn' navigation={navigation} />
+    </>
     )
 }
 
 const styles= StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: constants.TERTIARYCOLOR
     },
     topContainer: {
         marginTop: 60,
         flexDirection: 'row',
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        //paddingBottom: 10,
+        //borderBottomWidth: 2,
+        //borderBottomColor: constants.GREY
     },
     starBox: {
         flexDirection: 'column',
@@ -267,7 +276,7 @@ const styles= StyleSheet.create({
         marginBottom: 'auto'
     },
     streakImageContainer: {
-        marginTop: 'auto'
+        marginTop: 'auto',
     },
     streakImage: {
         width: 30,
@@ -308,6 +317,8 @@ const styles= StyleSheet.create({
         marginTop: 10,
         padding: 15,
         borderRadius: 30,
+        borderWidth: 2,
+        borderColor: constants.PRIMARYCOLOR + '44',
         flexWrap: "wrap",
         flex: 1
     },
@@ -332,7 +343,7 @@ const styles= StyleSheet.create({
     bottomContainer: {
         flexDirection: "row",
         height: 50,
-        marginBottom: 105
+        marginBottom: 75
     },
     filterPopupContainer: {
         backgroundColor: constants.SECONDARYCOLOR,

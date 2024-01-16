@@ -1,13 +1,15 @@
-import { StyleSheet, View, Image, SafeAreaView, Text, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, View, ScrollView, Image, SafeAreaView, Text, TouchableOpacity, FlatList } from "react-native";
 import { useEffect, useContext } from "react";
 import UserContext from '../../contexts/UserContext';
-import PNG from 'pngjs';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserPlus, faGear } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../../constants";
 import { flagImageSources } from "../../assets/img/imageSources";
+// Components
+import BottomNavBar from '../../components/BottomNavBar';
 import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
+import ProgressPanel from "./components/ProgressPanel";
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
@@ -29,7 +31,15 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     }
 
     return (
-        <SafeAreaView>
+        <>
+        <ScrollView
+            style={styles.scrollContainer}
+            bounces={false}
+            showsVerticalScrollIndicator={false} 
+            showsHorizontalScrollIndicator={false}
+            overScrollMode="never"
+            removeClippedSubviews={true}
+        >
             <View style={styles.topContainer}>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -130,14 +140,19 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </View>
             </View>
             <View style={styles.mainContainer}>
+                <ProgressPanel />
                 <SetKnownWordsPanel />
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('MaxWordsReached')}><Text>Increase streak</Text></TouchableOpacity>
-        </SafeAreaView>
+        </ScrollView>
+        <BottomNavBar hilighted='Account' navigation={navigation} />
+        </>
     );
 }
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        marginBottom: 70
+    },
     topContainer: {
         flexDirection: "row",
         justifyContent: 'space-between',
@@ -161,7 +176,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     mainContainer: {
-        marginTop: 20
+        marginTop: 10,
+        marginHorizontal: 20
     },
     addUserButtonContainer: {
         alignSelf: 'flex-start',

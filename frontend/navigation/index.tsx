@@ -15,6 +15,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 // First login stack
 import ChooseFirstLanguageScreen from "../screens/ChooseFirstLanguageScreen";
 // Main stack
+import BottomNavBar from '../components/BottomNavBar';
 import HomeScreen from "../screens/HomeScreen";
 import LearnScreen from "../screens/LearnScreen";
 import AccountScreen from "../screens/AccountScreen";
@@ -99,15 +100,34 @@ function FirstLoginNavigator() {
 function MainNavigator() {
     return (
         <MainStack.Navigator>
-            <MainStack.Screen
-                name="Root"
-                component={BottomTabNavigator}
-                options={{headerShown: false}}
+            <MainStack.Screen 
+                name="Learn"
+                component={LearnScreen as any}
+                options={{ headerShown: false }}
+            />
+            <MainStack.Screen 
+                name="Home"
+                component={HomeScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
+            />
+            <MainStack.Screen 
+                name="Account"
+                component={AccountScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
             />
             <MainStack.Screen
                 name="AccountSettings"
                 component={AccountSettingsScreen as any}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
             />
             <MainStack.Screen
                 name="SearchUser"
@@ -210,8 +230,8 @@ const CentralTabBarButton = ({children, onPress}: {
     </TouchableOpacity>
 );
 
-const BottomTab = createBottomTabNavigator();
-
+//const BottomTab = createBottomTabNavigator();
+/*
 function BottomTabNavigator() {
     return(
         <BottomTab.Navigator
@@ -272,6 +292,7 @@ function BottomTabNavigator() {
         </BottomTab.Navigator>
     )
 }
+*/
 
 const styles = StyleSheet.create({
     standardTabBarButton: {

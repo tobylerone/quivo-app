@@ -90,9 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logo: {
-    width: 200,
-    height: 53,
-    marginBottom: 10
+    width: 220,
+    height: 65
   },
   errorBox: {
     backgroundColor: constants.TERTIARYCOLOR,
@@ -123,7 +122,8 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   loginBtn: {
-    width: "70%",
+    //width: "70%",
+    width: 150,
     borderRadius: 10,
     height: 50,
     alignItems: "center",

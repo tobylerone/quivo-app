@@ -8,8 +8,9 @@ import * as constants from "../../constants";
 import { flagImageSources } from "../../assets/img/imageSources";
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
-import SetKnownWordsPanel from "./components/SetKnownWordsPanel";
-import ProgressPanel from "./components/ProgressPanel";
+import SetKnownWordsPanel from './components/SetKnownWordsPanel';
+import ProgressPanel from './components/ProgressPanel';
+import LeaderboardPanel from './components/LeaderboardPanel';
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
@@ -142,6 +143,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             <View style={styles.mainContainer}>
                 <ProgressPanel />
                 <SetKnownWordsPanel />
+                <LeaderboardPanel />
             </View>
         </ScrollView>
         <BottomNavBar hilighted='Account' navigation={navigation} />

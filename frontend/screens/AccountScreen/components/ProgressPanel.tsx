@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         overflow: 'hidden',
         height: 'auto',
-        marginTop: 10,
         marginBottom: 20,
         borderWidth: 3,
         borderColor: constants.PRIMARYCOLOR

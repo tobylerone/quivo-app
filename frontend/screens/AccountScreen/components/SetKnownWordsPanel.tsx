@@ -158,7 +158,8 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: constants.SECONDARYCOLOR,
         padding: 10,
-        borderRadius: 10
+        borderRadius: 10,
+        marginBottom: 20
     },
     sliderHeaderContainer: {
         marginVertical: 10,

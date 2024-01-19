@@ -113,12 +113,10 @@ export default function SetKnownWordsPanel() {
         const absWordChange = Math.abs(Math.round(percChange * totalWords / 100));
         
         if (percChange > 0) {
-            console.log('Percentage has increased by:' + percChange + '%');
             // Percentage has increased. Need to make new words active
             return replaceValues(activeWordMask, absWordChange, 0);
 
         } else if (percChange < 0) {
-            console.log('Percentage has decreased by:' + percChange + '%');
             // Percentage has decreased, so need to deactivate some active words
             return replaceValues(activeWordMask, absWordChange, 1);
         }

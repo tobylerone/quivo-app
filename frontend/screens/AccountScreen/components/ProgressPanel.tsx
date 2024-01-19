@@ -21,7 +21,7 @@ export default function ProgressPanel() {
 
     const labelsMap: Record<string, string[]> = {
         '7 Days': dayLabels.slice(-7),
-        '30 Days': dayLabels
+        '30 Days': []//dayLabels
     }
 
     const wordsThisWeek = monthlyWordCounts.map(item => item.word_count).slice(-7).reduce((a, b) => a + b, 0);
@@ -162,7 +162,8 @@ const styles = StyleSheet.create({
         fontSize: constants.H3FONTSIZE,
         fontFamily: constants.FONTFAMILY,
         color: constants.BLACK,
-        marginLeft: 'auto',
+        //marginLeft: 'auto',
+        marginLeft: 10,
         marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'
@@ -173,7 +174,8 @@ const styles = StyleSheet.create({
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.PRIMARYCOLOR,
         marginLeft: 'auto',
-        marginRight: 'auto',
+        marginRight: 10,
+        //marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'
     },

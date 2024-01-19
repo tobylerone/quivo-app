@@ -153,7 +153,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        marginBottom: 70
+        marginBottom: 60
     },
     topContainer: {
         flexDirection: "row",

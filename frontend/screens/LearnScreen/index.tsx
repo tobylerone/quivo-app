@@ -74,12 +74,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 >
                 <View style={styles.streakImagesContainer}>
                     <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
-                    <View style={{overflow: 'hidden', height: 30, marginLeft: -30, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
+                    <View style={{overflow: 'hidden', height: 28, marginLeft: -28, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
                 </View>
                 <Text style={styles.streakNumberText}>26</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={styles.starBox}
+                style={styles.levelBox}
                 onPress={() => {navigation.navigate('Level')}}
                 >
                 <View style={styles.levelTextContainer}>
@@ -225,19 +225,16 @@ const styles= StyleSheet.create({
         //borderBottomWidth: 2,
         //borderBottomColor: constants.GREY
     },
-    starBox: {
+    levelBox: {
         flexDirection: 'column',
+        height: 40,
         borderRadius: 10,
         paddingLeft: 10,
         paddingRight: 10
     },
-    starContainer: {
-        marginRight: 10,
-        marginTop: 'auto',
-        marginBottom: 'auto',
-    },
     levelTextContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom: 'auto'
     },
     levelText: {
         fontSize: constants.H2FONTSIZE,
@@ -253,7 +250,7 @@ const styles= StyleSheet.create({
     progressBarBackground: {
         width: 110,
         height: 10,
-        marginTop: 'auto',
+        //marginTop: 'auto',
         marginBottom: 'auto',
         borderWidth: 2,
         borderColor: constants.PRIMARYCOLOR,
@@ -266,15 +263,15 @@ const styles= StyleSheet.create({
     },
     streakContainer: {
         flexDirection: 'row',
-        height: 50,
+        height: 40,
         borderRadius: 10,
         backgroundColor: constants.SECONDARYCOLOR,
         paddingHorizontal: 7
     },
     streakImagesContainer: {
         flexDirection: 'row',
-        height: 30,
-        width: 30,
+        height: 28,
+        width: 28,
         marginRight: 5,
         marginTop: 'auto',
         marginBottom: 'auto'
@@ -283,8 +280,8 @@ const styles= StyleSheet.create({
         marginTop: 'auto',
     },
     streakImage: {
-        width: 30,
-        height: 30,
+        width: 28,
+        height: 28,
         marginTop: 'auto'
     },
     streakImageEmpty: {
@@ -293,13 +290,14 @@ const styles= StyleSheet.create({
     streakNumberText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE - 5,
-        color: constants.BLACK,
+        color: constants.ORANGE,
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: 5
     },
     topButtonsContainer: {
         flexDirection: "row",
+        height: 40,
         alignSelf: 'flex-end',
         marginLeft: 'auto',
     },
@@ -320,7 +318,7 @@ const styles= StyleSheet.create({
         marginBottom: 20,
         marginTop: 10,
         padding: 15,
-        borderRadius: 30,
+        borderRadius: 20,
         borderWidth: 2,
         borderColor: constants.PRIMARYCOLOR + '44',
         flexWrap: "wrap",
@@ -341,6 +339,7 @@ const styles= StyleSheet.create({
     autoplayText: {
         fontFamily: constants.FONTFAMILY,
         fontSize: constants.H3FONTSIZE,
+        color: constants.BLACK,
         marginTop: 'auto',
         marginBottom: 'auto'
     },
@@ -366,8 +365,8 @@ const styles= StyleSheet.create({
         borderRadius: 10,
         //marginRight: 10,
         overflow: "hidden",
-        height: 50,
-        width: 70,
+        height: 40,
+        width: 55,
     },
     flagImageContainerPopup: {
         borderWidth: 3

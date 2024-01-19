@@ -24,6 +24,9 @@ export default function ProgressPanel() {
         '30 Days': dayLabels
     }
 
+    const wordsThisWeek = monthlyWordCounts.map(item => item.word_count).slice(-7).reduce((a, b) => a + b, 0);
+    const wordsThisMonth = monthlyWordCounts.map(item => item.word_count).reduce((a, b) => a + b, 0);
+
     const [activeTab, setActiveTab] = useState<string>('7 Days');
     const [data, setData] = useState<number[]>(wordCounts.slice(-7));
     const [labels, setLabels] = useState<string[]>(dayLabels.slice(-7));
@@ -50,13 +53,13 @@ export default function ProgressPanel() {
             {TABS.map(tabTitle => renderTabButton(tabTitle))}
         </View>
         <View style={styles.wordsLearnedPanel}>
-            {data && labels &&
+            {data && labels && <>
             <LineChart
                 //key={data.toString()}
                 data={{
                     labels: labels,
                     datasets: [{ data: data }]}}
-                    width={Dimensions.get("window").width - 60} // from react-native
+                    width={Dimensions.get("window").width - 65} // from react-native
                     height={200}
                     chartConfig={{
                     backgroundColor: constants.PRIMARYCOLOR,//"#e26a00",
@@ -77,7 +80,25 @@ export default function ProgressPanel() {
                     borderRadius: 10,
                     }}
             />
-            }
+            <View style={styles.tableContainer}>
+                <View style={styles.tableRow}>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnOneText}>New words</Text>
+                    </View>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnTwoText}>{activeTab === '7 Days' ? wordsThisWeek : wordsThisMonth} </Text>
+                    </View>
+                </View>
+                <View style={styles.tableRow}>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnOneText}>Avg. per day</Text>
+                    </View>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnTwoText}>{Math.round(activeTab === '7 Days' ? (wordsThisWeek / 7) : (wordsThisMonth / 30))}</Text>
+                    </View>
+                </View>
+            </View>
+            </>}
         </View>
     </View>
     );
@@ -115,6 +136,46 @@ const styles = StyleSheet.create({
     wordsLearnedPanel: {
         backgroundColor: constants.TERTIARYCOLOR,
         padding: 10
+    },
+    tableContainer: {
+        marginTop: 10,
+        height: 80,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: constants.PRIMARYCOLOR,
+        overflow: 'hidden'
+    },
+    tableRow: {
+        flexDirection: 'row',
+        height: 40,
+        borderBottomWidth: 2,
+        borderBottomColor: constants.PRIMARYCOLOR
+    },
+    tableColumn: {
+        width: '50%',
+        marginHorizontal: 1,
+        paddingVertical: 8,
+        borderRightWidth: 2,
+        borderRightColor: constants.PRIMARYCOLOR
+    },
+    columnOneText: {
+        fontSize: constants.H3FONTSIZE,
+        fontFamily: constants.FONTFAMILY,
+        color: constants.BLACK,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
+        //marginTop: 5    
+    },
+    columnTwoText: {
+        fontSize: constants.H3FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.PRIMARYCOLOR,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     infoText: {
         fontSize: constants.H2FONTSIZE,

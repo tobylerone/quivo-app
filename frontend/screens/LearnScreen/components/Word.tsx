@@ -54,7 +54,7 @@ interface IWordProps {
 
 export default function Word ({navigation, word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
 
-    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
     const wordRef = useRef(null);
     
@@ -81,6 +81,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         wordXCentroid: number,
         margin: number
     }
+
     const calculateXPositionAdjust = ({ wordXCentroid, margin }: ICalculateXPositionAdjust) => {
         //Amount X coordinate of info box should be adjusted to ensure it stays on the screen
 
@@ -121,6 +122,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
             if (dailyWordCount < 50) {
+                console.log(streakLimitReached);
                 // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
                 setTextColor(
                     textColor === constants.BLACK
@@ -197,13 +199,20 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
                     marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
                     ...styles.infoBox
                     }}>
-                    <Text style={styles.translationText}>
-                        {capitalizeFirstLetter(wordData.word)} - Translation
-                    </Text>
-                    {currentLanguageCode === 'ru' &&
-                        <Text>{capitalizeFirstLetter(transliterate(wordData.word))}</Text>
-                    }
-                    <FrequencyBar frequency_rank={wordData.rank} />
+                    <View style={styles.translationContainer}>
+                        <View style={styles.targetLanguageContainer}>
+                            {currentLanguageCode === 'ru' &&
+                                <Text style={styles.transliterationText}>{capitalizeFirstLetter(transliterate(wordData.word))}</Text>
+                            }
+                            <Text style={styles.translationText}>
+                                {capitalizeFirstLetter(wordData.word)}:
+                            </Text>
+                        </View>
+                        <Text style={styles.translationText}>Translation</Text>
+                    </View>
+                    <View style={styles.additionalDataContainer}>
+                        <FrequencyBar frequency_rank={wordData.rank} />
+                    </View>
                 </View>
             )}
             <TouchableOpacity
@@ -252,8 +261,6 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         backgroundColor: constants.PRIMARYCOLOR,
         height: 80,
         borderRadius: 20,
-        paddingLeft: 10,
-        paddingRight: 10,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -261,11 +268,29 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         zIndex: 1,
         top: -80
     },
+    translationContainer: {
+        flexDirection: 'row',
+    },
     translationText: {
-        fontSize: constants.H1FONTSIZE - 8,
+        fontSize: constants.H1FONTSIZE - 10,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.TERTIARYCOLOR,
+        marginTop: 'auto',
+        marginBottom: 5,
+        marginRight: 10
+    },
+    targetLanguageContainer: {
+        flexDirection: 'column'
+    },
+    additionalDataContainer: {
+        flexDirection: 'row',
         marginBottom: 10
+    },
+    transliterationText: {
+        fontFamily: constants.FONTFAMILY,
+        color: constants.GREEN,
+        fontSize: constants.CONTENTFONTSIZE,
+        marginRight: 'auto'
     },
     frequencyScoreText: {
         fontSize: constants.H2FONTSIZE,

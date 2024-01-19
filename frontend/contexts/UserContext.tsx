@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const [knownWords, setKnownWords] = useState<number>(0);
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
+    const [streakLimitReached, setStreakLimitReached] = useState<boolean>(false);
     const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
 
     useEffect(() => {
@@ -41,6 +42,11 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             getKnownLanguages();
         }
     }, [currentUser]);
+
+    useEffect(() => {
+        // Probably don't need to do this check every time
+        if (dailyWordCount >= 10 && !streakLimitReached) setStreakLimitReached(true);
+    }, [dailyWordCount]);
 
     useEffect(() => {
         if (currentUser && currentLanguageCode) {
@@ -176,6 +182,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             knownWords,
             monthlyWordCounts,
             dailyWordCount,
+            streakLimitReached,
             updateCurrentLanguageCode,
             updateUserData,
             setKnownWords,

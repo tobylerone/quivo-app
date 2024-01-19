@@ -27,7 +27,7 @@ import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, streakLimitReached } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
@@ -39,6 +39,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { level, levelResidual, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
 
+    useEffect(() => {
+        if (streakLimitReached === true) navigation.navigate('IncreaseStreak');
+    }, [streakLimitReached]);
+    
     // TODO: This hook returns jsx which needs fixing
     const { sentenceComponents } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
 

@@ -56,7 +56,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             data: [
             { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
             { text: "Rate and comment", arrow: false, action: () => {} },
-            { text: "Share", arrow: false, action: () => {} },
+            { text: "Give feedback", arrow: false, color: constants.SUCCESSCOLOR, action: () => {} },
             { text: "Contact us", arrow: false, action: () => {} },
             { text: "Confidentiality", arrow: true, action: () => {} },
             ],

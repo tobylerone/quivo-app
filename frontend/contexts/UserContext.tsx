@@ -45,7 +45,12 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
 
     useEffect(() => {
         // Probably don't need to do this check every time
-        if (dailyWordCount >= 10 && !streakLimitReached) setStreakLimitReached(true);
+        console.log(dailyWordCount);
+        if (dailyWordCount >= 10) {
+            if(!streakLimitReached) setStreakLimitReached(true);
+        } else {
+            setStreakLimitReached(false);
+        }
     }, [dailyWordCount]);
 
     useEffect(() => {

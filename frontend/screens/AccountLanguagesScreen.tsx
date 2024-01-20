@@ -23,7 +23,7 @@ interface ILanguageItem {
 
 const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
 
-    const { currentUser, currentLanguage, updateCurrentLanguage, updateUserData } = useContext(UserContext);
+    const { currentUser, currentLanguage, updateCurrentLanguageCode, updateUserData } = useContext(UserContext);
 
     // Can't render image paths dynamically at runtime so I have
     // to map the language codes to their locally stored flag
@@ -48,7 +48,7 @@ const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
             withCredentials: true
         }).then(() => {
             // Change currentLanguage
-            updateCurrentLanguage(language_code);
+            updateCurrentLanguageCode(language_code);
 
             // Update the user data
             updateUserData()

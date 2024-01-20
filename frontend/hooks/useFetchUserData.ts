@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import client from '../../../utils/axios';
+import client from '../utils/axios';
 
 export function useFetchUserData(url: string) {
 

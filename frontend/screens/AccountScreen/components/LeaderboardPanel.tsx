@@ -1,32 +1,37 @@
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Dimensions, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useState, useContext } from "react";
 import UserContext from '../../../contexts/UserContext';
 import * as constants from '../../../constants';
 import { LineChart } from "react-native-chart-kit";
+// Hooks
+import useLeaderboardData from "../hooks/useLeaderboardData";
 
 export default function LeaderboardPanel() {
 
     const { currentUser } = useContext(UserContext);
+    const leaderboardData = useLeaderboardData();
 
-    interface IUser {
-        position: number,
-        username: string,
-        streak: number
-    }
-
-    const users: IUser[] = [
-        {position: 1, username: 'user3', streak: 22},
-        {position: 2, username: 'user1', streak: 14},
-        {position: 3, username: 'user2', streak: 3},
-    ]
-
-    const renderItem = (user: IUser) => (
+    const renderItem = (user: any, idx: number) => (
         <TouchableOpacity
             activeOpacity={1}
-            style={styles.userItem}
+            style={{
+                backgroundColor: user.user_id === currentUser.user_id
+                    ? constants.ORANGE + '33'
+                    : constants.TERTIARYCOLOR,
+                ...styles.userItem
+            }}
             >
-            <Text style={[styles.itemText, styles.positionText]}>{user.position}</Text>
-            <Text style={[styles.itemText, styles.usernameText]}>{user.username}</Text>
+            <Text style={[styles.itemText, styles.positionText]}>{idx + 1}</Text>
+            <Text style={[
+                {fontFamily: user.user_id === currentUser.user_id
+                    ? constants.FONTFAMILYBOLD
+                    : constants.FONTFAMILY
+                },
+                styles.itemText,
+                styles.usernameText
+                ]}>
+                {user.username}
+            </Text>
             <Text style={[styles.itemText, styles.streakText]}>{user.streak}</Text>
         </TouchableOpacity>
     );
@@ -37,7 +42,10 @@ export default function LeaderboardPanel() {
             <Text style={styles.titleText}>Leaderboard</Text>
         </View>
         <View style={styles.panelBody}>
-            {users.map(user => renderItem(user))}
+            {leaderboardData ?
+                leaderboardData.map((user, idx) => renderItem(user, idx))
+            : <ActivityIndicator size="large" color={constants.ORANGE} />
+            }
         </View>
     </View>
     );
@@ -73,7 +81,6 @@ const styles = StyleSheet.create({
         borderTopColor: constants.ORANGE
     },
     itemText: {
-        fontFamily: constants.FONTFAMILY,
         fontSize: constants.H2FONTSIZE,
         marginTop: 'auto',
         marginBottom: 'auto'

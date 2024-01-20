@@ -33,6 +33,10 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Image
+        source={require('../assets/parrot-cool.png')}
+        style={styles.parrot}
+      />
+      <Image
         source={require("../assets/icon_tight.png")}
         style={styles.logo}
       />
@@ -41,7 +45,7 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
       </View>
       <View style={styles.inputView}>
         <TextInput
-          style={styles.TextInput}
+          style={styles.textInput}
           placeholder="Username"
           placeholderTextColor="#003f5c"
           onChangeText={(username) => setUsername(username)}
@@ -49,7 +53,7 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
       </View> 
       <View style={styles.inputView}>
         <TextInput
-          style={styles.TextInput}
+          style={styles.textInput}
           placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
@@ -57,12 +61,12 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
         />
       </View>
       <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
+        <Text style={styles.forgotButton}>Forgot Password?</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("RegisterScreen")}
       >
-        <Text style={styles.forgot_button}>Don't have an account yet? Register</Text>
+        <Text style={styles.forgotButton}>Don't have an account yet? Register</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.loginBtn}
@@ -89,15 +93,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  parrot: {
+    width: 100,
+    height: 100
+  },
   logo: {
-    width: 220,
-    height: 65
+    width: 240,
+    height: 70
   },
   errorBox: {
     backgroundColor: constants.TERTIARYCOLOR,
     width: "70%",
     height: 30,
-    marginBottom: 0,
     alignItems: "center",
   },
   errorText: {
@@ -107,19 +114,18 @@ const styles = StyleSheet.create({
     backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
     borderRadius: 10,
     width: "70%",
-    height: 45,
+    height: 50,
     marginBottom: 20,
     alignItems: "center",
   },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 20,
+  textInput: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    fontFamily: constants.FONTFAMILY
   },
-  forgot_button: {
+  forgotButton: {
     height: 30,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   loginBtn: {
     //width: "70%",
@@ -128,7 +134,6 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
     backgroundColor: constants.PRIMARYCOLOR,//"#FF1493",
   },
   loginText: {

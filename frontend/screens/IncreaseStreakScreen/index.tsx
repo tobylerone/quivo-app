@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { fastImage } from 'react-native-fast-image';
 import LottieView from 'lottie-react-native';
 import { useState } from 'react';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
@@ -24,7 +25,8 @@ export default function IncreaseStreakScreen({navigation}: NativeStackHeaderProp
             style={{width: 100, height: 100}}
         />
         <View style={styles.streakNumberContainer}>
-            <Text style={styles.streakNumberText}>26</Text>
+        <Image style={styles.parrotGif} source={require('../../assets/gif/parrot-happy-gif.gif')} />
+            <Text style={styles.streakNumberText}>103</Text>
         </View>
     </View>
     );
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
         height: '100%',
-        backgroundColor: constants.LIGHTBLUE
+        backgroundColor: constants.GREEN
     },
     crossContainer: {
         height: 50,
@@ -57,6 +59,13 @@ const styles = StyleSheet.create({
         marginBottom: 150,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.PRIMARYCOLOR,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    parrotGif: {
+        width: 200,
+        height: 200,
+        marginBottom: -50,
         marginLeft: 'auto',
         marginRight: 'auto'
     }

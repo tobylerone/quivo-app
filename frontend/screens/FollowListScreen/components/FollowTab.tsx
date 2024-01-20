@@ -7,7 +7,7 @@ import UserContext from '../../../contexts/UserContext';
 // Components
 import FollowItem from './FollowItem';
 // Hooks
-import { useFetchUserData } from '../hooks/useFetchUserData';
+import { useFetchUserData } from '../../../hooks/useFetchUserData';
 
 interface IFollowTabProps {
     type: 'followers' | 'following'

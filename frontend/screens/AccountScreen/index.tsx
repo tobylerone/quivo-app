@@ -3,7 +3,7 @@ import { useEffect, useContext } from "react";
 import UserContext from '../../contexts/UserContext';
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faUserPlus, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faUserPlus, faGear, faPlus } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../../constants";
 import { flagImageSources } from "../../assets/img/imageSources";
 // Components
@@ -62,11 +62,20 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
             </View>
             <View style={styles.profileContainer}>
-                <View style={styles.profileImageContainer}>
-                    <Image
-                        source={require("../../assets/profile.jpg")}
-                        style={styles.profileImage}
-                    />
+                <View style={styles.profileImageAndChangeContainer}>
+                    <TouchableOpacity
+                        style={styles.profileImageContainer}
+                        activeOpacity={1}
+                        onPress={() => navigation.navigate('Avatar')}
+                        >
+                        <Image
+                            source={require("../../assets/profile.png")}
+                            style={styles.profileImage}
+                        />
+                    </TouchableOpacity>
+                    <View style={styles.profileChangeIconContainer}>
+                        <FontAwesomeIcon style={styles.changeIcon} icon={faPlus} size={15} color={constants.ORANGE} />
+                    </View>
                 </View>
                 <View style={styles.profileNameBubble}>
                     <View style={styles.profileNameContainer}>
@@ -204,14 +213,37 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
+    profileImageAndChangeContainer: {
+        width: 100,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
     profileImageContainer: {
         borderRadius: 50,
+        borderWidth: 3,
+        borderColor: constants.GREY,
         marginLeft: "auto",
         marginRight: "auto",
-        marginBottom: 20,
         overflow: "hidden",
         width: 100,
         height: 100
+    },
+    profileChangeIconContainer: {
+        backgroundColor: constants.SECONDARYCOLOR,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        borderWidth: 3,
+        borderColor: constants.ORANGE,
+        marginTop: -30,
+        marginBottom: 20,
+        marginLeft: 70,
+    },
+    changeIcon: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     profileImage: {
         width: "100%",

@@ -26,6 +26,10 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
   <View style={styles.container}>
     <StatusBar style="auto" />
     <Image
+        source={require('../assets/parrot-nerd.png')}
+        style={styles.parrot}
+      />
+    <Image
       source={require("../assets/icon_tight.png")}
       style={styles.logo}
     />
@@ -34,7 +38,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     </View>
     <View style={styles.inputView}>
       <TextInput
-        style={styles.TextInput}
+        style={styles.textInput}
         placeholder="Username"
         placeholderTextColor="#003f5c"
         onChangeText={(username) => setUsername(username)}
@@ -42,7 +46,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     </View>
     <View style={styles.inputView}>
       <TextInput
-        style={styles.TextInput}
+        style={styles.textInput}
         placeholder="Email"
         placeholderTextColor="#003f5c"
         onChangeText={(email) => setEmail(email)}
@@ -50,7 +54,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     </View> 
     <View style={styles.inputView}>
       <TextInput
-        style={styles.TextInput}
+        style={styles.textInput}
         placeholder="Password"
         placeholderTextColor="#003f5c"
         secureTextEntry={true}
@@ -59,7 +63,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     </View>
     <View style={styles.inputView}>
       <TextInput
-        style={styles.TextInput}
+        style={styles.textInput}
         placeholder="Re-type password"
         placeholderTextColor="#003f5c"
         secureTextEntry={true}
@@ -69,7 +73,7 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     <TouchableOpacity
       onPress={() => navigation.navigate("LoginScreen")}
     >
-      <Text style={styles.forgot_button}>Already have an account? Login</Text>
+      <Text style={styles.forgotButton}>Already have an account? Login</Text>
     </TouchableOpacity>
     <TouchableOpacity
       style={styles.registerBtn}
@@ -106,40 +110,42 @@ const styles = StyleSheet.create({
   image: {
     marginBottom: 40,
   },
+  parrot: {
+    width: 140,
+    height: 140
+  },
   logo: {
-    width: 220,
-    height: 65
+    width: 240,
+    height: 70
   },
   errorBox: {
     backgroundColor: constants.TERTIARYCOLOR,
     width: "70%",
     height: 30,
-    marginBottom: 0,
     alignItems: "center",
   },
   errorText: {
     color: constants.ERRORCOLOR
   },
   inputView: {
-    backgroundColor: constants.SECONDARYCOLOR,
+    backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
     borderRadius: 10,
     width: "70%",
-    height: 45,
+    height: 50,
     marginBottom: 20,
     alignItems: "center",
   },
-  TextInput: {
-    height: 50,
-    flex: 1,
-    padding: 10,
-    marginLeft: 20,
+  textInput: {
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    fontFamily: constants.FONTFAMILY
   },
-  forgot_button: {
+  forgotButton: {
     height: 30,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   registerBtn: {
-    width: "70%",
+    width: 200,
     borderRadius: 10,
     height: 50,
     alignItems: "center",

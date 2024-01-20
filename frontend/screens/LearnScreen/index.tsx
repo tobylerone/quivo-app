@@ -30,7 +30,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, streakLimitReached } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
-    const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(false);
+    const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
 
     //const { knownWords } = useKnownWords(); THIS IS PART OF USER CONTEXT NOW
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
@@ -74,9 +74,9 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 >
                 <View style={styles.streakImagesContainer}>
                     <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
-                    <View style={{overflow: 'hidden', height: 28, marginLeft: -28, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
+                    <View style={{overflow: 'hidden', height: dailyWordCount <= 10 ? Math.round(28 * dailyWordCount / 10) : 28, marginLeft: -28, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
                 </View>
-                <Text style={styles.streakNumberText}>26</Text>
+                <Text style={styles.streakNumberText}>{currentUser.streak}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.levelBox}
@@ -176,15 +176,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 >
                 <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
             </TouchableOpacity>
-            <TouchableOpacity
-                activeOpacity={1}
-                style={styles.nextButton}
-                onPress={() => changeItem()}
-            >
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <FontAwesomeIcon icon={faArrowRight} size={25} color={constants.TERTIARYCOLOR} />
-                </View>
-            </TouchableOpacity>
+            <View style={styles.nextButtonContainer}>
+                <View style={styles.nextButtonShadow}></View>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={styles.nextButton}
+                    onPress={() => changeItem()}
+                >
+                    <FontAwesomeIcon style={styles.nextButtonIcon} icon={faArrowRight} size={25} />
+                </TouchableOpacity>
+            </View>
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.speakButton}
@@ -285,7 +286,7 @@ const styles= StyleSheet.create({
         marginTop: 'auto'
     },
     streakImageEmpty: {
-        opacity: 0.3,
+        opacity: 0.3
     },
     streakNumberText: {
         fontFamily: constants.FONTFAMILYBOLD,
@@ -425,15 +426,39 @@ const styles= StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    nextButtonContainer: {
+        //paddingTop: 11,
+        width: 100,
+        height: 50,
+        marginRight: "auto",
+        marginLeft: "auto"
+    },
     nextButton: {
         backgroundColor: constants.PRIMARYCOLOR,
+        width: 100,
+        height: 50,
+        borderRadius: 30,
+        marginRight: "auto",
+        marginLeft: "auto",
+        verticalAlign: 'middle',
+        textAlign: 'center'
+    },
+    nextButtonIcon: {
+        color: constants.TERTIARYCOLOR,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    nextButtonShadow: {
+        backgroundColor: constants.PRIMARYCOLORSHADOW,
         paddingTop: 11,
         width: 100,
         height: 50,
         borderRadius: 30,
         marginRight: "auto",
         marginLeft: "auto",
-        textAlign: "center"
+        marginBottom: -55
     },
     speakButton: {
         backgroundColor: constants.SECONDARYCOLOR,

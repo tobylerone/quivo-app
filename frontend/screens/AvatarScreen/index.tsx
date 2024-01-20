@@ -1,52 +1,41 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useContext } from "react";
-import * as constants from '../../constants';
 import PNG from 'pngjs';
+// Utils
+import avatarMap from '../../assets/avatars/avatarMap';
+// Constants
+import * as constants from '../../constants';
+// Contexts
 import UserContext from '../../contexts/UserContext';
+// Components
 import NavBar from "../../components/NavBar";
 
 export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser } = useContext(UserContext);
 
-    interface IAvatar {
-        name: string,
-        current?: boolean,
-        source: PNG
-    }
-
-    const avatars = [
-        {name: 'none', current: true, source: require('../../assets/avatars/none.png')},
-        {name: 'regular', source: require('../../assets/avatars/regular.png')},
-        {name: 'cute', source: require('../../assets/avatars/cute.png')},        
-        {name: 'dizzy', source: require('../../assets/avatars/dizzy.png')},
-        {name: 'clever', source: require('../../assets/avatars/clever.png')},     
-        {name: 'cool', source: require('../../assets/avatars/cool.png')},        
-        {name: 'strong', source: require('../../assets/avatars/strong.png')},
-    ];
-
-    const renderAvatar = (avatar: IAvatar) => (
+    const renderAvatar = (id: string, source) => (
         <>
         <TouchableOpacity
             style={styles.avatarContainer}
             activeOpacity={1}
             >
             <View style={{
-                backgroundColor: avatar.current
+                backgroundColor: id == currentUser.avatar_id // Comparing int to string here
                     ? constants.ORANGE
                     : constants.PRIMARYCOLOR,
                 ...styles.avatarContainerShadow
                 }}></View>
             <View style={{
-                borderColor: avatar.current
+                borderColor: id == currentUser.avatar_id
                     ? constants.ORANGE
                     : constants.PRIMARYCOLOR,
                 ...styles.avatarImageContainer
                 }}>
             <Image
                 style={styles.avatarImage}
-                source={avatar.source}
+                source={source}
             />
             </View>
         </TouchableOpacity>
@@ -57,7 +46,7 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
     <SafeAreaView style={styles.container}>
         <NavBar title='Choose an Avatar' navigation={navigation} />
         <View style={styles.avatarsContainer}>
-            {avatars.map((avatar: IAvatar) => renderAvatar(avatar))}
+            {Object.entries(avatarMap).map(([key, value]) => renderAvatar(key, value))}
         </View>
     </SafeAreaView>
     );

@@ -64,6 +64,7 @@ class UserSerializer(serializers.ModelSerializer):
 			'user_id',
 			'email',
 			'username',
+			'avatar_id',
 			'streak',
 			'following_count',
 			'followers_count',

@@ -5,7 +5,9 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserPlus, faGear, faPlus } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../../constants";
+// Assets
 import { flagImageSources } from "../../assets/img/imageSources";
+import avatarMap from "../../assets/avatars/avatarMap";
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
 import SetKnownWordsPanel from './components/SetKnownWordsPanel';
@@ -19,6 +21,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     
     useEffect(() =>{
         console.log("Rendering Accountscreen")
+        console.log(currentUser);
     }, []);
 
     // Only show some of the language flags if user learning lots of languages
@@ -69,7 +72,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate('Avatar')}
                         >
                         <Image
-                            source={require("../../assets/profile.png")}
+                            source={avatarMap[currentUser.avatar_id]}
                             style={styles.profileImage}
                         />
                     </TouchableOpacity>

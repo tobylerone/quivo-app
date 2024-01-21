@@ -15,6 +15,7 @@ export const PRIMARYCOLORSHADOW = "#1A4C5A";
 export const BLACK = "#212121";//"#000000"
 export const GREY = "#CFCFCF";//"#BBBCBE";
 export const ORANGE = "#CD5D30";
+export const ORANGESHADOW = "#954423";//"#A24926";
 export const GREEN = "#69EAAA";
 export const LIGHTBLUE = "#96EFE9";
 export const ERRORCOLOR = "#AB2328";

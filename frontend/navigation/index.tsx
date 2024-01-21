@@ -32,6 +32,7 @@ import StreakScreen from "../screens/StreakScreen";
 import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
 import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
+import FeedbackScreen from "../screens/FeedbackScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -195,7 +196,15 @@ function MainNavigator() {
                 name="Avatar"
                 component={AvatarScreen as any}
                 options={{ headerShown: false }}
-            />  
+            />
+            <MainStack.Screen
+                name="Feedback"
+                component={FeedbackScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom'
+                }}
+            />
         </MainStack.Navigator>
         )
 }

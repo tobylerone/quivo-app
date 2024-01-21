@@ -3,7 +3,8 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useContext } from "react";
 import PNG from 'pngjs';
 // Utils
-import avatarMap from '../../assets/avatars/avatarMap';
+import { avatarImageMap, avatarLevelUnlock, avatarLevelColors } from '../../assets/avatars/avatarMaps';
+import { calcLevel } from "../../utils/functions";
 // Constants
 import * as constants from '../../constants';
 // Contexts
@@ -13,28 +14,38 @@ import NavBar from "../../components/NavBar";
 
 export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser } = useContext(UserContext);
-
-    const renderAvatar = (id: string, source) => (
+    const { currentUser, knownWords } = useContext(UserContext);
+    
+    const renderAvatar = (
+        id: string,
+        source: any,
+        color: string,
+        isUnlocked: boolean,
+        isActive: boolean
+        ) => (
         <>
         <TouchableOpacity
             style={styles.avatarContainer}
             activeOpacity={1}
+            disabled={!isUnlocked}
             >
             <View style={{
-                backgroundColor: id == currentUser.avatar_id // Comparing int to string here
+                backgroundColor: isActive // Comparing int to string here
                     ? constants.ORANGE
-                    : constants.PRIMARYCOLOR,
+                    : color,
                 ...styles.avatarContainerShadow
                 }}></View>
             <View style={{
-                borderColor: id == currentUser.avatar_id
+                borderColor: isActive
                     ? constants.ORANGE
-                    : constants.PRIMARYCOLOR,
+                    : color,
                 ...styles.avatarImageContainer
                 }}>
             <Image
-                style={styles.avatarImage}
+                style={{
+                    opacity: isUnlocked ? 1 : 0.3,
+                    ...styles.avatarImage
+                }}
                 source={source}
             />
             </View>
@@ -42,11 +53,47 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
         </>
     );
 
+    const renderSubsection = (
+        level: (0|10|20|30|40|50|60|70|80|90|100),
+        avatarIds: number[],
+        userLevel: number
+        ) => {
+
+        const isUnlocked = userLevel > level;
+        const color = isUnlocked ? avatarLevelColors[level] : constants.GREY;
+
+        return (
+            <View
+                style={{
+                    borderColor: color,
+                    ...styles.subsectionContainer
+                }}
+                >
+                <View style={{
+                    backgroundColor: color,
+                    ...styles.subsectionTitleContainer
+                    }}>
+                    <Text style={styles.subsectionTitleText}>Level {level}+</Text>
+                    </View>
+                <View style={styles.subsectionAvatarsContainer}>
+                    {avatarIds.map((avatar_id: number) => renderAvatar(
+                        avatar_id,
+                        avatarImageMap[avatar_id],
+                        color,
+                        isUnlocked,
+                        avatar_id === currentUser.avatar_id
+                    ))}
+                </View>
+            </View>
+        );
+    }
+
     return (
     <SafeAreaView style={styles.container}>
         <NavBar title='Choose an Avatar' navigation={navigation} />
-        <View style={styles.avatarsContainer}>
-            {Object.entries(avatarMap).map(([key, value]) => renderAvatar(key, value))}
+        <View style={styles.subsectionsContainer}>
+            {/*Object.entries(avatarImageMap).map(([key, value]) => renderAvatar(key, value))*/}
+            {Object.entries(avatarLevelUnlock).map(([key, value]) => renderSubsection(key, value, calcLevel(knownWords, 30000).level))}
         </View>
     </SafeAreaView>
     );
@@ -59,18 +106,17 @@ const styles = StyleSheet.create({
         marginTop: 50,
         flex: 1
     },
-    avatarsContainer: {
+    subsectionsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 'auto',
-        marginRight: 'auto',
         alignContent: 'center'
     },
     avatarContainer: {
         marginHorizontal: 5,
-        marginBottom: 20
+        marginBottom: 20,
+        backgroundColor: constants.TERTIARYCOLOR
     },
     avatarContainerShadow: {
         width: 100,
@@ -84,7 +130,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 10,
         marginTop: -105,
-        backgroundColor: constants.TERTIARYCOLOR,
+        backgroundColor: constants.TERTIARYCOLOR
     },
     avatarImage: {
         width: 80,
@@ -93,5 +139,30 @@ const styles = StyleSheet.create({
         marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'
+    },
+    // renderSubsection
+    subsectionContainer: {
+        flexDirection: 'column',
+        borderWidth: 3,
+        width: '100%',
+        marginBottom: 10,
+        borderRadius: 10,
+        overflow: 'hidden'
+    },
+    subsectionTitleContainer: {
+        marginBottom: 10,
+        padding: 10
+    },
+    subsectionTitleText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        color: constants.TERTIARYCOLOR,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    subsectionAvatarsContainer: {
+        flexDirection: 'row',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     }
 });

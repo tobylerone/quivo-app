@@ -7,7 +7,7 @@ import { faUserPlus, faGear, faPlus } from '@fortawesome/free-solid-svg-icons';
 import * as constants from "../../constants";
 // Assets
 import { flagImageSources } from "../../assets/img/imageSources";
-import avatarMap from "../../assets/avatars/avatarMap";
+import { avatarImageMap } from "../../assets/avatars/avatarMaps";
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
 import SetKnownWordsPanel from './components/SetKnownWordsPanel';
@@ -71,7 +71,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate('Avatar')}
                         >
                         <Image
-                            source={avatarMap[currentUser.avatar_id]}
+                            source={avatarImageMap[currentUser.avatar_id]}
                             style={styles.profileImage}
                         />
                     </TouchableOpacity>

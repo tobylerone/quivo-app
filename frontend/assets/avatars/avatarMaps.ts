@@ -1,5 +1,7 @@
+import * as constants from '../../constants';
+
 // Maps the avatar_id to the corresponding file source
-const avatarMap = {
+const avatarImageMap = {
     0: require('./none.png'),
     1: require('../../assets/avatars/regular.png'),
     2: require('../../assets/avatars/cute.png'),        
@@ -10,4 +12,19 @@ const avatarMap = {
     7: require('../../assets/avatars/wizard.png'),
 }
 
-export default avatarMap;
+// Level at which each avatar is unlocked
+const avatarLevelUnlock = {
+    0: [0, 1, 2],
+    10: [3, 4, 5],
+    20: [6, 7] 
+}
+
+// The thematic colors corresponding to each set of levels
+const avatarLevelColors = {
+    0: constants.PRIMARYCOLOR,
+    10: constants.ORANGE,
+    20: constants.GREEN,
+    30: constants.LIGHTBLUE
+}
+
+export { avatarImageMap, avatarLevelUnlock, avatarLevelColors };

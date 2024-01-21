@@ -102,9 +102,6 @@ class UserAddLanguageSerializer(serializers.ModelSerializer):
 		user_id = validated_data.get('user_id')
 		language_code = validated_data.get('language_code')
 
-		print(user_id)
-		print(language_code)
-
 		language = Language.objects.get(language_code=language_code)
 		user = UserModel.objects.get(user_id=user_id)
 
@@ -112,6 +109,26 @@ class UserAddLanguageSerializer(serializers.ModelSerializer):
 			return user
 
 		user.known_languages.add(language)
+		
+		return user
+
+
+class UserChangeAvatarSerializer(serializers.ModelSerializer):
+	user_id = serializers.IntegerField()
+	avatar_id = serializers.CharField()
+
+	class Meta:
+		model = UserModel
+		fields = ['user_id', 'avatar_id']
+
+	def update(self, instance, validated_data):
+		user_id = validated_data.get('user_id')
+		avatar_id = validated_data.get('avatar_id')
+
+		user = UserModel.objects.get(user_id=user_id)
+		user.avatar_id = avatar_id
+
+		user.save()
 		
 		return user
 

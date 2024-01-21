@@ -22,6 +22,7 @@ from .serializers import (
     UserFollowSerializer,
 	UserToggleKnownWordSerializer,
 	UserAddLanguageSerializer,
+	UserChangeAvatarSerializer,
 	UserWordCountsSerializer,
 	UserMonthlyKnownWordsSerializer,
     UserSerializer,
@@ -118,8 +119,8 @@ class UserAddLanguageView(APIView):
 	
 		def post(self, request, *args, **kwargs):
 
-			language_code = request.data.get('language_code')
-			user_id = request.data.get('user_id')
+			#language_code = request.data.get('language_code')
+			#user_id = request.data.get('user_id')
 			
 			serializer = UserAddLanguageSerializer(data=request.data)
 
@@ -130,6 +131,28 @@ class UserAddLanguageView(APIView):
 			else:
 				print(serializer.errors)
 				return Response(serializer.errors, status=400)
+
+
+class UserChangeAvatarView(APIView):
+	def post(self, request, *args, **kwargs):
+		user_id = request.data.get('user_id')
+		avatar_id = request.data.get('avatar_id')
+
+		try:
+			# TODO: Extend this to other views
+			user = AppUser.objects.get(user_id=user_id)
+		except AppUser.DoesNotExist:
+			return Response({"error": "User not found"}, status=404)
+
+		serializer = UserChangeAvatarSerializer(user, data=request.data, partial=True)
+
+		if serializer.is_valid():
+			#serializer.update(instance=user, validated_data=serializer.validated_data)
+			serializer.save()
+			return Response({"status": "success"})
+		else:
+			print(serializer.errors)
+			return Response(serializer.errors, status=400)
 
 
 class UserKnownLanguagesView(generics.ListAPIView):

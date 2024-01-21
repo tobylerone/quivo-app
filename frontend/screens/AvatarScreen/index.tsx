@@ -5,6 +5,7 @@ import PNG from 'pngjs';
 // Utils
 import { avatarImageMap, avatarLevelUnlock, avatarLevelColors } from '../../assets/avatars/avatarMaps';
 import { calcLevel } from "../../utils/functions";
+import client from "../../utils/axios";
 // Constants
 import * as constants from '../../constants';
 // Contexts
@@ -12,22 +13,38 @@ import UserContext from '../../contexts/UserContext';
 // Components
 import NavBar from "../../components/NavBar";
 
-export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
+interface IAvatarBoxProps {
+    userId: number,
+    id: number,
+    source: any,
+    color: string,
+    isUnlocked: boolean,
+    isActive: boolean
+}
 
-    const { currentUser, knownWords } = useContext(UserContext);
+const AvatarBox = ({userId, id, source, color, isUnlocked, isActive}: IAvatarBoxProps) => {
     
-    const renderAvatar = (
-        id: string,
-        source: any,
-        color: string,
-        isUnlocked: boolean,
-        isActive: boolean
-        ) => (
+    const handlePress = () => {
+        if (!isActive) {
+            client.post('./api/users/changeavatar/', {
+                user_id: userId,
+                avatar_id: id
+            }).then((res) => {
+                // Make this change the hilighted avatar on frontend
+                console.log('avatar_id changed to ' + id);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+    }
+    
+    return (
         <>
         <TouchableOpacity
             style={styles.avatarContainer}
             activeOpacity={1}
             disabled={!isUnlocked}
+            onPress={() => handlePress()}
             >
             <View style={{
                 backgroundColor: isActive // Comparing int to string here
@@ -52,12 +69,17 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
         </TouchableOpacity>
         </>
     );
+    }
 
+export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
+
+    const { currentUser, knownWords } = useContext(UserContext);
+    
     const renderSubsection = (
         level: (0|10|20|30|40|50|60|70|80|90|100),
         avatarIds: number[],
         userLevel: number
-        ) => {
+    ) => {
 
         const isUnlocked = userLevel > level;
         const color = isUnlocked ? avatarLevelColors[level] : constants.GREY;
@@ -76,12 +98,15 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
                     <Text style={styles.subsectionTitleText}>Level {level}+</Text>
                     </View>
                 <View style={styles.subsectionAvatarsContainer}>
-                    {avatarIds.map((avatar_id: number) => renderAvatar(
-                        avatar_id,
-                        avatarImageMap[avatar_id],
-                        color,
-                        isUnlocked,
-                        avatar_id === currentUser.avatar_id
+                    {avatarIds.map((avatar_id: number) => (
+                        <AvatarBox
+                            userId={currentUser.user_id}
+                            id={avatar_id}
+                            source={avatarImageMap[avatar_id]}
+                            color={color}
+                            isUnlocked={isUnlocked}
+                            isActive={avatar_id === currentUser.avatar_id}
+                        />
                     ))}
                 </View>
             </View>

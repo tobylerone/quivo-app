@@ -3,6 +3,8 @@ import { useState, useContext } from "react";
 import UserContext from '../../../contexts/UserContext';
 import * as constants from '../../../constants';
 import { LineChart } from "react-native-chart-kit";
+// Utils
+import { sumWordCounts } from "../../../utils/functions";
 // Hooks
 import useLeaderboardData from "../hooks/useLeaderboardData";
 
@@ -32,7 +34,7 @@ export default function LeaderboardPanel() {
                 ]}>
                 {user.username}
             </Text>
-            <Text style={[styles.itemText, styles.streakText]}>{user.streak}</Text>
+            <Text style={[styles.itemText, styles.streakText]}>{sumWordCounts(user.known_words_count)}</Text>
         </TouchableOpacity>
     );
 

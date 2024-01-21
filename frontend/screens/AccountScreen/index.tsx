@@ -20,8 +20,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     const { currentUser, knownWords, knownLanguages } = useContext(UserContext);
     
     useEffect(() =>{
-        console.log("Rendering Accountscreen")
-        console.log(currentUser);
+        console.log("Rendering Accountscreen");
     }, []);
 
     // Only show some of the language flags if user learning lots of languages

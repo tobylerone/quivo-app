@@ -21,3 +21,7 @@ export const frequencyIndexToComprehensionPercentage = (n: number) => {
     // TODO: Pass in the custom constants for each language's corpus.
     return n == 0 ? 0 : Math.round(-83.32317585 + 191.39405783 / (1 + Math.E**(-0.39771826 * n**0.20018198)));
 }
+
+export const sumWordCounts = (wordCounts: Record<string, number>) => {
+    return Object.values(wordCounts).reduce((a, b) => a + b, 0)
+}

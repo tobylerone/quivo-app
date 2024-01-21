@@ -70,8 +70,7 @@
             borderRadius: 10,
             margin: 5,
             paddingHorizontal: 10,
-            paddingVertical: 5,
-            height: 70
+            paddingVertical: 5
         },
         userName: {
             fontSize: constants.H2FONTSIZE,
@@ -81,7 +80,8 @@
             marginRight: 10
         },
         knownWordsContainer: {
-            flexDirection: 'row'
+            flexDirection: 'row',
+            marginBottom: 5
         },
         knownWordsPill: {
             flexDirection: "row",

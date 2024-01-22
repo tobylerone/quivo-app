@@ -1,4 +1,5 @@
 <img src="https://github.com/MyriadWC/quivo-app/assets/5995654/c4a4dc57-dbc7-4acd-bf64-7752f2efc45c" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/c5441de7-6895-4af5-ac0f-920f4ffe1137" width="200" />
 <img src="https://github.com/MyriadWC/quivo-app/assets/5995654/306847af-24bf-412a-a69b-affca20c7dbf" width="200" />
 <img src="https://github.com/MyriadWC/quivo-app/assets/5995654/b313162c-8dd7-45fb-b21e-e1a614818ab2" width="200" />
 <img src="https://github.com/MyriadWC/quivo-app/assets/5995654/6f44fc84-cee5-4ef9-9e26-1580d6e73501" width="200" />

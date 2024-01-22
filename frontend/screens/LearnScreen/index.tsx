@@ -251,6 +251,7 @@ const styles= StyleSheet.create({
     progressBarBackground: {
         width: 110,
         height: 10,
+        padding: -1,
         //marginTop: 'auto',
         marginBottom: 'auto',
         borderWidth: 2,
@@ -259,7 +260,8 @@ const styles= StyleSheet.create({
         overflow: 'hidden'
     },
     progressBar: {
-        height: 10,
+        height: 12,
+        marginTop: -1,
         backgroundColor: constants.PRIMARYCOLOR,
     },
     streakContainer: {

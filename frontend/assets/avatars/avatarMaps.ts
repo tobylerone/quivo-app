@@ -10,13 +10,16 @@ const avatarImageMap = {
     5: require('../../assets/avatars/cool.png'),        
     6: require('../../assets/avatars/strong.png'),
     7: require('../../assets/avatars/wizard.png'),
+    8: require('../../assets/avatars/devil.png'),
+    9: require('../../assets/avatars/black-and-white.png')
 }
 
 // Level at which each avatar is unlocked
 const avatarLevelUnlock = {
     0: [0, 1, 2],
     10: [3, 4, 5],
-    20: [6, 7] 
+    20: [6, 7, 8],
+    30: [9]
 }
 
 // The thematic colors corresponding to each set of levels

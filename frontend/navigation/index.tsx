@@ -33,6 +33,7 @@ import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
 import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
+import LearnCyrillicScreen from "../screens/LearnCyrillicScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -123,6 +124,14 @@ function MainNavigator() {
                     animation: 'none'
                 }}
             />
+            <MainStack.Screen
+                name="LearnCyrillic"
+                component={LearnCyrillicScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
+            />        
             <MainStack.Screen
                 name="AccountSettings"
                 component={AccountSettingsScreen as any}

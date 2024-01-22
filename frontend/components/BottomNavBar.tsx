@@ -14,12 +14,6 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
 
     //const [activeButton, setActiveButton] = useState('Learn');
 
-    /*const buttons = [
-        {icon: faHome, navigateTo: 'Home'},
-        {icon: faBars, navigateTo: 'Learn'},
-        {icon: faUser, navigateTo: 'Account'}
-    ];*/
-
     const buttons = [
         {
             inactiveImage: require('../assets/icons/home-inactive-small.png'),
@@ -30,6 +24,11 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
             inactiveImage: require('../assets/icons/learn-inactive-small.png'),
             activeImage: require('../assets/icons/learn-active-small.png'),
             navigateTo: 'Learn'
+        },
+        {
+            inactiveImage: require('../assets/icons/cyrillic-inactive-small.png'),
+            activeImage: require('../assets/icons/cyrillic-active-small.png'),
+            navigateTo: 'LearnCyrillic'
         },
         {
             inactiveImage: require('../assets/icons/user-inactive-small.png'),
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
         //marginHorizontal: 10
     },
     button: {
-        width: '33.333%',
+        width: '25%',
         marginTop: 'auto',
         marginBottom: 'auto',
         height: '100%'

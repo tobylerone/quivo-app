@@ -1,4 +1,4 @@
-import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, ScrollView, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useContext } from "react";
 import PNG from 'pngjs';
@@ -116,10 +116,16 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
     return (
     <SafeAreaView style={styles.container}>
         <NavBar title='Choose an Avatar' navigation={navigation} />
-        <View style={styles.subsectionsContainer}>
-            {/*Object.entries(avatarImageMap).map(([key, value]) => renderAvatar(key, value))*/}
+        <ScrollView
+            style={styles.subsectionsContainer}
+            bounces={false}
+            showsVerticalScrollIndicator={false} 
+            showsHorizontalScrollIndicator={false}
+            overScrollMode="never"
+            removeClippedSubviews={true}
+        >
             {Object.entries(avatarLevelUnlock).map(([key, value]) => renderSubsection(key, value, calcLevel(knownWords, 30000).level))}
-        </View>
+        </ScrollView>
     </SafeAreaView>
     );
  }
@@ -129,14 +135,10 @@ const styles = StyleSheet.create({
         padding: 10,
         marginHorizontal: 0,
         marginTop: 50,
-        flex: 1
+        flex: 1,
     },
     subsectionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignContent: 'center'
+        flexDirection: 'column',
     },
     avatarContainer: {
         marginHorizontal: 5,

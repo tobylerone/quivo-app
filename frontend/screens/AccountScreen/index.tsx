@@ -65,6 +65,8 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             </View>
             <View style={styles.profileContainer}>
                 <View style={styles.profileImageAndChangeContainer}>
+                    <View style={styles.profileImageShadow}>
+                    </View>
                     <TouchableOpacity
                         style={styles.profileImageContainer}
                         activeOpacity={1}
@@ -220,10 +222,18 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
+    profileImageShadow: {
+        width: 100,
+        height: 100,
+        backgroundColor: constants.GREY,
+        borderRadius: 50,
+        marginBottom: -105
+    },
     profileImageContainer: {
         borderRadius: 50,
         borderWidth: 3,
         borderColor: constants.GREY,
+        backgroundColor: constants.TERTIARYCOLOR,
         marginLeft: "auto",
         marginRight: "auto",
         overflow: "hidden",

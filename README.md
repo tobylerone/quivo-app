@@ -1,16 +1,13 @@
-
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/3d98c9b2-b971-49ae-96c3-72a3404d6c96" width="200" />
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/f4d2e7d0-6621-486d-a818-e38fa10b4f39" width="200" />
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/a089775d-ba45-4682-b4ee-0395ef0fcd66" width="200" />
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/9e98498a-0054-4287-87b3-c058e3ebaad4" width="200" />
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/3446320d-eb49-4fb5-bc42-f979598853e0" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/485e2128-1759-4de8-80dd-8eb5d1e040f3" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/f3a0feac-be64-4cb6-aac4-189244928ce0" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/d23e9dff-9362-4609-bca9-af904c334b71" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/676b57bd-622f-4932-a347-6065b0e1080a" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/6d660278-bcee-4c77-9492-6e622896f9b1" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/c4d571b3-d798-4836-b52b-a8a779cb27b1" width="200">
-<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/c1f1ec6e-9392-446a-8be2-3418bad98843" width="200">
-
-
-
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/c4a4dc57-dbc7-4acd-bf64-7752f2efc45c" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/c5441de7-6895-4af5-ac0f-920f4ffe1137" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/306847af-24bf-412a-a69b-affca20c7dbf" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/b313162c-8dd7-45fb-b21e-e1a614818ab2" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/6f44fc84-cee5-4ef9-9e26-1580d6e73501" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/060c3b73-6ae1-47e4-82e8-2f7200e6c62f" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/161e85e6-8900-4668-9874-0cf1efb6d0d0" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/d8543dec-649c-4680-a3a1-8419738145c1" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/2c6fa560-d511-4756-81a7-e9901fcba01a" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/a7ec12e6-034e-41f2-9d22-339903ba3e19" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/d5fe33b3-016d-430a-843a-c7398fa0871c" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/9db2ec3c-ccac-4c97-9943-7bca9880d720" width="200" />
+<img src="https://github.com/MyriadWC/quivo-app/assets/5995654/071c46be-07bd-4155-b827-e78aa255ad9a" width="200" />

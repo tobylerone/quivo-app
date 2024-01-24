@@ -193,7 +193,12 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
   
     return (
         <View>
-            {wordTranslationVisible && (
+            {wordTranslationVisible && (<>
+                <View style={{
+                    width: infoBoxWidth,
+                    marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
+                    ...styles.infoBoxShadow
+                    }}></View>
                 <View style={{
                     width: infoBoxWidth,
                     marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
@@ -214,7 +219,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
                         <FrequencyBar frequency_rank={wordData.rank} />
                     </View>
                 </View>
-            )}
+            </>)}
             <TouchableOpacity
                 activeOpacity={1}
                 key={index}
@@ -254,8 +259,18 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
     // Word
     mainText: {
         fontSize: constants.H1FONTSIZE,
-        fontFamily: constants.FONTFAMILYBOLD,
+        fontFamily: constants.FONTFAMILYBOLD
         //textAlign: "center"
+    },
+    infoBoxShadow: {
+        backgroundColor: constants.PRIMARYCOLORSHADOW,
+        height: 80,
+        borderRadius: 20,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: -83
     },
     infoBox: {
         backgroundColor: constants.PRIMARYCOLOR,
@@ -266,7 +281,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         alignItems: 'center',
         position: 'absolute',
         zIndex: 1,
-        top: -80
+        top: -90
     },
     translationContainer: {
         flexDirection: 'row',

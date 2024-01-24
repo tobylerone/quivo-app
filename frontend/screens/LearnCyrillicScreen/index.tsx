@@ -56,7 +56,7 @@ export default function LearnCyrillicScreen({navigation}: NativeStackHeaderProps
         <View style={styles.itemShadow}></View>
         <TouchableOpacity
             style={styles.itemContainer}
-            onPress={() => speak(item.letter.charAt(0), currentLanguageCode)}
+            onPress={() => speak(item.letter.charAt(0), 'ru')}
             >
             <Text style={styles.itemLetterText}>{item.letter}</Text>
             <Text style={styles.itemTranslitText}>"{item.transliteration}"</Text>

@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHome, faBars, faUser } from '@fortawesome/free-solid-svg-icons';
+// Contexts
+import UserContext from "../contexts/UserContext";
+// Constants
 import * as constants from "../constants";
 
 interface IBottomNavBarProps {
@@ -13,6 +16,7 @@ interface IBottomNavBarProps {
 export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps) {
 
     //const [activeButton, setActiveButton] = useState('Learn');
+    const { currentLanguageCode } = useContext(UserContext);
 
     const buttons = [
         {
@@ -26,22 +30,32 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
             navigateTo: 'Learn'
         },
         {
-            inactiveImage: require('../assets/icons/cyrillic-inactive-small.png'),
-            activeImage: require('../assets/icons/cyrillic-active-small.png'),
-            navigateTo: 'LearnCyrillic'
-        },
-        {
             inactiveImage: require('../assets/icons/user-inactive-small.png'),
             activeImage: require('../assets/icons/user-active-small.png'),
             navigateTo: 'Account'
         },
     ];
+
+    // Should make this a custom hook so can update when language code
+    // changes
+    if (currentLanguageCode === 'ru') {
+        buttons.splice(2, 0, {
+            inactiveImage: require('../assets/icons/cyrillic-inactive-small.png'),
+            activeImage: require('../assets/icons/cyrillic-active-small.png'),
+            navigateTo: 'LearnCyrillic'
+        });
+    }
+
+    const buttonWidth = currentLanguageCode === 'ru' ? '25%' : '33.333%';
     
     const renderButton = (inactiveImage: Image, activeImage: Image, navigateTo: string) => (
         <>
         <TouchableOpacity
             activeOpacity={1}
-            style={styles.button}
+            style={{
+                width: buttonWidth,
+                ...styles.button
+            }}
             onPress={() => {
                 //setActiveButton(toScreen);
                 navigation.navigate(navigateTo);
@@ -77,7 +91,6 @@ const styles = StyleSheet.create({
         //marginHorizontal: 10
     },
     button: {
-        width: '25%',
         marginTop: 'auto',
         marginBottom: 'auto',
         height: '100%'

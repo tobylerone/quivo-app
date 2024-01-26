@@ -9,9 +9,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+// Contexts
 import UserContext from "../contexts/UserContext";
+// Constants
 import * as constants from "../constants";
+// Utils
 import client from "../utils/axios"
+// Components
+import RaisedButton from "../components/RaisedButton";
 
 export default function LoginScreen({navigation}: NativeStackHeaderProps) {
 
@@ -28,6 +33,16 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
     console.log(client.defaults.headers)
 
   }, [])
+
+  const handlePress = async () => {
+    submitLogin(username, password).then(success => {
+        setErrorMessage('');
+        console.log(success);
+    }).catch(success => {
+        setErrorMessage('*Username or password incorrect');
+        console.log(success);
+    });
+  }
   
   return (
     <View style={styles.container}>
@@ -66,22 +81,24 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
       <TouchableOpacity
         onPress={() => navigation.navigate("RegisterScreen")}
       >
-        <Text style={styles.forgotButton}>Don't have an account yet? Register</Text>
+        <Text style={styles.registerButton}>Don't have an account yet? Register</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.loginBtn}
-        onPress={async () => {
-          submitLogin(username, password).then(success => {
-              setErrorMessage('');
-              console.log(success);
-          }).catch(success => {
-              setErrorMessage('*Username or password incorrect');
-              console.log(success);
-          });
-        }}
-        >
-        <Text style={styles.loginText}>LOGIN</Text> 
-      </TouchableOpacity> 
+      <View style={styles.loginButtonContainer}>
+        <RaisedButton
+          onPress={() => handlePress()}
+          options={{
+            ...RaisedButton.defaultProps.options,
+            width: 150,
+            height: 50,
+            borderWidth: 3,
+            borderColor: constants.PRIMARYCOLOR,
+            backgroundColor: constants.PRIMARYCOLOR,
+            shadowColor: constants.PRIMARYCOLORSHADOW
+          }}
+            >
+              <Text style={styles.loginText}>Login</Text> 
+            </RaisedButton>
+        </View>
     </View> 
   );
 }
@@ -111,7 +128,7 @@ const styles = StyleSheet.create({
     color: constants.ERRORCOLOR
   },
   inputView: {
-    backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
+    backgroundColor: constants.SECONDARYCOLOR,
     borderRadius: 10,
     width: "70%",
     height: 50,
@@ -121,22 +138,32 @@ const styles = StyleSheet.create({
   textInput: {
     marginTop: 'auto',
     marginBottom: 'auto',
+    fontSize: constants.H3FONTSIZE,
     fontFamily: constants.FONTFAMILY
   },
   forgotButton: {
     height: 30,
     marginBottom: 10,
+    fontSize: constants.H3FONTSIZE,
+    fontFamily: constants.FONTFAMILY
   },
-  loginBtn: {
-    //width: "70%",
-    width: 150,
-    borderRadius: 10,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: constants.PRIMARYCOLOR,//"#FF1493",
+  registerButton: {
+    height: 30,
+    marginBottom: 30,
+    fontSize: constants.H3FONTSIZE,
+    fontFamily: constants.FONTFAMILY
+  },
+  loginButtonContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   loginText: {
-    color: constants.SECONDARYCOLOR
+    fontSize: constants.H3FONTSIZE,
+    fontFamily: constants.FONTFAMILY,
+    color: constants.SECONDARYCOLOR,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto'
   },
 });

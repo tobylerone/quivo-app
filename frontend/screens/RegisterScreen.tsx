@@ -8,9 +8,13 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { NativeStackHeaderProps } from "@react-navigation/native-stack"
+import { NativeStackHeaderProps } from "@react-navigation/native-stack";
+// Contexts
 import UserContext from "../contexts/UserContext";
+// Constants
 import * as constants from "../constants";
+// Components
+import RaisedButton from "../components/RaisedButton";
 
 export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
 
@@ -21,6 +25,23 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
   const [errorMessage, setErrorMessage] = useState('');
 
   const { submitRegistration } = useContext(UserContext);
+
+  const handlePress = async () => {
+        
+    //verifier que le mot de passe est correct
+    if(password!=secondPassword){
+        setErrorMessage('Passwords don\'t match');
+        return;
+    };
+
+    // TODO: Verifier que l'utilisateur n'existe pas
+    const success = await submitRegistration(username, email, password);
+
+    if (!success) {
+        //Il faut donner des indices a l'utilisateur
+        setErrorMessage('Registration failed. Try against later')
+    }
+  }
 
   return (
   <View style={styles.container}>
@@ -75,27 +96,22 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
     >
       <Text style={styles.forgotButton}>Already have an account? Login</Text>
     </TouchableOpacity>
-    <TouchableOpacity
-      style={styles.registerBtn}
-      onPress={async () => {
-        
-        //verifier que le mot de passe est correct
-        if(password!=secondPassword){
-            setErrorMessage('Passwords don\'t match');
-            return;
-        };
-
-        // TODO: Verifier que l'utilisateur n'existe pas
-        const success = await submitRegistration(username, email, password);
-
-        if (!success) {
-            //Il faut donner des indices a l'utilisateur
-            setErrorMessage('Registration failed. Try against later')
-        }
-      }}
-    >
-      <Text style={styles.registerText}>REGISTER</Text> 
-    </TouchableOpacity> 
+    <View style={styles.registerButtonContainer}>
+      <RaisedButton
+        onPress={() => handlePress()}
+        options={{
+          ...RaisedButton.defaultProps.options,
+          width: 150,
+          height: 50,
+          borderWidth: 3,
+          borderColor: constants.PRIMARYCOLOR,
+          backgroundColor: constants.PRIMARYCOLOR,
+          shadowColor: constants.PRIMARYCOLORSHADOW
+        }}
+          >
+            <Text style={styles.registerText}>Register</Text> 
+          </RaisedButton>
+      </View>
   </View> 
   );
 }
@@ -138,21 +154,26 @@ const styles = StyleSheet.create({
   textInput: {
     marginTop: 'auto',
     marginBottom: 'auto',
+    fontSize: constants.H3FONTSIZE,
     fontFamily: constants.FONTFAMILY
   },
   forgotButton: {
+    fontSize: constants.H3FONTSIZE,
+    fontFamily: constants.FONTFAMILY,
     height: 30,
-    marginBottom: 10,
+    marginBottom: 30,
   },
-  registerBtn: {
-    width: 200,
-    borderRadius: 10,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: constants.PRIMARYCOLOR,//"#FF1493",
+  registerButtonContainer: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   registerText: {
-    color: constants.SECONDARYCOLOR
+    fontSize: constants.H3FONTSIZE,
+    fontFamily: constants.FONTFAMILY,
+    color: constants.SECONDARYCOLOR,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto'
   }
 });

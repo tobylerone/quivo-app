@@ -16,6 +16,7 @@ import UserContext from '../../contexts/UserContext';
 import BottomNavBar from '../../components/BottomNavBar';
 import CheckBox from '../../components/CheckBox';
 import FlagButton from './components/FlagButton';
+import RaisedButton from "../../components/RaisedButton";
 // Hooks
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useFetchItems from './hooks/useFetchItems';
@@ -177,14 +178,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
             </TouchableOpacity>
             <View style={styles.nextButtonContainer}>
-                <View style={styles.nextButtonShadow}></View>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={styles.nextButton}
+                <RaisedButton
                     onPress={() => changeItem()}
+                    options={{
+                        ...RaisedButton.defaultProps.options,
+                        borderRadius: 30,
+                        raisedHeight: 5
+                    }}
                 >
                     <FontAwesomeIcon style={styles.nextButtonIcon} icon={faArrowRight} size={25} />
-                </TouchableOpacity>
+                </RaisedButton>
             </View>
             <TouchableOpacity
                 activeOpacity={1}

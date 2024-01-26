@@ -1,11 +1,17 @@
 import { View, SafeAreaView, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { useContext } from "react";
+// Contexts
 import UserContext from '../../contexts/UserContext';
+// Constants
 import * as constants from '../../constants';
+// Assets
 import { flagImageSources } from "../../assets/img/imageSources";
+// Utils
 import { calcLevel } from "../../utils/functions";
+// Components
 import BottomNavBar from '../../components/BottomNavBar';
+import RaisedButton from "../../components/RaisedButton";
 
 export default function HomeScreen({navigation}: NativeStackHeaderProps) {
 

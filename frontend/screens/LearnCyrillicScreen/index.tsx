@@ -9,6 +9,7 @@ import { speak } from "../../utils/text";
 import * as constants from '../../constants';
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
+import RaisedButton from "../../components/RaisedButton";
 
 
 export default function LearnCyrillicScreen({navigation}: NativeStackHeaderProps) {
@@ -52,16 +53,23 @@ export default function LearnCyrillicScreen({navigation}: NativeStackHeaderProps
     ]
 
     const renderItem = (item: Record<string, string>) => (
-        <>
-        <View style={styles.itemShadow}></View>
-        <TouchableOpacity
-            style={styles.itemContainer}
-            onPress={() => speak(item.letter.charAt(0), 'ru')}
+        <View style={styles.itemContainer}>
+            <RaisedButton
+                onPress={() => speak(item.letter.charAt(0), 'ru')}
+                options={{
+                    ...RaisedButton.defaultProps.options,
+                    width: 70,
+                    height: 80,
+                    borderWidth: 3,
+                    borderColor: constants.GREY,
+                    backgroundColor: constants.TERTIARYCOLOR,
+                    shadowColor: constants.GREY,
+                }}
             >
-            <Text style={styles.itemLetterText}>{item.letter}</Text>
-            <Text style={styles.itemTranslitText}>"{item.transliteration}"</Text>
-        </TouchableOpacity>
-        </>
+                <Text style={styles.itemLetterText}>{item.letter}</Text>
+                <Text style={styles.itemTranslitText}>"{item.transliteration}"</Text>
+            </RaisedButton>
+        </View>
     );
     
     return (
@@ -100,22 +108,9 @@ const styles = StyleSheet.create({
         alignContent: 'center'
 
     },
-    itemShadow: {
-        width: 70,
-        height: 80,
-        backgroundColor: constants.GREY,
-        borderRadius: 10,
-        marginTop: 10
-    },
     itemContainer: {
-        borderWidth: 3,
-        borderColor: constants.GREY,
-        backgroundColor: constants.TERTIARYCOLOR,
-        borderRadius: 10,
-        width: 70,
-        height: 80,
-        margin: 5,
-        marginLeft: -70
+        marginHorizontal: 2,
+        marginVertical: 5
     },
     itemLetterText: {
         fontFamily: constants.FONTFAMILYBOLD,

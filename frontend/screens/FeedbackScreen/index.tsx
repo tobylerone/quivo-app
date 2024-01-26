@@ -7,6 +7,8 @@ import { faX, faStar } from '@fortawesome/free-solid-svg-icons';
 import * as constants from '../../constants';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { renderNode } from 'react-native-elements/dist/helpers';
+// Components
+import RaisedButton from '../../components/RaisedButton';
 
 interface IStarProps {
     id: number,
@@ -81,8 +83,22 @@ export default function FeedbackScreen({navigation}: NativeStackHeaderProps){
             //selection={{start: 0, end: 0}}
             />
         </View>
-        <View style={styles.submitButtonShadow}></View>
-        <TouchableOpacity style={styles.submitButton}><Text style={styles.submitButtonText}>Submit</Text></TouchableOpacity>
+        <View style={styles.submitButtonContainer}>
+            <RaisedButton
+                    onPress={() => {}}
+                    options={{
+                        ...RaisedButton.defaultProps.options,
+                        width: 200,
+                        height: 70,
+                        borderWidth: 3,
+                        borderColor: constants.PRIMARYCOLOR,
+                        backgroundColor: constants.PRIMARYCOLOR,
+                        shadowColor: constants.PRIMARYCOLORSHADOW,
+                    }}
+                >
+                    <Text style={styles.submitButtonText}>Submit</Text>
+                </RaisedButton>
+        </View>
     </View>
     );
 }
@@ -158,12 +174,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top',
         color: constants.BLACK
     },
-    submitButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        width: 200,
-        height: 70,
-        padding: 20,
-        borderRadius: 10,
+    submitButtonContainer: {
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -173,6 +184,8 @@ const styles = StyleSheet.create({
         color: constants.TERTIARYCOLOR,
         marginLeft: 'auto',
         marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
 
     },
     submitButtonShadow: {

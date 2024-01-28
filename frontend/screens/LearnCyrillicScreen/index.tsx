@@ -44,9 +44,9 @@ export default function LearnCyrillicScreen({navigation}: NativeStackHeaderProps
         {"letter": "Чч", "transliteration": "ch"},
         {"letter": "Шш", "transliteration": "sh"},
         {"letter": "Щщ", "transliteration": "sh"},
-        {"letter": "Ъъ", "transliteration": "Hard sign"},
+        {"letter": "Ъъ", "transliteration": "Hard sn"},
         {"letter": "Ыы", "transliteration": "y"},
-        {"letter": "Ьь", "transliteration": "Soft sign"},
+        {"letter": "Ьь", "transliteration": "Soft sn"},
         {"letter": "Ээ", "transliteration": "e"},
         {"letter": "Юю", "transliteration": "yu"},
         {"letter": "Яя", "transliteration": "ya"}
@@ -67,7 +67,11 @@ export default function LearnCyrillicScreen({navigation}: NativeStackHeaderProps
                 }}
             >
                 <Text style={styles.itemLetterText}>{item.letter}</Text>
-                <Text style={styles.itemTranslitText}>"{item.transliteration}"</Text>
+                <Text style={styles.itemTranslitText}>{
+                    ['Ъъ', 'Ьь'].includes(item.letter)
+                    ? item.transliteration
+                    : '"' + item.transliteration + '"'
+                }</Text>
             </RaisedButton>
         </View>
     );
@@ -99,7 +103,8 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE,
-        color: constants.PRIMARYCOLORSHADOW
+        color: constants.PRIMARYCOLORSHADOW,
+        marginBottom: 10
     },
     itemsContainer: {
         flexDirection: 'row',

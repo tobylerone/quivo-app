@@ -222,7 +222,8 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
             <TouchableOpacity
                 activeOpacity={1}
                 key={index}
-                onPress={() => handlePress()}>
+                onPress={() => handlePress()}
+                >
                 <Text
                     style={{...styles.mainText, color: textColor}}
                     ref={wordRef}

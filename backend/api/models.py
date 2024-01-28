@@ -59,7 +59,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	
 	def known_words_count(self):
 	
-		# TODO: Make this a bit less hard-coded
 		known_languages = self.known_languages.all()
 		
 		word_counts = {}

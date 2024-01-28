@@ -6,6 +6,17 @@ from language_app.models import FrSentence, DeSentence, RuSentence, FrWordData, 
 
 UserModel = get_user_model()
 
+class LanguageModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
+        fields = (
+            "id",
+            "language_code",
+			"language_name",
+			"coeffs"
+            )
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
@@ -44,6 +55,10 @@ class UserSerializer(serializers.ModelSerializer):
 		)
 
 	user_is_following = serializers.SerializerMethodField()
+
+	# Uncomment this to return actual data for known languages (currently retreived by the /knownlanguages endpoint).
+	# Otherwise just contains a list of foreign keys (language id)
+	#known_languages = LanguageModelSerializer(many=True, read_only=True)
 
 	def get_user_is_following(self, obj):
 
@@ -140,15 +155,6 @@ class UserWordCountsSerializer(serializers.Serializer):
 class UserMonthlyKnownWordsSerializer(serializers.Serializer):
 	day = serializers.DateField()
 	word_count = serializers.IntegerField()
-
-class LanguageModelSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Language
-        fields = (
-            "id",
-            "language_code",
-			"language_name"
-            )
 
 
 class BaseSentenceModelSerializer(serializers.ModelSerializer):

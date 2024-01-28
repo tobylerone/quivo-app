@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 // Utils
 import { frequencyIndexToComprehensionPercentage as f } from '../../../utils/functions';
 
-export const useComprehensionPercentage = (wordCounts: Record<string, number>) => {
+export const useComprehensionPercentage = (wordCounts: Record<string, number>, coeffs: string[]) => {
     const [comprehensionPercentage, setComprehensionPercentage] = useState<number | null>(null);
 
     const getComprehensionPercentage = () => {
@@ -34,9 +34,9 @@ export const useComprehensionPercentage = (wordCounts: Record<string, number>) =
         let result = 0;
 
         for (let i = 1; i <= 4001; i += 1000) {
-            result += f(i + wordCounts[`${i}-${i+999}`]) - f(i);
+            result += f(i + wordCounts[`${i}-${i+999}`], coeffs) - f(i, coeffs);
         }
-        result += f(5001 + wordCounts['5000+']) - f(5001)
+        result += f(5001 + wordCounts['5000+'], coeffs) - f(5001, coeffs)
 
         return result;
     }

@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 // Constants
 import * as constants from '../../constants';
+// Components
+import RaisedButton from '../../components/RaisedButton';
 
 export default function MaxWordsReachedScreen({navigation}: NativeStackHeaderProps){
     
@@ -25,11 +27,23 @@ export default function MaxWordsReachedScreen({navigation}: NativeStackHeaderPro
             <Image style={styles.parrotImage} source={require('../../assets/parrot-sad-shadow.png')} />
         </View>
         <View style={styles.subtitleContainer}>
-            <Text style={[styles.subtitleText, styles.subtitleText1]}>50 new words today, not bad!</Text>
-            <Text style={[styles.subtitleText, styles.subtitleText2]}>Watch a short ad and unlock 50 more, or wait until tomorrow for your counter to reset</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText1]}>{constants.MAXDAILYWORDS} new words today, not bad!</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText2]}>Watch a short ad and unlock {constants.MAXDAILYWORDS} more, or wait until tomorrow for your counter to reset</Text>
         </View>
-        <View style={styles.adButtonShadow}></View>
-        <TouchableOpacity style={styles.adButton}><Text style={styles.adButtonText}>Watch Ad</Text></TouchableOpacity>
+        <View style={styles.adButtonContainer}>
+            <RaisedButton
+                onPress={() => {}}
+                options={{
+                    ...RaisedButton.defaultProps.options,
+                    backgroundColor: constants.PRIMARYCOLOR,
+                    width: 250,
+                    height: 70,
+                    borderRadius: 10,
+                }}
+            >
+                <Text style={styles.adButtonText}>Watch Ad</Text>
+            </RaisedButton>
+        </View>
     </View>
     );
 }
@@ -87,12 +101,7 @@ const styles = StyleSheet.create({
         marginLeft: 45,
         marginTop: 45
     },
-    adButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        width: 250,
-        height: 70,
-        padding: 20,
-        borderRadius: 10,
+    adButtonContainer: {
         marginLeft: 'auto',
         marginRight: 'auto'
     },
@@ -102,6 +111,8 @@ const styles = StyleSheet.create({
         color: constants.TERTIARYCOLOR,
         marginLeft: 'auto',
         marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
 
     },
     adButtonShadow: {

@@ -18,6 +18,7 @@ urlpatterns = [
     path('users/currentlanguage', views.UserGetCurrentLanguageView.as_view(), name='get-language'),
     path('users/addlanguage/', views.UserAddLanguageView.as_view(), name='user-add-language'),
     path('users/changeavatar/', views.UserChangeAvatarView.as_view(), name='user-change-avatar'),
+    path('users/incrementstreak', views.UserIncrementStreakView.as_view(), name='user-increment-streak'),
     path('users/<int:user_id>/knownlanguages', views.UserKnownLanguagesView.as_view(), name='user-languages'),
     path('users/<int:user_id>/monthlywordcounts/<str:language_code>', views.UserMonthlyKnownWordsView.as_view(), name='user-monthly-words'),
 	path('users/<int:user_id>/following/', views.UserFollowingView.as_view(), name='user-following'),

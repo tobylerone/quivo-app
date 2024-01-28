@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
     const [streakLimitReached, setStreakLimitReached] = useState<boolean>(false);
+    const [userStreak, setUserStreak] = useState<number>(0);
     const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
 
     useEffect(() => {
@@ -40,6 +41,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
         if(currentUser){
             getCurrentLanguageCode();
             getKnownLanguages();
+            setUserStreak(currentUser.streak);
         }
     }, [currentUser]);
 
@@ -187,11 +189,13 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             knownWords,
             monthlyWordCounts,
             dailyWordCount,
+            userStreak,
             streakLimitReached,
             updateCurrentLanguageCode,
             updateUserData,
             setKnownWords,
             setDailyWordCount,
+            setUserStreak,
             submitRegistration,
             submitLogin,
             submitLogout

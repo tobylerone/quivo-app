@@ -73,7 +73,7 @@ export default function WordItem({navigation, item}: IWordItemProps){
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-            if (dailyWordCount < 50) {
+            if (dailyWordCount < constants.MAXDAILYWORDS) {
                 setUserKnows(!userKnows);
                 client.post(
                     'api/users/' + currentUser.user_id + '/toggleknownword/' + item.word

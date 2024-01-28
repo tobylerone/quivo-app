@@ -121,8 +121,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
 
         // L'utilisateur a tapé deux fois
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
-            if (dailyWordCount < 50) {
-                console.log(streakLimitReached);
+            if (dailyWordCount < constants.MAXDAILYWORDS) {
                 // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
                 setTextColor(
                     textColor === constants.BLACK

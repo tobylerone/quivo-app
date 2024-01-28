@@ -23,17 +23,17 @@ interface ILanguage {
 export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, currentLanguageCode, knownLanguages, knownWords} = useContext(UserContext);
-
-    const wordCounts = useFetchWordCounts(currentUser);
-    const comprehensionPercentage = useComprehensionPercentage(wordCounts);
-
+    
     //let labels = [0, 5000];
     let numDataPoints = 101;
     let step = 100;
     
-    let currentLanguageName: string = knownLanguages.find(
+    let currentLanguageObj = knownLanguages.find(
         (lang: ILanguage) => lang.language_code === currentLanguageCode
-        ).language_name;
+        )
+
+    const wordCounts = useFetchWordCounts(currentUser);
+    const comprehensionPercentage = useComprehensionPercentage(wordCounts, currentLanguageObj.coeffs);
     
     // Short-term solution
     let labels: string[] = Array.from({length: numDataPoints}, (_, i) => {
@@ -47,7 +47,7 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
 
     let data = Array.from(
         {length: numDataPoints},
-        (_, i) => f(i * step)
+        (_, i) => f(i * step, currentLanguageObj.coeffs)
     );
 
     function findIndex(array: number[], value: number) {
@@ -120,7 +120,7 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
                     color: constants.PRIMARYCOLOR
                     }}>
                         {comprehensionPercentage}%
-                </Text> of written {currentLanguageName}.
+                </Text> of written {currentLanguageObj.language_name}.
             </Text>
         </View>
         : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />}

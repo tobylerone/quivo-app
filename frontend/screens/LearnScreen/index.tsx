@@ -28,7 +28,7 @@ import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, streakLimitReached } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, streakLimitReached, userStreak, setUserStreak } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
@@ -41,7 +41,11 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { wordsData } = useFetchWordsData(currentItem);
 
     useEffect(() => {
-        if (streakLimitReached === true) navigation.navigate('IncreaseStreak');
+        if (streakLimitReached === true){
+            setUserStreak(userStreak => userStreak + 1);
+            // TODO: Update in database
+            navigation.navigate('IncreaseStreak')
+        };
     }, [streakLimitReached]);
     
     // TODO: This hook returns jsx which needs fixing
@@ -77,7 +81,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
                     <View style={{overflow: 'hidden', height: dailyWordCount <= 10 ? Math.round(28 * dailyWordCount / 10) : 28, marginLeft: -28, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
                 </View>
-                <Text style={styles.streakNumberText}>{currentUser.streak}</Text>
+                <Text style={styles.streakNumberText}>{userStreak}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.levelBox}
@@ -257,8 +261,9 @@ const styles= StyleSheet.create({
         padding: -1,
         //marginTop: 'auto',
         marginBottom: 'auto',
-        borderWidth: 2,
-        borderColor: constants.PRIMARYCOLOR,
+        //borderWidth: 2,
+        //borderColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.GREEN + '55',
         borderRadius: 5,
         overflow: 'hidden'
     },
@@ -310,6 +315,7 @@ const styles= StyleSheet.create({
     languagePopupAnimatedContainer: {
         backgroundColor: constants.PRIMARYCOLOR,
         marginTop: 10,
+        marginBottom: 10
     },
     languagePopupContainer: {
         paddingVertical: 10,
@@ -322,7 +328,7 @@ const styles= StyleSheet.create({
         backgroundColor: constants.TERTIARYCOLOR,
         marginHorizontal: 20,
         marginBottom: 20,
-        marginTop: 10,
+        //marginTop: 10,
         padding: 15,
         borderRadius: 20,
         borderWidth: 2,

@@ -11,7 +11,6 @@ export const HOST_ADDRESS = 'http://192.168.1.232'; // Stow
 export const PRIMARYCOLOR = "#297A90";//"#66A599"
 export const SECONDARYCOLOR = "#F5F6F8";
 export const TERTIARYCOLOR = "#FFFFFF";
-
 export const PRIMARYCOLORSHADOW = "#1A4C5A";
 export const BLACK = "#212121";//"#000000"
 export const GREY = "#CFCFCF";//"#BBBCBE";
@@ -29,6 +28,9 @@ export const H1FONTSIZE = 28;
 export const H2FONTSIZE = 20;
 export const H3FONTSIZE = 16;
 export const CONTENTFONTSIZE = 14;
+
+// Limites d'utilisation
+export const MAXDAILYWORDS = 20;
 
 // LearnScreen. Move there
 export const DOUBLETAPDELAY = 200 // en millisecondes

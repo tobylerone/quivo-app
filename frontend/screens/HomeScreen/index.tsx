@@ -25,6 +25,8 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
 
     const userStreak = 26;
 
+    console.log(currentUser.known_languages);
+
     const wordsThisWeek = monthlyWordCounts.map(item => item.word_count).slice(-7).reduce((a, b) => a + b, 0);
 
     const { level, levelResidual, wordsInLevel, knownWordsInLevel } = calcLevel(knownWords, 30000);

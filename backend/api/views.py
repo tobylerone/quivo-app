@@ -155,6 +155,16 @@ class UserChangeAvatarView(APIView):
 			return Response(serializer.errors, status=400)
 
 
+class UserIncrementStreakView(APIView):
+	def update(self, request, *args, **kwargs):
+		user_id = request.data.get('user_id')
+		user = AppUser.objects.get(user_id=user_id)
+
+		#serializer = UserIncrementStreakSerializer()
+		user.streak += 1
+		user.save()
+
+
 class UserKnownLanguagesView(generics.ListAPIView):
 
 	serializer_class = LanguageModelSerializer

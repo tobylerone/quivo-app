@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     },
     panelBody: {
         flexDirection: 'row',
-        height: 250
+        height: 230
     },
     barContainer: {
         height: 150,

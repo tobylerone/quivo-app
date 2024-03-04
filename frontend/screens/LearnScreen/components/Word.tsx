@@ -60,8 +60,6 @@ interface IWordProps {
 
 export default function Word ({navigation, word, wordData, textColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
 
-    console.log('Rendering word: ' + word);
-    
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
     const wordRef = useRef(null);
@@ -71,7 +69,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     const [lastPress, setLastPress] = useState(0);
     const [wordTranslationVisible, setWordTranslationVisible] = useState(false);
     const [pressedOnce, _setPressedOnce] = useState(false);
-    const [coinSound, setCoinSound] = useState();
+    const [correctSound, setCorrectSound] = useState();
     const [wordWidth, setWordWidth] = useState(0);
     const [infoBoxXAdjust,  setInfoBoxXAdjust] = useState(0);
 
@@ -85,15 +83,19 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
       _setPressedOnce(value);
     };
 
-    // TODO: Make coinSound into custom hook
+    // TODO: Make correctSound into custom hook
     useEffect(() => {
-        return coinSound
+        return correctSound
           ? () => {
               console.log('Unloading Sound');
-              coinSound.unloadAsync();
+              correctSound.unloadAsync();
             }
           : undefined;
-      }, [coinSound]);
+      }, [correctSound]);
+
+    useEffect(() => {
+        console.log(word + textColor);
+    }, [textColor])
 
     interface ICalculateXPositionAdjust {
         wordXCentroid: number,
@@ -115,11 +117,11 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
         return 0;
     }
 
-    async function playCoinSound() {
+    async function playCorrectSound() {
         console.log('Loading Sound');
-        const { sound } = await Audio.Sound.createAsync( require('../../../assets/audio/coin.mp3')
+        const { sound } = await Audio.Sound.createAsync( require('../../../assets/audio/correct.mp3')
         );
-        setCoinSound(coinSound);
+        setCorrectSound(correctSound);
     
         console.log('Playing Sound');
         await sound.playAsync();
@@ -158,7 +160,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
                 //);
                 onPress(word);
 
-                playCoinSound();
+                playCorrectSound();
 
                 client.post(
                     'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word

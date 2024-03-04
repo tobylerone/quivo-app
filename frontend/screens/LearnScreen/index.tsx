@@ -49,8 +49,14 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     }, [streakLimitReached]);
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
+    const { sentenceComponents, setWordsPressed } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
 
+    // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
+    // up
+    useEffect(() => {
+        setWordsPressed([]);
+    }, [currentItem]);
+    
     const popupItemData = [
         {title: '1000 most common words'},
         {title: '2000 most common words'},
@@ -349,7 +355,7 @@ const styles= StyleSheet.create({
         padding: 15,
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: constants.PRIMARYCOLOR + '44',
+        borderColor: constants.GREY,
         flexWrap: "wrap",
         flex: 1
     },

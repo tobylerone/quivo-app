@@ -33,21 +33,22 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
     useEffect(() => {
         console.log(wordsPressed);
+        createSentenceComponents(currentItem, wordsData).then(components => {
+            console.log('setting new components');
+            setSentenceComponents(components);
+        });
     }, [wordsPressed])
 
     const handleWordPress = (word: string) => {
         if (wordsPressed.includes(word)) {
             setWordsPressed((prevArr) => prevArr.filter((item) => item !== word));
-            console.log(word);
-            console.log(wordsPressed);
         } else {
             setWordsPressed((prevArr) => [...prevArr, word]);
         }
     };
 
     const createSentenceComponents = async() => {
-        console.log(wordsPressed);
-        setWordsPressed([]);
+        //setWordsPressed([]);
         
         const getFullWord = (word: string) => {
         
@@ -112,5 +113,5 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
         return sentenceComponents;
     };
 
-    return { sentenceComponents };
+    return { sentenceComponents, setWordsPressed };
 }

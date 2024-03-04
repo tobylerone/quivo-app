@@ -42,7 +42,6 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
         if(currentUser){
             getCurrentLanguageCode();
             getKnownLanguages();
-            getWordCounts();
             setUserStreak(currentUser.streak);
         }
     }, [currentUser]);
@@ -60,7 +59,8 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     useEffect(() => {
         if (currentUser && currentLanguageCode) {
             setKnownWords(currentUser.known_words_count[currentLanguageCode]);
-            updateMonthlyWordCounts(currentUser.user_id, currentLanguageCode)
+            getWordCounts();
+            updateMonthlyWordCounts(currentUser.user_id, currentLanguageCode);
         }
     }, [currentLanguageCode]);
 

@@ -1,11 +1,10 @@
 import {Dimensions} from 'react-native'
 
-export const SCREEN_WIDTH = Dimensions.get('window').width
+export const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // N'oublie pas de specifier addresse ip:8000 apres le manage.py au backend
 //export const HOST_ADDRESS = "http://192.168.0.22";
-//export const HOST_ADDRESS = "http://10.159.139.194";
-export const HOST_ADDRESS = 'http://192.168.1.232'; // Stow
+export const HOST_ADDRESS = "http://10.159.139.194";
 
 // Schémas
 export const PRIMARYCOLOR = "#297A90";//"#66A599"
@@ -30,8 +29,9 @@ export const H3FONTSIZE = 16;
 export const CONTENTFONTSIZE = 14;
 
 // Limites d'utilisation
+export const STREAKDAILYWORDS = 10;
 export const MAXDAILYWORDS = 20;
 
 // LearnScreen. Move there
-export const DOUBLETAPDELAY = 200 // en millisecondes
-export const TRANSLATIONDISPLAYTIME = 1500
+export const DOUBLETAPDELAY = 200; // en millisecondes
+export const TRANSLATIONDISPLAYTIME = 1500;

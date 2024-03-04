@@ -10,13 +10,15 @@ import UserContext from '../../contexts/UserContext';
 import { avatarImageMap, avatarLevelUnlock } from '../../assets/avatars/avatarMaps';
 // Utils
 import { generateBuckets } from '../../utils/functions';
+import { calcLevel } from "../../utils/functions";
 // Components
 import NavBar from "../../components/NavBar";
 
 export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
+    const { currentUser, knownLanguages,knownWords, currentLanguage } = useContext(UserContext);
     const {r, buckets} = generateBuckets(30000, 100, 50);
+    const userLevel = calcLevel(knownWords, 30000).level;
 
     console.log(buckets);
 
@@ -25,7 +27,10 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
     );
 
     const renderLevelItem = (bucketSize: number, level: number) => (
-        <View style={styles.itemContainer}>
+        <View style={{
+            backgroundColor: level <= userLevel ? constants.GREEN : constants.GREY,
+            ...styles.itemContainer
+        }}>
             <Text style={styles.levelText}>Lv. {level}</Text>
             <Text style={styles.wordsText}>0 / {bucketSize}</Text>
             {avatarLevelUnlock.hasOwnProperty(level) &&
@@ -66,7 +71,6 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flexDirection: 'column',
-        backgroundColor: constants.GREEN,
         margin: 5,
         borderRadius: 10,
         width: 80,

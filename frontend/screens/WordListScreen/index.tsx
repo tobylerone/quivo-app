@@ -9,6 +9,7 @@ import client from "../../utils/axios";
 import UserContext from "../../contexts/UserContext";
 // Components
 import NavBar from "../../components/NavBar";
+import BottomNavBar from "../../components/BottomNavBar";
 import ProgressBarButton from "./components/ProgressBarButton";
 import WordItem from "./components/WordItem";
 
@@ -106,8 +107,9 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     );
     
     return (
+        <>
         <SafeAreaView style={styles.container}>
-            <NavBar title={'Word List (' + knownWords + ')'} navigation={navigation}/>
+            <Text style={styles.titleText}>Frequency List</Text>
             <View>
                 <ScrollView
                     style={styles.topButtonContainer}
@@ -141,6 +143,8 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
             : <ActivityIndicator style={styles.activityIndicator} size='large' color={constants.PRIMARYCOLOR} />
             }
         </SafeAreaView>
+        <BottomNavBar hilighted='WordList' navigation={navigation} />
+        </>
     );
 };
 
@@ -148,6 +152,13 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 50,
         marginHorizontal: 20,
+    },
+    titleText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: 10
     },
     headerContainerText: {
         fontSize: constants.H2FONTSIZE,

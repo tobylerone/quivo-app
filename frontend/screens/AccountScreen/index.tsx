@@ -10,8 +10,9 @@ import { flagImageSources } from "../../assets/img/imageSources";
 import { avatarImageMap } from "../../assets/avatars/avatarMaps";
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
-import SetKnownWordsPanel from './components/SetKnownWordsPanel';
 import ProgressPanel from './components/ProgressPanel';
+import WordsLearnedPanel from "./components/WordsLearnedPanel";
+import SetKnownWordsPanel from './components/SetKnownWordsPanel';
 import LeaderboardPanel from './components/LeaderboardPanel';
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
@@ -155,6 +156,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             </View>
             <View style={styles.mainContainer}>
                 <ProgressPanel />
+                <WordsLearnedPanel navigation={navigation} />
                 <SetKnownWordsPanel />
                 <LeaderboardPanel />
             </View>

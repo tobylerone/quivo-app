@@ -112,7 +112,7 @@ export default function HomeScreen({navigation}: NativeStackHeaderProps) {
             })}
         </View>
     </SafeAreaView>
-    <BottomNavBar hilighted='Home' navigation={navigation} />
+    {/*<BottomNavBar hilighted='Home' navigation={navigation} />*/}
     </>
     );
  }

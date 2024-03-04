@@ -158,7 +158,10 @@ function MainNavigator() {
             <MainStack.Screen
                 name="WordList"
                 component={WordListScreen as any}
-                options={{ headerShown: false }}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
             />
             <MainStack.Screen
                 name="Faqs"

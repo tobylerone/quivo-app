@@ -9,7 +9,7 @@ import UserContext from "../contexts/UserContext";
 import * as constants from "../constants";
 
 interface IBottomNavBarProps {
-    hilighted: 'Home' | 'Learn' | 'Account',
+    hilighted: 'WordList' | 'Learn' | 'Account' | 'LearnCyrillic',
     navigation: any
 }
 
@@ -20,9 +20,9 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
 
     const buttons = [
         {
-            inactiveImage: require('../assets/icons/home-inactive-small.png'),
-            activeImage: require('../assets/icons/home-active-small.png'),
-            navigateTo: 'Home'
+            inactiveImage: require('../assets/icons/freq-list-inactive-small.png'),
+            activeImage: require('../assets/icons/freq-list-active-small.png'),
+            navigateTo: 'WordList'
         },
         {
             inactiveImage: require('../assets/icons/learn-inactive-small.png'),

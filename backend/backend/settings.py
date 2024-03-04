@@ -28,7 +28,7 @@ ALLOWED_HOSTS = [
     "192.168.1.232",
     "192.168.0.22",
     "10.159.139.194",
-    "192.168.202.179" # Train
+    "192.168.0.35"
     ]
 
 CORS_ALLOWED_ORIGINS = [f"http://{host}" for host in ALLOWED_HOSTS]

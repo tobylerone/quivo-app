@@ -69,6 +69,15 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         </View>
     );
 
+    const renderStreakCircle = (i: number) => (
+        <View style={{
+            backgroundColor: dailyWordCount >= i
+                ? constants.PRIMARYCOLOR
+                : constants.GREEN + '44',
+            ...styles.streakCircle
+        }}></View>
+    );
+
     return (
     <>
     <SafeAreaView style={styles.container}>
@@ -144,6 +153,14 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
             </View>
         </Animated.View>
+        {dailyWordCount < constants.STREAKDAILYWORDS &&
+        <View style={styles.streakCirclesContainer}>
+            {Array.from(
+                {length: constants.STREAKDAILYWORDS},
+                (_, i) => i + 1).map((i) => renderStreakCircle(i)
+            )}
+        </View>
+        }
         <View style={styles.contentContainer}>
             {currentItem &&
             <View style={styles.sentenceContainer}>
@@ -336,6 +353,22 @@ const styles= StyleSheet.create({
         flexWrap: "wrap",
         flex: 1
     },
+    streakCirclesContainer: {
+        flexDirection: 'row',
+        marginHorizontal: 40,
+        marginTop: 20,
+        marginBottom: -40,
+        zIndex: 2
+    },
+    streakCircle: {
+        //borderWidth: 3,
+        //borderColor: constants.PRIMARYCOLOR,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
     autoplayContainer: {
         flexDirection: 'row',
         paddingVertical: 5,
@@ -413,7 +446,7 @@ const styles= StyleSheet.create({
         width: "100%"
     },
     mainText: {
-        fontSize: constants.H1FONTSIZE,
+        fontSize: constants.H1FONTSIZE + 3,
         fontFamily: constants.FONTFAMILYBOLD,
         textAlign: "center"
     },

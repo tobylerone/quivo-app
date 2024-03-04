@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
     const [knownWords, setKnownWords] = useState<number>(0);
+    const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
     const [streakLimitReached, setStreakLimitReached] = useState<boolean>(false);
@@ -41,6 +42,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
         if(currentUser){
             getCurrentLanguageCode();
             getKnownLanguages();
+            getWordCounts();
             setUserStreak(currentUser.streak);
         }
     }, [currentUser]);
@@ -118,6 +120,18 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
         })
     }
 
+    const getWordCounts = async() => {
+        try {
+            const res = await client.get(
+                './api/users/' + currentUser.user_id + '/wordcounts',
+                { withCredentials: true }
+                );
+            setWordCounts(res.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const submitRegistration = (
         username: string,
         email: string,
@@ -187,6 +201,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             knownLanguages,
             currentLanguageCode,
             knownWords,
+            wordCounts,
             monthlyWordCounts,
             dailyWordCount,
             userStreak,

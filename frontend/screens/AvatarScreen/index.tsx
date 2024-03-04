@@ -39,7 +39,6 @@ const AvatarBox = ({userId, id, source, color, isUnlocked, isActive}: IAvatarBox
     }
     
     return (
-        <>
         <TouchableOpacity
             style={styles.avatarContainer}
             activeOpacity={1}
@@ -58,22 +57,23 @@ const AvatarBox = ({userId, id, source, color, isUnlocked, isActive}: IAvatarBox
                     : color,
                 ...styles.avatarImageContainer
                 }}>
-            <Image
-                style={{
-                    opacity: isUnlocked ? 1 : 0.3,
-                    ...styles.avatarImage
-                }}
-                source={source}
-            />
+                <Image
+                    style={{
+                        opacity: isUnlocked ? 1 : 0.3,
+                        ...styles.avatarImage
+                    }}
+                    source={source}
+                />
             </View>
         </TouchableOpacity>
-        </>
     );
-    }
+}
 
 export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownWords } = useContext(UserContext);
+
+    const level = calcLevel(knownWords, 30000).level;
     
     const renderSubsection = (
         level: (0|10|20|30|40|50|60|70|80|90|100),
@@ -124,7 +124,7 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
             overScrollMode="never"
             removeClippedSubviews={true}
         >
-            {Object.entries(avatarLevelUnlock).map(([key, value]) => renderSubsection(key, value, calcLevel(knownWords, 30000).level))}
+            {Object.entries(avatarLevelUnlock).map(([key, value]) => renderSubsection(key, value, level))}
         </ScrollView>
     </SafeAreaView>
     );

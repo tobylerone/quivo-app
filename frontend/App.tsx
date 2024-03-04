@@ -1,15 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
+import { View, Text } from 'react-native';
 import { AuthNavigation, FirstLoginNavigation, Navigation } from './navigation/index';
-import useCachedResources from "./hooks/useCachedResources"
-import React, { useState, useEffect, useContext } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthProvider } from './contexts/UserContext';
 import UserContext from './contexts/UserContext';
-import * as Font from 'expo-font';
 import { useFonts } from 'expo-font';
-
-let customFonts = {
-  'Nunito': require('./assets/fonts/Nunito-Regular.ttf')
-};
 
 function UserComponent() {
 
@@ -24,32 +20,31 @@ function UserComponent() {
   } else {
     return <AuthNavigation />
   }
-
-  //return currentUser ? <Navigation /> : <AuthNavigation />;
 }
 
 export default function App() {
-  const isLoaded = useCachedResources();
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  // Keep the splash screen visible while we fetch resources
+  SplashScreen.preventAutoHideAsync();
 
-  useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        'Nunito': require('./assets/fonts/Nunito-Regular.ttf'),
-        'Nunito Bold': require('./assets/fonts/Nunito-Bold.ttf'),
-      });
-      setFontsLoaded(true);
+  const [fontsLoaded, fontError] = useFonts({
+    'Nunito': require('./assets/fonts/Nunito-Regular.ttf'),
+    'Nunito Bold': require('./assets/fonts/Nunito-Bold.ttf')
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
     }
+  }, [fontsLoaded, fontError]);
 
-    loadFonts();
-  }, []);
-
-  if (!isLoaded || !fontsLoaded) {
-    return null; // or a loading spinner
+  if (!fontsLoaded && !fontError) {
+    console.log('Error loading fonts');
+    return null;
   }
 
   return (
     <AuthProvider>
+      <View onLayout={onLayoutRootView}></View>
       <StatusBar style="auto" />
       <UserComponent />
     </AuthProvider>

@@ -2,6 +2,9 @@ import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, findNodeHandle,
 import { useState, useEffect, useRef, useContext } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { transliterate } from 'transliteration';
+//import Sound from 'react-native-sound';
+import { Audio } from 'expo-av';
+
 // Contexts
 import UserContext from "../../../contexts/UserContext";
 // Constants
@@ -18,9 +21,9 @@ interface IFrequencyBar {
 const FrequencyBar = ({ frequency_rank }: IFrequencyBar) => {
     
     // Assign frequency score between 1 and 5
-    let value = frequency_rank < 5000 ? Math.ceil(frequency_rank/1000) : 5
-    let labels = ['Very Common', 'Common', 'Less Common', 'Rare', 'Very Rare']
-    let colors = ['#008000', '#ADFF2F', '#FFFF00O', '#FFA500', '#FF0000']
+    let value = frequency_rank < 5000 ? Math.ceil(frequency_rank/1000) : 5;
+    let labels = ['Very Common', 'Common', 'Less Common', 'Rare', 'Very Rare'];
+    let colors = ['#008000', '#ADFF2F', '#FFFF00O', '#FFA500', '#FF0000'];
 
     return (
         <View style={styles.frequencyBarContainer}>
@@ -47,23 +50,28 @@ interface IWordProps {
     navigation: any,
     word: string,
     wordData: IWordData,
+    textColor: string,
+    onPress: Function,
     isFirstWord: boolean,
     screenWidth: number,
-    index: number
+    index: number,
+    key: string
 }
 
-export default function Word ({navigation, word, wordData, isFirstWord, screenWidth, index}: IWordProps) {
+export default function Word ({navigation, word, wordData, textColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
 
+    console.log('Rendering word: ' + word);
+    
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
     const wordRef = useRef(null);
     
-    const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
+    //const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
     // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot. Initialiser à 0 millisecondes
     const [lastPress, setLastPress] = useState(0);
     const [wordTranslationVisible, setWordTranslationVisible] = useState(false);
     const [pressedOnce, _setPressedOnce] = useState(false);
-
+    const [coinSound, setCoinSound] = useState();
     const [wordWidth, setWordWidth] = useState(0);
     const [infoBoxXAdjust,  setInfoBoxXAdjust] = useState(0);
 
@@ -76,6 +84,16 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
       pressedOnceRef.current = value;
       _setPressedOnce(value);
     };
+
+    // TODO: Make coinSound into custom hook
+    useEffect(() => {
+        return coinSound
+          ? () => {
+              console.log('Unloading Sound');
+              coinSound.unloadAsync();
+            }
+          : undefined;
+      }, [coinSound]);
 
     interface ICalculateXPositionAdjust {
         wordXCentroid: number,
@@ -95,6 +113,16 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         }
 
         return 0;
+    }
+
+    async function playCoinSound() {
+        console.log('Loading Sound');
+        const { sound } = await Audio.Sound.createAsync( require('../../../assets/audio/coin.mp3')
+        );
+        setCoinSound(coinSound);
+    
+        console.log('Playing Sound');
+        await sound.playAsync();
     }
 
     // setTimeout rend un identifiant numérique unique
@@ -123,11 +151,15 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
         if (currentTime - lastPress < constants.DOUBLETAPDELAY) {
             if (dailyWordCount < constants.MAXDAILYWORDS) {
                 // Basculer entre deux couleurs selon si le mot a déjà été ajouté au dictionnaire
-                setTextColor(
-                    textColor === constants.BLACK
-                    ? constants.PRIMARYCOLOR
-                    : constants.BLACK
-                );
+                //setTextColor(
+                //    textColor === constants.BLACK
+                //    ? constants.PRIMARYCOLOR
+                //    : constants.BLACK
+                //);
+                onPress(word);
+
+                playCoinSound();
+
                 client.post(
                     'api/users/' + currentUser.user_id + '/toggleknownword/' + wordData.word
                 ).then(function(res) {
@@ -178,8 +210,6 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
 
             }, constants.DOUBLETAPDELAY);
 
-            // setTimeout n'empêche pas la prochaine partie du code de s'éxécuter pendant le temps
-            // d'attente, même si javascript n'utilise q'un seul thread
             definitionDisplayTimeout = setTimeout(() => {
                 setWordTranslationVisible(false);
             }, constants.TRANSLATIONDISPLAYTIME);
@@ -188,8 +218,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
 
         setLastPress(currentTime);
 
-    };
-  
+    }
     return (
         <View>
             {wordTranslationVisible && (<>
@@ -233,7 +262,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
             </TouchableOpacity>
         </View>
     );
-  };
+}
 
   const styles= StyleSheet.create({
 
@@ -258,7 +287,7 @@ export default function Word ({navigation, word, wordData, isFirstWord, screenWi
     
     // Word
     mainText: {
-        fontSize: constants.H1FONTSIZE,
+        fontSize: constants.H1FONTSIZE + 3,
         fontFamily: constants.FONTFAMILYBOLD
         //textAlign: "center"
     },

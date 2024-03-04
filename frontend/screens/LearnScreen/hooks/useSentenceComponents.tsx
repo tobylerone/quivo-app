@@ -15,6 +15,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
     const { currentLanguageCode } = useContext(UserContext);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
+    const [wordsPressed, setWordsPressed] = useState([]);
     const screenWidth = useWindowDimensions().width;
 
     useEffect(() => {
@@ -26,12 +27,27 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
                 console.log('setting new components');
                 setSentenceComponents(components);
             });
-
             if (autoDictEnabled) speak(currentItem.sentence, currentLanguageCode);
         }
     }, [wordsData]);
 
+    useEffect(() => {
+        console.log(wordsPressed);
+    }, [wordsPressed])
+
+    const handleWordPress = (word: string) => {
+        if (wordsPressed.includes(word)) {
+            setWordsPressed((prevArr) => prevArr.filter((item) => item !== word));
+            console.log(word);
+            console.log(wordsPressed);
+        } else {
+            setWordsPressed((prevArr) => [...prevArr, word]);
+        }
+    };
+
     const createSentenceComponents = async() => {
+        console.log(wordsPressed);
+        setWordsPressed([]);
         
         const getFullWord = (word: string) => {
         
@@ -77,6 +93,8 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
                     navigation={navigation}
                     word={word}
                     wordData={wordsData[fullWord]}
+                    textColor={wordsData[fullWord].user_knows || wordsPressed.includes(word) ? constants.PRIMARYCOLOR : constants.BLACK}
+                    onPress={handleWordPress}
                     isFirstWord={i==0}
                     screenWidth={screenWidth}
                     index={i}
@@ -85,7 +103,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
             } else {
                 sentenceComponents.push(<Text style={{
                     color: constants.GREY,
-                    fontSize: constants.H1FONTSIZE,
+                    fontSize: constants.H1FONTSIZE + 3,
                     fontFamily: constants.FONTFAMILYBOLD,
                     textAlign: "center" 
                 }} key={i}>{i==0 ? capitalizeFirstLetter(word) : word}</Text>);

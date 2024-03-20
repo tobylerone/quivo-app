@@ -41,7 +41,6 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
         {
             title: "General",
             data: [
-            { text: "Choose language", arrow: false, action: () => {} },
             {
               text: 'Narration speed', 
               subtext: 'Fast',
@@ -61,7 +60,6 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
             { text: "Rate and comment", arrow: false, action: () => {} },
             { text: "Give feedback", arrow: false, color: constants.SUCCESSCOLOR, action: () => {navigation.navigate('Feedback')} },
-            { text: "Contact us", arrow: false, action: () => {} },
             { text: "Confidentiality", arrow: true, action: () => {} },
             ],
         },

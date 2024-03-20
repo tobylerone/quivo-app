@@ -1,4 +1,4 @@
-    import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+    import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
     import { useContext } from "react";
     import UserContext from "../../../contexts/UserContext";
     import * as constants from "../../../constants";
@@ -26,7 +26,11 @@
 
         return (
             <View style={styles.followItemContainer}>
-                <View style={styles.leftBoxContainer}>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={styles.leftBoxContainer}
+                    onPress={() => {/*navigation.navigate('OtherUserAccount')*/}}
+                    >
                     <Text style={styles.userName}>{user.username}</Text>
                     <View style={styles.knownWordsContainer}>
                         <FlatList
@@ -52,7 +56,7 @@
                             )}
                         />
                     </View>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.followButtonContainer}>
                     <FollowButton 
                         initUserIsFollowing={user.user_is_following}

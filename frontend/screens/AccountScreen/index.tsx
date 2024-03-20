@@ -158,7 +158,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 <ProgressPanel />
                 <WordsLearnedPanel navigation={navigation} />
                 <SetKnownWordsPanel />
-                <LeaderboardPanel />
+                <LeaderboardPanel navigation={navigation} />
             </View>
         </ScrollView>
         <BottomNavBar hilighted='Account' navigation={navigation} />

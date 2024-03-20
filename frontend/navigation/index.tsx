@@ -19,6 +19,7 @@ import BottomNavBar from '../components/BottomNavBar';
 import HomeScreen from "../screens/HomeScreen";
 import LearnScreen from "../screens/LearnScreen";
 import AccountScreen from "../screens/AccountScreen";
+import OtherUserAccountScreen from "../screens/OtherUserAccountScreen";
 import AccountSettingsScreen from "../screens/AccountSettingsScreen";
 import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
@@ -123,6 +124,11 @@ function MainNavigator() {
                     headerShown: false,
                     animation: 'none'
                 }}
+            />
+            <MainStack.Screen 
+                name="OtherUserAccount"
+                component={OtherUserAccountScreen as any}
+                options={{headerShown: false}}
             />
             <MainStack.Screen
                 name="LearnCyrillic"

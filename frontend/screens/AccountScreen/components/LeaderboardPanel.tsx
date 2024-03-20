@@ -8,7 +8,11 @@ import { sumWordCounts } from "../../../utils/functions";
 // Hooks
 import useLeaderboardData from "../hooks/useLeaderboardData";
 
-export default function LeaderboardPanel() {
+interface ILeaderboardPanelProps {
+    navigation: any
+}
+
+export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
 
     const { currentUser } = useContext(UserContext);
     const leaderboardData = useLeaderboardData();
@@ -22,6 +26,7 @@ export default function LeaderboardPanel() {
                     : constants.TERTIARYCOLOR,
                 ...styles.userItem
             }}
+            onPress={() => navigation.navigate('OtherUserAccount')}
             >
             <Text style={[styles.itemText, styles.positionText]}>{idx + 1}</Text>
             <Text style={[

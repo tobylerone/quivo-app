@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, SafeAreaView, Text, Image } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, Image, FlatList } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 // Constants
 import * as constants from "../../constants";
 // Assets
 import { avatarImageMap } from "../../assets/avatars/avatarMaps";
+import { flagImageSources } from "../../assets/img/imageSources";
 // Components
 import NavBar from "../../components/NavBar";
 
@@ -42,8 +43,29 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
                         </View>
                     </View>
                 </View>
-                <Text>Known Words in French: {user.known_words_count['fr']}</Text>
-                <Text>Streak: {user.streak} days</Text>
+                <FlatList
+                    data={Object.keys(user.known_words_count)}
+                    style={styles.knownWordsList}
+                    bounces={false}
+                    horizontal={true}
+                    renderItem={({item}) => (
+                        <>
+                        {user.known_words_count[item] !== 0 &&
+                        <View style={styles.knownWordsPill}>
+                            <View style={styles.flagImageContainer}>
+                                <Image
+                                    source={flagImageSources[item]}
+                                    style={styles.flagImage}
+                                />
+                            </View>
+                            <Text style={styles.knownWordsText}>
+                                {user.known_words_count[item]}
+                            </Text>
+                        </View>
+                        }
+                        </>
+                    )}
+                />
             </View>
         </SafeAreaView>
     );
@@ -69,6 +91,7 @@ const styles = StyleSheet.create({
     usernameText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.BLACK,
         backgroundColor: constants.SECONDARYCOLOR,
         width: '100%',
         textAlign: 'center',
@@ -106,11 +129,13 @@ const styles = StyleSheet.create({
     },
     followText: {
         fontFamily: constants.FONTFAMILY,
-        fontSize: constants.H3FONTSIZE
+        fontSize: constants.H3FONTSIZE,
+        color: constants.BLACK,
     },
     followCountText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
+        color: constants.BLACK,
         marginLeft: 'auto'
     },
     profileImage: {
@@ -118,4 +143,42 @@ const styles = StyleSheet.create({
         height: 100,
         borderRadius: 50
     },
+    // Known Words
+    knownWordsList: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 10,
+        marginBottom: 10
+    },
+    knownWordsPill: {
+        flexDirection: 'row',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginRight: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 7,
+        borderRadius: 10,
+
+    },
+    flagImageContainer: {
+
+    },
+    knownWordsText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H3FONTSIZE,
+        color: constants.BLACK,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    flagImage: {
+        width: 40,
+        height: 30,
+        borderRadius: 5,
+        marginRight: 5,
+        marginTop: "auto",
+        marginBottom: "auto"
+    },
+    knownWords: {
+        fontSize: constants.CONTENTFONTSIZE
+    }
 });

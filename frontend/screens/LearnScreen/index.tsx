@@ -49,12 +49,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     }, [streakLimitReached]);
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents, setWordsPressed } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
+    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
 
     // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
     // up
     useEffect(() => {
-        setWordsPressed([]);
+        setActiveWords([]);
     }, [currentItem]);
     
     const popupItemData = [

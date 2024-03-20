@@ -15,7 +15,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
     const { currentLanguageCode } = useContext(UserContext);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
-    const [wordsPressed, setWordsPressed] = useState([]);
+    const [activeWords, setActiveWords] = useState([]);
     const screenWidth = useWindowDimensions().width;
 
     useEffect(() => {
@@ -32,41 +32,42 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
     }, [wordsData]);
 
     useEffect(() => {
-        console.log(wordsPressed);
+        console.log(activeWords);
         createSentenceComponents(currentItem, wordsData).then(components => {
             console.log('setting new components');
             setSentenceComponents(components);
         });
-    }, [wordsPressed])
+    }, [activeWords])
+
+    const getFullWord = (word: string) => {
+        
+        // TODO: This map gets repeated three times. Need to sort this out
+        let shortened_word_map: Record<string, string> = {
+            'j': 'je',
+            'l': 'le', // Always replace with le for now. Figure out a better solution here
+            't': 'tu', // This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
+            'd': 'de', // Need to check whether this is ever du
+            'c': 'ce',
+            's': 'se',
+            'qu': 'que',
+            'm': 'me',
+            'n': 'ne',
+        }
+
+        return word in shortened_word_map ? shortened_word_map[word] : word;
+    }
 
     const handleWordPress = (word: string) => {
-        if (wordsPressed.includes(word)) {
-            setWordsPressed((prevArr) => prevArr.filter((item) => item !== word));
+        let fullWord = getFullWord(word.toLowerCase());
+        if (activeWords.includes(fullWord)) {
+            setActiveWords((prevArr) => prevArr.filter((item) => item !== fullWord));
         } else {
-            setWordsPressed((prevArr) => [...prevArr, word]);
+            setActiveWords((prevArr) => [...prevArr, fullWord]);
         }
     };
 
     const createSentenceComponents = async() => {
-        //setWordsPressed([]);
-        
-        const getFullWord = (word: string) => {
-        
-            // TODO: This map gets repeated three times. Need to sort this out
-            let shortened_word_map: Record<string, string> = {
-                'j': 'je',
-			    'l': 'le', // Always replace with le for now. Figure out a better solution here
-			    't': 'tu', // This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
-			    'd': 'de', // Need to check whether this is ever du
-			    'c': 'ce',
-			    's': 'se',
-			    'qu': 'que',
-			    'm': 'me',
-			    'n': 'ne',
-		    }
-
-            return word in shortened_word_map ? shortened_word_map[word] : word;
-        }
+        //setActiveWords([]);
         
         if (currentItem.sentence.length == 0) {
             return <Text></Text>;
@@ -94,13 +95,15 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
                     navigation={navigation}
                     word={word}
                     wordData={wordsData[fullWord]}
-                    textColor={wordsData[fullWord].user_knows || wordsPressed.includes(word) ? constants.PRIMARYCOLOR : constants.BLACK}
+                    textColor={wordsData[fullWord].user_knows || activeWords.includes(word) ? constants.PRIMARYCOLOR : constants.BLACK}
                     onPress={handleWordPress}
                     isFirstWord={i==0}
                     screenWidth={screenWidth}
                     index={i}
                     key={`${currentItem.id}-${i}`}
                 />);
+                //Add words already known to activeWords arrays
+                //setActiveWords((prevArr) => [...prevArr, fullWord])
             } else {
                 sentenceComponents.push(<Text style={{
                     color: constants.GREY,
@@ -113,5 +116,5 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
         return sentenceComponents;
     };
 
-    return { sentenceComponents, setWordsPressed };
+    return { sentenceComponents, setActiveWords };
 }

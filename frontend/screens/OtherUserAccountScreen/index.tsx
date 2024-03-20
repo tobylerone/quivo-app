@@ -4,11 +4,13 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as constants from "../../constants";
 import NavBar from "../../components/NavBar";
 
-export default function OtherUserAccountScreen({navigation}: NativeStackHeaderProps) {
+export default function OtherUserAccountScreen({route, navigation}: NativeStackHeaderProps) {
 
+    const { userName } = route.params;
+    
     return (
         <SafeAreaView style={styles.container}>
-            <NavBar title={'User'} navigation={navigation}/>
+            <NavBar title={userName} navigation={navigation}/>
         </SafeAreaView>
     );
 }

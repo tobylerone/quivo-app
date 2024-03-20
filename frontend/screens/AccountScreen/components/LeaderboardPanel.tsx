@@ -26,7 +26,9 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
                     : constants.TERTIARYCOLOR,
                 ...styles.userItem
             }}
-            onPress={() => navigation.navigate('OtherUserAccount')}
+            onPress={() => navigation.navigate('OtherUserAccount',
+                {userName: user.username}
+                )}
             >
             <Text style={[styles.itemText, styles.positionText]}>{idx + 1}</Text>
             <Text style={[

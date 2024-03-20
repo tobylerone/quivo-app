@@ -28,16 +28,16 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
                         />
                     </View>
                     <View style={styles.followOuterContainer}>
-                        <View style={styles.followSubContainer}>
+                        <View style={[styles.followSubContainer, styles.followSubContainerTop]}>
                             <View style={styles.followTextContainer}>
-                                <Text>Followers</Text>
-                                <Text>{user.followers_count}</Text>
+                                <Text style={styles.followText}>Followers</Text>
+                                <Text style={styles.followCountText}>{user.followers_count}</Text>
                             </View>
                         </View>
                         <View style={styles.followSubContainer}>
                             <View style={styles.followTextContainer}>
-                                <Text>Following</Text>
-                                <Text>{user.following_count}</Text>
+                                <Text style={styles.followText}>Following</Text>
+                                <Text style={styles.followCountText}>{user.following_count}</Text>
                             </View>
                         </View>
                     </View>
@@ -76,16 +76,42 @@ const styles = StyleSheet.create({
     },
     imageAndFollowContainer: {
         flexDirection: 'row',
-        height: 100
+        height: 100,
+        borderBottomWidth: 3,
+        borderBottomColor: constants.GREY
+    },
+    imageContainer: {
+        borderRightWidth: 3,
+        borderRightColor: constants.GREY
     },
     followOuterContainer: {
-        flexDirection: 'column'
+        flexDirection: 'column',
+        width: '100%',
+        marginLeft: -100
     },
     followSubContainer: {
-        height: '50%'
+        height: 50,
+        marginLeft: 100,
+        paddingLeft: 10,
+        paddingRight: 15
+    },
+    followSubContainerTop: {
+        borderBottomWidth: 3,
+        borderBottomColor: constants.GREY
     },
     followTextContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    followText: {
+        fontFamily: constants.FONTFAMILY,
+        fontSize: constants.H3FONTSIZE
+    },
+    followCountText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        marginLeft: 'auto'
     },
     profileImage: {
         width: 100,

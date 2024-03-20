@@ -27,7 +27,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
                 ...styles.userItem
             }}
             onPress={() => navigation.navigate('OtherUserAccount',
-                {userName: user.username}
+                {user: user}
                 )}
             >
             <Text style={[styles.itemText, styles.positionText]}>{idx + 1}</Text>

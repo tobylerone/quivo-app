@@ -8,6 +8,7 @@ import { avatarImageMap } from "../../assets/avatars/avatarMaps";
 import { flagImageSources } from "../../assets/img/imageSources";
 // Components
 import NavBar from "../../components/NavBar";
+import FollowButton from "../../components/FollowButton";
 
 export default function OtherUserAccountScreen({route, navigation}: NativeStackHeaderProps) {
 
@@ -18,8 +19,17 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
         <SafeAreaView style={styles.container}>
             <NavBar navigation={navigation}/>
             <View style={styles.userContainer}>
-                <View style={styles.usernameContainer}>
+                <View style={styles.topContainer}>
                     <Text style={styles.usernameText}>{user.username}</Text>
+                    {/* TODO: This doesn't update user.user_is_following which can lead to errors. Need
+                    to get fresh user data every time this page is loaded rather than passing the object
+                    */}
+                    <View style={styles.followButtonContainer}>
+                        <FollowButton 
+                            initUserIsFollowing={user.user_is_following}
+                            followee_id={user.user_id}
+                        />
+                    </View>
                 </View>
                 <View style={styles.imageAndFollowContainer}>
                     <View style={styles.imageContainer}>
@@ -83,19 +93,26 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         overflow: 'hidden'
     },
-    usernameContainer: {
-        backgroundColor: constants.PRIMARYCOLOR,
+    topContainer: {
+        flexDirection: 'row',
+        backgroundColor: constants.SECONDARYCOLOR,
         borderBottomWidth: 3,
-        borderBottomColor: constants.GREY
+        borderBottomColor: constants.GREY,
+        padding: 5
     },
     usernameText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK,
-        backgroundColor: constants.SECONDARYCOLOR,
-        width: '100%',
-        textAlign: 'center',
+        //width: '100%',
+        //textAlign: 'center',
         padding: 10
+    },
+    followButtonContainer: {
+        marginLeft: 'auto',
+        marginRight: 5,
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     imageAndFollowContainer: {
         flexDirection: 'row',

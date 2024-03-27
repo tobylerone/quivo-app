@@ -17,10 +17,11 @@
     }
 
     interface IFollowItemProps {
-        user: IUserProps
+        user: IUserProps,
+        navigation: any
     }
     
-    export default function FollowItem ({ user }: IFollowItemProps) {
+    export default function FollowItem ({ user, navigation }: IFollowItemProps) {
 
         const { currentLanguage, knownLanguages } = useContext(UserContext);
 
@@ -29,7 +30,9 @@
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.leftBoxContainer}
-                    onPress={() => {/*navigation.navigate('OtherUserAccount')*/}}
+                    onPress={() => navigation.navigate('OtherUserAccount',
+                    {user: user}
+                    )}
                     >
                     <Text style={styles.userName}>{user.username}</Text>
                     <View style={styles.knownWordsContainer}>

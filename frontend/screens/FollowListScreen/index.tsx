@@ -43,8 +43,8 @@ export default function FollowListScreen({route, navigation}: IFollowListScreenP
                     {TABS.map(tabHeader => renderTabButton(tabHeader))}
                 </View>
                 <View style={styles.contentTabContainer}>
-                    {activeTab === 'followers' && <FollowTab type={'followers'} />}
-                    {activeTab === 'following' && <FollowTab type={'following'} />}
+                    {activeTab === 'followers' && <FollowTab type={'followers'} navigation={navigation} />}
+                    {activeTab === 'following' && <FollowTab type={'following'} navigation={navigation} />}
                 </View>
             </View>
         </SafeAreaView>

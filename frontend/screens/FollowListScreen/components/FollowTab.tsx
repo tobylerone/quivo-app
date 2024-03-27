@@ -10,10 +10,11 @@ import FollowItem from './FollowItem';
 import { useFetchUserData } from '../../../hooks/useFetchUserData';
 
 interface IFollowTabProps {
-    type: 'followers' | 'following'
+    type: 'followers' | 'following',
+    navigation: any
 }
 
-export default function FollowTab({ type }: IFollowTabProps) {
+export default function FollowTab({ type, navigation }: IFollowTabProps) {
 
     const { currentUser } = useContext(UserContext);
     const userData = useFetchUserData('api/users/' + currentUser.user_id + '/' + type + '/');
@@ -26,7 +27,7 @@ export default function FollowTab({ type }: IFollowTabProps) {
                     style={styles.followList}
                     data={userData}
                     bounces={false}
-                    renderItem={({item}) => <FollowItem user={item} />}
+                    renderItem={({item}) => <FollowItem user={item} navigation={navigation} />}
                     />
                 : <Text style={styles.noFollowText}>{
                         type === 'followers'

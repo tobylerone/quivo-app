@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     followCountText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.BLACK,
+        color: constants.PRIMARYCOLOR,
         marginLeft: 'auto'
     },
     profileImage: {

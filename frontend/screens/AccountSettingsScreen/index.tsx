@@ -1,9 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList } from "react-native";
 import { useContext } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import * as constants from "../constants";
-import UserContext from '../contexts/UserContext';
-import NavBar from "../components/NavBar";
+import * as constants from "../../constants";
+import UserContext from '../../contexts/UserContext';
+import NavBar from "../../components/NavBar";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
@@ -18,13 +18,13 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
               text: 'Change username',
               arrow: true,
               subtext: currentUser.username,
-              action: () => {}
+              action: () => {navigation.navigate('ChangeUserDetails')}
             },
             {
               text: 'Change email',
               arrow: true,
               subtext: currentUser.email,
-              action: () => {}
+              action: () => {navigation.navigate('ChangeUserDetails')}
             },
             {
               text: "Upgrade to premium",

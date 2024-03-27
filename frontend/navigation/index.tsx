@@ -21,6 +21,7 @@ import LearnScreen from "../screens/LearnScreen";
 import AccountScreen from "../screens/AccountScreen";
 import OtherUserAccountScreen from "../screens/OtherUserAccountScreen";
 import AccountSettingsScreen from "../screens/AccountSettingsScreen";
+import ChangeUserDetailsScreen from "../screens/ChangeUserDetailsScreen";
 import SearchUserScreen from "../screens/SearchUserScreen";
 import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
@@ -145,6 +146,11 @@ function MainNavigator() {
                     headerShown: false,
                     animation: 'none'
                 }}
+            />
+            <MainStack.Screen
+                name="ChangeUserDetails"
+                component={ChangeUserDetailsScreen as any}
+                options={{headerShown: false}}
             />
             <MainStack.Screen
                 name="SearchUser"

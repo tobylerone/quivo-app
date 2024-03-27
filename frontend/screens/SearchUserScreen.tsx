@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, Image, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, FlatList, Image, ActivityIndicator, TouchableNativeFeedback } from "react-native";
 import { SearchBar } from "react-native-elements";
 import PNG from 'pngjs';
 import { useState, useEffect, useContext } from "react";
@@ -23,10 +23,11 @@ interface IUser {
 }
 
 interface IUserListItem {
-    user: IUser
+    user: IUser,
+    navigation: any
 }
 
-const UserListItem = ({user}: IUserListItem) => {
+const UserListItem = ({user, navigation}: IUserListItem) => {
 
     const { currentUser, setCurrentUser } = useContext(UserContext);
 
@@ -43,7 +44,13 @@ const UserListItem = ({user}: IUserListItem) => {
         <>
         {user.user_id !== currentUser.user_id &&
         <View style={styles.userListItem}>
-            <View style={styles.leftBoxContainer}>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={styles.leftBoxContainer}
+                onPress={() => navigation.navigate('OtherUserAccount',
+                {user: user}
+                )}
+                >
                 <View style={styles.username}>
                     <Text style={styles.usernameText}>
                         {user.username}
@@ -72,7 +79,7 @@ const UserListItem = ({user}: IUserListItem) => {
                         </>
                     )}
                 />
-            </View>
+            </TouchableOpacity>
             <View style={styles.followButtonContainer}>
                 <FollowButton 
                     initUserIsFollowing={user.user_is_following}
@@ -140,7 +147,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.userList}
                     data={users}
                     bounces={false}
-                    renderItem={({item}: {item: IUser}) => <UserListItem user={item} />}
+                    renderItem={({item}: {item: IUser}) => <UserListItem user={item} navigation={navigation} />}
                 />
             : <>{/*<ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />*/}</>
             }

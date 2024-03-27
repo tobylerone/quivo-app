@@ -218,10 +218,12 @@ const styles = StyleSheet.create({
         padding: 10
     },
     username: {
-        alignSelf: "flex-start"
+        alignSelf: "flex-start",
+        marginBottom: 5
     },
     usernameText: {
-        fontSize: constants.H3FONTSIZE,
+        fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILY,
         color: constants.BLACK
     },
     knownWordsPill: {
@@ -257,7 +259,10 @@ const styles = StyleSheet.create({
     knownWords: {
         fontSize: constants.CONTENTFONTSIZE
     },
-    followButtonContainer: {},
+    followButtonContainer: {
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
     followButton: {
         alignSelf: "flex-end",
         backgroundColor: constants.PRIMARYCOLOR,

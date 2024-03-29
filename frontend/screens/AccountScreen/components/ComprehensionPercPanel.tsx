@@ -3,16 +3,16 @@ import { useContext } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { LineChart } from "react-native-chart-kit";
 // Contexts
-import UserContext from '../../contexts/UserContext';
+import UserContext from '../../../contexts/UserContext';
 // Utils
-import { frequencyIndexToComprehensionPercentage as f } from "../../utils/functions";
+import { frequencyIndexToComprehensionPercentage as f } from "../../../utils/functions";
 // Constants
-import * as constants from '../../constants';
+import * as constants from '../../../constants';
 // Components
-import NavBar from "../../components/NavBar";
+import NavBar from "../../../components/NavBar";
 // Hooks
-import { useFetchWordCounts } from "./hooks/useFetchWordCounts";
-import { useComprehensionPercentage } from "./hooks/useComprehensionPercentage";
+import { useFetchWordCounts } from "../hooks/useFetchWordCounts";
+import { useComprehensionPercentage } from "../hooks/useComprehensionPercentage";
 
 interface ILanguage {
     id: number,
@@ -20,7 +20,7 @@ interface ILanguage {
     language_name: string
 }
 
-export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
+export default function ComprehensionPercPanel({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, currentLanguageCode, knownLanguages, knownWords} = useContext(UserContext);
     
@@ -78,76 +78,83 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
     }
 
     return (
-    <View style={styles.container}>
-        <NavBar title='Known Words' navigation={navigation} />
-        {comprehensionPercentage ?
         <View style={styles.wordsLearnedPanel}>
-            <Text style={styles.wordsLearnedTitle}>
-                {knownWords} Words Learned
-            </Text>
-            <LineChart
-                data={{
-                    labels: ['10000'],
-                    datasets: [{ data: data }]
-                }}
-                width={Dimensions.get("window").width - 60} // from react-native
-                height={200}
-                yAxisSuffix="%"
-                yAxisInterval={25}
-                chartConfig={{
-                    backgroundColor: constants.PRIMARYCOLOR,//"#e26a00",
-                    backgroundGradientFrom: constants.PRIMARYCOLOR,//"#fb8c00",
-                    backgroundGradientTo: constants.PRIMARYCOLOR,//"#ffa726",
-                    decimalPlaces: 0, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    style: {
-                        borderRadius: 10
-                    },
-                    propsForDots: {
-                        r: "8"
-                    },
-                }}
-                hidePointsAtIndex={getHiddenIndexes()}
-                bezier
-                style={{
-                    borderRadius: 10,
-                }}
-            />
+            <View style={styles.wordsLearnedTitle}>
+            <Text style={styles.wordsLearnedTitleText}>Comprehension</Text>
+            </View>
+            {comprehensionPercentage ? <>
+            <View style={styles.chartContainer}>
+                <LineChart
+                    data={{
+                        labels: ['10000'],
+                        datasets: [{ data: data }]
+                    }}
+                    width={Dimensions.get("window").width - 65} // from react-native
+                    height={200}
+                    yAxisSuffix="%"
+                    yAxisInterval={25}
+                    chartConfig={{
+                        backgroundColor: constants.LIGHTBLUE,
+                        backgroundGradientFrom: constants.LIGHTBLUE,
+                        backgroundGradientTo: constants.LIGHTBLUE,
+                        decimalPlaces: 0, // optional, defaults to 2dp
+                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                        style: {
+                            borderRadius: 10
+                        },
+                        propsForDots: {
+                            r: "8"
+                        },
+                    }}
+                    hidePointsAtIndex={getHiddenIndexes()}
+                    bezier
+                    style={{
+                        borderRadius: 10,
+                    }}
+                />
+            </View>
             <Text style={styles.wordsLearnedInfo}>
                 Based on the words you know, you should be able to understand around <Text style={{
                     fontFamily: constants.FONTFAMILYBOLD,
-                    color: constants.PRIMARYCOLOR
+                    color: constants.ORANGE
                     }}>
                         {comprehensionPercentage}%
                 </Text> of written {currentLanguageObj.language_name}.
             </Text>
+            </>
+            : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.LIGHTBLUE} />}
         </View>
-        : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />}
-    </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 50,
-        marginHorizontal: 16
-    },
     wordsLearnedPanel: {
         backgroundColor: constants.TERTIARYCOLOR,
         borderWidth: 3,
-        borderColor: constants.PRIMARYCOLOR,
+        borderColor: constants.LIGHTBLUE,
         padding: 10,
+        overflow: 'hidden',
         borderRadius: 20,
         marginBottom: 20
     },
     wordsLearnedTitle: {
+        backgroundColor: constants.LIGHTBLUE,
+        marginBottom: 10,
+        marginTop: -10,
+        marginHorizontal: -10
+    },
+    wordsLearnedTitleText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.PRIMARYCOLOR,
-        marginBottom: 10,
+        color: constants.BLACK,
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        padding: 10
+    },
+    chartContainer: {
+        backgroundColor: constants.TERTIARYCOLOR,
+        paddingRight: 20
     },
     wordsLearnedInfo: {
         fontSize: constants.H3FONTSIZE,

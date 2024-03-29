@@ -70,7 +70,7 @@ export const generateBuckets = (nCorpus: number, nBuckets: number, firstTerm: nu
     let epsilon = 0.00001;  // Tolerance for value of r
 
     // Use binary search to find r
-    let low = 1, high = 2;
+    let low = 1, high = 2; // Can probably reduce the high value
 
     while (high - low > epsilon) {
         r = (low + high) / 2;

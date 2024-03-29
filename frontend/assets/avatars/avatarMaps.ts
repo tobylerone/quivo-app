@@ -2,19 +2,19 @@ import * as constants from '../../constants';
 
 // Maps the avatar_id to the corresponding file source
 const avatarImageMap = {
-    0: require('./none.png'),
-    1: require('../../assets/avatars/poop.png'),
-    2: require('../../assets/avatars/cute.png'),
-    3: require('../../assets/avatars/regular.png'),        
-    4: require('../../assets/avatars/dizzy.png'),
-    5: require('../../assets/avatars/clever.png'),     
-    6: require('../../assets/avatars/cool.png'),        
-    7: require('../../assets/avatars/black-and-white.png'),
-    8: require('../../assets/avatars/wizard.png'),
-    9: require('../../assets/avatars/devil.png'),
-    10: require('../../assets/avatars/strong.png'),
-    11: require('../../assets/avatars/rich.png'),
-    12: require('../../assets/avatars/dead.png'),
+    0: require('../../assets/avatars/none-med.png'),
+    1: require('../../assets/avatars/poop-med.png'),
+    2: require('../../assets/avatars/cute-med.png'),
+    3: require('../../assets/avatars/regular-med.png'),        
+    4: require('../../assets/avatars/dizzy-med.png'),
+    5: require('../../assets/avatars/clever-med.png'),     
+    6: require('../../assets/avatars/cool-med.png'),        
+    7: require('../../assets/avatars/black-and-white-med.png'),
+    8: require('../../assets/avatars/wizard-med.png'),
+    9: require('../../assets/avatars/devil-med.png'),
+    10: require('../../assets/avatars/strong-med.png'),
+    11: require('../../assets/avatars/rich-med.png'),
+    12: require('../../assets/avatars/dead-med.png'),
 }
 
 // Level at which each avatar is unlocked

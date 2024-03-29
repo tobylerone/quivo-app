@@ -60,7 +60,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
             { text: "Rate and comment", arrow: false, action: () => {} },
             { text: "Give feedback", arrow: false, color: constants.SUCCESSCOLOR, action: () => {navigation.navigate('Feedback')} },
-            { text: "Confidentiality", arrow: true, action: () => {} },
+            { text: "Privacy Policy", arrow: true, action: () => {} }, // Can create one here: https://termly.io/resources/templates/privacy-policy-template/
             ],
         },
         ];

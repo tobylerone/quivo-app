@@ -17,10 +17,11 @@ import NavBar from "../../components/NavBar";
 export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages,knownWords, currentLanguage } = useContext(UserContext);
-    const {r, buckets} = generateBuckets(30000, 100, 50);
+    const {buckets, cumBuckets} = generateBuckets(30000, 100, 50);
     const userLevel = calcLevel(knownWords, 30000).level;
 
     console.log(buckets);
+    console.log(cumBuckets)
 
     const renderImage = (image: PNG) => (
         <Image source={image} style={styles.avatarImage} />

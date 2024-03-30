@@ -37,7 +37,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
     const { currentItem, changeItem } = useFetchItems();
-    const { level, levelResidual, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
+    const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
 
     useEffect(() => {
@@ -107,7 +107,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <Text style={styles.levelWordText}>{knownWordsInLevel}/{wordsInLevel}</Text>
                 </View>
                 <View style={styles.progressBarBackground}>
-                    <View style={{width: levelResidual ? Math.floor(levelResidual * 100) + '%' : 0, ...styles.progressBar}}></View>
+                    <View style={{width: knownWordsInLevel ? Math.floor((knownWordsInLevel/wordsInLevel) * 100) + '%' : 0, ...styles.progressBar}}></View>
                 </View>
             </TouchableOpacity>
             <View style={styles.topButtonsContainer}>

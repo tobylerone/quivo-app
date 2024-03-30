@@ -1,5 +1,5 @@
-export const calcLevel = (n: number, tot_n: number) => {
-    // Want to have increasing bucket size as n increases
+export const calcLevelOrig = (n: number, tot_n: number) => {
+
     const wordsInLevel = Math.floor(tot_n / 100);
 
     const floatLevel = n / wordsInLevel;
@@ -10,6 +10,46 @@ export const calcLevel = (n: number, tot_n: number) => {
     level = level + 1;
 
     return { level, levelResidual, wordsInLevel, knownWordsInLevel};
+}
+
+export const calcLevel = (n: number, tot_n: number) => {
+
+    function findLastSmallerIndex(arr, n) {
+        // Given an increasing array of numbers, use binary search
+        // to find the index of the last number that is smaller than
+        // n
+        let left = 0;
+        let right = arr.length - 1;
+        let result = -1; // Initialize with an invalid index
+    
+        while (left <= right) {
+            const mid = Math.floor((left + right) / 2);
+    
+            if (arr[mid] < n) {
+                // Update result and search right half
+                result = mid;
+                left = mid + 1;
+            } else {
+                // Search left half
+                right = mid - 1;
+            }
+        }
+    
+        return result;
+    }
+    
+    // I shouldn't be generating the buckets each time. Should do this when language changes and store
+    const {buckets, cumBuckets} = generateBuckets(tot_n, 100, 50);
+    
+    //level is the index of the
+    let level = findLastSmallerIndex(cumBuckets, n);
+    const knownWordsInLevel = n - cumBuckets[level];
+    const wordsInLevel = buckets[level];
+    
+    // Level should start at 1 not 0
+    level = level + 1;
+
+    return { level, wordsInLevel, knownWordsInLevel};
 }
 
 export const frequencyIndexToComprehensionPercentage = (n: number, coeffs: string[]) => {
@@ -97,5 +137,7 @@ export const generateBuckets = (nCorpus: number, nBuckets: number, firstTerm: nu
     //add/subtract difference to final level bucket size
     buckets[buckets.length - 1] += outstanding;
 
-    return {r, buckets};
+    const cumBuckets = buckets.map((sum => value => sum += value)(0));
+
+    return {buckets, cumBuckets};
 }

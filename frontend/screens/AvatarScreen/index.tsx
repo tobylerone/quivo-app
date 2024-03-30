@@ -19,10 +19,11 @@ interface IAvatarBoxProps {
     source: any,
     color: string,
     isUnlocked: boolean,
-    isActive: boolean
+    isActive: boolean,
+    setUserAvatarId: Function
 }
 
-const AvatarBox = ({userId, id, source, color, isUnlocked, isActive}: IAvatarBoxProps) => {
+const AvatarBox = ({userId, id, source, color, isUnlocked, isActive, setUserAvatarId}: IAvatarBoxProps) => {
     
     const handlePress = () => {
         if (!isActive) {
@@ -30,8 +31,9 @@ const AvatarBox = ({userId, id, source, color, isUnlocked, isActive}: IAvatarBox
                 user_id: userId,
                 avatar_id: id
             }).then((res) => {
-                // Make this change the hilighted avatar on frontend
-                console.log('avatar_id changed to ' + id);
+                // Once changed in the database, update the local
+                // hook to reflect this change
+                setUserAvatarId(id);
             }).catch((err) => {
                 console.log(err);
             });
@@ -71,17 +73,17 @@ const AvatarBox = ({userId, id, source, color, isUnlocked, isActive}: IAvatarBox
 
 export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownWords } = useContext(UserContext);
+    const { currentUser, knownWords, userAvatarId, setUserAvatarId } = useContext(UserContext);
 
     const level = calcLevel(knownWords, 30000).level;
     
     const renderSubsection = (
-        level: (0|10|20|30|40|50|60|70|80|90|100),
+        level: (0|5|10|15|20|25|30|35|40|45|50), // TODO: Get this from avatarMap keys
         avatarIds: number[],
         userLevel: number
     ) => {
 
-        const isUnlocked = userLevel > level;
+        const isUnlocked = userLevel >= level;
         const color = isUnlocked ? avatarLevelColors[level] : constants.GREY;
 
         return (
@@ -105,7 +107,8 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
                             source={avatarImageMap[avatar_id]}
                             color={color}
                             isUnlocked={isUnlocked}
-                            isActive={avatar_id === currentUser.avatar_id}
+                            isActive={avatar_id === userAvatarId}
+                            setUserAvatarId={setUserAvatarId}
                         />
                     ))}
                 </View>

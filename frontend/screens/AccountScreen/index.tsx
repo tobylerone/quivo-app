@@ -19,7 +19,7 @@ import LeaderboardPanel from './components/LeaderboardPanel';
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
 
-    const { currentUser, knownWords, knownLanguages } = useContext(UserContext);
+    const { currentUser, knownWords, knownLanguages, userAvatarId } = useContext(UserContext);
     
     useEffect(() =>{
         console.log("Rendering Accountscreen");
@@ -75,7 +75,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate('Avatar')}
                         >
                         <Image
-                            source={avatarImageMap[currentUser.avatar_id]}
+                            source={avatarImageMap[userAvatarId]}
                             style={styles.profileImage}
                         />
                     </TouchableOpacity>

@@ -1,8 +1,10 @@
-import { View, Text, Dimensions, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useState, useContext } from "react";
 import UserContext from '../../../contexts/UserContext';
 import * as constants from '../../../constants';
 import { LineChart } from "react-native-chart-kit";
+// Assets
+import { avatarImageMap } from "../../../assets/avatars/avatarMaps";
 // Utils
 import { sumWordCounts } from "../../../utils/functions";
 // Hooks
@@ -31,6 +33,12 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
                 )}
             >
             <Text style={[styles.itemText, styles.positionText]}>{idx + 1}</Text>
+            <View style={styles.profileImageContainer}>
+                <Image 
+                    source={avatarImageMap[user.avatar_id]}
+                    style={styles.profileImage}
+                />
+            </View>
             <Text style={[
                 {fontFamily: user.user_id === currentUser.user_id
                     ? constants.FONTFAMILYBOLD
@@ -91,6 +99,22 @@ const styles = StyleSheet.create({
     },
     itemText: {
         fontSize: constants.H2FONTSIZE,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    profileImageContainer: {
+        width: 40,
+        height: 40,
+        borderWidth: 2,
+        borderColor: constants.ORANGE,
+        borderRadius: 20,
+        marginRight: 5
+    },
+    profileImage: {
+        width: '90%',
+        height: '90%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'
     },

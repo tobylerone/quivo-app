@@ -123,7 +123,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         onPress={() => navigation.navigate("WordList")}
                         >
                         <View style={styles.knownWordsContainer}>
-                            <Text style={styles.knownWords}>{knownWords}</Text>
+                            <Text style={styles.knownWords}>{knownWords.toLocaleString("en-US")}</Text>
                             <Text style={styles.knownWordsSubheader}>Words</Text>
                         </View>
                     </TouchableOpacity>

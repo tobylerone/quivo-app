@@ -49,7 +49,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
                 ]}>
                 {user.username}
             </Text>
-            <Text style={[styles.itemText, styles.streakText]}>{sumWordCounts(user.known_words_count)}</Text>
+            <Text style={[styles.itemText, styles.streakText]}>{sumWordCounts(user.known_words_count).toLocaleString("en-US")}</Text>
         </TouchableOpacity>
     );
 

@@ -87,15 +87,11 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     useEffect(() => {
         return correctSound
           ? () => {
-              console.log('Unloading Sound');
-              correctSound.unloadAsync();
+                // Unload sound
+                correctSound.unloadAsync();
             }
           : undefined;
       }, [correctSound]);
-
-    useEffect(() => {
-        console.log(word + textColor);
-    }, [textColor])
 
     interface ICalculateXPositionAdjust {
         wordXCentroid: number,
@@ -118,12 +114,10 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     }
 
     async function playCorrectSound() {
-        console.log('Loading Sound');
+        // Load sound
         const { sound } = await Audio.Sound.createAsync( require('../../../assets/audio/correct.mp3')
         );
         setCorrectSound(correctSound);
-    
-        console.log('Playing Sound');
         await sound.playAsync();
     }
 

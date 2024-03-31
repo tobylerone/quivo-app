@@ -44,12 +44,10 @@ export default function useFetchItems(){
         let newItem = items[itemIndex + 1];
 
         if (itemIndex < items.length - 1) {
-            console.log(itemIndex);
             setItemIndex(prevIndex => prevIndex + 1);
         } else {
             // Want to get new sentences and reset index to 0
             fetchData();
-            console.log(itemIndex);
         }
         setCurrentItem(newItem);
     };

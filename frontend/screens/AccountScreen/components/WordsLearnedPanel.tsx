@@ -14,7 +14,6 @@ interface IWordsLearnedPanelProps {
 export default function WordsLearnedPanel({navigation}: IWordsLearnedPanelProps) {
 
     const { currentUser, wordCounts } = useContext(UserContext);
-    console.log(wordCounts);
 
     const renderBar = (title: string, total: number, value: number) => (
         <View style={styles.barContainer}>

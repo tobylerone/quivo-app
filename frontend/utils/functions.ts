@@ -60,7 +60,6 @@ export const frequencyIndexToComprehensionPercentage = (n: number, coeffs: strin
     // (n=1000), they could understand f(n) percent of the text in the corpus.
     // TODO: Pass in the custom constants for each language's corpus.
     const floatCoeffs = coeffs.map(item => parseFloat(item));
-    console.log(floatCoeffs);
     return n == 0 ? 0 : Math.round(floatCoeffs[0] + floatCoeffs[1] / (1 + Math.E**(floatCoeffs[2] * n**floatCoeffs[3])));
     //return n == 0 ? 0 : Math.round(-83.32317585 + 191.39405783 / (1 + Math.E**(-0.39771826 * n**0.20018198)));
 }

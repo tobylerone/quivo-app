@@ -40,9 +40,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
     }, [wordsData]);
 
     useEffect(() => {
-        // This won't work as
         console.log('Sentence re-render triggered');
-        console.log(activeWords);
         createSentenceComponents(currentItem, wordsData).then(components => {
             setSentenceComponents(components);
         });
@@ -68,8 +66,6 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
     const handleWordPress = (word: string) => {
         let fullWord = getFullWord(word.toLowerCase());
-        console.log(activeWords);
-        console.log(fullWord);
         if (activeWords.includes(fullWord)) {
             setActiveWords((prevArr) => prevArr.filter((item) => item !== fullWord));
         } else {

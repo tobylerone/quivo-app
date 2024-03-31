@@ -50,7 +50,6 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
 
     useEffect(() => {
         // Probably don't need to do this check every time
-        console.log(dailyWordCount);
         if (dailyWordCount >= 10) {
             if(!streakLimitReached) setStreakLimitReached(true);
         } else {
@@ -114,7 +113,6 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const getCurrentLanguageCode = () => {
         client.get("./api/users/currentlanguage")
         .then(function(res){
-            console.log('current language: '+res.data);
             setCurrentLanguageCode(res.data);
         }).catch(function(error){
             console.log(error);

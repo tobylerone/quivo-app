@@ -19,22 +19,31 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
     const screenWidth = useWindowDimensions().width;
 
     useEffect(() => {
+        // update activeWords to include all words in wordsData
+        
         // This useEffect relies on wordsData consistently updating slower than
         // currentItem, but it probably needs a rethink
         if (currentItem && wordsData) {
-            // Split sentence by word boundaries and return either text or a Word component if it is to be clickable
-            createSentenceComponents(currentItem, wordsData).then(components => {
-                console.log('setting new components');
-                setSentenceComponents(components);
-            });
+
+            // Initialises activeWords with the wordsData keys where
+            // the user already knows the word.
+            setActiveWords(Object.keys(Object.fromEntries(
+                Object.entries(wordsData).filter(
+                    ([key, value]) => value.user_knows
+                )
+            )));
+
+            // This starts speaking before sentence components have been created
+            // which might seem odd if sentence takes a while to render
             if (autoDictEnabled) speak(currentItem.sentence, currentLanguageCode);
         }
     }, [wordsData]);
 
     useEffect(() => {
+        // This won't work as
+        console.log('Sentence re-render triggered');
         console.log(activeWords);
         createSentenceComponents(currentItem, wordsData).then(components => {
-            console.log('setting new components');
             setSentenceComponents(components);
         });
     }, [activeWords])
@@ -59,6 +68,8 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
     const handleWordPress = (word: string) => {
         let fullWord = getFullWord(word.toLowerCase());
+        console.log(activeWords);
+        console.log(fullWord);
         if (activeWords.includes(fullWord)) {
             setActiveWords((prevArr) => prevArr.filter((item) => item !== fullWord));
         } else {
@@ -95,7 +106,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
                     navigation={navigation}
                     word={word}
                     wordData={wordsData[fullWord]}
-                    textColor={wordsData[fullWord].user_knows || activeWords.includes(word) ? constants.PRIMARYCOLOR : constants.BLACK}
+                    textColor={activeWords.includes(fullWord) ? constants.PRIMARYCOLOR : constants.BLACK}
                     onPress={handleWordPress}
                     isFirstWord={i==0}
                     screenWidth={screenWidth}

@@ -9,6 +9,7 @@ import { flagImageSources } from "../../assets/img/imageSources";
 // Components
 import NavBar from "../../components/NavBar";
 import FollowButton from "../../components/FollowButton";
+import { assets } from "../../react-native.config";
 
 export default function OtherUserAccountScreen({route, navigation}: NativeStackHeaderProps) {
 
@@ -21,6 +22,13 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
             <View style={styles.userContainer}>
                 <View style={styles.topContainer}>
                     <Text style={styles.usernameText}>{user.username}</Text>
+                    <View style={styles.streakContainer}>
+                        <Image 
+                            source={require('../../assets/streak-flame.png')}
+                            style={styles.streakImage}
+                        />
+                        <Text style={styles.streakText}>{user.streak}</Text>
+                    </View>
                     {/* TODO: This doesn't update user.user_is_following which can lead to errors. Need
                     to get fresh user data every time this page is loaded rather than passing the object
                     */}
@@ -107,6 +115,25 @@ const styles = StyleSheet.create({
         //width: '100%',
         //textAlign: 'center',
         padding: 10
+    },
+    streakContainer: {
+        flexDirection: 'row',
+        height: 40,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    streakImage: {
+        width: 30,
+        height: 30,
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
+    streakText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        color: constants.ORANGE,
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     followButtonContainer: {
         marginLeft: 'auto',

@@ -136,6 +136,7 @@ export const generateBuckets = (nCorpus: number, nBuckets: number, firstTerm: nu
     //add/subtract difference to final level bucket size
     buckets[buckets.length - 1] += outstanding;
 
+    // Get the cumulative size of all buckets
     const cumBuckets = buckets.map((sum => value => sum += value)(0));
 
     return {buckets, cumBuckets};

@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout
 from django.core import serializers
 from django.utils import timezone
 import datetime
+import ast
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.db.models import Q
@@ -511,8 +512,11 @@ class SentencesViewSet(viewsets.ModelViewSet):
 			}.get(language_code, 'fr') # Default to fr for now
 
 	def get_queryset(self):
+		#TODO: Make this MUCH more efficient
 
 		language_code = self.request.session.get('current_language_code')
+		percentage_known_words = 50
+		tolerance = 5
 		
 		queryset = {
 			'fr': FrSentence.objects.all(),
@@ -522,7 +526,14 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		
 		# Randomly ordering the entire dataset to get 20 rows is really inefficient
 		# but since i'm not sticking with this method it's good enough for now
-		queryset = queryset.order_by('?')[:20]
+		queryset = queryset.order_by('?')[:200]
+		#queryset = queryset.order_by('-min_count_rank')[:20]
+
+		#user_words = self.request.user.known_words.all()
+		user_words = UserWord.objects.filter(user=self.request.user, **{f"word_{language_code}__isnull": False}).all()
+
+		# Get the words in the specific language for the user
+		known_words = set(getattr(user_word, f"word_{language_code}").word for user_word in user_words)
 
 		# Convert all words arrays to stringified json
 		for item in queryset:
@@ -530,9 +541,22 @@ class SentencesViewSet(viewsets.ModelViewSet):
 			# Make sure double quotes so it's valid json
 			words = ', '.join(f'"{word}"' for word in item.words)
 			item.words = f'[{words}]'
+			print(item.words)
 
-		return queryset
+			# get the percentage of sentence words present in the user's known words by dividing the
+			# size of the intersection of the sets by the number of words in the sentence set
+			words = set(ast.literal_eval(item.words))
+			item.percentage = len(words.intersection(known_words)) / len(words) * 100
+			
+			print(item.percentage)
 
+		filtered_queryset = [
+			item for item in queryset
+			if item.percentage >= percentage_known_words - tolerance
+			and item.percentage <= percentage_known_words + tolerance
+			][:20]
+			
+		return filtered_queryset
 
 class WordDataView(APIView):
 	# Trop de donnees pour mettre dans l'url donc il faut

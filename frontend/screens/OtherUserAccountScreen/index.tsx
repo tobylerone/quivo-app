@@ -77,7 +77,7 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
                                 />
                             </View>
                             <Text style={styles.knownWordsText}>
-                                {user.known_words_count[item]}
+                                {user.known_words_count[item].toLocaleString("en-US")}
                             </Text>
                         </View>
                         }

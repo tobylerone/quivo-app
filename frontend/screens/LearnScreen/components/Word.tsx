@@ -153,7 +153,6 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
                 //    : constants.BLACK
                 //);
                 onPress(word);
-
                 playCorrectSound();
 
                 client.post(
@@ -250,7 +249,10 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
                 onPress={() => handlePress()}
                 >
                 <Text
-                    style={{...styles.mainText, color: textColor}}
+                    style={{
+                        ...styles.mainText,
+                        color: textColor
+                    }}
                     ref={wordRef}
                     >
                     {isFirstWord ? capitalizeFirstLetter(word) : word}
@@ -285,7 +287,6 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     mainText: {
         fontSize: constants.H1FONTSIZE + 3,
         fontFamily: constants.FONTFAMILYBOLD
-        //textAlign: "center"
     },
     infoBoxShadow: {
         backgroundColor: constants.PRIMARYCOLORSHADOW,

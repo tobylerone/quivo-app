@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: constants.SECONDARYCOLOR,
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 20,
         marginBottom: 20
     },
     sliderHeaderContainer: {

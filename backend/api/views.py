@@ -7,6 +7,7 @@ from django.core import serializers
 from django.utils import timezone
 import datetime
 import ast
+import random
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from django.db.models import Q
@@ -516,7 +517,7 @@ class SentencesViewSet(viewsets.ModelViewSet):
 
 		language_code = self.request.session.get('current_language_code')
 		percentage_known_words = self.kwargs['perc_known_words']
-		tolerance = 5
+		tolerance = 20
 		
 		queryset = {
 			'fr': FrSentence.objects.all(),
@@ -524,10 +525,12 @@ class SentencesViewSet(viewsets.ModelViewSet):
 			'ru': RuSentence.objects.all()
 			}.get(language_code, 'fr')
 		
-		# Randomly ordering the entire dataset to get 20 rows is really inefficient
-		# but since i'm not sticking with this method it's good enough for now
-		queryset = queryset.order_by('?')[:200]
-		#queryset = queryset.order_by('-min_count_rank')[:20]
+		# Select a random offset.
+		# TODO: This could lead to related groups of sentences being fetched together
+		# I should randomly order them when preparing the dataset
+		num_sentences = 50000
+		random_index = random.randint(0, queryset.count() - (num_sentences + 1))
+		queryset = queryset[random_index:random_index + num_sentences]
 
 		#user_words = self.request.user.known_words.all()
 		user_words = UserWord.objects.filter(user=self.request.user, **{f"word_{language_code}__isnull": False}).all()
@@ -541,26 +544,40 @@ class SentencesViewSet(viewsets.ModelViewSet):
 			# Make sure double quotes so it's valid json
 			words = ', '.join(f'"{word}"' for word in item.words)
 			item.words = f'[{words}]'
-			print(item.words)
 
 			# get the percentage of sentence words present in the user's known words by dividing the
 			# size of the intersection of the sets by the number of words in the sentence set
 			words = set(ast.literal_eval(item.words))
 			item.percentage = len(words.intersection(known_words)) / len(words) * 100
-			
-			print(item.percentage)
 
-		filtered_queryset = [
+		'''filtered_queryset = [
 			item for item in queryset
 			if item.percentage >= percentage_known_words - tolerance
 			and item.percentage <= percentage_known_words + tolerance
 			][:20]
+		
+		print(f"Queryset length: {len(filtered_queryset)}")
 			
-		return filtered_queryset
+		return filtered_queryset'''
+
+		# Generator returns once 20 sentences meeting criteria have been
+		# chosen and doesn't create a new 200-item list in memory. Passing
+		# queryset into local namespace will also save some time
+		def gen(queryset, known_words, percentage_known_words, tolerance):
+			count = 0
+			for item in queryset:
+				words = set(item.words)
+				percentage = len(words.intersection(known_words)) / len(words) * 100
+				if percentage_known_words - tolerance <= percentage <= percentage_known_words + tolerance:
+					yield item
+					count += 1
+					print(count)
+					if count == 20: return
+		
+		return list(gen(queryset, known_words, percentage_known_words, tolerance))
 
 class WordDataView(APIView):
-	# Trop de donnees pour mettre dans l'url donc il faut
-	# utiliser post
+	# Trop de donnees pour mettre dans l'url donc il faut utiliser post
 	def post(self, request, *args, **kwargs):
 
 		# This must be the same as map used to create word frequency dataset

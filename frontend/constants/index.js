@@ -35,3 +35,4 @@ export const MAXDAILYWORDS = 20;
 // LearnScreen. Move there
 export const DOUBLETAPDELAY = 200; // en millisecondes
 export const TRANSLATIONDISPLAYTIME = 1500;
+export const DOUBLETAPEFFECTDELAY = 200;

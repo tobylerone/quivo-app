@@ -152,10 +152,10 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </View>
             </View>
             <View style={styles.mainContainer}>
+                <SetKnownWordsPanel />
                 <ProgressPanel />
                 <ComprehensionPercPanel navigation={navigation} />
                 <WordsLearnedPanel navigation={navigation} />
-                <SetKnownWordsPanel />
                 <LeaderboardPanel navigation={navigation} />
             </View>
         </ScrollView>

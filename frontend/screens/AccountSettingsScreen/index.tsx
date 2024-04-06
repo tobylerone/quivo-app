@@ -46,12 +46,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
               subtext: 'Fast',
               arrow: true,
               action: () => {}
-            },
-            {
-              text: "Narrator voice",
-              subtext: 'Female',
-              arrow: true, action: () => {}
-            },
+            }
             ],
         },
         {

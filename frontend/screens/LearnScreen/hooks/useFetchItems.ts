@@ -6,7 +6,7 @@ import UserContext from "../../../contexts/UserContext";
 
 export default function useFetchItems(){
 
-    const { currentLanguageCode } = useContext(UserContext);
+    const { currentLanguageCode, knownWordsPercentage } = useContext(UserContext);
     const [items, setItems] = useState(null);
 
     //const [currentItem, setCurrentItem] = useState(items[0]);
@@ -15,10 +15,10 @@ export default function useFetchItems(){
 
     useEffect(() => {
         fetchData();
-    }, [currentLanguageCode])
+    }, [currentLanguageCode, knownWordsPercentage])
 
     const fetchData = async() => {
-        client.get("/api/sentences", { withCredentials: true })
+        client.get("/api/sentences/" + knownWordsPercentage, { withCredentials: true })
         .then(function(res) {
             // Make sure each item's word field in converted from stringified
             // json to real object   

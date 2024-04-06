@@ -3,7 +3,7 @@ from django.urls import path, include
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r"sentences", views.SentencesViewSet, basename="sentences")
+#router.register(r"sentences/<int:perc_comprehension>", views.SentencesViewSet, basename="sentences")
 router.register(r"languages", views.LanguagesViewSet, basename="languages")
 
 urlpatterns = [
@@ -25,6 +25,7 @@ urlpatterns = [
 	path('users/<int:user_id>/followers/', views.UserFollowersView.as_view(), name='user-followers'),
 	path('users/<int:user_id>/wordcounts/', views.UserWordCountsView.as_view(), name='user-word-counts'),
     path('users/<int:user_id>/toggleknownword/<str:word>', views.UserToggleKnownWordView.as_view(), name='user-toggle-word'),
+    path('sentences/<int:perc_known_words>', views.SentencesViewSet.as_view({'get': 'list'}), name='sentences'),
 	path('follow/<int:follower_id>/<int:followee_id>', views.UserFollowView.as_view(), name='follow-user'),
     path('unfollow/<int:follower_id>/<int:followee_id>', views.UserUnfollowView.as_view(), name='unfollow-user'),
 	path('csrf', views.csrf, name='csrf'),

@@ -26,6 +26,8 @@ interface ILanguage {
 export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
+    // TODO: This should be stored in the database for each user
+    const [knownWordsPercentage, setKnownWordsPercentage] = useState<(20|30|40|50|60|70|80)>(50);
     const [knownWords, setKnownWords] = useState<number>(0);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
@@ -199,6 +201,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
         <UserContext.Provider value={{
             currentUser,
             knownLanguages,
+            knownWordsPercentage,
             currentLanguageCode,
             userAvatarId,
             knownWords,
@@ -209,6 +212,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             streakLimitReached,
             updateCurrentLanguageCode,
             updateUserData,
+            setKnownWordsPercentage,
             setUserAvatarId,
             setKnownWords,
             setDailyWordCount,

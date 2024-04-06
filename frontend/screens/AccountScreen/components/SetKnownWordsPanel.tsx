@@ -6,7 +6,7 @@ import * as constants from "../../../constants";
 
 export default function SetKnownWordsPanel() {
 
-    const { currentUser, currentLanguageCode } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, knownWordsPercentage, setKnownWordsPercentage } = useContext(UserContext);
 
     const exampleSentences: Record<string, string> = {
         'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
@@ -14,7 +14,6 @@ export default function SetKnownWordsPanel() {
         'ru': 'Мама всегда говорила, что жизнь похожа на коробку шоколадных конфет: никогда не знаешь, какую конфету ты достанешь.'
     }
 
-    const [knownWordsPerc, setKnownWordsPerc] = useState(50);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [activeWordMask, setActiveWordMask] = useState<(0 | 1)[]>([1,0,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,0,1,0]);
     //const [activeWordMask, setActiveWordMask] = useState(createInitialActiveWordMask(20, 50))
@@ -22,7 +21,7 @@ export default function SetKnownWordsPanel() {
     useEffect(() => {
         // TODO: Changing the language doesn't cause this to update straight away
         setActiveWordMask(createActiveWordMask());
-    }, [knownWordsPerc, currentLanguageCode]);
+    }, [knownWordsPercentage, currentLanguageCode]);
 
     useEffect(() => {
         let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguageCode]);
@@ -109,7 +108,7 @@ export default function SetKnownWordsPanel() {
         // Find new known words percentage to the nearest 10%
         const newKnownWordsPerc = Math.round((newActiveWordCount / totalWords) * 10) * 10;
         
-        const percChange = knownWordsPerc - newKnownWordsPerc;
+        const percChange = knownWordsPercentage - newKnownWordsPerc;
         const absWordChange = Math.abs(Math.round(percChange * totalWords / 100));
         
         if (percChange > 0) {
@@ -129,14 +128,14 @@ export default function SetKnownWordsPanel() {
         <View style={styles.sliderHeaderContainer}>
             <Text style={styles.sliderHeaderText}>Known Words Per Sentence</Text>
         </View>
-        <Text style={styles.knownWordsPercText}>{knownWordsPerc}%</Text>
+        <Text style={styles.knownWordsPercText}>{knownWordsPercentage}%</Text>
         <View style={styles.sliderContainer}>
             <Slider
                 style={{height: 65, padding: 0, margin: 0, transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }]}}
                 minimumValue={20}
                 maximumValue={80}
-                value={knownWordsPerc}
-                onValueChange={setKnownWordsPerc}
+                value={knownWordsPercentage}
+                onValueChange={setKnownWordsPercentage}
                 step={10}
                 minimumTrackTintColor={constants.PRIMARYCOLOR}
                 maximumTrackTintColor={constants.GREY}

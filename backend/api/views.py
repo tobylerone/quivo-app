@@ -515,7 +515,7 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		#TODO: Make this MUCH more efficient
 
 		language_code = self.request.session.get('current_language_code')
-		percentage_known_words = 50
+		percentage_known_words = self.kwargs['perc_known_words']
 		tolerance = 5
 		
 		queryset = {

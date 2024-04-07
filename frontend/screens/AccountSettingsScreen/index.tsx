@@ -6,7 +6,7 @@ import UserContext from '../../contexts/UserContext';
 import NavBar from "../../components/NavBar";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
@@ -51,7 +51,10 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                 arrow: true,
                 action: () => {}
               },
-              { text: soundActive ? "Sound on" : "Sound muted"/*<FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.TERTIARYCOLOR} />*/, action: () => {setSoundActive(!soundActive)} },
+              { text: soundActive ? "Sound on" : "Sound off",
+                subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.SUCCESSCOLOR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,
+                action: () => {setSoundActive(!soundActive)}
+              },
             ],
         },
         {

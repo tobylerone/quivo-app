@@ -16,7 +16,7 @@ export default function QACard({item, defaultActive}: IQAData) {
     const [isActive, setIsActive] = useState(defaultActive);
 
     return (
-        <>
+        <View>
         <View style={styles.container}>
             <TouchableOpacity
                 activeOpacity={1}
@@ -31,8 +31,8 @@ export default function QACard({item, defaultActive}: IQAData) {
             </View>
             }
         </View>
-        <View style={styles.questionContainerShadow}></View>
-        </>
+        <View style={styles.containerShadow}></View>
+        </View>
     );
 }
 
@@ -44,14 +44,10 @@ const styles = StyleSheet.create({
         borderLeftWidth: 3,
         borderRightWidth: 3,
         borderColor: constants.PRIMARYCOLOR,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        zIndex: 1
     },
-    questionContainer: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        padding: 10,
-        zIndex: 0
-    },
-    questionContainerShadow: {
+    containerShadow: {
         backgroundColor: constants.PRIMARYCOLORSHADOW,
         height: 50,
         borderRadius: 20,
@@ -59,7 +55,11 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: constants.PRIMARYCOLORSHADOW,
         marginTop: -43,
-        zIndex: -1
+        zIndex: 0
+    },
+    questionContainer: {
+        backgroundColor: constants.PRIMARYCOLOR,
+        padding: 10
     },
     questionText: {
         fontSize: constants.H2FONTSIZE,

@@ -1,14 +1,17 @@
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, SectionList } from "react-native";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import * as constants from "../../constants";
 import UserContext from '../../contexts/UserContext';
 import NavBar from "../../components/NavBar";
 import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, submitLogout } = useContext(UserContext);
+    const [soundActive, setSoundActive] = useState(true);
 
     const DATA = [
         {
@@ -47,7 +50,8 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                 subtext: 'Fast',
                 arrow: true,
                 action: () => {}
-              }
+              },
+              { text: soundActive ? "Sound on" : "Sound muted"/*<FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.TERTIARYCOLOR} />*/, action: () => {setSoundActive(!soundActive)} },
             ],
         },
         {

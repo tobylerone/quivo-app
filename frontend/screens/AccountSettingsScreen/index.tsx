@@ -41,18 +41,18 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
         {
             title: "General",
             data: [
-            {
-              text: 'Narration speed', 
-              subtext: 'Fast',
-              arrow: true,
-              action: () => {}
-            }
+              { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
+              {
+                text: 'Narration speed', 
+                subtext: 'Fast',
+                arrow: true,
+                action: () => {}
+              }
             ],
         },
         {
             title: "Social",
             data: [
-            { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
             { text: "Rate and comment", arrow: false, action: () => {} },
             { text: "Give feedback", arrow: false, color: constants.SUCCESSCOLOR, action: () => {navigation.navigate('Feedback')} },
             { text: "Privacy Policy", arrow: true, action: () => {} }, // Can create one here: https://termly.io/resources/templates/privacy-policy-template/

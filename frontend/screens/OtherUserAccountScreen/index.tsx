@@ -3,6 +3,8 @@ import { StyleSheet, View, SafeAreaView, Text, Image, FlatList } from "react-nat
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 // Constants
 import * as constants from "../../constants";
+// Utils
+import { calcLevel } from "../../utils/functions";
 // Assets
 import { avatarImageMap } from "../../assets/avatars/avatarMaps";
 import { flagImageSources } from "../../assets/img/imageSources";
@@ -15,6 +17,11 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
 
     // TODO: In future, just pass the userId and make a fresh API request for user data
     const { user } = route.params;
+
+    // Get the language that the user knows the most words in to calculate the level
+    const maxWordNum: number = Object.values(user.known_words_count).reduce((a, b) => Math.max(a, b));
+    
+    const { level } = calcLevel(maxWordNum, 30000);
     
     return (
         <SafeAreaView style={styles.container}>
@@ -29,6 +36,7 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
                         />
                         <Text style={styles.streakText}>{user.streak}</Text>
                     </View>
+                    <Text style={styles.levelText}>lv. {level}</Text>
                     {/* TODO: This doesn't update user.user_is_following which can lead to errors. Need
                     to get fresh user data every time this page is loaded rather than passing the object
                     */}
@@ -112,13 +120,19 @@ const styles = StyleSheet.create({
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK,
-        //width: '100%',
-        //textAlign: 'center',
+        padding: 10
+    },
+    levelText: {
+        fontSize: constants.H2FONTSIZE,
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.SUCCESSCOLOR,
+        marginLeft: 5,
         padding: 10
     },
     streakContainer: {
         flexDirection: 'row',
         height: 40,
+        marginLeft: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'
     },
@@ -136,7 +150,8 @@ const styles = StyleSheet.create({
         marginBottom: 'auto'
     },
     followButtonContainer: {
-        marginLeft: 'auto',
+        //marginLeft: 'auto',
+        marginLeft: 5,
         marginRight: 5,
         marginTop: 'auto',
         marginBottom: 'auto'

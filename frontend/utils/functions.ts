@@ -42,12 +42,13 @@ export const calcLevel = (n: number, tot_n: number) => {
     const {buckets, cumBuckets} = generateBuckets(tot_n, 100, 50);
     
     //level is the index of the
-    let level = findLastSmallerIndex(cumBuckets, n);
-    const knownWordsInLevel = n - cumBuckets[level];
-    const wordsInLevel = buckets[level + 1];
+    const levelIdx = findLastSmallerIndex(cumBuckets, n) + 1;
+    console.log(cumBuckets);
+    const knownWordsInLevel = n - (levelIdx == 0 ? 0 : cumBuckets[levelIdx - 1]);
+    const wordsInLevel = buckets[levelIdx];
     
-    // Level should start at 1 not 0
-    level = level + 1;
+    // Actual level is one more than the index
+    const level = levelIdx + 1;
 
     return { level, wordsInLevel, knownWordsInLevel};
 }

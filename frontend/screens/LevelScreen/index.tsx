@@ -51,7 +51,7 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
         >
         <NavBar title='Level' navigation={navigation} />
         <View style={styles.itemsContainer}>
-            {buckets.map((item, idx) => renderLevelItem(item, idx))}
+            {buckets.map((item, idx) => renderLevelItem(item, idx + 1))}
         </View>
     </ScrollView>
     );

@@ -16,7 +16,7 @@ import NavBar from "../../components/NavBar";
 
 export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages,knownWords, currentLanguage } = useContext(UserContext);
+    const { currentUser, knownLanguages, knownWords, currentLanguage } = useContext(UserContext);
     const {buckets, cumBuckets} = generateBuckets(30000, 100, 50);
     const userLevel = calcLevel(knownWords, 30000).level;
 
@@ -33,7 +33,8 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
             ...styles.itemContainer
         }}>
             <Text style={styles.levelText}>Lv. {level}</Text>
-            <Text style={styles.wordsText}>0 / {bucketSize}</Text>
+            <Text style={styles.wordsText}>
+                {level <= userLevel ? level == userLevel ? knownWords - cumBuckets[userLevel - 1] : bucketSize : 0} / {bucketSize}</Text>
             {avatarLevelUnlock.hasOwnProperty(level) &&
             <View style={styles.avatarImagesContainer}>
                 {avatarLevelUnlock[level].map(imageCode => renderImage(avatarImageMap[imageCode]))}

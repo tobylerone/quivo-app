@@ -18,26 +18,23 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
 
     const { currentUser, knownLanguages, knownWords, currentLanguage } = useContext(UserContext);
     const {buckets, cumBuckets} = generateBuckets(30000, 100, 50);
-    const userLevel = calcLevel(knownWords, 30000).level;
-
-    console.log(buckets);
-    console.log(cumBuckets)
+    const { level, knownWordsInLevel} = calcLevel(knownWords, 30000);
 
     const renderImage = (image: PNG) => (
         <Image source={image} style={styles.avatarImage} />
     );
 
-    const renderLevelItem = (bucketSize: number, level: number) => (
+    const renderLevelItem = (bucketSize: number, itemLevel: number) => (
         <View style={{
-            backgroundColor: level <= userLevel ? constants.GREEN : constants.GREY,
+            backgroundColor: itemLevel <= level ? constants.GREEN : constants.GREY,
             ...styles.itemContainer
         }}>
-            <Text style={styles.levelText}>Lv. {level}</Text>
+            <Text style={styles.levelText}>Lv. {itemLevel}</Text>
             <Text style={styles.wordsText}>
-                {level <= userLevel ? level == userLevel ? knownWords - cumBuckets[userLevel - 1] : bucketSize : 0} / {bucketSize}</Text>
-            {avatarLevelUnlock.hasOwnProperty(level) &&
+                {itemLevel <= level ? itemLevel == level ? knownWordsInLevel : bucketSize : 0} / {bucketSize}</Text>
+            {avatarLevelUnlock.hasOwnProperty(itemLevel) &&
             <View style={styles.avatarImagesContainer}>
-                {avatarLevelUnlock[level].map(imageCode => renderImage(avatarImageMap[imageCode]))}
+                {avatarLevelUnlock[itemLevel].map(imageCode => renderImage(avatarImageMap[imageCode]))}
             </View>
             }
         </View>

@@ -8,7 +8,6 @@ export default function useLevel(knownWords: number){
 
     const [levelData, setLevelData] = useState({
         level: 0,
-        levelResidual: 0,
         wordsInLevel: 0,
         knownWordsInLevel: 0
     });

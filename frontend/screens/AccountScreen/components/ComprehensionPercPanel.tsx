@@ -162,6 +162,6 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
     activityIndicator: {
-        marginTop: 20
+        //marginTop: 10
     }
 });

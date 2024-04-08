@@ -141,38 +141,38 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 80,
         borderRadius: 10,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: constants.PRIMARYCOLOR,
         overflow: 'hidden'
     },
     tableRow: {
         flexDirection: 'row',
         height: 40,
-        borderBottomWidth: 2,
+        borderBottomWidth: 3,
         borderBottomColor: constants.PRIMARYCOLOR
     },
     tableColumn: {
         width: '50%',
         marginHorizontal: 1,
         paddingVertical: 8,
-        borderRightWidth: 2,
+        borderRightWidth: 3,
         borderRightColor: constants.PRIMARYCOLOR
     },
     columnOneText: {
         fontSize: constants.H3FONTSIZE,
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK,
         //marginLeft: 'auto',
         marginLeft: 10,
         marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'
-        //marginTop: 5    
+        //marginTop: 5
     },
     columnTwoText: {
         fontSize: constants.H3FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.PRIMARYCOLOR,
+        color: constants.PRIMARYCOLORSHADOW,
         marginLeft: 'auto',
         marginRight: 10,
         //marginRight: 'auto',

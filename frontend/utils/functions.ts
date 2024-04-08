@@ -43,7 +43,6 @@ export const calcLevel = (n: number, tot_n: number) => {
     
     //level is the index of the
     const levelIdx = findLastSmallerIndex(cumBuckets, n) + 1;
-    console.log(cumBuckets);
     const knownWordsInLevel = n - (levelIdx == 0 ? 0 : cumBuckets[levelIdx - 1]);
     const wordsInLevel = buckets[levelIdx];
     

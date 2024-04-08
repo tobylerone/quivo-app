@@ -61,7 +61,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
         <View style={styles.panelBody}>
             {leaderboardData ?
                 leaderboardData.map((user, idx) => renderItem(user, idx))
-            : <ActivityIndicator size="large" color={constants.ORANGE} />
+            : <ActivityIndicator size="large" style={styles.activityIndicator} color={constants.ORANGE} />
             }
         </View>
     </View>
@@ -132,5 +132,8 @@ const styles = StyleSheet.create({
     streakText: {
         fontFamily: constants.FONTFAMILYBOLD,
         marginLeft: 'auto'
+    },
+    activityIndicator: {
+        marginVertical: 10
     }
 });

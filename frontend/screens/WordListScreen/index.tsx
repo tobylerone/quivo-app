@@ -18,6 +18,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     const { currentUser, knownWords, dailyWordCount } = useContext(UserContext);
     
     const [words, setWords] = useState([]);
+    const [paginator, setPaginator] = useState<number>(0);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [activeButton, setActiveButton] = useState<string>('1-1000');
 
@@ -29,6 +30,34 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
         fetchWordCounts();
         fetchWordsData(1, 100);
     }, []);
+
+    useEffect(() => {
+        fetchWordsData(
+            initialWordIndex[activeButton],
+            initialWordIndex[activeButton] + 99
+        ).then(() => {
+            // Make sure Flatlist returns to top when new data added
+            flatListRef.current.scrollToOffset({ animated: false, offset: 0 });
+        });
+    }, [activeButton]);
+
+    useEffect(() => {
+        // Fetch more words data when paginator is incremented;
+        fetchWordsData(
+            initialWordIndex[activeButton] + (paginator * 100),
+            initialWordIndex[activeButton] + 99 + (paginator * 100)
+            )
+    }, [paginator]);
+
+    // Temporary just to test
+    const initialWordIndex: Record<string, number[]> = {
+        '1-1000': 1,
+        '1001-2000': 1001,
+        '2001-3000': 2001,
+        '3001-4000': 3001,
+        '4001-5000': 4001,
+        '5000+': 5001,   
+    }
 
     // NOTE: Used in a few places. Should move centrally
     const fetchWordCounts = async() => {
@@ -53,7 +82,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
             // Don't need the word keys, just an array of each word's data
             let valuesArray = Object.values(res.data);
-            setWords(valuesArray);
+            setWords([...words, ...valuesArray]);
         } catch (error) {
             console.error(error);
         }
@@ -61,29 +90,15 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
     const handlePress = (activeButton: string) => {
         setActiveButton(activeButton);
-        // Temporary just to test
-        const wordsRange: Record<string, number[]> = {
-            '1-1000': [1, 100],
-            '1001-2000': [1001, 1100],
-            '2001-3000': [2001, 2100],
-            '3001-4000': [3001, 3100],
-            '4001-5000': [4001, 4100],
-            '5000+': [5001, 5100],   
-        }
 
-        // Clear words
+        // Clear words and set paginator back to zero
         setWords([]);
-
-        fetchWordsData(
-            wordsRange[activeButton][0],
-            wordsRange[activeButton][1]
-        ).then(() => {
-            // Make sure Flatlist returns to top when new data added
-            flatListRef.current.scrollToOffset({ animated: false, offset: 0 });
-        });
+        setPaginator(0);
     }
 
     const loadMore = () => {
+        console.log('Loading more');
+        setPaginator((val) => val + 1);
     }
 
     const buttonData = [

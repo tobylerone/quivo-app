@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, SafeAreaView, Text, Image, FlatList } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 // Constants
 import * as constants from "../../constants";
+// Contexts
+import UserContext from "../../contexts/UserContext";
 // Utils
 import { calcLevel } from "../../utils/functions";
 // Assets
@@ -14,6 +16,8 @@ import FollowButton from "../../components/FollowButton";
 import { assets } from "../../react-native.config";
 
 export default function OtherUserAccountScreen({route, navigation}: NativeStackHeaderProps) {
+
+    const { currentUser } = useContext(UserContext);
 
     // TODO: In future, just pass the userId and make a fresh API request for user data
     const { user } = route.params;
@@ -40,12 +44,14 @@ export default function OtherUserAccountScreen({route, navigation}: NativeStackH
                     {/* TODO: This doesn't update user.user_is_following which can lead to errors. Need
                     to get fresh user data every time this page is loaded rather than passing the object
                     */}
-                    <View style={styles.followButtonContainer}>
-                        <FollowButton 
-                            initUserIsFollowing={user.user_is_following}
-                            followee_id={user.user_id}
-                        />
-                    </View>
+                    {user.user_id !== currentUser.user_id &&
+                        <View style={styles.followButtonContainer}>
+                            <FollowButton 
+                                initUserIsFollowing={user.user_is_following}
+                                followee_id={user.user_id}
+                            />
+                        </View>
+                    }
                 </View>
                 <View style={styles.imageAndFollowContainer}>
                     <View style={styles.imageContainer}>

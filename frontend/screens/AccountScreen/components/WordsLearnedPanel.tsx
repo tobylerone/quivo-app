@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         height: 'auto',
         marginBottom: 20,
         borderWidth: 3,
-        borderColor: constants.GREEN
+        borderColor: constants.GREEN,
     },
     titleBar: {
         flexDirection: 'row',
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     },
     panelBody: {
         flexDirection: 'row',
-        height: 230
+        height: 220,
+        paddingHorizontal: 6
     },
     barContainer: {
         height: 150,
@@ -95,7 +96,9 @@ const styles = StyleSheet.create({
     barBackground: {
         backgroundColor: constants.GREEN,
         height: '100%',
-        margin: 10
+        overflow: 'hidden',
+        borderRadius: 10,
+        margin: 6
     },
     barForeground: {
         backgroundColor: constants.PRIMARYCOLOR,

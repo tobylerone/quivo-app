@@ -146,6 +146,8 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 style={styles.wordList}
                 data={words}
                 bounces={false}
+                overScrollMode="never"
+                removeClippedSubviews={true}
                 ref={flatListRef}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}

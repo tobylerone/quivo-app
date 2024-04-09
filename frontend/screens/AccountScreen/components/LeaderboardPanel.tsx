@@ -17,7 +17,7 @@ interface ILeaderboardPanelProps {
 export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
 
     const { currentUser } = useContext(UserContext);
-    const leaderboardData = useLeaderboardData();
+    const { leaderboardData, isCutoff, currentUserOutsideCutoff, currentUserIdx } = useLeaderboardData();
 
     const renderItem = (user: any, idx: number) => (
         <TouchableOpacity
@@ -53,14 +53,32 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
         </TouchableOpacity>
     );
 
+    const renderMoreButton = () => (
+        <TouchableOpacity
+        activeOpacity={1}
+        style={styles.seeMoreButton}
+        >
+            <Text style={styles.seeMoreButtonText}>···</Text>
+        </TouchableOpacity>
+    );
+
     return (
     <View style={styles.container}>
         <View style={styles.titleBar}>
             <Text style={styles.titleText}>Leaderboard</Text>
         </View>
         <View style={styles.panelBody}>
-            {leaderboardData ?
-                leaderboardData.map((user, idx) => renderItem(user, idx))
+            {leaderboardData ? //TODO: Sort this mess out
+                isCutoff ?
+                    currentUserOutsideCutoff ? (<>
+                        {leaderboardData.slice(0, 3).map((user, idx) => renderItem(user, idx))}
+                        {renderMoreButton()}
+                        {renderItem(currentUser, currentUserIdx)}
+                    </>) : (<>
+                        {leaderboardData.map((user, idx) => renderItem(user, idx))}
+                        {renderMoreButton()}
+                        </>)
+                : leaderboardData.map((user, idx) => renderItem(user, idx))
             : <ActivityIndicator size="large" style={styles.activityIndicator} color={constants.ORANGE} />
             }
         </View>
@@ -107,6 +125,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderWidth: 2,
         borderColor: constants.ORANGE,
+        backgroundColor: constants.TERTIARYCOLOR,
         borderRadius: 20,
         marginRight: 5
     },
@@ -132,6 +151,21 @@ const styles = StyleSheet.create({
     streakText: {
         fontFamily: constants.FONTFAMILYBOLD,
         marginLeft: 'auto'
+    },
+    seeMoreButton: {
+        borderTopWidth: 2,
+        height: 30,
+        borderTopColor: constants.ORANGE,
+        backgroundColor: constants.ORANGE,
+    },
+    seeMoreButtonText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        color: constants.TERTIARYCOLOR,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     activityIndicator: {
         marginVertical: 10

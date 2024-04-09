@@ -150,8 +150,8 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 onEndReached={() => loadMore()}
-                onEndReachedThreshold={0.1}
-                initialNumToRender={10} // Look into these two
+                onEndReachedThreshold={0.2}
+                initialNumToRender={30} // Look into these two
                 maxToRenderPerBatch={10}
                 renderItem={renderItem}
             />
@@ -166,6 +166,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         marginTop: 50,
+        marginBottom: 180,
         marginHorizontal: 20,
     },
     titleText: {

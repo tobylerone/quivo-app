@@ -20,6 +20,10 @@ export const LIGHTBLUE = "#96EFE9";
 export const ERRORCOLOR = "#AB2328";
 export const SUCCESSCOLOR = "#228B22";
 
+export const GOLD = "#D4AF37";
+export const SILVER = "#C0C0C0";
+export const BRONZE = "#9F7A34";
+
 //Police, tailles etc.
 export const FONTFAMILY = 'Nunito';
 export const FONTFAMILYBOLD = 'Nunito Bold';

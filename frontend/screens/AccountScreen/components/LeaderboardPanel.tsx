@@ -18,7 +18,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
 
     const { currentUser } = useContext(UserContext);
     const { leaderboardData, isCutoff, currentUserOutsideCutoff, currentUserIdx } = useLeaderboardData();
-
+    
     const renderItem = (user: any, idx: number) => (
         <TouchableOpacity
             activeOpacity={1}

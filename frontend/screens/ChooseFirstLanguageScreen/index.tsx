@@ -6,6 +6,8 @@ import UserContext from "../../contexts/UserContext";
 import * as constants from "../../constants";
 import client from "../../utils/axios";
 import LanguageItem from "./components/LanguageItem";
+// Components
+import RaisedButton from "../../components/RaisedButton";
 
 export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeaderProps) {
 
@@ -100,17 +102,24 @@ export default function ChooseFirstLanguageScreen({navigation}: NativeStackHeade
                     )}
                 />
             </View>
-            <TouchableOpacity
-                activeOpacity={1}
-                style={{
-                    opacity: submitButtonVisible ? 1 : 0,
-                    ...styles.submitButton
-                }}
-                onPress={() => {handleSubmitButtonPress()}}
+            <View style={{
+                opacity: submitButtonVisible ? 1 : 0,
+                ...styles.submitButtonContainer
+                }}>
+                <RaisedButton
+                    onPress={() => handleSubmitButtonPress()}
+                    options={{
+                        ...RaisedButton.defaultProps.options,
+                        borderRadius: 10,
+                        width: 200
+                    }}
                 >
-                <Text style={styles.submitButtonText}>Start Learning</Text>
-                <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
-            </TouchableOpacity>
+                    <View style={styles.submitButtonSubcontainer}>
+                        <Text style={styles.submitButtonText}>Start Learning</Text>
+                        <FontAwesome name="arrow-right" size={25} color={constants.TERTIARYCOLOR} />
+                    </View>
+                </RaisedButton>
+            </View>
         </SafeAreaView>
         );
     }
@@ -120,11 +129,10 @@ const styles = StyleSheet.create({
     container: {
     },
     subContainer: {
-        borderColor: constants.SECONDARYCOLOR,
+        borderColor: constants.PRIMARYCOLOR,
         borderWidth: 3,
         borderRadius: 20,
         overflow: 'hidden',
-        //marginTop: StatusBar.currentHeight,
         marginHorizontal: 16,
         marginTop: 60,
         marginBottom: 20
@@ -132,19 +140,22 @@ const styles = StyleSheet.create({
     title: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        backgroundColor: constants.SECONDARYCOLOR,
+        backgroundColor: constants.PRIMARYCOLOR,
+        color: constants.TERTIARYCOLOR,
         width: '100%',
         textAlign: 'center',
         padding: 10
     },
-    submitButton: {
+    submitButtonContainer: {
         marginLeft: 'auto',
         marginRight: 'auto',
+    },
+    submitButtonSubcontainer: {
         flexDirection: 'row',
-        backgroundColor: constants.PRIMARYCOLOR,
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 10
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     submitButtonText: {
         fontSize: constants.H2FONTSIZE,

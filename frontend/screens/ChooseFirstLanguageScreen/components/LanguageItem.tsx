@@ -18,7 +18,7 @@ export default function LanguageItem({ item, isActive, onPress }: ILanguageItem)
     
     const inactiveStyling = {
         backgroundColor: constants.TERTIARYCOLOR,
-        borderTopColor: constants.SECONDARYCOLOR,
+        borderTopColor: constants.TERTIARYCOLOR,
         color: constants.BLACK
     }
 

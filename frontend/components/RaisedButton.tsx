@@ -40,6 +40,7 @@ RaisedButton.propTypes = {
 
 RaisedButton.defaultProps = {
     options: {
+        flexDirection: 'row',
         width: 100,
         height: 50,
         borderWidth: 3,
@@ -68,6 +69,7 @@ export default function RaisedButton(
             height: options.height + options.borderWidth
             }}>
             <View style={{
+                flexDirection: options.flexDirection,
                 width: options.width,
                 height: options.height,
                 backgroundColor: options.shadowColor,

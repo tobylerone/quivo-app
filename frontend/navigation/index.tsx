@@ -35,6 +35,7 @@ import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
 import LearnCyrillicScreen from "../screens/LearnCyrillicScreen";
+import GetPremiumScreen from "../screens/GetPremiumScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -192,6 +193,11 @@ function MainNavigator() {
             <MainStack.Screen
                 name="Streak"
                 component={StreakScreen as any}
+                options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+                name="GetPremium"
+                component={GetPremiumScreen as any}
                 options={{ headerShown: false }}
             />
             <MainStack.Screen

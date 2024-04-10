@@ -31,9 +31,9 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             },
             {
               text: "Upgrade to premium",
-              arrow: false,
+              arrow: true,
               color: constants.SUCCESSCOLOR,
-              action: () => {}
+              action: () => {navigation.navigate('GetPremium')}
             },
             { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {
               console.log("Logging out")

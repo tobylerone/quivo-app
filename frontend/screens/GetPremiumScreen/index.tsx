@@ -20,10 +20,10 @@ export default function GetPremiumScreen({navigation}: NativeStackHeaderProps){
         </View>
         <View style={styles.parrotImageContainerShadow}></View>
         <View style={styles.parrotImageContainer}>
-            <Image style={styles.parrotImage} source={require('../../assets/avatars/black-and-white-lg.png')} />
+            <Image style={styles.parrotImage} source={require('../../assets/avatars/black-and-white-med.png')} />
         </View>
         <View style={styles.subtitleContainer}>
-            <Text style={[styles.subtitleText, styles.subtitleText1]}>Pay £1.99 a month to enjoy:</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText1]}>Pay $2.99 a month and enjoy:</Text>
             <Text style={[styles.subtitleText, styles.subtitleText2]}>· No more ads</Text>
             <Text style={[styles.subtitleText, styles.subtitleText2]}>· No daily word limit</Text>
         </View>

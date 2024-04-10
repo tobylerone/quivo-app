@@ -8,7 +8,11 @@ import FollowButton from "../components/FollowButton";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+// Constants
 import * as constants from "../constants";
+// Components
+import RaisedButton from "../components/RaisedButton";
+// Utils
 import client from "../utils/axios";
 
 interface IUser {
@@ -128,19 +132,25 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                 onChangeText={(text) => setSearchFieldText(text)}
                 />
                 </View>
-                <TouchableOpacity
-                    style={styles.searchButton}
-                    onPress={() => getUsers(searchFieldText)}
-                >
-                    <View style={styles.searchButtonIconContainer}>
-                        <FontAwesomeIcon icon={faSearch} size={25} color={constants.TERTIARYCOLOR} />
+                <View style={styles.searchButtonContainer}>
+                    <RaisedButton
+                        onPress={() => getUsers(searchFieldText)}
+                        options={{
+                            ...RaisedButton.defaultProps.options,
+                            width: 50,
+                            height: 50,
+                        }}
+                    >
+                        <View style={styles.searchButtonIconContainer}>
+                            <FontAwesomeIcon icon={faSearch} size={25} color={constants.TERTIARYCOLOR} />
                         </View>
-                </TouchableOpacity>
+                    </RaisedButton>
+                </View>
             </View>
             {users ?
                 users.length === 0 ?
                     <View>
-                        <Image style={styles.parrotImage} source={require('../assets/parrot-confused.png')}/>
+                        <Image style={styles.parrotImage} source={require('../assets/parrot-confused-med.png')}/>
                         <Text style={styles.noUsersMessageText}>No users found :(</Text>
                     </View>
                 : <FlatList
@@ -165,7 +175,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: constants.SECONDARYCOLOR,
         borderRadius: 10,
-        marginBottom: 10
+        marginBottom: 20
     },
     searchBarContainer: {
         width: '100%'
@@ -178,18 +188,17 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: 10,
     },
-    searchButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
+    searchButtonContainer: {
         marginLeft: 'auto',
-        width: 60,
-        borderRadius: 10,
-        height: 60,
-        justifyContent: 'center',
-        
+        marginTop: 17,
+        marginRight: 7,
+        height: 60
     },
     searchButtonIconContainer: {
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     noUsersMessageText: {
         fontFamily: constants.FONTFAMILYBOLD,
@@ -201,7 +210,7 @@ const styles = StyleSheet.create({
     },
     parrotImage: {
         width: 60,
-        height: 84,
+        height: 60,
         marginLeft: 'auto',
         marginRight: 'auto'
     },

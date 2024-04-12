@@ -19,7 +19,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
     const { currentUser } = useContext(UserContext);
     const { leaderboardData, isCutoff, currentUserOutsideCutoff, currentUserIdx } = useLeaderboardData();
     
-    const renderItem = (user: any, idx: number) => (
+    const renderItem = (navigation: any, user: any, idx: number) => (
         <TouchableOpacity
             activeOpacity={1}
             style={{
@@ -53,10 +53,11 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
         </TouchableOpacity>
     );
 
-    const renderMoreButton = () => (
+    const renderMoreButton = ({navigation}) => (
         <TouchableOpacity
         activeOpacity={1}
         style={styles.seeMoreButton}
+        onPress={() => navigation.navigate('Leaderboard')}
         >
             <Text style={styles.seeMoreButtonText}>···</Text>
         </TouchableOpacity>
@@ -71,14 +72,14 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
             {leaderboardData ? //TODO: Sort this mess out
                 isCutoff ?
                     currentUserOutsideCutoff ? (<>
-                        {leaderboardData.slice(0, 3).map((user, idx) => renderItem(user, idx))}
-                        {renderMoreButton()}
-                        {renderItem(currentUser, currentUserIdx)}
+                        {leaderboardData.slice(0, 3).map((user, idx) => renderItem(navigation, user, idx))}
+                        {renderMoreButton(navigation={navigation})}
+                        {renderItem(navigation, currentUser, currentUserIdx)}
                     </>) : (<>
-                        {leaderboardData.map((user, idx) => renderItem(user, idx))}
-                        {renderMoreButton()}
+                        {leaderboardData.map((user, idx) => renderItem(navigation, user, idx))}
+                        {renderMoreButton(navigation={navigation})}
                         </>)
-                : leaderboardData.map((user, idx) => renderItem(user, idx))
+                : leaderboardData.map((user, idx) => renderItem(navigation, user, idx))
             : <ActivityIndicator size="large" style={styles.activityIndicator} color={constants.ORANGE} />
             }
         </View>

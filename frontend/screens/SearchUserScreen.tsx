@@ -157,6 +157,10 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                     style={styles.userList}
                     data={users}
                     bounces={false}
+                    showsVerticalScrollIndicator={false} 
+                    showsHorizontalScrollIndicator={false}
+                    overScrollMode="never"
+                    removeClippedSubviews={true}
                     renderItem={({item}: {item: IUser}) => <UserListItem user={item} navigation={navigation} />}
                 />
             : <>{/*<ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />*/}</>

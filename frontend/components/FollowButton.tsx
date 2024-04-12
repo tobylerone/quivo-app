@@ -1,7 +1,12 @@
 import { TouchableOpacity, Text, StyleSheet } from "react-native"
 import { useState, useContext } from "react";
+// Constants
 import * as constants from "../constants"
+// Contexts
 import UserContext from '../contexts/UserContext';
+// Components
+import RaisedButton from "./RaisedButton";
+// Utils
 import client from "../utils/axios";
 
 interface IFollowButton {
@@ -57,10 +62,26 @@ export default function FollowButton({ followee_id, initUserIsFollowing }: IFoll
                     {userIsFollowing ? 'Unfollow' : 'Follow'}
                 </Text>
             </TouchableOpacity>
+            {/*<RaisedButton
+                onPress={handlePress}
+                options={{
+                    ...RaisedButton.defaultProps.options,
+                    backgroundColor: userIsFollowing ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR,
+                    shadowColor: userIsFollowing ? constants.PRIMARYCOLORSHADOW : constants.GREY,
+                    borderColor: userIsFollowing ? constants.PRIMARYCOLOR : constants.GREY
+                }}
+            >
+                <Text style={[
+                    userIsFollowing ? styles.unfollowButtonText : styles.followButtonText,
+                    styles.buttonText
+                ]}
+                >
+                    {userIsFollowing ? 'Unfollow' : 'Follow'}
+                </Text>
+            </RaisedButton>*/}
         </>
     );
 }
-
 const styles = StyleSheet.create({
     button: {
         borderRadius: 5,
@@ -81,7 +102,9 @@ const styles = StyleSheet.create({
         fontSize: constants.H3FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     followButtonText: {
         color: constants.PRIMARYCOLOR

@@ -38,9 +38,6 @@ const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
     const handlePress = async(
         language_code: string
         ) => {
-
-        console.log(language_code);
-        console.log(currentUser.user_id);
         
         const res = await client.post('./api/users/addlanguage/', {
             language_code: language_code,
@@ -115,7 +112,6 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
     const fetchAllLanguages = () => {
         client.get("/api/languages", { withCredentials: true })
         .then(function(res) {
-            console.log(knownLanguages);
             const allLanguages = res.data;
             
             // Remove languages user already knows
@@ -146,7 +142,7 @@ export default function AccountLanguagesScreen({navigation}: NativeStackHeaderPr
                 </View>
                 {unknownLanguages.length > 0 &&
                 <View>
-                    <Text style={styles.title}>More Languages</Text>
+                    <Text style={[styles.title, styles.moreLanguagesTitle]}>More Languages</Text>
                     <FlatList
                         data={unknownLanguages}
                         bounces={false}
@@ -170,7 +166,7 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         marginTop: 10,
-        borderColor: constants.SECONDARYCOLOR,
+        borderColor: constants.GREY,
         borderWidth: 3,
         borderRadius: 20,
         overflow: 'hidden',
@@ -183,10 +179,14 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 10
     },
-
+    moreLanguagesTitle: {
+        borderTopWidth: 3,
+        paddingTop: 13,
+        borderTopColor: constants.GREY
+    },
     // LanguageItem
     languageItemContainer: {
-        borderTopColor: constants.SECONDARYCOLOR,
+        borderTopColor: constants.GREY,
         flexDirection: 'row',
         borderTopWidth: 3,
         padding: 10

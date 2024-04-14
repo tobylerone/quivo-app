@@ -10,8 +10,7 @@ import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, submitLogout } = useContext(UserContext);
-    const [soundActive, setSoundActive] = useState(true);
+    const { currentUser, submitLogout, soundActive, setSoundActive } = useContext(UserContext);
 
     const DATA = [
         {

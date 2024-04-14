@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     // TODO: This should be stored in the database for each user
     const [knownWordsPercentage, setKnownWordsPercentage] = useState<(20|30|40|50|60|70|80)>(50);
     const [knownWords, setKnownWords] = useState<number>(0);
+    const [soundActive, setSoundActive] = useState<boolean>(true); // TODO: Link this to the user account on the backend
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
@@ -205,6 +206,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             currentLanguageCode,
             userAvatarId,
             knownWords,
+            soundActive,
             wordCounts,
             monthlyWordCounts,
             dailyWordCount,
@@ -215,6 +217,7 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             setKnownWordsPercentage,
             setUserAvatarId,
             setKnownWords,
+            setSoundActive,
             setDailyWordCount,
             setUserStreak,
             submitRegistration,

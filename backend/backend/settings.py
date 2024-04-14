@@ -28,7 +28,7 @@ ALLOWED_HOSTS = [
     "192.168.1.232",
     "192.168.0.22",
     "10.159.139.194",
-    "10.0.33.88"
+    "192.168.20.180"
     ]
 
 CORS_ALLOWED_ORIGINS = [f"http://{host}" for host in ALLOWED_HOSTS]

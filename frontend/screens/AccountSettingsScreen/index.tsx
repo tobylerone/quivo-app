@@ -6,7 +6,7 @@ import UserContext from '../../contexts/UserContext';
 import NavBar from "../../components/NavBar";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faFastForward, faForwardFast, faTruckFast, faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { faPersonCane, faPersonWalking, faPersonBiking, faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
@@ -16,6 +16,12 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
       0: 'Slow',
       1: 'Normal',
       2: 'Fast'
+    }
+
+    const narrationSpeedIcons: Record<number, string> = {
+      0: faPersonCane,
+      1: faPersonWalking,
+      2: faPersonBiking
     }
     
     const DATA = [
@@ -52,7 +58,11 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
               { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
               {
                 text: 'Narration speed',
-                subtext: <Text style={{color: constants.BLACK}}>{narrationSpeedTitle[narrationSpeed]}</Text>,
+                subtext: 
+                  <>
+                    {/*<Text style={{color: constants.BLACK}}>{narrationSpeedTitle[narrationSpeed]}</Text>*/}
+                    <FontAwesomeIcon icon={narrationSpeedIcons[narrationSpeed]} size={20} color={constants.BLACK} />
+                  </>,
                 action: () => setNarrationSpeed(narrationSpeed == 2 ? 0 : narrationSpeed + 1)
               },
               { text: soundActive ? "Sound on" : "Sound off",

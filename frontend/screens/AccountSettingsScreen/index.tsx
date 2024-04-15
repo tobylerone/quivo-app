@@ -6,12 +6,18 @@ import UserContext from '../../contexts/UserContext';
 import NavBar from "../../components/NavBar";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { faFastForward, faForwardFast, faTruckFast, faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, submitLogout, soundActive, setSoundActive } = useContext(UserContext);
-
+    const { currentUser, submitLogout, soundActive, setSoundActive, narrationSpeed, setNarrationSpeed } = useContext(UserContext);
+    
+    const narrationSpeedTitle: Record<number, string> = {
+      0: 'Slow',
+      1: 'Normal',
+      2: 'Fast'
+    }
+    
     const DATA = [
         {
             title: "Account",
@@ -45,14 +51,13 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             data: [
               { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
               {
-                text: 'Narration speed', 
-                subtext: 'Fast',
-                arrow: true,
-                action: () => {}
+                text: 'Narration speed',
+                subtext: <Text style={{color: constants.BLACK}}>{narrationSpeedTitle[narrationSpeed]}</Text>,
+                action: () => setNarrationSpeed(narrationSpeed == 2 ? 0 : narrationSpeed + 1)
               },
               { text: soundActive ? "Sound on" : "Sound off",
                 subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.SUCCESSCOLOR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,
-                action: () => {setSoundActive(!soundActive)}
+                action: () => setSoundActive(!soundActive)
               },
             ],
         },

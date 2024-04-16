@@ -466,12 +466,6 @@ class CurrentUserView(APIView):
 				'request': request
 				})
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
-	
-	"""def get_serializer_context(self):
-		context = super().get_serializer_context()
-		context.update({"request": self.request})
-		return context
-	"""
 
 
 class UserViewSet(generics.ListAPIView):
@@ -500,6 +494,13 @@ class LanguagesViewSet(viewsets.ModelViewSet):
 	serializer_class = LanguageModelSerializer
 
 
+# ---------------------------------------
+import line_profiler
+import re
+from django.db.models import Prefetch
+profile = line_profiler.LineProfiler()
+# ---------------------------------------
+
 class SentencesViewSet(viewsets.ModelViewSet):
 
 	def get_serializer_class(self):
@@ -511,19 +512,18 @@ class SentencesViewSet(viewsets.ModelViewSet):
 			'de': DeSentenceModelSerializer,
 			'ru': RuSentenceModelSerializer
 			}.get(language_code, 'fr') # Default to fr for now
-
+	
 	def get_queryset(self):
-		#TODO: Make this MUCH more efficient
 
 		language_code = self.request.session.get('current_language_code')
 		percentage_known_words = self.kwargs['perc_known_words']
-		tolerance = 20
+		tolerance = 10
 		
 		queryset = {
-			'fr': FrSentence.objects.all(),
-			'de': DeSentence.objects.all(),
-			'ru': RuSentence.objects.all()
-			}.get(language_code, 'fr')
+			'fr': lambda: FrSentence.objects.all(),
+			'de': lambda: DeSentence.objects.all(),
+			'ru': lambda: RuSentence.objects.all()
+			}.get(language_code, 'fr')()
 		
 		# Select a random offset.
 		# TODO: This could lead to related groups of sentences being fetched together
@@ -532,49 +532,50 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		random_index = random.randint(0, queryset.count() - (num_sentences + 1))
 		queryset = queryset[random_index:random_index + num_sentences]
 
-		#user_words = self.request.user.known_words.all()
 		user_words = UserWord.objects.filter(user=self.request.user, **{f"word_{language_code}__isnull": False}).all()
 
 		# Get the words in the specific language for the user
-		known_words = set(getattr(user_word, f"word_{language_code}").word for user_word in user_words)
-
-		# Convert all words arrays to stringified json
-		for item in queryset:
-			item.words = item.words[1:-1].split(",")  # Convert string to list
-			# Make sure double quotes so it's valid json
-			words = ', '.join(f'"{word}"' for word in item.words)
-			item.words = f'[{words}]'
+		language_column = f"word_{language_code}"
+		known_words = set(getattr(user_word, language_column).word for user_word in user_words)
 
 			# get the percentage of sentence words present in the user's known words by dividing the
 			# size of the intersection of the sets by the number of words in the sentence set
-			words = set(ast.literal_eval(item.words))
-			item.percentage = len(words.intersection(known_words)) / len(words) * 100
-
-		'''filtered_queryset = [
-			item for item in queryset
-			if item.percentage >= percentage_known_words - tolerance
-			and item.percentage <= percentage_known_words + tolerance
-			][:20]
+			#words = set(ast.literal_eval(item.words))
+   			# split json into words set. Since format is always the same a specific (and much faster) regex solution can be used
+			#words = set(re.findall(r'\"(.*?)\"', item.words))
+			#item.percentage = len(words.intersection(known_words)) / len(words) * 100
 		
-		print(f"Queryset length: {len(filtered_queryset)}")
-			
-		return filtered_queryset'''
-
 		# Generator returns once 20 sentences meeting criteria have been
 		# chosen and doesn't create a new 200-item list in memory. Passing
 		# queryset into local namespace will also save some time
+		@profile
 		def gen(queryset, known_words, percentage_known_words, tolerance):
 			count = 0
+			tolerance_counter = 0
 			for item in queryset:
+
+				# Very inefficient but increase tolerance by 10% if not returned 20 values after n iterations
+				if tolerance_counter == 5000:
+					tolerance += 10
+					tolerance_counter = 0
+				
+				tolerance_counter += 1
+
 				words = set(item.words)
-				percentage = len(words.intersection(known_words)) / len(words) * 100
-				if percentage_known_words - tolerance <= percentage <= percentage_known_words + tolerance:
+				# Avoid costly division by multiplying other terms by denominator
+				num_words = len(words)
+				if (percentage_known_words - tolerance) * num_words <= len(words.intersection(known_words)) * 100 <= (percentage_known_words + tolerance) * num_words:
 					yield item
 					count += 1
-					print(count)
 					if count == 20: return
 		
-		return list(gen(queryset, known_words, percentage_known_words, tolerance))
+		# Remove list() conversion, this is just to consume the generator so it shows up in the line profiler
+		values = list(gen(queryset, known_words, percentage_known_words, tolerance))
+		
+		with open('output.txt', 'w') as stream:
+			profile.print_stats(stream=stream)  
+
+		return values
 
 class WordDataView(APIView):
 	# Trop de donnees pour mettre dans l'url donc il faut utiliser post

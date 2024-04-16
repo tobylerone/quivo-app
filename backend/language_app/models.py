@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 class Language(models.Model):
     language_code = models.TextField(null=False)
@@ -14,13 +15,21 @@ class BaseSentence(models.Model):
     #id = models.BigAutoField(primary_key=True)
     sentence = models.TextField(null=True)
     translated_sentence = models.TextField(null=True)
-    #difficulty_score = models.DecimalField(decimal_places=4, max_digits=10, default=0) # remove
     cluster = models.IntegerField(null=True)
-    words = models.TextField(null=True) # TODO: Convert this to JSONField
+    words = models.JSONField(null=True) # TODO: Convert this to JSONField
     average_count = models.DecimalField(decimal_places=4, max_digits=20, null=True)
     min_count = models.DecimalField(decimal_places=4, max_digits=20, null=True)
     average_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
     min_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
+
+    # Convert words to valid JSON
+    def save(self, *args, **kwargs):
+        words = self.words[1:-1].split(",")  # Convert string to list
+        words = [word.strip() for word in words]  # Remove leading/trailing spaces
+        self.words = json.dumps(words)  # Convert list to JSON string
+
+        super().save(*args, **kwargs)
+
 
 class FrSentence(BaseSentence):
     pass

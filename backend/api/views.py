@@ -6,7 +6,6 @@ from django.contrib.auth import login, logout
 from django.core import serializers
 from django.utils import timezone
 import datetime
-import ast
 import random
 from django.db.models import Count
 from django.db.models.functions import TruncDate
@@ -38,6 +37,9 @@ from .serializers import (
 	)
 
 from .validations import custom_validation, validate_username, validate_password
+
+import line_profiler
+profile = line_profiler.LineProfiler()
 
 class UserRegisterView(APIView):
 	permission_classes = (permissions.AllowAny,)
@@ -121,9 +123,6 @@ class UserAddLanguageView(APIView):
 	
 		def post(self, request, *args, **kwargs):
 
-			#language_code = request.data.get('language_code')
-			#user_id = request.data.get('user_id')
-			
 			serializer = UserAddLanguageSerializer(data=request.data)
 
 			if serializer.is_valid():
@@ -138,7 +137,6 @@ class UserAddLanguageView(APIView):
 class UserChangeAvatarView(APIView):
 	def post(self, request, *args, **kwargs):
 		user_id = request.data.get('user_id')
-		avatar_id = request.data.get('avatar_id')
 
 		try:
 			# TODO: Extend this to other views
@@ -319,6 +317,7 @@ class UserUnfollowView(APIView):
 
 class UserToggleKnownWordView(APIView):
 
+	@profile
 	def post(self, request, *args, **kwargs):
 
 		language_code = self.request.session.get('current_language_code')
@@ -328,43 +327,7 @@ class UserToggleKnownWordView(APIView):
 
 		#serializer = UserToggleKnownWordSerializer(data=request.data)
 		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
-		
-		'''if serializer.is_valid():
 
-			user_id = serializer.validated_data['user_id']
-			word = serializer.validated_data['word']
-
-			word_data_model = {
-				'fr': FrWordData,
-				'de': DeWordData,
-				'ru': RuWordData
-			}.get(language_code, 'fr') # Default to fr for now
-			
-			user = AppUser.objects.get(user_id=user_id)
-			word_obj = word_data_model.objects.get(word=word)
-
-			known_words_obj = {
-				'fr': user.known_words_fr,
-				'de': user.known_words_de,
-				'ru': user.known_words_ru
-			}.get(language_code, 'fr')
-		
-			# Check if a user knows a word
-			if word_obj in known_words_obj.all():
-				word_added = False
-				known_words_obj.remove(word_obj)
-			else:
-				word_added = True
-				known_words_obj.add(word_obj)
-
-			return Response({
-				"status": "success",
-				"word_added": word_added
-				})
-		else:
-
-			return Response(serializer.errors, status=400)
-		'''
 		if serializer.is_valid():
 
 			user_id = serializer.validated_data['user_id']
@@ -392,6 +355,9 @@ class UserToggleKnownWordView(APIView):
 			else:
 				word_added = False
 				user.known_words.remove(user_word_obj)
+
+			with open('output.txt', 'w') as stream:
+				profile.print_stats(stream=stream)  
 
 			return Response({
 				"status": "success",
@@ -429,27 +395,17 @@ class UserWordCountsView(APIView):
         
 		# queryset contains all words in [Lang]WordData with annotation to say whether
 		# the current user knows each word
-		queryset = words_data_obj.objects.annotate(user_knows=Exists(user_words))
+		queryset = words_data_obj.objects.annotate(user_knows=Exists(user_words)).filter(user_knows=True)
+
+		counts = queryset.aggregate(**{
+			'1-1000': Count('id', filter=Q(id__range=(1, 1000))),
+			'1001-2000': Count('id', filter=Q(id__range=(1001, 2000))),
+			'2001-3000': Count('id', filter=Q(id__range=(2001, 3000))),
+			'3001-4000': Count('id', filter=Q(id__range=(3001, 4000))),
+			'4001-5000': Count('id', filter=Q(id__range=(4001, 5000))),
+			'5000+': Count('id', filter=Q(id__gt=5000))
+		})
 		
-		ranges = [
-			(1, 1000),
-			(1001, 2000),
-			(2001, 3000),
-			(3001, 4000),
-			(4001, 5000)
-			]
-
-		counts = {}
-
-		for start, end in ranges:
-
-			count = queryset.filter(id__range=(start, end), user_knows=True).count()
-			counts[f'{start}-{end}'] = count
-
-		# For 5000+
-		count = queryset.filter(id__gt=5000, user_knows=True).count()
-		counts['5000+'] = count
-
 		return Response(counts)
 
 
@@ -494,13 +450,6 @@ class LanguagesViewSet(viewsets.ModelViewSet):
 	serializer_class = LanguageModelSerializer
 
 
-# ---------------------------------------
-import line_profiler
-import re
-from django.db.models import Prefetch
-profile = line_profiler.LineProfiler()
-# ---------------------------------------
-
 class SentencesViewSet(viewsets.ModelViewSet):
 
 	def get_serializer_class(self):
@@ -529,30 +478,23 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		# TODO: This could lead to related groups of sentences being fetched together
 		# I should randomly order them when preparing the dataset
 		num_sentences = 50000
-		random_index = random.randint(0, queryset.count() - (num_sentences + 1))
+		queryset_count = queryset.count()
+		random_index = random.randint(0, queryset_count - (num_sentences + 1))
 		queryset = queryset[random_index:random_index + num_sentences]
 
 		user_words = UserWord.objects.filter(user=self.request.user, **{f"word_{language_code}__isnull": False}).all()
 
 		# Get the words in the specific language for the user
-		language_column = f"word_{language_code}"
-		known_words = set(getattr(user_word, language_column).word for user_word in user_words)
+		known_words = set(user_words.values_list(f'word_{language_code}__word', flat=True))
 
-			# get the percentage of sentence words present in the user's known words by dividing the
-			# size of the intersection of the sets by the number of words in the sentence set
-			#words = set(ast.literal_eval(item.words))
-   			# split json into words set. Since format is always the same a specific (and much faster) regex solution can be used
-			#words = set(re.findall(r'\"(.*?)\"', item.words))
-			#item.percentage = len(words.intersection(known_words)) / len(words) * 100
-		
 		# Generator returns once 20 sentences meeting criteria have been
 		# chosen and doesn't create a new 200-item list in memory. Passing
 		# queryset into local namespace will also save some time
-		@profile
+
 		def gen(queryset, known_words, percentage_known_words, tolerance):
 			count = 0
 			tolerance_counter = 0
-			for item in queryset:
+			for item in queryset.iterator():
 
 				# Very inefficient but increase tolerance by 10% if not returned 20 values after n iterations
 				if tolerance_counter == 5000:
@@ -570,12 +512,8 @@ class SentencesViewSet(viewsets.ModelViewSet):
 					if count == 20: return
 		
 		# Remove list() conversion, this is just to consume the generator so it shows up in the line profiler
-		values = list(gen(queryset, known_words, percentage_known_words, tolerance))
-		
-		with open('output.txt', 'w') as stream:
-			profile.print_stats(stream=stream)  
-
-		return values
+		return gen(queryset, known_words, percentage_known_words, tolerance)
+	
 
 class WordDataView(APIView):
 	# Trop de donnees pour mettre dans l'url donc il faut utiliser post
@@ -639,7 +577,7 @@ class WordDataView(APIView):
 		# flatten list of dictionaries into single dictionary with word
 		# as the key and word data dictionary as the value
 		word_data = {k: v for d in serializer.data for k, v in d.items()}
-		
+
 		return Response(word_data)
 
 

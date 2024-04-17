@@ -1,35 +1,45 @@
 Timer unit: 1e-07 s
 
-Total time: 9.40832 s
+Total time: 0.0678673 s
 File: C:\Users\Toby Usher\Documents\dev\quivo-app\backend\api\views.py
-Function: gen at line 551
+Function: get at line 376
 
 Line #      Hits         Time  Per Hit   % Time  Line Contents
 ==============================================================
-   551                                           		@profile
-   552                                           		def gen(queryset, known_words, percentage_known_words, tolerance):
-   553         1         18.0     18.0      0.0  			count = 0
-   554         1         10.0     10.0      0.0  			tolerance_counter = 0
-   555       302   94010840.0 311294.2     99.9  			for item in queryset:
-   556                                           
-   557                                           				# Convert word to correct format
-   558                                           				#words = item.words[1:-1].split(",")  # Convert string to list
-   559                                           				# Make sure double quotes so it's valid json
-   560                                           				#words = ', '.join(f'"{word.strip()}"' for word in words) # NOTE: This fails if the word already has quotation marks
-   561                                           				#item.words = f'[{words}]'
-   562                                           
-   563                                           				# Very inefficient but increase tolerance by 10% if not returned 20 values after n iterations
-   564       302       6156.0     20.4      0.0  				if tolerance_counter == 5000:
-   565                                           					tolerance += 10
-   566                                           					tolerance_counter = 0
-   567                                           				
-   568       302      14267.0     47.2      0.0  				tolerance_counter += 1
-   569                                           
-   570       302      22691.0     75.1      0.0  				words = set(item.words)
-   571                                           				# Avoid costly division by multiplying other terms by denominator
-   572       302       6873.0     22.8      0.0  				num_words = len(words)
-   573       302      21234.0     70.3      0.0  				if (percentage_known_words - tolerance) * num_words <= len(words.intersection(known_words)) * 100 <= (percentage_known_words + tolerance) * num_words:
-   574        20        383.0     19.1      0.0  					yield item
-   575        20        417.0     20.9      0.0  					count += 1
-   576        20        336.0     16.8      0.0  					if count == 20: return
+   376                                           	@profile
+   377                                           	def get(self, request, *args, **kwargs):
+   378                                           
+   379         2        205.0    102.5      0.0  		language_code = self.request.session.get('current_language_code')
+   380         2         14.0      7.0      0.0  		user_id = self.kwargs['user_id']
+   381                                           
+   382         6      17683.0   2947.2      2.6  		user_words = UserWord.objects.filter(
+   383         2          6.0      3.0      0.0      		user_id=user_id,
+   384         2        204.0    102.0      0.0      		**{f'word_{language_code}': OuterRef('pk')}
+   385                                           			)
+   386                                           
+   387         4         89.0     22.2      0.0  		words_data_obj = {
+   388         2         19.0      9.5      0.0  			'fr': FrWordData,
+   389         2         14.0      7.0      0.0  			'de': DeWordData,
+   390         2          9.0      4.5      0.0  			'ru': RuWordData
+   391         2         23.0     11.5      0.0  		}.get(language_code, 'fr')
+   392                                                   
+   393                                           		# queryset contains all words in [Lang]WordData with annotation to say whether
+   394                                           		# the current user knows each word
+   395         2      26575.0  13287.5      3.9  		queryset = words_data_obj.objects.annotate(user_knows=Exists(user_words)).filter(user_knows=True)
+   396                                           
+   397                                           		#queryset = queryset
+   398                                           
+   399         4     409334.0 102333.5     60.3  		counts = queryset.aggregate(**{
+   400         2       1129.0    564.5      0.2  			'1-1000': Count('id', filter=Q(id__range=(1, 1000))),
+   401         2        733.0    366.5      0.1  			'1001-2000': Count('id', filter=Q(id__range=(1001, 2000))),
+   402         2        832.0    416.0      0.1  			'2001-3000': Count('id', filter=Q(id__range=(2001, 3000))),
+   403         2        647.0    323.5      0.1  			'3001-4000': Count('id', filter=Q(id__range=(3001, 4000))),
+   404         2        691.0    345.5      0.1  			'4001-5000': Count('id', filter=Q(id__range=(4001, 5000))),
+   405         2        637.0    318.5      0.1  			'5000+': Count('id', filter=Q(id__gt=5000))
+   406                                           		})
+   407                                           
+   408         3     133839.0  44613.0     19.7  		with open('output.txt', 'w') as stream:
+   409         1      74270.0  74270.0     10.9  			profile.print_stats(stream=stream)  
+   410                                           		
+   411         1      11720.0  11720.0      1.7  		return Response(counts)
 

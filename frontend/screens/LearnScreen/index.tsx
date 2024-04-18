@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, Switch, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLanguage, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -17,6 +17,7 @@ import BottomNavBar from '../../components/BottomNavBar';
 import CheckBox from '../../components/CheckBox';
 import FlagButton from './components/FlagButton';
 import RaisedButton from "../../components/RaisedButton";
+import ToggleButton from "../../components/ToggleButton";
 // Hooks
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useFetchItems from './hooks/useFetchItems';
@@ -187,13 +188,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         </View>
         <View style={styles.autoplayContainer}>
             <Text style={styles.autoplayText}>Autoplay</Text>
-            <Switch
-                trackColor={{false: constants.SECONDARYCOLOR, true: constants.PRIMARYCOLOR}}
-                thumbColor={constants.PRIMARYCOLOR/*autoDictEnabled ? '#f5dd4b' : '#f4f3f4'*/}
-                ios_backgroundColor={constants.SECONDARYCOLOR}
-                onValueChange={() => {setAutoDictEnabled(!autoDictEnabled)}}
-                value={autoDictEnabled}
-            />
+            <View style={styles.toggleButtonContainer}>
+                <ToggleButton
+                    initiallySelected={false}
+                    size={20}
+                    onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
+                />
+            </View>
         </View>
         <View style={styles.bottomContainer}>
             <TouchableOpacity
@@ -391,6 +392,11 @@ const styles= StyleSheet.create({
         fontFamily: constants.FONTFAMILY,
         fontSize: constants.H3FONTSIZE,
         color: constants.BLACK,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginRight: 5
+    },
+    toggleButtonContainer: {
         marginTop: 'auto',
         marginBottom: 'auto'
     },

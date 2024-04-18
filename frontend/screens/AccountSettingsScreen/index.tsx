@@ -60,8 +60,8 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                 text: 'Narration speed',
                 subtext: 
                   <>
-                    {/*<Text style={{color: constants.BLACK}}>{narrationSpeedTitle[narrationSpeed]}</Text>*/}
-                    <FontAwesomeIcon icon={narrationSpeedIcons[narrationSpeed]} size={20} color={constants.BLACK} />
+                    <Text style={{color: constants.BLACK}}>{narrationSpeedTitle[narrationSpeed]}</Text>
+                    {/*<FontAwesomeIcon icon={narrationSpeedIcons[narrationSpeed]} size={20} color={constants.BLACK} />*/}
                   </>,
                 action: () => setNarrationSpeed(narrationSpeed == 2 ? 0 : narrationSpeed + 1)
               },

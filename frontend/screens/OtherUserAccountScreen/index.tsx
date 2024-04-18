@@ -13,7 +13,6 @@ import { flagImageSources } from "../../assets/img/imageSources";
 // Components
 import NavBar from "../../components/NavBar";
 import FollowButton from "../../components/FollowButton";
-import { assets } from "../../react-native.config";
 
 export default function OtherUserAccountScreen({route, navigation}: NativeStackHeaderProps) {
 
@@ -212,36 +211,42 @@ const styles = StyleSheet.create({
     knownWordsList: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginTop: 10,
-        marginBottom: 10
+        marginTop: 5,
+        marginBottom: 5
     },
     knownWordsPill: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         marginTop: 'auto',
         marginBottom: 'auto',
-        marginRight: 5,
-        paddingVertical: 5,
-        paddingHorizontal: 7,
+        marginHorizontal: 5,
         borderRadius: 10,
 
     },
     flagImageContainer: {
-
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        borderWidth: 3,
+        borderColor: constants.GREY,
+        borderRadius: 10,
+        overflow: 'hidden'
     },
     knownWordsText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H3FONTSIZE,
         color: constants.BLACK,
         marginTop: 'auto',
-        marginBottom: 'auto'
+        marginBottom: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     flagImage: {
         width: 40,
         height: 30,
         borderRadius: 5,
-        marginRight: 5,
-        marginTop: "auto",
-        marginBottom: "auto"
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto'
     },
     knownWords: {
         fontSize: constants.CONTENTFONTSIZE

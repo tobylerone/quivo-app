@@ -165,6 +165,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
             </View>
         </Animated.View>
+        <View style={styles.separatorBar}></View>
         {dailyWordCount < constants.STREAKDAILYWORDS &&
         <View style={styles.streakCirclesContainer}>
             {Array.from(
@@ -249,10 +250,7 @@ const styles= StyleSheet.create({
         marginTop: 60,
         flexDirection: 'row',
         paddingLeft: 20,
-        paddingRight: 20,
-        //paddingBottom: 10,
-        //borderBottomWidth: 2,
-        //borderBottomColor: constants.GREY
+        paddingRight: 20
     },
     levelBox: {
         flexDirection: 'column',
@@ -333,10 +331,14 @@ const styles= StyleSheet.create({
         alignSelf: 'flex-end',
         marginLeft: 'auto',
     },
+    separatorBar: {
+        borderBottomColor: constants.GREY,
+        borderBottomWidth: 2
+    },
     languagePopupAnimatedContainer: {
         backgroundColor: constants.PRIMARYCOLOR,
-        marginTop: 10,
-        marginBottom: 10
+        marginTop: 20,
+        //marginBottom: 10
     },
     languagePopupContainer: {
         paddingVertical: 10,

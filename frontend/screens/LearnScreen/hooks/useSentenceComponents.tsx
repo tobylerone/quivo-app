@@ -114,7 +114,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
             } else {
                 sentenceComponents.push(<Text style={{
                     color: constants.GREY,
-                    fontSize: constants.H1FONTSIZE + 3,
+                    fontSize: constants.H1FONTSIZE + 7,
                     fontFamily: constants.FONTFAMILYBOLD,
                     textAlign: "center" 
                 }} key={i}>{i==0 ? capitalizeFirstLetter(word) : word}</Text>);

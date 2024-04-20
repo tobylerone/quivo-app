@@ -285,7 +285,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     
     // Word
     mainText: {
-        fontSize: constants.H1FONTSIZE + 3,
+        fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD
     },
     infoBoxShadow: {

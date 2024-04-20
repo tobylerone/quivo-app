@@ -195,16 +195,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             </View>
             }
         </View>
-        <View style={styles.autoplayContainer}>
-            <Text style={styles.autoplayText}>Autoplay</Text>
-            <View style={styles.toggleButtonContainer}>
-                <ToggleButton
-                    initiallySelected={autoDictEnabled}
-                    size={20}
-                    onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
-                />
-            </View>
-        </View>
         <View style={styles.bottomContainer}>
             <TouchableOpacity
                 activeOpacity={1}
@@ -214,18 +204,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 >
                 <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
             </TouchableOpacity>
-            <View style={styles.nextButtonContainer}>
-                <RaisedButton
-                    onPress={() => changeItem()}
-                    options={{
-                        ...RaisedButton.defaultProps.options,
-                        borderRadius: 30,
-                        raisedHeight: 5
-                    }}
-                >
-                    <FontAwesomeIcon style={styles.nextButtonIcon} icon={faArrowRight} size={25} />
-                </RaisedButton>
-            </View>
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.speakButton}
@@ -235,6 +213,16 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 >
                 <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
             </TouchableOpacity>
+            <View style={styles.autoplayContainer}>
+                <Text style={styles.autoplayText}>Autoplay</Text>
+                <View style={styles.toggleButtonContainer}>
+                    <ToggleButton
+                        initiallySelected={autoDictEnabled}
+                        size={20}
+                        onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
+                    />
+                </View>
+            </View>
         </View>
         {/*<Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
             <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
@@ -364,8 +352,8 @@ const styles= StyleSheet.create({
         //marginTop: 10,
         padding: 15,
         borderRadius: 20,
-        borderWidth: 2,
-        borderColor: constants.GREY,
+        //borderWidth: 2,
+        //borderColor: constants.GREY,
         flexWrap: "wrap",
         flex: 1
     },
@@ -390,10 +378,10 @@ const styles= StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         height: 50,
-        marginTop: -80,
-        marginBottom: 30,
+        //marginTop: -80,
+        marginBottom: 25,
         marginLeft: 'auto',
-        marginRight: 30,
+        marginRight: 10,
         borderRadius: 10,
         //elevation: 4
     },
@@ -467,7 +455,7 @@ const styles= StyleSheet.create({
         width: "100%"
     },
     mainText: {
-        fontSize: constants.H1FONTSIZE + 3,
+        fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD,
         textAlign: "center"
     },
@@ -488,42 +476,9 @@ const styles= StyleSheet.create({
         flexDirection: 'column',
         marginTop: 0,
         marginLeft: 20,
+        marginRight: 10,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    nextButtonContainer: {
-        //paddingTop: 11,
-        width: 100,
-        height: 50,
-        marginRight: "auto",
-        marginLeft: "auto"
-    },
-    nextButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        width: 100,
-        height: 50,
-        borderRadius: 30,
-        marginRight: "auto",
-        marginLeft: "auto",
-        verticalAlign: 'middle',
-        textAlign: 'center'
-    },
-    nextButtonIcon: {
-        color: constants.TERTIARYCOLOR,
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    },
-    nextButtonShadow: {
-        backgroundColor: constants.PRIMARYCOLORSHADOW,
-        paddingTop: 11,
-        width: 100,
-        height: 50,
-        borderRadius: 30,
-        marginRight: "auto",
-        marginLeft: "auto",
-        marginBottom: -55
     },
     speakButton: {
         backgroundColor: constants.SECONDARYCOLOR,

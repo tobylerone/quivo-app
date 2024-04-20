@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
+        color: constants.BLACK,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginBottom: 10

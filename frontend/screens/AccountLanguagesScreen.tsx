@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.BLACK,
         backgroundColor: constants.SECONDARYCOLOR,
         width: '100%',
         textAlign: 'center',
@@ -201,7 +202,8 @@ const styles = StyleSheet.create({
     },
     languageItemLabelText: {
         fontSize: constants.H2FONTSIZE,
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.BLACK,
         marginTop: 'auto',
         marginBottom: 'auto'
     },

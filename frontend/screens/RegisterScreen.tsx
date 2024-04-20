@@ -119,7 +119,6 @@ export default function RegisterScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
     color: constants.ERRORCOLOR
   },
   inputView: {
-    backgroundColor: constants.SECONDARYCOLOR,//"#FFC0CB",
+    backgroundColor: constants.SECONDARYCOLOR,
     borderRadius: 10,
     width: "70%",
     height: 50,
@@ -155,11 +154,13 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     marginBottom: 'auto',
     fontSize: constants.H3FONTSIZE,
-    fontFamily: constants.FONTFAMILY
+    fontFamily: constants.FONTFAMILY,
+    color: constants.BLACK
   },
   forgotButton: {
     fontSize: constants.H3FONTSIZE,
     fontFamily: constants.FONTFAMILY,
+    color: constants.BLACK,
     height: 30,
     marginBottom: 30,
   },

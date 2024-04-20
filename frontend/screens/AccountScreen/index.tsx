@@ -206,25 +206,28 @@ const styles = StyleSheet.create({
     addUserButtonContainer: {
         alignSelf: 'flex-start',
         backgroundColor: constants.SECONDARYCOLOR,
-        padding: 15,
         width: 60,
+        height: 60,
         borderRadius: 10
     },
     addUserButton: {
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     settingsButtonContainer: {
         alignSelf: 'flex-end',
-        justifyContent: 'center',
         backgroundColor: constants.SECONDARYCOLOR,
-        padding: 15,
         width: 60,
+        height: 60,
         borderRadius: 10
     },
     settingsButton: {
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     profileImageAndLevelContainer: {
         width: 100,
@@ -263,6 +266,7 @@ const styles = StyleSheet.create({
     profileLevelText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.CONTENTFONTSIZE,
+        color: constants.BLACK,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 'auto',

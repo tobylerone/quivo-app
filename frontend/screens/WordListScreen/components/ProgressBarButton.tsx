@@ -23,7 +23,7 @@ export default function ProgressBarButton({id, label, currentValue, isActive, on
     const [borderColor, setBorderColor] = useState(isActive ? constants.PRIMARYCOLOR: constants.TERTIARYCOLOR);
     
     useEffect(() => {
-        setBorderColor(isActive ? constants.PRIMARYCOLOR: constants.TERTIARYCOLOR);
+        setBorderColor(isActive ? constants.BLACK: constants.TERTIARYCOLOR);
     }, [isActive]);
 
     const handlePress = () => {
@@ -53,7 +53,7 @@ export default function ProgressBarButton({id, label, currentValue, isActive, on
 
 const styles = StyleSheet.create({
     progressBarButton: {
-        backgroundColor: constants.LIGHTBLUE,
+        backgroundColor: constants.LIGHTGREY,
         flexDirection: "row",
         borderWidth: 3,
         borderRadius: 10,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         color: constants.BLACK
     },
     progressBarButtonNumberContainer: {
-        backgroundColor: constants.ORANGE,
+        backgroundColor: constants.GREEN,
         paddingHorizontal: 5,
         borderRadius: 5,
         marginTop: 'auto',
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     progressBarButtonNumberText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.TERTIARYCOLOR,
+        color: constants.BLACK,
     },
     progressBar: {
         position: 'absolute',

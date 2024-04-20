@@ -2,8 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLanguage, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
+import { faLanguage, faPlus, faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { } from '@fortawesome/free-regular-svg-icons';
 // Constants
 import * as constants from "../../constants";
 // Assets
@@ -85,7 +85,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         <View style={{
             backgroundColor: dailyWordCount >= i
                 ? constants.PRIMARYCOLOR
-                : constants.GREEN + '44',
+                : constants.LIGHTGREY,//constants.GREEN + '44',
             ...styles.streakCircle
         }}></View>
     );
@@ -202,7 +202,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 onPressIn={() => setTranslationVisible(true)}
                 onPressOut={() => setTranslationVisible(false)}
                 >
-                <FontAwesomeIcon icon={faLanguage} size={30} color={constants.BLACK} />
+                <FontAwesomeIcon icon={faLanguage} size={30} color={constants.PRIMARYCOLOR} />
             </TouchableOpacity>
             <TouchableOpacity
                 activeOpacity={1}
@@ -211,7 +211,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     speak(currentItem.sentence, currentLanguageCode)
                 }}
                 >
-                <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.BLACK} />
+                <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.PRIMARYCOLOR} />
             </TouchableOpacity>
             <View style={styles.autoplayContainer}>
                 <Text style={styles.autoplayText}>Autoplay</Text>
@@ -265,12 +265,14 @@ const styles= StyleSheet.create({
     levelText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.BLACK,
         marginTop: 'auto',
         marginRight: 5
     },
     levelWordText: {
         fontSize: constants.CONTENTFONTSIZE,
         fontFamily: constants.FONTFAMILY,
+        color: constants.BLACK,
         marginTop: 'auto'
     },
     progressBarBackground: {
@@ -281,7 +283,7 @@ const styles= StyleSheet.create({
         marginBottom: 'auto',
         //borderWidth: 2,
         //borderColor: constants.PRIMARYCOLOR,
-        backgroundColor: constants.GREEN + '55',
+        backgroundColor: constants.LIGHTGREY,//constants.GREEN + '55',
         borderRadius: 5,
         overflow: 'hidden'
     },
@@ -289,6 +291,7 @@ const styles= StyleSheet.create({
         height: 12,
         marginTop: -1,
         backgroundColor: constants.PRIMARYCOLOR,
+        borderRadius: 6
     },
     streakContainer: {
         flexDirection: 'row',
@@ -319,7 +322,7 @@ const styles= StyleSheet.create({
     streakNumberText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE - 5,
-        color: constants.ORANGE,
+        color: constants.PRIMARYCOLOR,
         marginTop: 'auto',
         marginBottom: 'auto',
         marginRight: 5
@@ -333,8 +336,8 @@ const styles= StyleSheet.create({
     languagePopupAnimatedContainer: {
         backgroundColor: constants.PRIMARYCOLOR,
         marginTop: 20,
-        borderBottomColor: constants.GREY,
-        borderBottomWidth: 2
+        //borderBottomColor: constants.GREY,
+        //borderBottomWidth: 3
     },
     languagePopupContainer: {
         paddingVertical: 9,
@@ -455,6 +458,7 @@ const styles= StyleSheet.create({
     mainText: {
         fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD,
+        color: constants.BLACK,
         textAlign: "center"
     },
     realSentence: {

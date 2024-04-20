@@ -159,6 +159,7 @@ const styles = StyleSheet.create({
     wordsLearnedInfo: {
         fontSize: constants.H3FONTSIZE,
         fontFamily: constants.FONTFAMILY,
+        color: constants.BLACK,
         marginTop: 10
     },
     activityIndicator: {

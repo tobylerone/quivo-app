@@ -84,12 +84,14 @@ const styles = StyleSheet.create({
     barCountText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.CONTENTFONTSIZE,
+        color: constants.BLACK,
         marginLeft: 'auto',
         marginRight: 'auto'
     },
     barLabelText: {
         fontFamily: constants.FONTFAMILY,
         fontSize: constants.CONTENTFONTSIZE,
+        color: constants.BLACK,
         marginLeft: 'auto',
         marginRight: 'auto'
     },

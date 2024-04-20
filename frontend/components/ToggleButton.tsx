@@ -21,7 +21,7 @@ export default function ToggleButton ({ initiallySelected, size, onValueChange }
                 width: size * 1.8,
                 height: size,
                 borderRadius: 0.5 * size,
-                backgroundColor: selected ? constants.GREEN : constants.GREY,
+                backgroundColor: selected ? constants.GREEN : constants.LIGHTGREY,
                 ...styles.toggleButton
             }}
             onPress={() => {

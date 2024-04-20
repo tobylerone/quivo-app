@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         height: 60,
         bottom: 0,
-        borderTopWidth: 2,
+        borderTopWidth: 3,
         borderColor: constants.GREY,
         backgroundColor: constants.TERTIARYCOLOR
         //marginHorizontal: 10

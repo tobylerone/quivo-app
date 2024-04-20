@@ -106,7 +106,6 @@ export default function LoginScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -119,7 +118,6 @@ const styles = StyleSheet.create({
     height: 70
   },
   errorBox: {
-    backgroundColor: constants.TERTIARYCOLOR,
     width: "70%",
     height: 30,
     alignItems: "center",
@@ -139,19 +137,22 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     marginBottom: 'auto',
     fontSize: constants.H3FONTSIZE,
-    fontFamily: constants.FONTFAMILY
+    fontFamily: constants.FONTFAMILY,
+    color: constants.BLACK
   },
   forgotButton: {
     height: 30,
     marginBottom: 10,
     fontSize: constants.H3FONTSIZE,
-    fontFamily: constants.FONTFAMILY
+    fontFamily: constants.FONTFAMILY,
+    color: constants.BLACK
   },
   registerButton: {
     height: 30,
     marginBottom: 30,
     fontSize: constants.H3FONTSIZE,
-    fontFamily: constants.FONTFAMILY
+    fontFamily: constants.FONTFAMILY,
+    color: constants.BLACK
   },
   loginButtonContainer: {
     marginLeft: 'auto',

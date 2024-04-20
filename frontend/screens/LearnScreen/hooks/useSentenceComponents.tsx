@@ -17,7 +17,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [activeWords, setActiveWords] = useState([]);
     const screenWidth = useWindowDimensions().width;
-
+    
     useEffect(() => {
         // update activeWords to include all words in wordsData
         
@@ -113,7 +113,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
                 //setActiveWords((prevArr) => [...prevArr, fullWord])
             } else {
                 sentenceComponents.push(<Text style={{
-                    color: constants.GREY,
+                    color: constants.BLACK,
                     fontSize: constants.H1FONTSIZE + 7,
                     fontFamily: constants.FONTFAMILYBOLD,
                     textAlign: "center" 

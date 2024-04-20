@@ -117,7 +117,9 @@ const styles = StyleSheet.create({
         borderTopColor: constants.ORANGE
     },
     itemText: {
+        fontFamily: constants.FONTFAMILY,
         fontSize: constants.H2FONTSIZE,
+        color: constants.BLACK,
         marginTop: 'auto',
         marginBottom: 'auto'
     },
@@ -139,6 +141,8 @@ const styles = StyleSheet.create({
         marginBottom: 'auto'
     },
     positionText: {
+        fontFamily: constants.FONTFAMILY,
+        fontSize: constants.H2FONTSIZE,
         color: constants.TERTIARYCOLOR,
         paddingVertical: 5,
         paddingHorizontal: 10,
@@ -151,6 +155,8 @@ const styles = StyleSheet.create({
     },
     streakText: {
         fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        color: constants.BLACK,
         marginLeft: 'auto'
     },
     seeMoreButton: {

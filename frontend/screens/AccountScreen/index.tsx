@@ -15,11 +15,20 @@ import ProgressPanel from './components/ProgressPanel';
 import WordsLearnedPanel from "./components/WordsLearnedPanel";
 import SetKnownWordsPanel from './components/SetKnownWordsPanel';
 import LeaderboardPanel from './components/LeaderboardPanel';
+// Utils
+import { calcLevel } from "../../utils/functions";
 
 export default function AccountScreen({navigation}: NativeStackHeaderProps) {
     // Drapeaux trouvés ici: https://www.flaticon.com/packs/international-flags-6
 
     const { currentUser, knownWords, knownLanguages, userAvatarId } = useContext(UserContext);
+
+    // Get the language that the user knows the most words in to calculate the level
+    // NOTE: These three lines are repeated here and AvatarScreen so they
+    // should be moved elsewhere
+    let maxWordNum: number = Object.values(currentUser.known_words_count).reduce((a, b) => Math.max(a, b));
+    maxWordNum = (maxWordNum <= knownWords) ? knownWords : maxWordNum;
+    const { level } = calcLevel(maxWordNum, 30000);
 
     // Only show some of the language flags if user learning lots of languages
     //let visibleFlags = Object.keys(currentUser.known_words_count);
@@ -62,7 +71,7 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
             </View>
             <View style={styles.profileContainer}>
-                <View style={styles.profileImageAndChangeContainer}>
+                <View style={styles.profileImageAndLevelContainer}>
                     <View style={styles.profileImageShadow}>
                     </View>
                     <TouchableOpacity
@@ -75,8 +84,8 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                             style={styles.profileImage}
                         />
                     </TouchableOpacity>
-                    <View style={styles.profileChangeIconContainer}>
-                        <FontAwesomeIcon style={styles.changeIcon} icon={faPlus} size={15} color={constants.ORANGE} />
+                    <View style={styles.profileLevelContainer}>
+                        <Text style={styles.profileLevelText}>Lv. {level}</Text>
                     </View>
                 </View>
                 <View style={styles.profileNameBubble}>
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
-    profileImageAndChangeContainer: {
+    profileImageAndLevelContainer: {
         width: 100,
         marginLeft: 'auto',
         marginRight: 'auto'
@@ -240,18 +249,20 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100
     },
-    profileChangeIconContainer: {
-        backgroundColor: constants.SECONDARYCOLOR,
-        width: 30,
+    profileLevelContainer: {
+        backgroundColor: constants.GREEN,
+        width: 50,
         height: 30,
-        borderRadius: 15,
-        borderWidth: 3,
-        borderColor: constants.ORANGE,
-        marginTop: -30,
+        borderRadius: 10,
+        //borderWidth: 2,
+        //borderColor: constants.GREEN,
+        marginTop: -25,
         marginBottom: 20,
-        marginLeft: 70,
+        marginLeft: 60,
     },
-    changeIcon: {
+    profileLevelText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.CONTENTFONTSIZE,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 'auto',

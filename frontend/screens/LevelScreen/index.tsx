@@ -14,7 +14,7 @@ import { calcLevel } from "../../utils/functions";
 // Components
 import NavBar from "../../components/NavBar";
 
-export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps) {
+export default function LevelScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, knownWords, currentLanguage } = useContext(UserContext);
     const {buckets, cumBuckets} = generateBuckets(30000, 100, 50);
@@ -26,12 +26,23 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
 
     const renderLevelItem = (bucketSize: number, itemLevel: number) => (
         <View style={{
-            backgroundColor: itemLevel <= level ? constants.GREEN : constants.GREY,
+            backgroundColor: itemLevel < level ? constants.GREEN : constants.GREY,
             ...styles.itemContainer
         }}>
+            {itemLevel == level && 
+            <View style={{
+                backgroundColor: constants.GREEN,
+                //position: 'absolute',
+                height: 100,
+                marginBottom: -100,
+                width: 80 * (knownWordsInLevel / bucketSize),
+                ...styles.levelItemProgressBackground
+            }}></View>
+            }
             <Text style={styles.levelText}>Lv. {itemLevel}</Text>
             <Text style={styles.wordsText}>
-                {itemLevel <= level ? itemLevel == level ? knownWordsInLevel : bucketSize : 0} / {bucketSize}</Text>
+                {itemLevel <= level ? itemLevel == level ? knownWordsInLevel : bucketSize : 0} / {bucketSize}
+            </Text>
             {avatarLevelUnlock.hasOwnProperty(itemLevel) &&
             <View style={styles.avatarImagesContainer}>
                 {avatarLevelUnlock[itemLevel].map(imageCode => renderImage(avatarImageMap[imageCode]))}
@@ -49,7 +60,7 @@ export default function WordsLearnedScreen({navigation}: NativeStackHeaderProps)
         overScrollMode="never"
         removeClippedSubviews={true}
         >
-        <NavBar title='Level' navigation={navigation} />
+        <NavBar title={'Level ' + level} navigation={navigation} />
         <View style={styles.itemsContainer}>
             {buckets.map((item, idx) => renderLevelItem(item, idx + 1))}
         </View>
@@ -70,6 +81,7 @@ const styles = StyleSheet.create({
     },
     itemContainer: {
         flexDirection: 'column',
+        overflow: 'hidden',
         margin: 5,
         borderRadius: 10,
         width: 80,

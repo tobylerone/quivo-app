@@ -80,7 +80,6 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
     // Get the language that the user knows the most words in to calculate the level
     let maxWordNum: number = Object.values(currentUser.known_words_count).reduce((a, b) => Math.max(a, b));
     maxWordNum = (maxWordNum <= knownWords) ? knownWords : maxWordNum;
-    
     const level = calcLevel(maxWordNum, 30000).level;
     
     const renderSubsection = (

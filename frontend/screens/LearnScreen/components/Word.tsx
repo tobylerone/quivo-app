@@ -63,7 +63,6 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
     const wordRef = useRef(null);
-    
     //const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
     // Temps écoulé depuis la dérnière fois qu'on a tapé sur le mot. Initialiser à 0 millisecondes
     const [lastPress, setLastPress] = useState(0);

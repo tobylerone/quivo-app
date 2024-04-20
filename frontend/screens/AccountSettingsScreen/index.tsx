@@ -18,7 +18,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
       2: 'Fast'
     }
 
-    const narrationSpeedIcons: Record<number, string> = {
+    const narrationSpeedIcons: Record<number, IconDefinition> = {
       0: faPersonCane,
       1: faPersonWalking,
       2: faPersonBiking
@@ -56,6 +56,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             title: "General",
             data: [
               { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
+              { text: "Dark mode", action: () => {} },
               {
                 text: 'Narration speed',
                 subtext: 

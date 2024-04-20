@@ -16,14 +16,13 @@ import FollowButton from "../../components/FollowButton";
 
 export default function OtherUserAccountScreen({route, navigation}: NativeStackHeaderProps) {
 
-    const { currentUser } = useContext(UserContext);
+    const { currentUser, knownWords } = useContext(UserContext);
 
     // TODO: In future, just pass the userId and make a fresh API request for user data
     const { user } = route.params;
 
     // Get the language that the user knows the most words in to calculate the level
-    const maxWordNum: number = Object.values(user.known_words_count).reduce((a, b) => Math.max(a, b));
-    
+    let maxWordNum: number = Object.values(user.known_words_count).reduce((a, b) => Math.max(a, b));
     const { level } = calcLevel(maxWordNum, 30000);
     
     return (

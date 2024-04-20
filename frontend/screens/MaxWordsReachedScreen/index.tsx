@@ -35,13 +35,26 @@ export default function MaxWordsReachedScreen({navigation}: NativeStackHeaderPro
                 onPress={() => {}}
                 options={{
                     ...RaisedButton.defaultProps.options,
-                    backgroundColor: constants.PRIMARYCOLOR,
                     width: 250,
-                    height: 70,
-                    borderRadius: 10,
+                    height: 60
                 }}
             >
                 <Text style={styles.adButtonText}>Watch Ad</Text>
+            </RaisedButton>
+        </View>
+        <View style={styles.adButtonContainer}>
+            <RaisedButton
+                onPress={() => {navigation.navigate('GetPremium')}}
+                options={{
+                    ...RaisedButton.defaultProps.options,
+                    backgroundColor: constants.ORANGE,
+                    borderColor: constants.ORANGE,
+                    shadowColor: constants. ORANGESHADOW,
+                    width: 250,
+                    height: 60
+                }}
+            >
+                <Text style={styles.adButtonText}>Get Premium</Text>
             </RaisedButton>
         </View>
     </View>
@@ -103,7 +116,8 @@ const styles = StyleSheet.create({
     },
     adButtonContainer: {
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        marginBottom: 20
     },
     adButtonText: {
         fontFamily: constants.FONTFAMILYBOLD,

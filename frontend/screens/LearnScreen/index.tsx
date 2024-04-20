@@ -19,6 +19,7 @@ import FlagButton from './components/FlagButton';
 import RaisedButton from "../../components/RaisedButton";
 import ToggleButton from "../../components/ToggleButton";
 // Hooks
+import { useSwipe } from "./hooks/useSwipe";
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useFetchItems from './hooks/useFetchItems';
 import useLevelData from './hooks/useLevelData';
@@ -34,7 +35,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
 
-    //const { knownWords } = useKnownWords(); THIS IS PART OF USER CONTEXT NOW
+    const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
     const { currentItem, changeItem } = useFetchItems();
@@ -68,6 +69,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         {title: 'Politics'},
         {title: 'Finance'},
     ];
+
+    // Handle swiping between sentences
+    function onSwipeLeft() {changeItem()}
+    function onSwipeRight() {}
 
     const renderPopupItem = (item: Record<string, string>) => (
         <View style={[styles.checkBoxContainer, styles.shadow]}>
@@ -168,7 +173,11 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             )}
         </View>
         }
-        <View style={styles.contentContainer}>
+        <View
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            style={styles.contentContainer}
+            >
             {currentItem &&
             <View style={styles.sentenceContainer}>
                 <View style={{
@@ -190,7 +199,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             <Text style={styles.autoplayText}>Autoplay</Text>
             <View style={styles.toggleButtonContainer}>
                 <ToggleButton
-                    initiallySelected={false}
+                    initiallySelected={autoDictEnabled}
                     size={20}
                     onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
                 />

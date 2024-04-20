@@ -26,7 +26,7 @@ export default function ToggleButton ({ initiallySelected, size, onValueChange }
             }}
             onPress={() => {
                 setSelected(!selected);
-                () => onValueChange();
+                onValueChange();
             }}>
             <View style={{
                 width: size,

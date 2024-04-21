@@ -94,7 +94,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     <>
     <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
-            <TouchableOpacity
+            {/*<TouchableOpacity
                 style={styles.streakContainer}
                 onPress={() => {navigation.navigate('Streak')}}
                 >
@@ -103,7 +103,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <View style={{overflow: 'hidden', height: dailyWordCount <= 10 ? Math.round(28 * dailyWordCount / 10) : 28, marginLeft: -28, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
                 </View>
                 <Text style={styles.streakNumberText}>{userStreak}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
             <TouchableOpacity
                 style={styles.levelBox}
                 onPress={() => {navigation.navigate('Level')}}
@@ -276,7 +276,7 @@ const styles= StyleSheet.create({
         marginTop: 'auto'
     },
     progressBarBackground: {
-        width: 110,
+        width: 210,
         height: 10,
         padding: -1,
         //marginTop: 'auto',

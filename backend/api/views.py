@@ -468,16 +468,23 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		percentage_known_words = self.kwargs['perc_known_words']
 		tolerance = 10
 		
-		queryset = {
-			'fr': lambda: FrSentence.objects.all(),
-			'de': lambda: DeSentence.objects.all(),
-			'ru': lambda: RuSentence.objects.all()
-			}.get(language_code, 'fr')()
+		model = {
+			'fr': FrSentence,
+			'de': DeSentence,
+			'ru': RuSentence
+			}.get(language_code, 'fr')
 		
 		# Select a random offset.
 		# TODO: This could lead to related groups of sentences being fetched together
 		# I should randomly order them when preparing the dataset
-		num_sentences = 50000
+		num_sentences = 20000
+
+		# ----------------------------
+		queryset = model.objects.filter(
+			average_count_rank__gte = 440000
+			)
+		# ----------------------------
+
 		queryset_count = queryset.count()
 		random_index = random.randint(0, queryset_count - (num_sentences + 1))
 		queryset = queryset[random_index:random_index + num_sentences]

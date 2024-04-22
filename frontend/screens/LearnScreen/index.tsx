@@ -41,14 +41,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { currentItem, changeItem } = useFetchItems();
     const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
-
-    useEffect(() => {
-        if (streakLimitReached === true){
-            setUserStreak(userStreak => userStreak + 1);
-            // TODO: Update in database
-            navigation.navigate('IncreaseStreak')
-        };
-    }, [streakLimitReached]);
     
     // TODO: This hook returns jsx which needs fixing
     const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
@@ -346,7 +338,6 @@ const styles= StyleSheet.create({
     contentContainer: {
         flexDirection: "column",
         justifyContent: "center",
-        backgroundColor: constants.TERTIARYCOLOR,
         marginHorizontal: 20,
         marginBottom: 20,
         //marginTop: 10,

@@ -9,7 +9,7 @@ export const HOST_ADDRESS = "http://10.159.139.194";
 // Schémas
 export const PRIMARYCOLOR = "#297A90";//"#66A599"
 export const SECONDARYCOLOR = "#F5F5F4";//"#F7ECDC";//"#F9EAE8";
-export const TERTIARYCOLOR = "#FEFDFF";//Nice cream: "#FBFAF5";
+export const TERTIARYCOLOR = "#FBFAF5";//"#FEFDFF";//Nice cream: "#FBFAF5";
 export const PRIMARYCOLORSHADOW = "#1A4C5A";
 export const BLACK = "#212121";
 export const GREY = "#CFCFCF";//"#BBBCBE";
@@ -35,7 +35,7 @@ export const H3FONTSIZE = 16;
 export const CONTENTFONTSIZE = 14;
 
 // Limites d'utilisation
-export const STREAKDAILYWORDS = 10;
+//export const STREAKDAILYWORDS = 10;
 export const MAXDAILYWORDS = 500;
 
 // LearnScreen. Move there

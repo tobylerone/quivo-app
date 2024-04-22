@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         marginRight: 'auto'
     },
     barBackground: {
-        backgroundColor: constants.GREEN,
+        backgroundColor: constants.GREEN + '55',
         height: '100%',
         overflow: 'hidden',
         borderRadius: 10,

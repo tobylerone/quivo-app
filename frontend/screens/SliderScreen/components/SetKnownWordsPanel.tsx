@@ -153,7 +153,7 @@ export default function SetKnownWordsPanel() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: constants.PURPLE + '33',
+        backgroundColor: constants.LIGHTBLUE + '33',
         borderWidth: 3,
         borderColor: constants.GREY,
         padding: 10,

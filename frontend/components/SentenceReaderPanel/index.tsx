@@ -11,16 +11,20 @@ import { speak } from '../../utils/text';
 import UserContext from '../../contexts/UserContext';
 // Components
 import ToggleButton from "../../components/ToggleButton";
+// Interfaces
+import { ISentence } from "../../interfaces";
 // Hooks
 import { useSwipe } from "./hooks/useSwipe";
-import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useFetchItems from './hooks/useFetchItems';
-import useLevelData from './hooks/useLevelData';
 import useFetchWordsData from "./hooks/useFetchWordsData";
 import useSentenceComponents from "./hooks/useSentenceComponents";
-import useFilterPopupVisible from "./hooks/useFilterPopupVisible";
 
-export default function SentenceReaderPanel(navigation) {
+interface ISentenceReaderProps {
+    navigation: any,
+    sentencesData?: ISentence[] | null
+}
+
+export default function SentenceReaderPanel({navigation, sentencesData = null}: ISentenceReaderProps) {
 
     const { currentLanguageCode, knownWords, dailyWordCount } = useContext(UserContext);
     
@@ -28,7 +32,9 @@ export default function SentenceReaderPanel(navigation) {
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
 
     const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
-    const { currentItem, changeItem } = useFetchItems();
+    
+    // If no sentenceData provided (defaults to null), fetch sentences from database.
+    const { currentItem, changeItem } = useFetchItems(sentencesData);
     const { wordsData } = useFetchWordsData(currentItem);
     
     // TODO: This hook returns jsx which needs fixing
@@ -41,8 +47,8 @@ export default function SentenceReaderPanel(navigation) {
     }, [currentItem]);
 
     // Handle swiping between sentences
-    function onSwipeLeft() {changeItem()}
-    function onSwipeRight() {}
+    function onSwipeLeft() {changeItem(1)}
+    function onSwipeRight() {changeItem(-1)}
 
     return (
     <SafeAreaView style={styles.container}>

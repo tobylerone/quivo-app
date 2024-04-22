@@ -13,8 +13,6 @@ import BottomNavBar from '../../components/BottomNavBar';
 import ComprehensionPercPanel from "./components/ComprehensionPercPanel";
 import ProgressPanel from './components/ProgressPanel';
 import WordsLearnedPanel from "./components/WordsLearnedPanel";
-import SetKnownWordsPanel from './components/SetKnownWordsPanel';
-import SentenceComplexityPanel from "./components/SentenceComplexityPanel";
 import LeaderboardPanel from './components/LeaderboardPanel';
 // Utils
 import { calcLevel } from "../../utils/functions";
@@ -162,8 +160,6 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                 </View>
             </View>
             <View style={styles.mainContainer}>
-                <SetKnownWordsPanel />
-                <SentenceComplexityPanel />
                 <ComprehensionPercPanel navigation={navigation} />
                 <ProgressPanel />
                 <WordsLearnedPanel navigation={navigation} />

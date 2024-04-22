@@ -71,9 +71,9 @@ export default function SentenceComplexityPanel() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: constants.SECONDARYCOLOR,
-        //borderWidth: 3,
-        //borderColor: constants.GREY,
+        backgroundColor: constants.GREEN + '33',
+        borderWidth: 3,
+        borderColor: constants.GREY,
         padding: 10,
         borderRadius: 20,
         marginBottom: 20
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     complexityLabelText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE,
-        color: constants.BLACK,
+        color: constants.PRIMARYCOLOR,
         marginBottom: 10,
         marginLeft: 'auto',
         marginRight: 'auto'

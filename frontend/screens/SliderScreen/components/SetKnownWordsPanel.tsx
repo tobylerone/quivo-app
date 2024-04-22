@@ -56,7 +56,7 @@ export default function SetKnownWordsPanel() {
             
             // Same as word unless in shortened_word_map
             if (words.includes(substring)) {
-                let wordColor = activeWordMask[wordIndex] ? constants.BLACK : constants.GREY
+                let wordColor = activeWordMask[wordIndex] ? constants.PRIMARYCOLOR : constants.GREY
                 wordIndex++;
                 sentenceComponents.push(
                     <Text style={{ color: wordColor, ...styles.exampleSentenceText }} key={i}>
@@ -153,9 +153,9 @@ export default function SetKnownWordsPanel() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: constants.SECONDARYCOLOR,
-        //borderWidth: 3,
-        //borderColor: constants.GREY,
+        backgroundColor: constants.PURPLE + '33',
+        borderWidth: 3,
+        borderColor: constants.GREY,
         padding: 10,
         borderRadius: 20,
         marginBottom: 20
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     knownWordsPercText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE,
-        color: constants.BLACK,
+        color: constants.PRIMARYCOLOR,
         marginBottom: 10,
         marginLeft: 'auto',
         marginRight: 'auto'

@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faLanguage, faPlus, faCommentDots } from '@fortawesome/free-solid-svg-icons';
+import { faLanguage, faPlus, faCommentDots, faSliders } from '@fortawesome/free-solid-svg-icons';
 import { } from '@fortawesome/free-regular-svg-icons';
 // Constants
 import * as constants from "../../constants";
@@ -119,6 +119,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             <View style={styles.topButtonsContainer}>
                 <TouchableOpacity
                     activeOpacity={1}
+                    style={[styles.filterButton, styles.shadow]}
+                    onPress={() => {navigation.navigate('Slider')}}
+                >
+                    <FontAwesomeIcon style={styles.filterButtonIcon} icon={faSliders} size={25} color={constants.PRIMARYCOLOR} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={1}
                     onPress={() => { toggleLanguagePopup() }}
                     >
                     <View style={[styles.flagImageContainer, styles.shadow]}>
@@ -165,14 +172,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
             </View>
         </Animated.View>
-        {dailyWordCount < constants.STREAKDAILYWORDS &&
-        <View style={styles.streakCirclesContainer}>
-            {Array.from(
-                {length: constants.STREAKDAILYWORDS},
-                (_, i) => i + 1).map((i) => renderStreakCircle(i)
-            )}
-        </View>
-        }
         <View
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
@@ -276,7 +275,7 @@ const styles= StyleSheet.create({
         marginTop: 'auto'
     },
     progressBarBackground: {
-        width: 210,
+        width: 150,
         height: 10,
         padding: -1,
         //marginTop: 'auto',
@@ -358,33 +357,15 @@ const styles= StyleSheet.create({
         flexWrap: "wrap",
         flex: 1
     },
-    streakCirclesContainer: {
-        flexDirection: 'row',
-        marginHorizontal: 40,
-        marginTop: 20,
-        marginBottom: -40,
-        zIndex: 2
-    },
-    streakCircle: {
-        //borderWidth: 3,
-        //borderColor: constants.PRIMARYCOLOR,
-        width: 20,
-        height: 20,
-        borderRadius: 10,
-        marginLeft: 'auto',
-        marginRight: 'auto'
-    },
     autoplayContainer: {
         flexDirection: 'row',
         paddingVertical: 5,
         paddingHorizontal: 10,
         height: 50,
-        //marginTop: -80,
         marginBottom: 25,
         marginLeft: 'auto',
         marginRight: 10,
-        borderRadius: 10,
-        //elevation: 4
+        borderRadius: 10
     },
     autoplayText: {
         fontFamily: constants.FONTFAMILY,
@@ -443,14 +424,18 @@ const styles= StyleSheet.create({
         alignItems: 'center'
     },
     filterButton: {
-        backgroundColor: constants.SECONDARYCOLOR,
+        backgroundColor: constants.TERTIARYCOLOR,
         height: 50,
         width: 50,
         borderRadius: 25,
-        flexDirection: 'column',
-        marginTop: 0,
-        justifyContent: 'center',
-        alignItems: 'center'
+        marginTop: -5,
+        marginRight: 10
+    },
+    filterButtonIcon: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     sentenceContainer: {
         width: "100%"

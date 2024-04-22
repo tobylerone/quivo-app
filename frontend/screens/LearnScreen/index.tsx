@@ -121,7 +121,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     activeOpacity={1}
                     onPress={() => { toggleLanguagePopup() }}
                     >
-                    <View style={styles.flagImageContainer}>
+                    <View style={[styles.flagImageContainer, styles.shadow]}>
                         <Image
                             source={flagImageSources[currentLanguageCode]}
                             style={styles.flagImage}
@@ -198,7 +198,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         <View style={styles.bottomContainer}>
             <TouchableOpacity
                 activeOpacity={1}
-                style={styles.translateButton}
+                style={[styles.translateButton, styles.shadow]}
                 onPressIn={() => setTranslationVisible(true)}
                 onPressOut={() => setTranslationVisible(false)}
                 >
@@ -206,7 +206,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             </TouchableOpacity>
             <TouchableOpacity
                 activeOpacity={1}
-                style={styles.speakButton}
+                style={[styles.speakButton, styles.shadow]}
                 onPress={() => {
                     speak(currentItem.sentence, currentLanguageCode)
                 }}
@@ -471,7 +471,7 @@ const styles= StyleSheet.create({
         width: "100%"
     },
     translateButton: {
-        backgroundColor: constants.SECONDARYCOLOR,
+        backgroundColor: constants.TERTIARYCOLOR,
         height: 50,
         width: 50,
         borderRadius: 25,
@@ -483,7 +483,7 @@ const styles= StyleSheet.create({
         alignItems: 'center'
     },
     speakButton: {
-        backgroundColor: constants.SECONDARYCOLOR,
+        backgroundColor: constants.TERTIARYCOLOR,
         height: 50,
         width: 50,
         borderRadius: 25,

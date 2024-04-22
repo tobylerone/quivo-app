@@ -9,7 +9,7 @@ import UserContext from "../contexts/UserContext";
 import * as constants from "../constants";
 
 interface IBottomNavBarProps {
-    hilighted: 'WordList' | 'Learn' | 'Account' | 'LearnCyrillic',
+    hilighted: 'WordList' | 'Learn' | 'Stories' | 'Account' | 'LearnCyrillic',
     navigation: any
 }
 
@@ -30,6 +30,11 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
             navigateTo: 'Learn'
         },
         {
+            inactiveImage: require('../assets/icons/stories-inactive-small.png'),
+            activeImage: require('../assets/icons/stories-active-small.png'),
+            navigateTo: 'Stories'
+        },
+        {
             inactiveImage: require('../assets/icons/user-inactive-small.png'),
             activeImage: require('../assets/icons/user-active-small.png'),
             navigateTo: 'Account'
@@ -39,14 +44,14 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
     // Should make this a custom hook so can update when language code
     // changes
     if (currentLanguageCode === 'ru') {
-        buttons.splice(2, 0, {
+        buttons.splice(1, 0, {
             inactiveImage: require('../assets/icons/cyrillic-inactive-small.png'),
             activeImage: require('../assets/icons/cyrillic-active-small.png'),
             navigateTo: 'LearnCyrillic'
         });
     }
 
-    const buttonWidth = currentLanguageCode === 'ru' ? '25%' : '33.333%';
+    const buttonWidth = currentLanguageCode === 'ru' ? '20%' : '25%';
     
     const renderButton = (inactiveImage: Image, activeImage: Image, navigateTo: string) => (
         <>

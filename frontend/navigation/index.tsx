@@ -36,7 +36,7 @@ import AvatarScreen from "../screens/AvatarScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
 import LearnCyrillicScreen from "../screens/LearnCyrillicScreen";
 import GetPremiumScreen from "../screens/GetPremiumScreen";
-import LeaderboardScreen from "../screens/LeaderboardScreen";
+import StoriesScreen from "../screens/LeaderboardScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -133,13 +133,21 @@ function MainNavigator() {
                 options={{headerShown: false}}
             />
             <MainStack.Screen
+                name="Stories"
+                component={StoriesScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
+            />      
+            <MainStack.Screen
                 name="LearnCyrillic"
                 component={LearnCyrillicScreen as any}
                 options={{
                     headerShown: false,
                     animation: 'none'
                 }}
-            />        
+            />  
             <MainStack.Screen
                 name="AccountSettings"
                 component={AccountSettingsScreen as any}
@@ -229,11 +237,6 @@ function MainNavigator() {
                     headerShown: false,
                     animation: 'slide_from_bottom'
                 }}
-            />
-            <MainStack.Screen
-                name="Leaderboard"
-                component={LeaderboardScreen as any}
-                options={{ headerShown: false }}
             />
         </MainStack.Navigator>
         )

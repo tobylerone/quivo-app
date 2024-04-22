@@ -1,6 +1,6 @@
 Timer unit: 1e-07 s
 
-Total time: 6.67936 s
+Total time: 9.75572 s
 File: C:\Users\Toby Usher\Documents\dev\quivo-app\backend\api\views.py
 Function: post at line 320
 
@@ -9,48 +9,48 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
    320                                           	@profile
    321                                           	def post(self, request, *args, **kwargs):
    322                                           
-   323        80      19252.0    240.7      0.0  		language_code = self.request.session.get('current_language_code')
+   323       143      29928.0    209.3      0.0  		language_code = self.request.session.get('current_language_code')
    324                                           		
-   325        80       2744.0     34.3      0.0  		user_id = self.kwargs.get('user_id')
-   326        80       1319.0     16.5      0.0  		word = self.kwargs.get('word')
+   325       143       3962.0     27.7      0.0  		user_id = self.kwargs.get('user_id')
+   326       143       2092.0     14.6      0.0  		word = self.kwargs.get('word')
    327                                           
    328                                           		#serializer = UserToggleKnownWordSerializer(data=request.data)
-   329        80     100926.0   1261.6      0.2  		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
+   329       143     153819.0   1075.7      0.2  		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
    330                                           
-   331        80     673909.0   8423.9      1.0  		if serializer.is_valid():
+   331       143    1025398.0   7170.6      1.1  		if serializer.is_valid():
    332                                           
-   333        80       5552.0     69.4      0.0  			user_id = serializer.validated_data['user_id']
-   334        80       3687.0     46.1      0.0  			word = serializer.validated_data['word']
+   333       143       7946.0     55.6      0.0  			user_id = serializer.validated_data['user_id']
+   334       143       5219.0     36.5      0.0  			word = serializer.validated_data['word']
    335                                           
-   336       160       2610.0     16.3      0.0  			word_data_model = {
-   337        80       1429.0     17.9      0.0  				'fr': FrWordData,
-   338        80       1038.0     13.0      0.0  				'de': DeWordData,
-   339        80        789.0      9.9      0.0  				'ru': RuWordData
-   340        80       1969.0     24.6      0.0  			}.get(language_code, 'fr') # Default to fr for now
+   336       286       3873.0     13.5      0.0  			word_data_model = {
+   337       143       2097.0     14.7      0.0  				'fr': FrWordData,
+   338       143       1418.0      9.9      0.0  				'de': DeWordData,
+   339       143       1183.0      8.3      0.0  				'ru': RuWordData
+   340       143       2793.0     19.5      0.0  			}.get(language_code, 'fr') # Default to fr for now
    341                                           
-   342        80    3325005.0  41562.6      5.0  			user = AppUser.objects.get(user_id=user_id)
-   343        80   11336355.0 141704.4     17.0  			word_obj = word_data_model.objects.get(word=word)
+   342       143    4894349.0  34226.2      5.0  			user = AppUser.objects.get(user_id=user_id)
+   343       143   16445808.0 115005.7     16.9  			word_obj = word_data_model.objects.get(word=word)
    344                                           
    345                                           			# Get the UserWord object for this user and word
-   346       240   21982610.0  91594.2     32.9  			user_word_obj, created = UserWord.objects.get_or_create(
-   347        80        779.0      9.7      0.0  				user=user,
-   348        80       2103.0     26.3      0.0  				**{f'word_{language_code}': word_obj}
+   346       429   32208083.0  75077.1     33.0  			user_word_obj, created = UserWord.objects.get_or_create(
+   347       143       1148.0      8.0      0.0  				user=user,
+   348       143       3134.0     21.9      0.0  				**{f'word_{language_code}': word_obj}
    349                                           			)
    350                                           
    351                                           			# Check if a user knows a word
-   352        80       1500.0     18.8      0.0  			if created:
-   353        80       1029.0     12.9      0.0  				word_added = True
+   352       143       2052.0     14.3      0.0  			if created:
+   353       142       1492.0     10.5      0.0  				word_added = True
    354                                           				#user.known_words.add(user_word_obj)
    355                                           			else:
-   356                                           				word_added = False
-   357                                           				user.known_words.remove(user_word_obj)
+   356         1          5.0      5.0      0.0  				word_added = False
+   357         1     349112.0 349112.0      0.4  				user.known_words.remove(user_word_obj)
    358                                           
-   359       159   15862314.0  99763.0     23.7  			with open('output.txt', 'w') as stream:
-   360        79   13235691.0 167540.4     19.8  				profile.print_stats(stream=stream)  
+   359       285   23040838.0  80845.0     23.6  			with open('output.txt', 'w') as stream:
+   360       142   19019496.0 133940.1     19.5  				profile.print_stats(stream=stream)  
    361                                           
-   362       158     229066.0   1449.8      0.3  			return Response({
-   363        79       1213.0     15.4      0.0  				"status": "success",
-   364        79        723.0      9.2      0.0  				"word_added": word_added
+   362       284     349020.0   1228.9      0.4  			return Response({
+   363       142       1866.0     13.1      0.0  				"status": "success",
+   364       142       1052.0      7.4      0.0  				"word_added": word_added
    365                                           				})
    366                                           
    367                                           		else:

@@ -105,12 +105,12 @@ const styles = StyleSheet.create({
     },
     complexityExplanationContainer: {
         marginBottom: 10,
-        height: 90
+        height: 80
     },
     complexityExplanationText: {
         fontFamily: constants.FONTFAMILY,
         fontSize: constants.H2FONTSIZE,
-        color: constants.GREY,
+        color: constants.BLACK,
         textAlign: 'center',
         marginHorizontal: 20
     }

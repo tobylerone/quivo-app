@@ -37,6 +37,7 @@ import FeedbackScreen from "../screens/FeedbackScreen";
 import LearnCyrillicScreen from "../screens/LearnCyrillicScreen";
 import GetPremiumScreen from "../screens/GetPremiumScreen";
 import StoriesScreen from "../screens/LeaderboardScreen";
+import ReadStoryScreen from "../screens/ReadStoryScreen";
 
 const whiteBackground = {
     ...DefaultTheme,
@@ -233,6 +234,14 @@ function MainNavigator() {
             <MainStack.Screen
                 name="Feedback"
                 component={FeedbackScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom'
+                }}
+            />
+            <MainStack.Screen
+                name="ReadStory"
+                component={ReadStoryScreen as any}
                 options={{
                     headerShown: false,
                     animation: 'slide_from_bottom'

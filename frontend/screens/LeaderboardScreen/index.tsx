@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, ScrollView, View, Text } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, View, Text, Image } from "react-native";
 import { useContext, useState } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 // Constants
@@ -9,6 +9,8 @@ import UserContext from "../../contexts/UserContext";
 import NavBar from "../../components/NavBar";
 import BottomNavBar from "../../components/BottomNavBar";
 import RaisedButton from "../../components/RaisedButton";
+// Assets
+import { avatarImageMap } from "../../assets/avatars/avatarMaps";
 
 export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
 
@@ -32,6 +34,111 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
         //Advanced
         ["The Mysterious Island", "In the vast expanse of the Pacific Ocean, there existed an uncharted island. It was discovered by an intrepid explorer named Captain James. The island was teeming with exotic flora and fauna, unlike anything James had ever seen. Intrigued, he decided to delve deeper into the island's mysteries. He encountered ancient ruins, hinting at a lost civilization. James meticulously documented his findings, capturing the essence of the island's enigmatic charm. His discoveries piqued the interest of the scientific community. Expeditions were organized to further explore the island. The island, once unknown, became a beacon of discovery and exploration. It was a testament to the endless wonders that our world holds."],
         ["The Enchanted Forest", "In the realm of Eldoria, there existed an enchanted forest. It was said to be home to mystical creatures. A brave knight named Sirus ventured into the forest. He was on a quest to find the legendary Phoenix. Guided by the whispers of the wind and the forest's subtle signs, he journeyed deeper. Amidst the emerald foliage, he found the Phoenix. Its radiant plumage illuminated the forest, casting ethereal shadows. The Phoenix granted Sirus a single wish for his bravery. Sirus wished for the prosperity of Eldoria. His encounter with the Phoenix marked a new era of peace and prosperity in Eldoria."],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
+        ["Story Title", ""],
     ];
 
     const renderDot = (index: number, completedStories: number) => (
@@ -40,7 +147,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
             height: 7,
             borderRadius: 4,
             backgroundColor: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
-            marginBottom: 10
+            marginBottom: 5
         }}></View>
     );
 
@@ -67,14 +174,33 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                 {[0, 1, 2, 3].map(() => renderDot(index, completedStories))}
             </View>
             }
+            {(index % 4 == 0 && index % 8 != 0) &&
+                <View style={{
+                    width: 80,
+                    height: 80,
+                    position: 'absolute',
+                    marginBottom: 'auto',
+                    marginTop: 'auto',
+                    left: '-55%',
+                    top: 40
+                }}>
+                    <Image
+                        source={avatarImageMap[(index / 4) + 1]}
+                        style={{
+                            width: '100%',
+                            height: '100%'
+                        }}
+                        />
+                </View>
+            }
             <RaisedButton
-                onPress={() => {}}
+                onPress={() => navigation.navigate('ReadStory', {title: title})}
                 options={{
                     ...RaisedButton.defaultProps.options,
                     width: '100%',
                     height: 80,
                     borderWidth: 3,
-                    borderRadius: 20,
+                    borderRadius: 40,
                     borderColor: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
                     backgroundColor: constants.TERTIARYCOLOR,
                     shadowColor: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
@@ -82,7 +208,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
             >
                 <Text style={{
                 fontFamily: constants.FONTFAMILYBOLD,
-                fontSize: constants.H3FONTSIZE,
+                fontSize: constants.H2FONTSIZE,
                 color: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
                 marginLeft: 'auto',
                 marginRight: 'auto',
@@ -90,6 +216,25 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                 marginBottom: 'auto'
             }}>{title}</Text>
             </RaisedButton>
+            {(index % 8 == 0) &&
+                <View style={{
+                    width: 80,
+                    height: 80,
+                    position: 'absolute',
+                    marginBottom: 'auto',
+                    marginTop: 'auto',
+                    left: '120%',
+                    top: index == 0 ? 0 : 40
+                }}>
+                    <Image
+                        source={avatarImageMap[(index / 4) + 1]}
+                        style={{
+                            width: '100%',
+                            height: '100%'
+                        }}
+                        />
+                </View>
+            }
         </View>
         );
     }
@@ -139,7 +284,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         //borderLeftWidth: 7,
         //borderStyle: 'dotted',
-        marginTop: -13,
-        marginBottom: 3
+        marginTop: -15,
+        marginBottom: -13
     }
 });

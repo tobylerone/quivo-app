@@ -21,8 +21,9 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
 
     const { storyIndex } = route.params;
 
+    const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
+
     const numSentences = 10;
-    const currentSentence = 1;
 
     const sentencesData: ISentence[] = [
         {
@@ -39,7 +40,7 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
     
     const renderProgressCircle = (i: number) => (
         <View style={{
-            backgroundColor: currentSentence >= i
+            backgroundColor: currentSentenceIndex >= i
                 ? constants.PRIMARYCOLOR
                 : constants.LIGHTGREY,//constants.GREEN + '44',
             ...styles.progressCircle
@@ -59,15 +60,17 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
                 <Text style={styles.titleText}>{stories[storyIndex][0]}</Text>
             </View>
             <View style={styles.progressCirclesContainer}>
-            {Array.from(
-                {length: numSentences},
-                (_, i) => i + 1).map((i) => renderProgressCircle(i)
-            )}
-        </View>
-        <SentenceReaderPanel
-            navigation={navigation}
-            sentencesData={sentencesData}
-        />
+                {Array.from(
+                    {length: numSentences},
+                    (_, i) => i + 1).map((i) => renderProgressCircle(i)
+                )}
+            </View>
+            <SentenceReaderPanel
+                navigation={navigation}
+                sentencesData={sentencesData}
+                onSentenceReaderLeftSwipe={() => setCurrentSentenceIndex((idx) => (idx + 1))}
+                onSentenceReaderRightSwipe={() => setCurrentSentenceIndex((idx) => (idx - 1))}
+            />
         </SafeAreaView>
         </>
     );
@@ -105,8 +108,7 @@ const styles = StyleSheet.create({
     },
     progressCirclesContainer: {
         flexDirection: 'row',
-        marginHorizontal: 10,
-        marginBottom: 20
+        marginHorizontal: 10
     },
     progressCircle: {
         width: 20,

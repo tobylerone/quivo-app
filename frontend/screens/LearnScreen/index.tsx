@@ -41,9 +41,20 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { currentItem, changeItem } = useFetchItems();
     const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
+
+    const [primaryColor, setPrimaryColor] = useState(constants.PRIMARYCOLOR);
+    
+    /*const primaryColorOptions = [
+        constants.ORANGEREGULAR,
+        constants.BLUEREGULAR,
+        constants.GREENREGULAR,
+        constants.PURPLEREGULAR
+    ];
+    const numPrimaryColorOptions = primaryColorOptions.length;
+    */
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
+    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);
 
     // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
     // up
@@ -63,7 +74,10 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     ];
 
     // Handle swiping between sentences
-    function onSwipeLeft() {changeItem()}
+    function onSwipeLeft() {
+        //setPrimaryColor(primaryColorOptions[Math.floor(Math.random() * numPrimaryColorOptions)])
+        changeItem()
+    }
     function onSwipeRight() {}
 
     const renderPopupItem = (item: Record<string, string>) => (
@@ -104,8 +118,15 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     <Text style={styles.levelText}>Lv. {level}</Text>
                     <Text style={styles.levelWordText}>{knownWordsInLevel}/{wordsInLevel}</Text>
                 </View>
-                <View style={styles.progressBarBackground}>
-                    <View style={{width: knownWordsInLevel ? Math.floor((knownWordsInLevel/wordsInLevel) * 100) + '%' : 0, ...styles.progressBar}}></View>
+                <View style={{
+                    backgroundColor: primaryColor + '33',
+                    ...styles.progressBarBackground
+                    }}>
+                    <View style={{
+                        width: knownWordsInLevel ? Math.floor((knownWordsInLevel/wordsInLevel) * 100) + '%' : 0,
+                        backgroundColor: primaryColor,
+                        ...styles.progressBar
+                        }}></View>
                 </View>
             </TouchableOpacity>
             <View style={styles.topButtonsContainer}>
@@ -114,7 +135,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     style={[styles.filterButton, styles.shadow]}
                     onPress={() => {navigation.navigate('Slider')}}
                 >
-                    <FontAwesomeIcon style={styles.filterButtonIcon} icon={faSliders} size={25} color={constants.PRIMARYCOLOR} />
+                    <FontAwesomeIcon style={styles.filterButtonIcon} icon={faSliders} size={25} color={primaryColor} />
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
@@ -138,6 +159,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         </View>
         <Animated.View style={{
             height: languagePopupAnimation,
+            backgroundColor: primaryColor + '55',
             ...styles.languagePopupAnimatedContainer
             }}>
             <View style={{
@@ -175,7 +197,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     display: translationVisible ? "visible": "none",
                     ...styles.translatedSentence
                     }}>
-                    <Text style={styles.mainText}>{currentItem.translated_sentence}</Text>
+                    <Text style={{color: primaryColor, ...styles.mainText}}>{currentItem.translated_sentence}</Text>
                 </View>
                 <View style={{
                     display: translationVisible ? "none": "visible",
@@ -193,7 +215,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 onPressIn={() => setTranslationVisible(true)}
                 onPressOut={() => setTranslationVisible(false)}
                 >
-                <FontAwesomeIcon icon={faLanguage} size={30} color={constants.PRIMARYCOLOR} />
+                <FontAwesomeIcon icon={faLanguage} size={30} color={primaryColor} />
             </TouchableOpacity>
             <TouchableOpacity
                 activeOpacity={1}
@@ -202,7 +224,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                     speak(currentItem.sentence, currentLanguageCode)
                 }}
                 >
-                <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.PRIMARYCOLOR} />
+                <FontAwesomeIcon icon={faCommentDots} size={30} color={primaryColor} />
             </TouchableOpacity>
             <View style={styles.autoplayContainer}>
                 <Text style={styles.autoplayText}>Autoplay</Text>
@@ -211,6 +233,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         initiallySelected={autoDictEnabled}
                         size={20}
                         onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
+                        primaryColor={primaryColor}
+                        secondaryColor={primaryColor + '55'}
                     />
                 </View>
             </View>
@@ -274,14 +298,12 @@ const styles= StyleSheet.create({
         marginBottom: 'auto',
         //borderWidth: 2,
         //borderColor: constants.PRIMARYCOLOR,
-        backgroundColor: constants.LIGHTGREY,//constants.GREEN + '55',
         borderRadius: 5,
         overflow: 'hidden'
     },
     progressBar: {
         height: 12,
         marginTop: -1,
-        backgroundColor: constants.PRIMARYCOLOR,
         borderRadius: 6
     },
     streakContainer: {
@@ -325,7 +347,6 @@ const styles= StyleSheet.create({
         marginLeft: 'auto',
     },
     languagePopupAnimatedContainer: {
-        backgroundColor: constants.PRIMARYCOLOR,
         marginTop: 20,
         //borderBottomColor: constants.GREY,
         //borderBottomWidth: 3
@@ -434,7 +455,6 @@ const styles= StyleSheet.create({
     mainText: {
         fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.BLACK,
         textAlign: "center"
     },
     realSentence: {

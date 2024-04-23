@@ -11,7 +11,7 @@ export const PRIMARYCOLOR = "#297A90";//"#66A599"
 export const SECONDARYCOLOR = "#F5F5F4";//"#F7ECDC";//"#F9EAE8";
 export const TERTIARYCOLOR = "#FBFAF5";//"#FEFDFF";//Nice cream: "#FBFAF5";
 export const PRIMARYCOLORSHADOW = "#1A4C5A";
-export const BLACK = "#212121";
+export const BLACK = "#1A4C5A";//"#212121";
 export const GREY = "#CFCFCF";//"#BBBCBE";
 export const LIGHTGREY = "#EEEEEE";
 export const ORANGE = "#CD5D30";
@@ -25,6 +25,19 @@ export const SUCCESSCOLOR = "#228B22";
 export const GOLD = "#D4AF37";
 export const SILVER = "#C0C0C0";
 export const BRONZE = "#9F7A34";
+
+// New lighter theme
+export const ORANGEREGULAR = "#F9A047";
+export const GREENREGULAR = "#4FCF46";
+export const BLUEREGULAR = "#2592FC";
+export const PURPLEREGULAR = "#A094F1";
+
+export const PRIMARYCOLORLIGHT = "#D1E0E1";
+export const LIGHTBLUELIGHT = "#D9F7F1";
+export const ORANGELIGHT = "#FBE8D2";
+export const GREENLIGHT = "#D9F1D2";
+export const BLUELIGHT = "#D0E5F6";
+export const PURPLELIGHT = "#E9E6F4";
 
 //Police, tailles etc.
 export const FONTFAMILY = 'Nunito';

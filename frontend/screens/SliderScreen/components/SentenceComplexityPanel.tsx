@@ -55,9 +55,9 @@ export default function SentenceComplexityPanel() {
                 value={sentenceComplexity}
                 onValueChange={setSentenceComplexity}
                 step={1}
-                minimumTrackTintColor={constants.PRIMARYCOLOR}
+                minimumTrackTintColor={constants.GREENREGULAR}
                 maximumTrackTintColor={constants.GREY}
-                thumbTintColor={constants.PRIMARYCOLOR}
+                thumbTintColor={constants.GREENREGULAR}
             />
         </View>
         <View style={styles.complexityExplanationContainer}>
@@ -71,9 +71,9 @@ export default function SentenceComplexityPanel() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: constants.GREEN + '33',
+        //backgroundColor: constants.GREENREGULAR + '55',
         borderWidth: 3,
-        borderColor: constants.GREY,
+        borderColor: constants.GREENREGULAR,
         padding: 10,
         borderRadius: 20,
         marginBottom: 20
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     sliderHeaderText: {
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
         color: constants.BLACK,
         marginLeft: 'auto',
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     complexityLabelText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.GREENREGULAR,
         marginBottom: 10,
         marginLeft: 'auto',
         marginRight: 'auto'

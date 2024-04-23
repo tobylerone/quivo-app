@@ -43,7 +43,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             {
               text: "Upgrade to premium",
               arrow: true,
-              color: constants.SUCCESSCOLOR,
+              color: constants.GREENREGULAR,
               action: () => {navigation.navigate('GetPremium')}
             },
             { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {
@@ -61,13 +61,13 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                 text: 'Narration speed',
                 subtext: 
                   <>
-                    <Text style={{color: constants.BLACK}}>{narrationSpeedTitle[narrationSpeed]}</Text>
+                    <Text style={{color: constants.PRIMARYCOLORSHADOW, fontFamily: constants.FONTFAMILYBOLD}}>{narrationSpeedTitle[narrationSpeed]}</Text>
                     {/*<FontAwesomeIcon icon={narrationSpeedIcons[narrationSpeed]} size={20} color={constants.BLACK} />*/}
                   </>,
                 action: () => setNarrationSpeed(narrationSpeed == 2 ? 0 : narrationSpeed + 1)
               },
               { text: soundActive ? "Sound on" : "Sound off",
-                subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.SUCCESSCOLOR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,
+                subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.GREENREGULAR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,
                 action: () => setSoundActive(!soundActive)
               },
             ],
@@ -76,7 +76,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             title: "Social",
             data: [
             { text: "Rate and comment", arrow: false, action: () => {} },
-            { text: "Give feedback", arrow: false, color: constants.SUCCESSCOLOR, action: () => {navigation.navigate('Feedback')} },
+            { text: "Give feedback", arrow: false, color: constants.GREENREGULAR, action: () => {navigation.navigate('Feedback')} },
             { text: "Privacy Policy", arrow: true, action: () => {} }, // Can create one here: https://termly.io/resources/templates/privacy-policy-template/
             ],
         },
@@ -93,7 +93,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             renderItem={({item}) => (
               <TouchableOpacity onPress={item.action} activeOpacity={1}>
                 <View style={styles.item}>
-                  <Text style={{color: item.color || constants.BLACK , ...styles.itemText}}>{item.text}</Text>
+                  <Text style={{color: item.color || constants.PRIMARYCOLORSHADOW , ...styles.itemText}}>{item.text}</Text>
                   <View style={styles.itemRightContainer}>
                   {item.subtext &&
                     <Text style={styles.itemSubtext}>{
@@ -102,7 +102,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                     }
                     {item.arrow &&
                     <View style={styles.itemArrow}>
-                      <FontAwesome name="chevron-right" size={20} color={constants.PRIMARYCOLOR} />
+                      <FontAwesome name="chevron-right" size={20} color={constants.PURPLEREGULAR} />
                     </View>
                     }
                   </View>
@@ -119,30 +119,33 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 16,
-        marginTop: 50
+        paddingHorizontal: 16,
+        paddingTop: 50,
+        paddingBottom: 300,
+        //backgroundColor: constants.PURPLELIGHT
     },
     list: {
       borderWidth: 3,
-      borderColor: constants.PRIMARYCOLOR,
+      borderColor: constants.PURPLEREGULAR,
       borderRadius: 10,
       overflow: 'hidden'
     },
     item: {
         padding: 10,
         marginVertical: 0,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        //backgroundColor: constants.PURPLELIGHT
     },
     header: {
         fontSize: constants.H2FONTSIZE + 2,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.TERTIARYCOLOR,
         padding: 10,
-        backgroundColor: constants.PRIMARYCOLOR
+        backgroundColor: constants.PURPLEREGULAR
     },
     itemText: {
       fontSize: constants.H2FONTSIZE,
-      fontFamily: constants.FONTFAMILY,
+      fontFamily: constants.FONTFAMILYBOLD,
     },
     itemRightContainer: {
       marginLeft: 'auto',

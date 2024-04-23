@@ -17,6 +17,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownWords, dailyWordCount } = useContext(UserContext);
     
+    const [primaryColor, setPrimaryColor] = useState<string>(constants.PURPLEREGULAR);
     const [words, setWords] = useState([]);
     const [paginator, setPaginator] = useState<number>(0);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
@@ -24,7 +25,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
     const flatListRef = useRef();
 
-    const renderItem = useCallback(({item}) => <WordItem navigation={navigation} item={item} />, []);
+    const renderItem = useCallback(({item}) => <WordItem navigation={navigation} item={item} primaryColor={primaryColor} />, [primaryColor]);
     
     useEffect(() => {
         fetchWordCounts();
@@ -32,6 +33,9 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     }, []);
 
     useEffect(() => {
+        // Change the color scheme
+        setPrimaryColor(colorByRange[activeButton]);
+
         fetchWordsData(
             initialWordIndex[activeButton],
             initialWordIndex[activeButton] + 99
@@ -50,13 +54,22 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     }, [paginator]);
 
     // Temporary just to test
-    const initialWordIndex: Record<string, number[]> = {
+    const initialWordIndex: Record<string, number> = {
         '1-1000': 1,
         '1001-2000': 1001,
         '2001-3000': 2001,
         '3001-4000': 3001,
         '4001-5000': 4001,
         '5000+': 5001,   
+    }
+
+    const colorByRange: Record<string, string> = {
+        '1-1000': constants.PURPLEREGULAR,
+        '1001-2000': constants.PRIMARYCOLOR,
+        '2001-3000': constants.ORANGEREGULAR,
+        '3001-4000': constants.BLUEREGULAR,
+        '4001-5000': constants.GREENREGULAR,
+        '5000+': constants.PURPLEREGULAR,   
     }
 
     // NOTE: Used in a few places. Should move centrally
@@ -113,6 +126,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     const renderProgressBarButton = (id: string, label: string) => (
         <ProgressBarButton
             id={id}
+            primaryColor={colorByRange[id]}
             label={label}
             currentValue={wordCounts[id]}
             isActive={activeButton === id}
@@ -157,7 +171,7 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                 maxToRenderPerBatch={10}
                 renderItem={renderItem}
             />
-            : <ActivityIndicator style={styles.activityIndicator} size='large' color={constants.PRIMARYCOLOR} />
+            : <ActivityIndicator style={styles.activityIndicator} size='large' color={primaryColor} />
             }
         </SafeAreaView>
         <BottomNavBar hilighted='WordList' navigation={navigation} />
@@ -167,9 +181,10 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 50,
-        marginBottom: 180,
-        marginHorizontal: 20,
+        paddingTop: 50,
+        paddingBottom: 180,
+        paddingHorizontal: 20,
+        backgroundColor: constants.TERTIARYCOLOR
     },
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,

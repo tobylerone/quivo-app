@@ -56,7 +56,7 @@ export default function SetKnownWordsPanel() {
             
             // Same as word unless in shortened_word_map
             if (words.includes(substring)) {
-                let wordColor = activeWordMask[wordIndex] ? constants.PRIMARYCOLOR : constants.GREY
+                let wordColor = activeWordMask[wordIndex] ? constants.BLACK : constants.GREY
                 wordIndex++;
                 sentenceComponents.push(
                     <Text style={{ color: wordColor, ...styles.exampleSentenceText }} key={i}>
@@ -137,9 +137,9 @@ export default function SetKnownWordsPanel() {
                 value={knownWordsPercentage}
                 onValueChange={setKnownWordsPercentage}
                 step={10}
-                minimumTrackTintColor={constants.PRIMARYCOLOR}
+                minimumTrackTintColor={constants.PURPLEREGULAR}
                 maximumTrackTintColor={constants.GREY}
-                thumbTintColor={constants.PRIMARYCOLOR}
+                thumbTintColor={constants.PURPLEREGULAR}
             />
         </View>
         <View style={styles.exampleSentenceContainer}>
@@ -153,9 +153,9 @@ export default function SetKnownWordsPanel() {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        backgroundColor: constants.LIGHTBLUE + '33',
+        //backgroundColor: constants.PURPLEREGULAR + '22',
         borderWidth: 3,
-        borderColor: constants.GREY,
+        borderColor: constants.PURPLEREGULAR,
         padding: 10,
         borderRadius: 20,
         marginBottom: 20
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     sliderHeaderText: {
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
         color: constants.BLACK,
         marginLeft: 'auto',
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     knownWordsPercText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H1FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.PURPLEREGULAR,
         marginBottom: 10,
         marginLeft: 'auto',
         marginRight: 'auto'

@@ -37,7 +37,7 @@ export default function FlagButton({ item }: ILanguageItem){
                 borderColor: (
                     currentLanguageCode == item.language_code
                     ? constants.TERTIARYCOLOR
-                    : constants.PRIMARYCOLOR
+                    : constants.TERTIARYCOLOR + '00'
                     )
                 }}>
                 <Image

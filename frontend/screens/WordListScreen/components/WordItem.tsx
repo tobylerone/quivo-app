@@ -21,26 +21,27 @@ interface IWord {
 interface IWordItemProps {
     navigation: any,
     item: IWord,
+    primaryColor: string
 }
 
-export default function WordItem({navigation, item}: IWordItemProps){
+export default function WordItem({navigation, item, primaryColor}: IWordItemProps){
 
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount } = useContext(UserContext);
 
     const selectedStyling = {
-        'backgroundColor': constants.PRIMARYCOLOR,
+        'backgroundColor': primaryColor,
         'color': constants.TERTIARYCOLOR,
         'numberBox': {
             'backgroundColor': constants.TERTIARYCOLOR,
-            'color': constants.BLACK
+            'color': primaryColor
         }
     }
 
     const unselectedStyling = {
-        'backgroundColor': constants.SECONDARYCOLOR,
+        'backgroundColor': primaryColor + '44',
         'color': constants.BLACK,
         'numberBox': {
-            'backgroundColor': constants.PRIMARYCOLOR,
+            'backgroundColor': primaryColor,
             'color': constants.TERTIARYCOLOR
         }
     }

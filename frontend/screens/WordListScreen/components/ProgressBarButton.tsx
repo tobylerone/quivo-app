@@ -9,6 +9,7 @@ import * as constants from "../../../constants";
 
 interface IProgressBarButton {
     id: string,
+    primaryColor: string,
     label: string,
     currentValue: number,
     isActive: boolean,
@@ -16,14 +17,14 @@ interface IProgressBarButton {
     maxValue: number
 }
 
-export default function ProgressBarButton({id, label, currentValue, isActive, onPress, maxValue}: IProgressBarButton){
+export default function ProgressBarButton({id, primaryColor, label, currentValue, isActive, onPress, maxValue}: IProgressBarButton){
 
     const progressPercentage = Math.floor((currentValue / maxValue) * 100);
 
-    const [borderColor, setBorderColor] = useState(isActive ? constants.PRIMARYCOLOR: constants.TERTIARYCOLOR);
+    const [borderColor, setBorderColor] = useState(isActive ? primaryColor: constants.TERTIARYCOLOR);
     
     useEffect(() => {
-        setBorderColor(isActive ? constants.BLACK: constants.TERTIARYCOLOR);
+        setBorderColor(isActive ? primaryColor: primaryColor + '55');
     }, [isActive]);
 
     const handlePress = () => {
@@ -35,16 +36,23 @@ export default function ProgressBarButton({id, label, currentValue, isActive, on
         <TouchableOpacity
             activeOpacity={1}
             style={{
+                borderColor: borderColor,
+                backgroundColor: primaryColor + '33',
                 ...styles.progressBarButton,
-                borderColor: borderColor
             }}
             onPress={handlePress}
             >
-            <View style={{width: progressPercentage + '%', ...styles.progressBar}}></View>
+            <View style={{
+                width: progressPercentage + '%',
+                backgroundColor: primaryColor,
+                ...styles.progressBar}}></View>
             <View style={styles.progressBarButtonTextContainer}>
                 <Text style={styles.progressBarButtonText}>{label}</Text>
             </View>
-            <View style={styles.progressBarButtonNumberContainer}>
+            <View style={{
+                backgroundColor: constants.TERTIARYCOLOR,
+                ...styles.progressBarButtonNumberContainer
+                }}>
                 <Text style={styles.progressBarButtonNumberText}>{currentValue}</Text>
             </View>
         </TouchableOpacity>
@@ -53,7 +61,7 @@ export default function ProgressBarButton({id, label, currentValue, isActive, on
 
 const styles = StyleSheet.create({
     progressBarButton: {
-        backgroundColor: constants.LIGHTGREY,
+        //Color: constants.LIGHTGREY,
         flexDirection: "row",
         borderWidth: 3,
         borderRadius: 10,
@@ -75,7 +83,7 @@ const styles = StyleSheet.create({
         color: constants.BLACK
     },
     progressBarButtonNumberContainer: {
-        backgroundColor: constants.GREEN,
+        //backgroundColor: constants.GREEN,
         paddingHorizontal: 5,
         borderRadius: 5,
         marginTop: 'auto',
@@ -89,7 +97,7 @@ const styles = StyleSheet.create({
     progressBar: {
         position: 'absolute',
         height: 40,
-        backgroundColor: constants.PRIMARYCOLOR,
+        //backgroundColor: constants.PRIMARYCOLOR,
         borderColor: constants.PRIMARYCOLOR
     }
 });

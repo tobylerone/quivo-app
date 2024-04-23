@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
         paddingHorizontal: 16,
-        backgroundColor: constants.TERTIARYCOLOR
+        backgroundColor: constants.TERTIARYCOLOR,
+        height: '100%'
     },
     crossContainer: {
         height: 50,

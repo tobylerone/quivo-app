@@ -26,7 +26,7 @@ export default function LevelScreen({navigation}: NativeStackHeaderProps) {
 
     const renderLevelItem = (bucketSize: number, itemLevel: number) => (
         <View style={{
-            backgroundColor: itemLevel < level ? constants.GREEN : constants.LIGHTGREY,
+            backgroundColor: itemLevel < level ? constants.PURPLEREGULAR : constants.PURPLEREGULAR + '55',
             ...styles.itemContainer
         }}>
             {itemLevel == level && 
@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
         height: 100
     },
     itemProgressBackground: {
-        backgroundColor: constants.GREEN,
+        backgroundColor: constants.PURPLEREGULAR,
         height: 100,
         marginBottom: -100,
     },
     levelText: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        color: constants.TERTIARYCOLOR,
+        backgroundColor: constants.TERTIARYCOLOR,
+        color: constants.PURPLEREGULAR,
         fontFamily: constants.FONTFAMILYBOLD,
         borderRadius: 5,
         margin: 5,

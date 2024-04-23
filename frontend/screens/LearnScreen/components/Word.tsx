@@ -48,6 +48,7 @@ interface IWordData {
 
 interface IWordProps {
     navigation: any,
+    primaryColor: string,
     word: string,
     wordData: IWordData,
     textColor: string,
@@ -58,7 +59,7 @@ interface IWordProps {
     key: string
 }
 
-export default function Word ({navigation, word, wordData, textColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
+export default function Word ({navigation, primaryColor, word, wordData, textColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
 
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
@@ -219,11 +220,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
                 <View style={{
                     width: infoBoxWidth,
                     marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
-                    ...styles.infoBoxShadow
-                    }}></View>
-                <View style={{
-                    width: infoBoxWidth,
-                    marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
+                    backgroundColor: primaryColor,
                     ...styles.infoBox
                     }}>
                     <View style={styles.translationContainer}>
@@ -231,7 +228,9 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
                             {currentLanguageCode === 'ru' &&
                                 <Text style={styles.transliterationText}>{capitalizeFirstLetter(transliterate(wordData.word))}</Text>
                             }
-                            <Text style={styles.translationText}>
+                            <Text style={{
+                                ...styles.translationText
+                                }}>
                                 {capitalizeFirstLetter(wordData.word)}:
                             </Text>
                         </View>
@@ -287,18 +286,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
         fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD
     },
-    infoBoxShadow: {
-        backgroundColor: constants.PRIMARYCOLORSHADOW,
-        height: 80,
-        borderRadius: 20,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: -83
-    },
     infoBox: {
-        backgroundColor: constants.PRIMARYCOLOR,
         height: 80,
         borderRadius: 20,
         flexDirection: 'column',
@@ -306,7 +294,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
         alignItems: 'center',
         position: 'absolute',
         zIndex: 1,
-        top: -90
+        top: -80
     },
     translationContainer: {
         flexDirection: 'row',
@@ -328,7 +316,7 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
     },
     transliterationText: {
         fontFamily: constants.FONTFAMILY,
-        color: constants.GREEN,
+        color: constants.LIGHTGREY,
         fontSize: constants.CONTENTFONTSIZE,
         marginRight: 'auto'
     },

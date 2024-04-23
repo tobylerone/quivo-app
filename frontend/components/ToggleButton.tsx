@@ -6,11 +6,13 @@ import * as constants from "../constants";
 interface IToggleButtonProps {
     initiallySelected: boolean;
     size: number,
-    onValueChange: Function
+    onValueChange: Function,
+    primaryColor: string,
+    secondaryColor: string
 }
 
 // Mettre dans components
-export default function ToggleButton ({ initiallySelected, size, onValueChange }: IToggleButtonProps) {
+export default function ToggleButton ({ initiallySelected, size, onValueChange, primaryColor, secondaryColor }: IToggleButtonProps) {
 
     const [selected, setSelected] = useState(initiallySelected);
     
@@ -21,7 +23,7 @@ export default function ToggleButton ({ initiallySelected, size, onValueChange }
                 width: size * 1.8,
                 height: size,
                 borderRadius: 0.5 * size,
-                backgroundColor: selected ? constants.GREEN : constants.LIGHTGREY,
+                backgroundColor: selected ? secondaryColor : constants.LIGHTGREY,
                 ...styles.toggleButton
             }}
             onPress={() => {
@@ -33,7 +35,7 @@ export default function ToggleButton ({ initiallySelected, size, onValueChange }
                 height: size,
                 borderRadius: 0.5 * size,
                 marginLeft: selected ? 'auto' : 0,
-                ...styles.toggleCircle
+                backgroundColor: primaryColor
                 }}>
             </View>
         </TouchableOpacity>
@@ -42,9 +44,6 @@ export default function ToggleButton ({ initiallySelected, size, onValueChange }
 
 const styles = StyleSheet.create({
     toggleButton: {
-    },
-    toggleCircle: {
-        backgroundColor: constants.PRIMARYCOLOR
     },
     checkContainer: {
         marginLeft: 'auto',

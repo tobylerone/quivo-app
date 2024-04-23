@@ -32,9 +32,9 @@ const avatarLevelUnlock = {
 // The thematic colors corresponding to each set of levels
 const avatarLevelColors = {
     0: constants.PRIMARYCOLOR,
-    5: constants.ORANGE,
-    10: constants.GREEN,
-    15: constants.LIGHTBLUE,
+    5: constants.ORANGEREGULAR,
+    10: constants.GREENREGULAR,
+    15: constants.PURPLEREGULAR,
     20: constants.LIGHTBLUE,
     25: constants.LIGHTBLUE,
     30: constants.LIGHTBLUE

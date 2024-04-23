@@ -10,7 +10,7 @@ import * as constants from '../../../constants'
 // Components
 import Word from "../components/Word";
 
-export default function useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled){
+export default function useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor){
     // NOTE: This hook should not contain tsx
 
     const { currentLanguageCode } = useContext(UserContext);
@@ -100,9 +100,10 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
                 sentenceComponents.push(<Word
                     navigation={navigation}
+                    primaryColor={primaryColor}
                     word={word}
                     wordData={wordsData[fullWord]}
-                    textColor={activeWords.includes(fullWord) ? constants.PRIMARYCOLOR : constants.BLACK}
+                    textColor={activeWords.includes(fullWord) ? primaryColor : primaryColor + '55'}
                     onPress={handleWordPress}
                     isFirstWord={i==0}
                     screenWidth={screenWidth}
@@ -113,7 +114,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
                 //setActiveWords((prevArr) => [...prevArr, fullWord])
             } else {
                 sentenceComponents.push(<Text style={{
-                    color: constants.BLACK,
+                    color: primaryColor + '55',
                     fontSize: constants.H1FONTSIZE + 7,
                     fontFamily: constants.FONTFAMILYBOLD,
                     textAlign: "center" 

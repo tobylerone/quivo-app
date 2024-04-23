@@ -30,100 +30,125 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser } = useContext(UserContext);
 
-    const renderDot = (index: number, completedStories: number) => (
+    const completedStories = 64;
+
+    const storyIndexColors: Record<number, string[]> = {
+        0: [constants.GREENREGULAR, constants.GREENLIGHT],
+        10: [constants.ORANGEREGULAR, constants.ORANGELIGHT],
+        20: [constants.PRIMARYCOLOR, constants.PRIMARYCOLORLIGHT],
+        30: [constants.PURPLEREGULAR, constants.PURPLELIGHT],
+        40: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        50: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        60: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        70: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        80: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        90: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        100: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT],
+        110: [constants.LIGHTBLUE, constants.LIGHTBLUELIGHT]
+    }
+
+    const renderDot = (index: number, color: string, completedStories: number) => (
         <View style={{
             width: 7,
             height: 7,
             borderRadius: 4,
-            backgroundColor: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
+            backgroundColor: index < completedStories ? color : constants.GREY,
             marginBottom: 5
         }}></View>
     );
 
     const renderItem = (index: number) => {
         
-        const completedStories = 3;
-        
+        const colorRecord = storyIndexColors[Math.floor(0.1 * (index)) * 10];
+        const primaryColor = colorRecord[0];
+        const secondaryColor = colorRecord[1];
         return (
         <View style={{
-            width: '60%',
-            marginTop: 7,
-            marginBottom: 10,
-            marginLeft: Math.abs(((index + 4) % 8) - 4) * 10 + '%'
-        }}>
-            {index > 0 && <View
-                style={{
-                    //borderColor: index < completedStories + 1 ? constants.PRIMARYCOLORSHADOW : constants.GREY,
-                    transform: [{
-                        rotate: ((index - 1) % 8) < 4 ? '-15deg' : '15deg'
-                    }],
-                    marginLeft: ((index - 1) % 8) < 4 ? '40%' : '55%',
-                    ...styles.line
-                }}>
-                {[0, 1, 2, 3].map(() => renderDot(index, completedStories))}
+            backgroundColor: secondaryColor,
+            paddingHorizontal: 16,
+            paddingBottom: 18,
+            paddingTop: 15,
+            marginBottom: -1
+            }}>
+            <View style={{
+                width: '60%',
+                marginBottom: 10,
+                marginLeft: Math.abs(((index + 4) % 8) - 4) * 10 + '%'
+            }}>
+                {index > 0 && <View
+                    style={{
+                        //borderColor: index < completedStories + 1 ? constants.PRIMARYCOLORSHADOW : constants.GREY,
+                        transform: [{
+                            rotate: ((index - 1) % 8) < 4 ? '-15deg' : '15deg'
+                        }],
+                        marginLeft: ((index - 1) % 8) < 4 ? '40%' : '55%',
+                        ...styles.line
+                    }}>
+                    {[0, 1, 2, 3].map(() => renderDot(index, primaryColor, completedStories))}
+                </View>
+                }
+                {(index % 4 == 0 && index % 8 != 0) &&
+                    <View style={{
+                        width: 80,
+                        height: 80,
+                        position: 'absolute',
+                        marginBottom: 'auto',
+                        marginTop: 'auto',
+                        left: '-55%',
+                        top: 10
+                    }}>
+                        <Image
+                            source={avatarImageMap[(index / 4) + 1]}
+                            style={{
+                                width: '100%',
+                                height: '100%'
+                            }}
+                            />
+                    </View>
+                }
+                <RaisedButton
+                    onPress={() => navigation.navigate('ReadStory', {storyIndex: index})}
+                    options={{
+                        ...RaisedButton.defaultProps.options,
+                        width: '100%',
+                        height: 80,
+                        borderWidth: 3,
+                        borderRadius: 40,
+                        borderColor: index < completedStories ? primaryColor : constants.GREY,
+                        backgroundColor: constants.TERTIARYCOLOR,
+                        shadowColor: index < completedStories ? primaryColor : constants.GREY,
+                    }}
+                >
+                    <Text style={{
+                    fontFamily: constants.FONTFAMILYBOLD,
+                    fontSize: constants.H2FONTSIZE,
+                    color: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    marginTop: 'auto',
+                    marginBottom: 'auto'
+                }}>{stories[index][0]}</Text>
+                </RaisedButton>
+                {(index % 8 == 0) &&
+                    <View style={{
+                        width: 80,
+                        height: 80,
+                        position: 'absolute',
+                        marginBottom: 'auto',
+                        marginTop: 'auto',
+                        left: '120%',
+                        top: index == 0 ? 0 : 10
+                    }}>
+                        <Image
+                            source={avatarImageMap[(index / 4) + 1]}
+                            style={{
+                                width: '100%',
+                                height: '100%'
+                            }}
+                            />
+                    </View>
+                }
             </View>
-            }
-            {(index % 4 == 0 && index % 8 != 0) &&
-                <View style={{
-                    width: 80,
-                    height: 80,
-                    position: 'absolute',
-                    marginBottom: 'auto',
-                    marginTop: 'auto',
-                    left: '-55%',
-                    top: 40
-                }}>
-                    <Image
-                        source={avatarImageMap[(index / 4) + 1]}
-                        style={{
-                            width: '100%',
-                            height: '100%'
-                        }}
-                        />
-                </View>
-            }
-            <RaisedButton
-                onPress={() => navigation.navigate('ReadStory', {storyIndex: index})}
-                options={{
-                    ...RaisedButton.defaultProps.options,
-                    width: '100%',
-                    height: 80,
-                    borderWidth: 3,
-                    borderRadius: 40,
-                    borderColor: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
-                    backgroundColor: constants.TERTIARYCOLOR,
-                    shadowColor: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
-                }}
-            >
-                <Text style={{
-                fontFamily: constants.FONTFAMILYBOLD,
-                fontSize: constants.H2FONTSIZE,
-                color: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                marginTop: 'auto',
-                marginBottom: 'auto'
-            }}>{stories[index][0]}</Text>
-            </RaisedButton>
-            {(index % 8 == 0) &&
-                <View style={{
-                    width: 80,
-                    height: 80,
-                    position: 'absolute',
-                    marginBottom: 'auto',
-                    marginTop: 'auto',
-                    left: '120%',
-                    top: index == 0 ? 0 : 40
-                }}>
-                    <Image
-                        source={avatarImageMap[(index / 4) + 1]}
-                        style={{
-                            width: '100%',
-                            height: '100%'
-                        }}
-                        />
-                </View>
-            }
         </View>
         );
     }
@@ -152,7 +177,6 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
-        paddingHorizontal: 16,
         marginBottom: 115,
         backgroundColor: constants.TERTIARYCOLOR
     },
@@ -173,7 +197,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         //borderLeftWidth: 7,
         //borderStyle: 'dotted',
-        marginTop: -15,
-        marginBottom: -13
+        marginTop: -42,
+        marginBottom: -15
     }
 });

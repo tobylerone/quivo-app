@@ -94,12 +94,12 @@ export default function ComprehensionPercPanel({navigation}: NativeStackHeaderPr
                     yAxisSuffix="%"
                     yAxisInterval={25}
                     chartConfig={{
-                        backgroundColor: constants.LIGHTBLUE,
-                        backgroundGradientFrom: constants.LIGHTBLUE,
-                        backgroundGradientTo: constants.LIGHTBLUE,
+                        backgroundColor: constants.PURPLELIGHT,
+                        backgroundGradientFrom: constants.PURPLELIGHT,
+                        backgroundGradientTo: constants.PURPLELIGHT,
                         decimalPlaces: 0, // optional, defaults to 2dp
-                        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                        labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                        color: () => constants.PURPLEREGULAR,
+                        labelColor: () => constants.BLACK,
                         style: {
                             borderRadius: 10
                         },
@@ -117,13 +117,13 @@ export default function ComprehensionPercPanel({navigation}: NativeStackHeaderPr
             <Text style={styles.wordsLearnedInfo}>
                 Based on the words you know, you should be able to understand around <Text style={{
                     fontFamily: constants.FONTFAMILYBOLD,
-                    color: constants.ORANGE
+                    color: constants.PURPLEREGULAR,
                     }}>
                         {comprehensionPercentage}%
                 </Text> of written {currentLanguageObj.language_name}.
             </Text>
             </>
-            : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.LIGHTBLUE} />}
+            : <ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PURPLEREGULAR} />}
         </View>
     );
 }
@@ -132,14 +132,14 @@ const styles = StyleSheet.create({
     wordsLearnedPanel: {
         backgroundColor: constants.TERTIARYCOLOR,
         borderWidth: 3,
-        borderColor: constants.LIGHTBLUE,
+        borderColor: constants.PURPLEREGULAR,
         padding: 10,
         overflow: 'hidden',
         borderRadius: 20,
         marginBottom: 20
     },
     wordsLearnedTitle: {
-        backgroundColor: constants.LIGHTBLUE,
+        backgroundColor: constants.PURPLEREGULAR,
         marginBottom: 10,
         marginTop: -10,
         marginHorizontal: -10
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     wordsLearnedTitleText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.BLACK,
+        color: constants.TERTIARYCOLOR,
         marginLeft: 'auto',
         marginRight: 'auto',
         padding: 10

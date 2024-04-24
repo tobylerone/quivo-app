@@ -54,17 +54,17 @@ const styles = StyleSheet.create({
         height: 'auto',
         marginBottom: 20,
         borderWidth: 3,
-        borderColor: constants.GREEN,
+        borderColor: constants.GREENREGULAR,
     },
     titleBar: {
         flexDirection: 'row',
-        backgroundColor: constants.GREEN,
-        marginBottomColor: constants.GREEN
+        backgroundColor: constants.GREENREGULAR,
+        marginBottomColor: constants.GREENREGULAR
     },
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.BLACK,
+        color: constants.TERTIARYCOLOR,
         padding: 10,
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -96,14 +96,14 @@ const styles = StyleSheet.create({
         marginRight: 'auto'
     },
     barBackground: {
-        backgroundColor: constants.GREEN + '55',
+        backgroundColor: constants.GREENLIGHT,
         height: '100%',
         overflow: 'hidden',
         borderRadius: 10,
         margin: 6
     },
     barForeground: {
-        backgroundColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.GREENREGULAR,
         marginTop: 'auto'
     }
 });

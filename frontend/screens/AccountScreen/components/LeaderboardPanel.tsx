@@ -24,7 +24,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
             activeOpacity={1}
             style={{
                 backgroundColor: user.user_id === currentUser.user_id
-                    ? constants.ORANGE + '33'
+                    ? constants.ORANGELIGHT
                     : constants.TERTIARYCOLOR,
                 ...styles.userItem
             }}
@@ -80,7 +80,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
                         {renderMoreButton(navigation={navigation})}
                         </>)
                 : leaderboardData.map((user, idx) => renderItem(navigation, user, idx))
-            : <ActivityIndicator size="large" style={styles.activityIndicator} color={constants.ORANGE} />
+            : <ActivityIndicator size="large" style={styles.activityIndicator} color={constants.ORANGEREGULAR} />
             }
         </View>
     </View>
@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
         height: 'auto',
         marginBottom: 20,
         borderWidth: 3,
-        borderColor: constants.ORANGE
+        borderColor: constants.ORANGEREGULAR
     },
     titleBar: {
         flexDirection: 'row',
-        backgroundColor: constants.ORANGE,
-        marginBottomColor: constants.ORANGE
+        backgroundColor: constants.ORANGEREGULAR,
+        marginBottomColor: constants.ORANGEREGULAR
     },
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         borderTopWidth: 2,
-        borderTopColor: constants.ORANGE
+        borderTopColor: constants.ORANGEREGULAR
     },
     itemText: {
         fontFamily: constants.FONTFAMILY,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderWidth: 2,
-        borderColor: constants.ORANGE,
+        borderColor: constants.ORANGEREGULAR,
         backgroundColor: constants.TERTIARYCOLOR,
         borderRadius: 20,
         marginRight: 5
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 5,
-        backgroundColor: constants.ORANGE,
+        backgroundColor: constants.ORANGEREGULAR,
         marginRight: 10
     },
     usernameText: {
@@ -162,8 +162,8 @@ const styles = StyleSheet.create({
     seeMoreButton: {
         borderTopWidth: 2,
         height: 30,
-        borderTopColor: constants.ORANGE,
-        backgroundColor: constants.ORANGE,
+        borderTopColor: constants.ORANGEREGULAR,
+        backgroundColor: constants.ORANGEREGULAR,
     },
     seeMoreButtonText: {
         fontFamily: constants.FONTFAMILYBOLD,

@@ -44,15 +44,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const [primaryColor, setPrimaryColor] = useState(constants.PRIMARYCOLOR);
     
-    /*const primaryColorOptions = [
-        constants.ORANGEREGULAR,
-        constants.BLUEREGULAR,
-        constants.GREENREGULAR,
-        constants.PURPLEREGULAR
-    ];
-    const numPrimaryColorOptions = primaryColorOptions.length;
-    */
-    
     // TODO: This hook returns jsx which needs fixing
     const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);
 

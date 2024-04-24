@@ -41,9 +41,9 @@ export default function ProgressPanel() {
                 setData(dataMap[tabTitle]);
                 setLabels(labelsMap[tabTitle]);
             }}
-            style={{backgroundColor: activeTab === tabTitle ? constants.PRIMARYCOLOR : constants.TERTIARYCOLOR, ...styles.titleTab}}
+            style={{backgroundColor: activeTab === tabTitle ? constants.BLUEREGULAR : constants.TERTIARYCOLOR, ...styles.titleTab}}
         >
-            <Text style={{color: activeTab === tabTitle ? constants.TERTIARYCOLOR : constants.PRIMARYCOLOR, ...styles.titleText}}>{tabTitle}</Text>
+            <Text style={{color: activeTab === tabTitle ? constants.TERTIARYCOLOR : constants.BLUEREGULAR, ...styles.titleText}}>{tabTitle}</Text>
         </TouchableOpacity>
         );
 
@@ -62,12 +62,12 @@ export default function ProgressPanel() {
                     width={Dimensions.get("window").width - 65} // from react-native
                     height={200}
                     chartConfig={{
-                    backgroundColor: constants.PRIMARYCOLOR,//"#e26a00",
-                    backgroundGradientFrom: constants.PRIMARYCOLOR,//"#fb8c00",
-                    backgroundGradientTo: constants.PRIMARYCOLOR,//"#ffa726",
+                    backgroundColor: constants.BLUEREGULAR,//"#e26a00",
+                    backgroundGradientFrom: constants.BLUELIGHT,//"#fb8c00",
+                    backgroundGradientTo: constants.BLUELIGHT,//"#ffa726",
                     decimalPlaces: 0, // optional, defaults to 2dp
-                    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                    color: () => constants.BLUEREGULAR,
+                    labelColor: () => constants.BLACK,
                     style: {
                         borderRadius: 10
                     },
@@ -81,7 +81,7 @@ export default function ProgressPanel() {
                     }}
             />
             <View style={styles.tableContainer}>
-                <View style={styles.tableRow}>
+                <View style={[styles.tableRow, styles.tableRowTop]}>
                     <View style={styles.tableColumn}>
                         <Text style={styles.columnOneText}>New words</Text>
                     </View>
@@ -111,16 +111,16 @@ const styles = StyleSheet.create({
         height: 'auto',
         marginBottom: 20,
         borderWidth: 3,
-        borderColor: constants.PRIMARYCOLOR
+        borderColor: constants.BLUEREGULAR
     },
     titleBar: {
         flexDirection: 'row',
-        backgroundColor: constants.PRIMARYCOLOR,
-        marginBottomColor: constants.PRIMARYCOLOR
+        backgroundColor: constants.BLUEREGULAR,
+        marginBottomColor: constants.BLUEREGULAR
     },
     titleTab: {
         padding: 10,
-        borderColor: constants.PRIMARYCOLOR,
+        borderColor: constants.BLUEREGULAR,
         borderBottomWidth: 3,
         //borderRightWidth: 3,
         width: '50%',
@@ -141,22 +141,18 @@ const styles = StyleSheet.create({
         marginTop: 10,
         height: 80,
         borderRadius: 10,
-        borderWidth: 3,
-        borderColor: constants.PRIMARYCOLOR,
         overflow: 'hidden'
     },
     tableRow: {
         flexDirection: 'row',
         height: 40,
-        borderBottomWidth: 3,
-        borderBottomColor: constants.PRIMARYCOLOR
+    },
+    tableRowTop: {
+        borderBottomWidth: 2,
+        borderBottomColor: constants.BLUEREGULAR
     },
     tableColumn: {
-        width: '50%',
-        marginHorizontal: 1,
-        paddingVertical: 8,
-        borderRightWidth: 3,
-        borderRightColor: constants.PRIMARYCOLOR
+        width: '50%'
     },
     columnOneText: {
         fontSize: constants.H3FONTSIZE,
@@ -172,9 +168,8 @@ const styles = StyleSheet.create({
     columnTwoText: {
         fontSize: constants.H3FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.PRIMARYCOLORSHADOW,
+        color: constants.BLUEREGULAR,
         marginLeft: 'auto',
-        marginRight: 10,
         //marginRight: 'auto',
         marginTop: 'auto',
         marginBottom: 'auto'

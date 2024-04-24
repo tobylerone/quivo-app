@@ -276,8 +276,10 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     profileNameBubble: {
-        height: 50,
-        backgroundColor: constants.PRIMARYCOLOR,
+        height: 56,
+        backgroundColor: constants.PRIMARYCOLORLIGHT,
+        borderWidth: 3,
+        borderColor: constants.PRIMARYCOLOR + '55',
         borderRadius: 10,
         paddingLeft: 15,
         paddingRight: 10,
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
     profileName: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.SECONDARYCOLOR
+        color: constants.PRIMARYCOLOR
     },
     flagContainer: {
         flexDirection: 'row'
@@ -305,7 +307,7 @@ const styles = StyleSheet.create({
     flagImageContainer: {
         borderRadius: 10,
         borderWidth: 4,
-        borderColor: constants.PRIMARYCOLOR,
+        borderColor: constants.PRIMARYCOLORLIGHT,
         overflow: "hidden",
         height: "100%",
         width: 40,

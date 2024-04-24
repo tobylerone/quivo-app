@@ -4,7 +4,7 @@ import PNG from 'pngjs';
 import * as constants from "../../../constants";
 import UserContext from "../../../contexts/UserContext";
 
-interface ILanguageItem {
+interface IFlagButtonProps {
     item: {
         id: number,
         language_code: string,
@@ -12,7 +12,7 @@ interface ILanguageItem {
     }
 }
 
-export default function FlagButton({ item }: ILanguageItem){
+export default function FlagButton({ item }: IFlagButtonProps){
 
     const { currentLanguageCode, updateCurrentLanguageCode } = useContext(UserContext);
 
@@ -34,10 +34,8 @@ export default function FlagButton({ item }: ILanguageItem){
             <View style={{
                 ...styles.flagImageContainer,
                 ...styles.flagImageContainerPopup,
-                borderColor: (
-                    currentLanguageCode == item.language_code
-                    ? constants.TERTIARYCOLOR
-                    : constants.TERTIARYCOLOR + '00'
+                borderColor: constants.TERTIARYCOLOR + (
+                    currentLanguageCode == item.language_code ? 'FF' : '00'
                     )
                 }}>
                 <Image

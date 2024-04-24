@@ -21,10 +21,11 @@ interface IWord {
 interface IWordItemProps {
     navigation: any,
     item: IWord,
-    primaryColor: string
+    primaryColor: string,
+    showKnownWords: boolean
 }
 
-export default function WordItem({navigation, item, primaryColor}: IWordItemProps){
+export default function WordItem({navigation, item, primaryColor, showKnownWords}: IWordItemProps){
 
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount } = useContext(UserContext);
 
@@ -109,8 +110,11 @@ export default function WordItem({navigation, item, primaryColor}: IWordItemProp
         setLastPress(currentTime);
 
     };
-    
-    return (
+    // TODO: It would be a better user experience if I did this include known words filter
+    // on the backend and reloaded the words list. It also takes logic out of WordItem which would
+    // speed it up
+    return (<>
+        {(!userKnows || (userKnows && showKnownWords)) &&
         <TouchableOpacity
             style={{
                 backgroundColor: styling.backgroundColor,
@@ -134,7 +138,7 @@ export default function WordItem({navigation, item, primaryColor}: IWordItemProp
                 </Text>
             </View>
         </TouchableOpacity>
-    );
+    }</>);
 };
 
 const styles = StyleSheet.create({

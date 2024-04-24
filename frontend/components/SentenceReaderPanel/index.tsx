@@ -21,12 +21,13 @@ import useSentenceComponents from "./hooks/useSentenceComponents";
 
 interface ISentenceReaderProps {
     navigation: any,
+    primaryColor?: string,
     sentencesData?: ISentence[] | null,
     onSentenceReaderLeftSwipe: Function,
     onSentenceReaderRightSwipe: Function
 }
 
-export default function SentenceReaderPanel({navigation, sentencesData = null, onSentenceReaderLeftSwipe, onSentenceReaderRightSwipe}: ISentenceReaderProps) {
+export default function SentenceReaderPanel({navigation, primaryColor = constants.PRIMARYCOLOR, sentencesData = null, onSentenceReaderLeftSwipe, onSentenceReaderRightSwipe}: ISentenceReaderProps) {
 
     const { currentLanguageCode } = useContext(UserContext);
     
@@ -40,7 +41,7 @@ export default function SentenceReaderPanel({navigation, sentencesData = null, o
     const { wordsData } = useFetchWordsData(currentItem);
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled);
+    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoDictEnabled);
 
     // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
     // up
@@ -70,7 +71,7 @@ export default function SentenceReaderPanel({navigation, sentencesData = null, o
                 display: translationVisible ? "visible": "none",
                 ...styles.translatedSentence
                 }}>
-                <Text style={styles.mainText}>{currentItem.translated_sentence}</Text>
+                <Text style={{color: primaryColor, ...styles.mainText}}>{currentItem.translated_sentence}</Text>
             </View>
             <View style={{
                 display: translationVisible ? "none": "visible",
@@ -88,7 +89,7 @@ export default function SentenceReaderPanel({navigation, sentencesData = null, o
             onPressIn={() => setTranslationVisible(true)}
             onPressOut={() => setTranslationVisible(false)}
             >
-            <FontAwesomeIcon icon={faLanguage} size={30} color={constants.PRIMARYCOLOR} />
+            <FontAwesomeIcon icon={faLanguage} size={30} color={primaryColor} />
         </TouchableOpacity>
         <TouchableOpacity
             activeOpacity={1}
@@ -97,7 +98,7 @@ export default function SentenceReaderPanel({navigation, sentencesData = null, o
                 speak(currentItem.sentence, currentLanguageCode)
             }}
             >
-            <FontAwesomeIcon icon={faCommentDots} size={30} color={constants.PRIMARYCOLOR} />
+            <FontAwesomeIcon icon={faCommentDots} size={30} color={primaryColor} />
         </TouchableOpacity>
         <View style={styles.autoplayContainer}>
             <Text style={styles.autoplayText}>Autoplay</Text>
@@ -105,6 +106,8 @@ export default function SentenceReaderPanel({navigation, sentencesData = null, o
                 <ToggleButton
                     initiallySelected={autoDictEnabled}
                     size={20}
+                    primaryColor={primaryColor}
+                    secondaryColor={primaryColor + '55'}
                     onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
                 />
             </View>
@@ -117,13 +120,9 @@ const styles= StyleSheet.create({
     contentContainer: {
         flexDirection: "column",
         justifyContent: "center",
-        marginTop: 'auto',
-        marginBottom: 'auto',
         backgroundColor: constants.TERTIARYCOLOR,
-        //marginHorizontal: 20,
         padding: 15,
-        borderRadius: 20,
-        //borderColor: constants.GREY,
+        flex: 1
     },
     autoplayContainer: {
         flexDirection: 'row',
@@ -154,26 +153,22 @@ const styles= StyleSheet.create({
         height: 50,
     },
     sentenceContainer: {
-        width: "100%",
-        borderWidth: 2,
+        width: "100%"
     },
     mainText: {
         fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.BLACK,
         textAlign: "center",
+
     },
     realSentence: {
         flexDirection: "row",
         justifyContent: "center",
-        flexWrap: "wrap",
-        borderWidth: 2,
-        height: 400
+        flexWrap: "wrap"
 
     },
     translatedSentence: {
-        width: "100%",
-        height: 400
+        width: "100%"
     },
     translateButton: {
         backgroundColor: constants.TERTIARYCOLOR,

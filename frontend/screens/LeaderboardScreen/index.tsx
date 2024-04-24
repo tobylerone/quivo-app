@@ -107,7 +107,12 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                     </View>
                 }
                 <RaisedButton
-                    onPress={() => navigation.navigate('ReadStory', {storyIndex: index})}
+                    onPress={() => navigation.navigate('ReadStory',
+                        {
+                            storyIndex: index,
+                            primaryColor: primaryColor
+                        }
+                    )}
                     options={{
                         ...RaisedButton.defaultProps.options,
                         width: '100%',
@@ -178,12 +183,12 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
         marginBottom: 115,
-        backgroundColor: constants.TERTIARYCOLOR
+        backgroundColor: constants.GREENLIGHT
     },
     titleContainer: {
         marginLeft: 'auto',
         marginRight: 'auto',
-        marginBottom: 10
+        marginBottom: 10,
     },
     titleText: {
         fontFamily: constants.FONTFAMILYBOLD,

@@ -352,11 +352,8 @@ const styles= StyleSheet.create({
         justifyContent: "center",
         marginHorizontal: 20,
         marginBottom: 20,
-        //marginTop: 10,
         padding: 15,
         borderRadius: 20,
-        //borderWidth: 2,
-        //borderColor: constants.GREY,
         flexWrap: "wrap",
         flex: 1
     },

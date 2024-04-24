@@ -8,10 +8,10 @@ import client from "../../utils/axios";
 // Contexts
 import UserContext from "../../contexts/UserContext";
 // Components
-import NavBar from "../../components/NavBar";
 import BottomNavBar from "../../components/BottomNavBar";
 import ProgressBarButton from "./components/ProgressBarButton";
 import WordItem from "./components/WordItem";
+import ToggleButton from "../../components/ToggleButton";
 
 export default function WordListScreen({navigation}: NativeStackHeaderProps) {
 
@@ -22,10 +22,11 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
     const [paginator, setPaginator] = useState<number>(0);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [activeButton, setActiveButton] = useState<string>('1-1000');
+    const [showKnownWords, setShowKnownWords] = useState<boolean>(true);
 
     const flatListRef = useRef();
 
-    const renderItem = useCallback(({item}) => <WordItem navigation={navigation} item={item} primaryColor={primaryColor} />, [primaryColor]);
+    const renderItem = useCallback(({item}) => <WordItem navigation={navigation} item={item} primaryColor={primaryColor} showKnownWords={showKnownWords} />, [primaryColor, showKnownWords]);
     
     useEffect(() => {
         fetchWordCounts();
@@ -152,6 +153,16 @@ export default function WordListScreen({navigation}: NativeStackHeaderProps) {
                     {buttonData.map(({id, label}) => renderProgressBarButton(id, label))}
                 </ScrollView>
                 <View style={styles.headerContainer}>
+                    <View style={styles.knownWordsToggleContainer}>
+                        <Text style={styles.knownWordsToggleText}>Inc. known words</Text>
+                        <ToggleButton
+                            initiallySelected={showKnownWords}
+                            size={20}
+                            onValueChange={() => {setShowKnownWords(!showKnownWords)}}
+                            primaryColor={primaryColor}
+                            secondaryColor={primaryColor + '55'}
+                            />
+                    </View>
                     <Text style={styles.headerContainerText}>{activeButton + ' Most Common'}</Text>
                 </View>
             </View>
@@ -198,6 +209,16 @@ const styles = StyleSheet.create({
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK
+    },
+    knownWordsToggleContainer: {
+        flexDirection: 'row',
+        height: 20
+    },
+    knownWordsToggleText: {
+        marginRight: 5,
+        marginLeft: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto'
     },
     wordList: {
         marginTop: 10

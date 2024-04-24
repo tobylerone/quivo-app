@@ -18,11 +18,9 @@ import stories from "../../assets/stories.json";
 export default function ReadStoryScreen({route, navigation}: NativeStackHeaderProps) {
 
     const { currentUser, currentLanguageCode } = useContext(UserContext);
-
-    const { storyIndex } = route.params;
+    const { storyIndex, primaryColor } = route.params;
 
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
-
     const numSentences = 10;
 
     const sentencesData: ISentence[] = [
@@ -41,8 +39,8 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
     const renderProgressCircle = (i: number) => (
         <View style={{
             backgroundColor: currentSentenceIndex >= i
-                ? constants.PRIMARYCOLOR
-                : constants.LIGHTGREY,//constants.GREEN + '44',
+                ? primaryColor
+                : constants.LIGHTGREY,
             ...styles.progressCircle
         }}></View>
     );
@@ -62,15 +60,18 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
             <View style={styles.progressCirclesContainer}>
                 {Array.from(
                     {length: numSentences},
-                    (_, i) => i + 1).map((i) => renderProgressCircle(i)
+                    (_, i) => i).map((i) => renderProgressCircle(i)
                 )}
             </View>
-            <SentenceReaderPanel
-                navigation={navigation}
-                sentencesData={sentencesData}
-                onSentenceReaderLeftSwipe={() => setCurrentSentenceIndex((idx) => (idx + 1))}
-                onSentenceReaderRightSwipe={() => setCurrentSentenceIndex((idx) => (idx - 1))}
-            />
+            <View style={styles.sentenceReaderContainer}>
+                <SentenceReaderPanel
+                    navigation={navigation}
+                    primaryColor={primaryColor}
+                    sentencesData={sentencesData}
+                    onSentenceReaderLeftSwipe={() => setCurrentSentenceIndex((idx) => (idx + 1))}
+                    onSentenceReaderRightSwipe={() => setCurrentSentenceIndex((idx) => (idx - 1))}
+                />
+            </View>
         </SafeAreaView>
         </>
     );
@@ -78,9 +79,10 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         paddingTop: 50,
         paddingHorizontal: 16,
-        backgroundColor: constants.TERTIARYCOLOR
+        backgroundColor: constants.TERTIARYCOLOR,
     },
     crossContainer: {
         height: 50,
@@ -108,7 +110,8 @@ const styles = StyleSheet.create({
     },
     progressCirclesContainer: {
         flexDirection: 'row',
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        marginBottom: 10
     },
     progressCircle: {
         width: 20,
@@ -117,4 +120,8 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
+    sentenceReaderContainer: {
+        flex: 1,
+        marginBottom: 20
+    }
 });

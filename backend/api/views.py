@@ -481,7 +481,7 @@ class SentencesViewSet(viewsets.ModelViewSet):
 
 		# ----------------------------
 		queryset = model.objects.filter(
-			average_count_rank__gte = 440000
+			average_count_rank__gte = 400000
 			)
 		# ----------------------------
 

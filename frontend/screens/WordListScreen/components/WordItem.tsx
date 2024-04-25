@@ -27,7 +27,7 @@ interface IWordItemProps {
 
 export default function WordItem({navigation, item, primaryColor, showKnownWords}: IWordItemProps){
 
-    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, narrationSpeed } = useContext(UserContext);
 
     const selectedStyling = {
         'backgroundColor': primaryColor,
@@ -104,7 +104,7 @@ export default function WordItem({navigation, item, primaryColor, showKnownWords
 
         } else {
             setPressedOnce(true);
-            speak(item.word, currentLanguageCode);
+            speak(item.word, currentLanguageCode, narrationSpeed);
         }
 
         setLastPress(currentTime);

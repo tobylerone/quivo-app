@@ -13,15 +13,15 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
     const { currentUser, submitLogout, soundActive, setSoundActive, narrationSpeed, setNarrationSpeed } = useContext(UserContext);
     
     const narrationSpeedTitle: Record<number, string> = {
-      0: 'Slow',
+      0.8: 'Slow',
       1: 'Normal',
-      2: 'Fast'
+      1.2: 'Fast'
     }
 
     const narrationSpeedIcons: Record<number, IconDefinition> = {
-      0: faPersonCane,
+      0.8: faPersonCane,
       1: faPersonWalking,
-      2: faPersonBiking
+      1.2: faPersonBiking
     }
     
     const DATA = [
@@ -64,7 +64,7 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                     <Text style={{color: constants.PRIMARYCOLORSHADOW, fontFamily: constants.FONTFAMILYBOLD}}>{narrationSpeedTitle[narrationSpeed]}</Text>
                     {/*<FontAwesomeIcon icon={narrationSpeedIcons[narrationSpeed]} size={20} color={constants.BLACK} />*/}
                   </>,
-                action: () => setNarrationSpeed(narrationSpeed == 2 ? 0 : narrationSpeed + 1)
+                action: () => setNarrationSpeed(narrationSpeed == 1.2 ? 0.8 : narrationSpeed + 0.2)
               },
               { text: soundActive ? "Sound on" : "Sound off",
                 subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.GREENREGULAR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,

@@ -220,7 +220,7 @@ export default function Word ({navigation, primaryColor, word, wordData, textCol
                 <View style={{
                     width: infoBoxWidth,
                     marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
-                    backgroundColor: primaryColor,
+                    backgroundColor: constants.BLACK,
                     ...styles.infoBox
                     }}>
                     <View style={styles.translationContainer}>

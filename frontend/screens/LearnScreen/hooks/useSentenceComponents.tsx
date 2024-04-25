@@ -13,7 +13,7 @@ import Word from "../components/Word";
 export default function useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor){
     // NOTE: This hook should not contain tsx
 
-    const { currentLanguageCode } = useContext(UserContext);
+    const { currentLanguageCode, narrationSpeed } = useContext(UserContext);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [activeWords, setActiveWords] = useState([]);
     const screenWidth = useWindowDimensions().width;
@@ -35,7 +35,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
             // This starts speaking before sentence components have been created
             // which might seem odd if sentence takes a while to render
-            if (autoDictEnabled) speak(currentItem.sentence, currentLanguageCode);
+            if (autoDictEnabled) speak(currentItem.sentence, currentLanguageCode, narrationSpeed);
         }
     }, [wordsData]);
 

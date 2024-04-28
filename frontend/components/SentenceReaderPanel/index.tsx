@@ -71,7 +71,7 @@ export default function SentenceReaderPanel({navigation, primaryColor = constant
                 display: translationVisible ? "visible": "none",
                 ...styles.translatedSentence
                 }}>
-                <Text style={{color: primaryColor, ...styles.mainText}}>{currentItem.translated_sentence}</Text>
+                <Text style={{color: constants.BLACK, ...styles.mainText}}>{currentItem.translated_sentence}</Text>
             </View>
             <View style={{
                 display: translationVisible ? "none": "visible",

@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         //backgroundColor: constants.PURPLEREGULAR + '22',
         borderWidth: 3,
-        borderColor: constants.PURPLEREGULAR,
+        borderColor: constants.GREY,
         padding: 10,
         borderRadius: 20,
         marginBottom: 20

@@ -31,7 +31,6 @@ export default function QACard({item, defaultActive}: IQAData) {
             </View>
             }
         </View>
-        <View style={styles.containerShadow}></View>
         </View>
     );
 }
@@ -39,38 +38,30 @@ export default function QACard({item, defaultActive}: IQAData) {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
-        backgroundColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.PURPLEREGULAR,
         borderRadius: 20,
-        borderLeftWidth: 3,
-        borderRightWidth: 3,
-        borderColor: constants.PRIMARYCOLOR,
+        borderWidth: 3,
+        borderColor: constants.PURPLEREGULAR,
+        marginBottom: 10,
         overflow: 'hidden',
         zIndex: 1
     },
-    containerShadow: {
-        backgroundColor: constants.PRIMARYCOLORSHADOW,
-        height: 50,
-        borderRadius: 20,
-        marginBottom: 10,
-        borderWidth: 3,
-        borderColor: constants.PRIMARYCOLORSHADOW,
-        marginTop: -43,
-        zIndex: 0
-    },
     questionContainer: {
-        backgroundColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.PURPLELIGHT,
         padding: 10
     },
     questionText: {
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.TERTIARYCOLOR,
+        color: constants.PURPLEREGULAR,
         marginLeft: 'auto',
         marginRight: 'auto',
     },
     answerContainer: {
         padding: 10,
-        backgroundColor: constants.TERTIARYCOLOR
+        backgroundColor: constants.TERTIARYCOLOR,
+        borderTopWidth: 3,
+        borderTopColor: constants.PURPLEREGULAR,
     },
     answerText: {
         fontSize: constants.CONTENTFONTSIZE,

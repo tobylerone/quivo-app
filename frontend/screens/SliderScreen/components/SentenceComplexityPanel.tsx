@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         //backgroundColor: constants.GREENREGULAR + '55',
         borderWidth: 3,
-        borderColor: constants.GREENREGULAR,
+        borderColor: constants.GREY,
         padding: 10,
         borderRadius: 20,
         marginBottom: 20

@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         height: 100
     },
     profileLevelContainer: {
-        backgroundColor: constants.GREEN,
+        backgroundColor: constants.ORANGEREGULAR,
         width: 50,
         height: 30,
         borderRadius: 10,
@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     profileLevelText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.CONTENTFONTSIZE,
-        color: constants.BLACK,
+        color: constants.TERTIARYCOLOR,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 'auto',

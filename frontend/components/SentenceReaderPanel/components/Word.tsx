@@ -51,6 +51,7 @@ interface IWordProps {
     word: string,
     wordData: IWordData,
     textColor: string,
+    textBackgroundColor: string,
     onPress: Function,
     isFirstWord: boolean,
     screenWidth: number,
@@ -58,7 +59,7 @@ interface IWordProps {
     key: string
 }
 
-export default function Word ({navigation, word, wordData, textColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
+export default function Word ({navigation, word, wordData, textColor, textBackgroundColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
 
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
@@ -250,6 +251,8 @@ export default function Word ({navigation, word, wordData, textColor, onPress, i
                 <Text
                     style={{
                         ...styles.mainText,
+                        backgroundColor: textBackgroundColor,
+                        borderRadius: 15,
                         color: textColor
                     }}
                     ref={wordRef}

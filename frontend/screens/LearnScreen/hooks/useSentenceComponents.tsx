@@ -100,7 +100,7 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
                 sentenceComponents.push(<Word
                     navigation={navigation}
-                    primaryColor={primaryColor}
+                    primaryColor={constants.BLACK}
                     word={word}
                     wordData={wordsData[fullWord]}
                     textColor={activeWords.includes(fullWord) ? primaryColor : primaryColor + '55'}

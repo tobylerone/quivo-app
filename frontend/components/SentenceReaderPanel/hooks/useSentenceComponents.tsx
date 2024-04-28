@@ -102,7 +102,8 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
                     navigation={navigation}
                     word={word}
                     wordData={wordsData[fullWord]}
-                    textColor={activeWords.includes(fullWord) ? primaryColor : primaryColor + '55'}
+                    textColor={activeWords.includes(fullWord) ? constants.BLACK : constants.BLACK + '55'}
+                    textBackgroundColor={activeWords.includes(fullWord) ? primaryColor + '55': constants.TERTIARYCOLOR}
                     onPress={handleWordPress}
                     isFirstWord={i==0}
                     screenWidth={screenWidth}
@@ -113,7 +114,7 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
                 //setActiveWords((prevArr) => [...prevArr, fullWord])
             } else {
                 sentenceComponents.push(<Text style={{
-                    color: primaryColor,
+                    color: constants.BLACK + '55',
                     fontSize: constants.H1FONTSIZE + 7,
                     fontFamily: constants.FONTFAMILYBOLD,
                     textAlign: "center" 

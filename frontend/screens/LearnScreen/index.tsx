@@ -42,7 +42,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { wordsData } = useFetchWordsData(currentItem);
 
-    const [primaryColor, setPrimaryColor] = useState(constants.PRIMARYCOLOR);
+    const [primaryColor, setPrimaryColor] = useState(constants.BLACK);
     
     // TODO: This hook returns jsx which needs fixing
     const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);

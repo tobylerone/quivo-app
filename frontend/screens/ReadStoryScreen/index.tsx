@@ -13,28 +13,17 @@ import SentenceReaderPanel from "../../components/SentenceReaderPanel";
 import { ISentence } from "../../interfaces";
 // Assets
 import { avatarImageMap } from "../../assets/avatars/avatarMaps";
-import stories from "../../assets/stories.json";
+import useSentencesData from "./hooks/useSentencesData";
+import stories from '../../assets/stories.json';
+
 
 export default function ReadStoryScreen({route, navigation}: NativeStackHeaderProps) {
 
     const { currentUser, currentLanguageCode } = useContext(UserContext);
     const { storyIndex, primaryColor } = route.params;
 
+    const { sentencesData } = useSentencesData({storyIndex, currentLanguageCode});
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
-    const numSentences = 10;
-
-    const sentencesData: ISentence[] = [
-        {
-        sentence: "Il était une fois une jeune femme qui s'appelait Mia.",
-        translated_sentence: "Once upon a time, there was a young woman named Mia.",
-        words: ["il", "était", "une", "fois", "une", "jeune", "femme", "qui", "s", "appelait", "mia"]
-        },
-        {
-        sentence: "Elle était passionnée par les langues et les cultures.",
-        translated_sentence: "She had a deep passion for languages and cultures.",
-        words: ["elle", "était", "passionnée", "par", "les", "langues", "et", "les", "cultures"]
-        }
-    ];
     
     const renderProgressCircle = (i: number) => (
         <View style={{
@@ -45,8 +34,8 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
         }}></View>
     );
 
-    return (
-        <>
+    return (<>
+        {sentencesData &&
         <SafeAreaView style={styles.container}>
             <TouchableOpacity
                 style={styles.crossContainer}
@@ -59,7 +48,7 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
             </View>
             <View style={styles.progressCirclesContainer}>
                 {Array.from(
-                    {length: numSentences},
+                    {length: sentencesData.length},
                     (_, i) => i).map((i) => renderProgressCircle(i)
                 )}
             </View>
@@ -73,8 +62,8 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
                 />
             </View>
         </SafeAreaView>
-        </>
-    );
+        }
+    </>);
 };
 
 const styles = StyleSheet.create({

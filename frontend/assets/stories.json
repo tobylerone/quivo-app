@@ -1,5 +1,23 @@
 [
     [
+        "The Lost Toy",
+        "A boy named Tim had a toy. It was a red car. He lost it one day. He was very sad. He looked for it everywhere. His sister found it under the bed. She gave it to Tim. He was very happy. He thanked his sister. He played with his car again.",
+        {
+            "fr": "Un garçon qui s'appelle Tim avait un jouet. C'était une voiture rouge. Un jour, il l'a perdue. Il était très triste. Il l'a cherchée partout. Sa soeur l'a trouvée sous le lit. Elle l'a donnée à Tim. Il était très content. Il a remercié sa soeur. Il a encore joué avec sa voiture.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Friendly Dog",
+        "There was a dog named Toby. Toby was very friendly. He liked to play with a ball. One day, the ball rolled away. Toby looked for the ball. He found it in a bush. He was very excited. He took the ball home. He played with it all day. Toby loved his ball very much.",
+        {
+            "fr": "Il y avait un chien qui s'appelait Toby. Toby était très gentil. Il aimait jouer avec une balle. Un jour, la balle a roulé loin de lui. Toby cherchait la balle. Il l'a trouvée dans un buisson. Il était très content. Il a ramené la balle à la maison. Il a joué avec toute la journée. Toby aimait beaucoup sa balle.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
         "Language Ace",
         "Once upon a time, there was a young woman named Mia. She had a deep passion for languages and cultures. One day, she decided to learn Spanish, inspired by its rich history and beautiful literature. She started with basic vocabulary, practicing every day without fail. Mia used flashcards, language apps, and even watched Spanish movies to improve her listening skills. She struggled with the grammar at first, but she was determined not to give up. Mia joined a local language exchange group where she met native Spanish speakers. This helped her immensely in understanding the nuances of the language. After a year of hard work, Mia became fluent in Spanish. Her journey taught her that with perseverance, one can indeed master a new language.",
         {
@@ -8,122 +26,242 @@
             "ru": "Давным-давно жила-была девушка по имени Мия. Она питала глубокую страсть к языкам и культурам. Однажды она решила выучить испанский язык, вдохновившись его богатой историей и прекрасной литературой. Она начала с базового словарного запаса и занималась каждый день. Мия использовала флэш-карты, языковые приложения и даже смотрела испанские фильмы, чтобы улучшить свои навыки восприятия на слух. Поначалу у нее были трудности с грамматикой, но она твердо решила не сдаваться. Мия присоединилась к местной группе по обмену языками, где познакомилась с носителями испанского языка. Это очень помогло ей разобраться в тонкостях языка. После года упорных занятий Миа стала свободно говорить по-испански. Ее путешествие научило ее тому, что с упорством можно овладеть новым языком."
         }
     ],
-    ["Day at The Zoo", "In the heart of a bustling city, lived a curious boy named Sam. His fascination for animals was unparalleled, and the zoo was his favourite place. One sunny day, his family decided to surprise him with a trip to the zoo. As they entered, Sam's eyes sparkled with excitement. He ran from one enclosure to another, his laughter echoing through the zoo. His favourite were the majestic lions, their roars sending chills down his spine. He watched in awe as the elephants bathed, splashing water around playfully. The colourful parrots, chattering away, reminded him of a vibrant painting. As the day ended, Sam left the zoo with a heart full of joy and a mind full of memories. This day at the zoo with his family, seeing his favourite animals, was a day he would cherish forever."],
-    ["An Old Flame", "There was an old man named John. Many years ago, he met a woman from Poland. They fell in love, but life took them on different paths. Now, John was alone and missed her deeply. He decided to learn Polish to reconnect with her. Every day, he studied hard, learning new words and phrases. He practiced speaking Polish with anyone who would listen. After months of hard work, he could speak Polish fluently. He then traveled to Poland, hoping to find his old love. When they met, she was touched by his effort to learn her language, and they rekindled their love."],
-    ["The Baker's Surprise", "In a small town, there was a baker named Tom. He was known for his delicious pastries. One day, he found an old recipe in his grandmother's cookbook. It was for a cake he had never heard of before. Intrigued, Tom decided to bake it. He followed the recipe carefully, adding each ingredient with precision. When the cake was ready, it smelled heavenly. He shared it with his customers the next day. To his delight, they loved it! It became the most popular item in his bakery."],
-    ["The Lost Puppy", "A little puppy named Spot got lost in the park. He was scared and missed his family. A girl named Lily found him hiding behind a tree. She could tell he was lost and decided to help. Lily made posters and put them up around the park. She took good care of Spot, giving him food and a warm place to sleep. After a few days, Spot's family saw the poster. They were overjoyed to find Spot safe with Lily. Lily was happy to reunite Spot with his family. From that day, Lily and Spot became the best of friends."],
-    ["The Brave Kitten", "There was a tiny kitten named Whiskers. He was adventurous and loved exploring. One day, he climbed up a tall tree. But then, he couldn't get down. He was scared and started meowing loudly. A boy named Max heard him. Max quickly called the fire department. They arrived and rescued Whiskers. Max decided to adopt Whiskers and gave him a loving home. From then on, Whiskers preferred to have his adventures on the ground."],
-    ["The Magic Paintbrush", "A young artist named Bella found a paintbrush on the beach. She started painting with it and realized it was magical. Whatever she painted became real. She painted beautiful landscapes and they came to life. Bella used this magic to bring happiness to her town. She painted parks, playgrounds, and beautiful buildings. The town became a vibrant and joyful place. Bella's art brought the community together. She continued to create magic with her paintbrush, spreading joy wherever she went."],
-    ["The Forgotten Book", "In a dusty old bookstore, there was a forgotten book. No one seemed to notice it. One day, a girl named Lucy found the book. She started reading it and couldn't put it down. The book was full of fascinating tales and adventures. Lucy shared the stories with her friends. They were captivated by the tales. The book became popular in the town. It was no longer forgotten, but cherished. The book taught everyone the joy of reading and the magic of storytelling."],
-    ["The Lost Toy", "A boy named Tim had a toy. It was a red car. He lost it one day. He was very sad. He looked for it everywhere. His sister found it under the bed. She gave it to Tim. He was very happy. He thanked his sister. He played with his car again."],
-    ["The Friendly Dog", "There was a dog named Spot. Spot was very friendly. He liked to play with a ball. One day, the ball rolled away. Spot looked for the ball. He found it in a bush. He was very excited. He took the ball home. He played with it all day. Spot loved his ball very much."],
-    ["A Stellar Surprise", "There was a girl named Emma who loved stargazing. One clear night, she saw a shooting star. It was a beautiful sight. She made a wish, hoping it would come true. The next day, she found a telescope in her room. Her parents had surprised her. Emma was thrilled. She could now see the stars up close. Every night, she would look at the stars and dream. It was a magical experience for her."],
-    ["The Hidden Treasure", "In a small town, there was a legend of hidden treasure. A boy named Jake was fascinated by this legend. He decided to find the treasure. He studied old maps and books. He followed the clues to a cave. Inside the cave, he found a chest. It was filled with gold and jewels. Jake was thrilled with his discovery. He used the treasure to help his town. His adventure made him a local hero."],
-    ["The Mysterious Island", "In the vast expanse of the Pacific Ocean, there existed an uncharted island. It was discovered by an intrepid explorer named Captain James. The island was teeming with exotic flora and fauna, unlike anything James had ever seen. Intrigued, he decided to delve deeper into the island's mysteries. He encountered ancient ruins, hinting at a lost civilization. James meticulously documented his findings, capturing the essence of the island's enigmatic charm. His discoveries piqued the interest of the scientific community. Expeditions were organized to further explore the island. The island, once unknown, became a beacon of discovery and exploration. It was a testament to the endless wonders that our world holds."],
-    ["The Enchanted Forest", "In the realm of Eldoria, there existed an enchanted forest. It was said to be home to mystical creatures. A brave knight named Sirus ventured into the forest. He was on a quest to find the legendary Phoenix. Guided by the whispers of the wind and the forest's subtle signs, he journeyed deeper. Amidst the emerald foliage, he found the Phoenix. Its radiant plumage illuminated the forest, casting ethereal shadows. The Phoenix granted Sirus a single wish for his bravery. Sirus wished for the prosperity of Eldoria. His encounter with the Phoenix marked a new era of peace and prosperity in Eldoria."],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""],
-    ["Story Title", ""]
+    [
+        "An Old Flame",
+        "There was an old man named John. Many years ago, he met a woman from Poland. They fell in love, but life took them on different paths. Now, John was alone and missed her deeply. He decided to learn Polish to reconnect with her. Every day, he studied hard, learning new words and phrases. He practiced speaking Polish with anyone who would listen. After months of hard work, he could speak Polish fluently. He then traveled to Poland, hoping to find his old love. When they met, she was touched by his effort to learn her language, and they rekindled their love.",
+        {
+            "fr": "Il y avait un vieil homme qui s'appelait Jean. Il y a de nombreuses années, il a rencontré une femme polonaise. Ils sont tombés amoureux, mais la vie leur a fait prendre des chemins différents. Aujourd'hui, John est seul et sa femme lui manque beaucoup. Il décida d'apprendre le polonais pour renouer avec elle. Chaque jour, il étudiait beaucoup, apprenant de nouveaux mots et de nouvelles phrases. Il pratiquait le polonais avec tous ceux qui voulaient bien l'écouter. Après des mois de travail acharné, il est parvenu à parler couramment le polonais. Il s'est alors rendu en Pologne, dans l'espoir de retrouver son ancien amour. Lorsqu'ils se sont rencontrés, elle a été touchée par ses efforts pour apprendre sa langue, et ils ont renoué leur amour.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Baker's Surprise",
+        "In a small town, there was a baker named Tom. He was known for his delicious pastries. One day, he found an old recipe in his grandmother's cookbook. It was for a cake he had never heard of before. Intrigued, Tom decided to bake it. He followed the recipe carefully, adding each ingredient with precision. When the cake was ready, it smelled heavenly. He shared it with his customers the next day. To his delight, they loved it! It became the most popular item in his bakery.",
+        {
+            "fr": "Dans une petite ville, il y avait un boulanger nommé Tom. Il était connu pour ses délicieuses pâtisseries. Un jour, il a trouvé une vieille recette dans le livre de cuisine de sa grand-mère. Elle concernait un gâteau dont il n'avait jamais entendu parler auparavant. Intrigué, Tom a décidé de le préparer. Il suit la recette à la lettre, ajoutant chaque ingrédient avec précision. Lorsque le gâteau était prêt, il sentait merveilleusement bon. Le lendemain, il le partage avec ses clients. À sa grande joie, ils l'adorent ! Il devient l'article le plus populaire de sa boulangerie.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Lost Puppy",
+        "A little puppy named Spot got lost in the park. He was scared and missed his family. A girl named Lily found him hiding behind a tree. She could tell he was lost and decided to help. Lily made posters and put them up around the park. She took good care of Spot, giving him food and a warm place to sleep. After a few days, Spot's family saw the poster. They were overjoyed to find Spot safe with Lily. Lily was happy to reunite Spot with his family. From that day, Lily and Spot became the best of friends.",
+        {
+            "fr": "Un petit chiot nommé Spot s'est perdu dans le parc. Il avait peur et sa famille lui manquait. Une fille nommée Lily l'a trouvé caché derrière un arbre. Elle a vu qu'il était perdu et a décidé de l'aider. Lily a fait des affiches et les a placées dans le parc. Elle s'est occupée de Spot, lui a donné de la nourriture et un endroit chaud pour dormir. Au bout de quelques jours, la famille de Spot a vu l'affiche. Ils étaient ravis de retrouver Spot en sécurité avec Lily. Lily était heureuse de réunir Spot et sa famille. Depuis ce jour, Lily et Spot sont devenus les meilleurs amis du monde.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Brave Kitten",
+        "There was a tiny kitten named Whiskers. He was adventurous and loved exploring. One day, he climbed up a tall tree. But then, he couldn't get down. He was scared and started meowing loudly. A boy named Max heard him. Max quickly called the fire department. They arrived and rescued Whiskers. Max decided to adopt Whiskers and gave him a loving home. From then on, Whiskers preferred to have his adventures on the ground.",
+        {
+            "fr": "Whiskers était un petit chaton aventureux qui aimait explorer. Un jour, il a grimpé sur un grand arbre. Mais il n'arrivait pas à redescendre. Il avait peur et s'est mis à miauler très fort. Un garçon nommé Max l'entendit. Max a vite appelé les pompiers. Ils sont arrivés et ont sauvé Whiskers. Max a alors décidé d'adopter Whiskers et lui a donné un foyer aimant. À partir de ce moment-là, Whiskers préférait vivre ses aventures sur le sol.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Magic Paintbrush",
+        "A young artist named Bella found a paintbrush on the beach. She started painting with it and realized it was magical. Whatever she painted became real. She painted beautiful landscapes and they came to life. Bella used this magic to bring happiness to her town. She painted parks, playgrounds, and beautiful buildings. The town became a vibrant and joyful place. Bella's art brought the community together. She continued to create magic with her paintbrush, spreading joy wherever she went.",
+        {
+            "fr": "Bella est une jeune artiste qui a trouvé un pinceau sur la plage. Elle commence à peindre avec et se rend compte qu'il est magique. Tout ce qu'elle peignait devenait réel. Elle peignait de magnifiques paysages qui prenaient vie. Bella utilisait cette magie pour apporter du bonheur à sa ville. Elle peignait des parcs, des terrains de jeux et de beaux bâtiments. La ville devenait un endroit vivant et joyeux. L'art de Bella rassemblait la communauté. Elle continuait à créer de la magie avec son pinceau, répandant la joie partout où elle allait.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Forgotten Book",
+        "In a dusty old bookstore, there was a forgotten book. No one seemed to notice it. One day, a girl named Lucy found the book. She started reading it and couldn't put it down. The book was full of fascinating tales and adventures. Lucy shared the stories with her friends. They were captivated by the tales. The book became popular in the town. It was no longer forgotten, but cherished. The book taught everyone the joy of reading and the magic of storytelling.",
+        {
+            "fr": "Dans une vieille librairie pleine de poussière, il y avait un livre oublié. Personne ne semblait le remarquer. Un jour, une jeune fille nommée Lucy trouve le livre. Elle commence à le lire et ne peut plus le lâcher. Le livre est rempli d'histoires et d'aventures fascinantes. Lucy raconte les histoires à ses amis. Ils étaient captivés par les histoires. Le livre devient populaire dans la ville. Il n'était plus oublié, mais chéri. Le livre a enseigné à tout le monde le plaisir de lire et la magie des contes.",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "A Stellar Surprise",
+        "There was a girl named Emma who loved stargazing. One clear night, she saw a shooting star. It was a beautiful sight. She made a wish, hoping it would come true. The next day, she found a telescope in her room. Her parents had surprised her. Emma was thrilled. She could now see the stars up close. Every night, she would look at the stars and dream. It was a magical experience for her.",
+    ],
+    [
+        "The Hidden Treasure",
+        "In a small town, there was a legend of hidden treasure. A boy named Jake was fascinated by this legend. He decided to find the treasure. He studied old maps and books. He followed the clues to a cave. Inside the cave, he found a chest. It was filled with gold and jewels. Jake was thrilled with his discovery. He used the treasure to help his town. His adventure made him a local hero.",
+        {
+            "fr": "",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "The Mysterious Island",
+        "In the vast expanse of the Pacific Ocean, there existed an uncharted island. It was discovered by an intrepid explorer named Captain James. The island was teeming with exotic flora and fauna, unlike anything James had ever seen. Intrigued, he decided to delve deeper into the island's mysteries. He encountered ancient ruins, hinting at a lost civilization. James meticulously documented his findings, capturing the essence of the island's enigmatic charm. His discoveries piqued the interest of the scientific community. Expeditions were organized to further explore the island. The island, once unknown, became a beacon of discovery and exploration. It was a testament to the endless wonders that our world holds.",
+        {
+            "fr": "",
+            "de": "",
+            "ru": ""
+        }
+    ],
+    [
+        "Day at The Zoo",
+        "In the heart of a bustling city, lived a curious boy named Sam. His fascination for animals was unparalleled, and the zoo was his favourite place. One sunny day, his family decided to surprise him with a trip to the zoo. As they entered, Sam's eyes sparkled with excitement. He ran from one enclosure to another, his laughter echoing through the zoo. His favourite were the majestic lions, their roars sending chills down his spine. He watched in awe as the elephants bathed, splashing water around playfully. The colourful parrots, chattering away, reminded him of a vibrant painting. As the day ended, Sam left the zoo with a heart full of joy and a mind full of memories. This day at the zoo with his family, seeing his favourite animals, was a day he would cherish forever.",
+        {
+            "fr": "Au coeur d'une ville animée, vivait un garçon curieux nommé Sam. Sa fascination pour les animaux était sans égale et le zoo était son lieu préféré. Par une belle journée ensoleillée, sa famille décide de lui faire la surprise d'une visite au zoo. Lorsqu'ils entrèrent, les yeux de Sam brillaient de joie. Il court d'un enclos à l'autre, ses rires résonnant dans tout le zoo. Ses préférés étaient les lions majestueux, dont les rugissements lui donnaient des frissons. Il regardait avec admiration les éléphants se baigner, éclaboussant l'eau de façon ludique. Les perroquets colorés, qui jacassaient, lui rappelaient une peinture vibrante. À la fin de la journée, Sam a quitté le zoo le coeur plein de joie et l'esprit plein de souvenirs. Cette journée au zoo avec sa famille, à voir ses animaux préférés, est une journée qu'il chérira à jamais.",
+            "de": "Mitten in einer belebten Stadt lebte ein neugieriger Junge namens Sam. Seine Faszination für Tiere war unvergleichlich, und der Zoo war sein Lieblingsort. Eines sonnigen Tages beschloss seine Familie, ihn mit einem Zoobesuch zu überraschen. Als sie eintraten, leuchteten Sams Augen vor Aufregung. Er rannte von einem Gehege zum anderen und sein Lachen hallte durch den Zoo. Am besten gefielen ihm die majestätischen Löwen, deren Gebrüll ihm einen Schauer über den Rücken jagte. Ehrfürchtig beobachtete er, wie die Elefanten badeten und spielerisch mit Wasser um sich spritzten. Die bunten Papageien erinnerten ihn mit ihrem Geplapper an ein lebendiges Gemälde. Als der Tag zu Ende ging, verließ Sam den Zoo mit einem Herzen voller Freude und einem Kopf voller Erinnerungen. Dieser Tag im Zoo mit seiner Familie, an dem er seine Lieblingstiere gesehen hatte, war ein Tag, den er für immer in Erinnerung behalten würde.",
+            "ru": "В самом центре шумного города жил любопытный мальчик по имени Сэм. Он беспредельно увлекался животными, и зоопарк был его любимым местом. В один солнечный день семья решила устроить ему сюрприз - поход в зоопарк. Когда они вошли в зоопарк, глаза Сэма заблестели от восторга. Он бегал от одного вольера к другому, его смех разносился по всему зоопарку. Больше всего ему понравились величественные львы, от их рева по спине бежали мурашки. Он с трепетом наблюдал, как слоны купаются, игриво разбрызгивая воду. Разноцветные попугаи, болтающие без умолку, напомнили ему яркую картину. Когда день закончился, Сэм покинул зоопарк с сердцем, полным радости, и мыслями, полными воспоминаний. Этот день в зоопарке с семьей, когда он увидел своих любимых животных, он запомнит навсегда."
+        }
+    ],
+    [
+        "The Enchanted Forest",
+        "In the realm of Eldoria, there existed an enchanted forest. It was said to be home to mystical creatures. A brave knight named Sirus ventured into the forest. He was on a quest to find the legendary Phoenix. Guided by the whispers of the wind and the forest's subtle signs, he journeyed deeper. Amidst the emerald foliage, he found the Phoenix. Its radiant plumage illuminated the forest, casting ethereal shadows. The Phoenix granted Sirus a single wish for his bravery. Sirus wished for the prosperity of Eldoria. His encounter with the Phoenix marked a new era of peace and prosperity in Eldoria.",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "The Gamer",
+        "As soon as he got home from school, Tim raced to his room and fired up his computer. He had been looking forward to this moment all day, and he couldn’t wait to dive into the virtual world of his favorite game. Tim was a hardcore gamer, and he spent hours every day playing his favorite online games. He was skilled at strategy and teamwork, and he loved the adrenaline rush that came with winning a close match. But today, things weren’t going quite as planned. Tim’s team was getting crushed, and no matter what they tried, they couldn’t seem to turn the tide. Frustrated and annoyed, Tim began to lose his cool. He started yelling at his teammates and making reckless decisions, throwing the game even further out of reach. As the match came to a close, Tim sat back in his chair, defeated. He couldn’t believe how badly he had played, and he knew he had let his team down. But instead of dwelling on his mistakes, Tim decided to take a different approach. He realized that his anger and frustration were only making things worse, and that he needed to learn to control his emotions if he wanted to succeed. From that day on, Tim made a conscious effort to stay calm and focused during his games. And as he began to see the results of his hard work, he knew that he had made the right decision. He was a better gamer because of it, and he knew that he would continue to improve as he learned to master his emotions.",
+    {
+        "fr": "Dès qu’il est rentré de l’école, Tim s’est précipité dans sa chambre et a allumé son ordinateur. Il avait attendu ce moment toute la journée, et il était impatient de plonger dans le monde virtuel de son jeu préféré. Tim était un joueur invétéré et il passait des heures chaque jour à jouer à ses jeux en ligne préférés. Il était doué pour la stratégie et le travail d’équipe, et il adorait la montée d’adrénaline qui accompagnait la victoire dans un match serré. Mais aujourd’hui, les choses ne se passaient pas comme prévu. L’équipe de Tim se faisait écraser, et peu importe ce qu’elle essayait, elle ne parvenait pas à renverser la vapeur. Frustré et agacé, Tim a commencé à perdre son calme. Il a commencé à crier sur ses coéquipiers et à prendre des décisions imprudentes, mettant le match encore plus hors de portée. Alors que le match touche à sa fin, Tim s’assoit sur sa chaise, vaincu. Il n’arrivait pas à croire qu’il avait si mal joué, et il savait qu’il avait laissé tomber son équipe. Mais au lieu de ressasser ses erreurs, Tim a décidé d’adopter une approche différente. Il a réalisé que sa colère et sa frustration ne faisaient qu’empirer les choses et qu’il devait apprendre à contrôler ses émotions s’il voulait réussir. À partir de ce jour, Tim a fait un effort conscient pour rester calme et concentré pendant ses matchs. Et lorsqu’il a commencé à voir les résultats de ses efforts, il a su qu’il avait pris la bonne décision. Il était un meilleur joueur grâce à cela, et il savait qu’il continuerait à s’améliorer en apprenant à maîtriser ses émotions.",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "A Stormy Night",
+        "It was a dark and stormy night. The winds howled as the rain pounded against the windows of the old, decrepit house. Inside, a young woman named Sarah sat huddled by the fireplace, trying to stay warm. She had been stranded in the house for days, unable to leave due to the raging storm outside. As she sat staring into the flames, Sarah couldn’t help but feel a sense of hopelessness wash over her. She had run out of food and there was no way to contact the outside world for help. Just when she thought things couldn’t get any worse, she heard a knock at the door. Sarah’s heart raced as she approached the door, not knowing who or what could be on the other side. She hesitated for a moment before slowly turning the knob and pulling the door open. Standing there, soaked to the bone and shivering uncontrollably, was a man she had never seen before. Without a word, the man pushed past her and made his way to the fireplace, holding out his cold, wet hands to the warmth of the flames. Sarah watched in shock as he stripped off his wet clothes and hung them by the fire to dry. As the man began to warm up, he turned to Sarah and introduced himself as a traveler who had gotten lost in the storm. Sarah couldn’t believe her luck – finally, someone to help her get through this nightmare. Together, they worked to gather what little resources they had left and make the best of their situation. In the end, Sarah and the stranger were able to weather the storm and make it through the long, dark night. And as the sun rose on a new day, Sarah knew that she would always be grateful for the unexpected friendship that had formed in the most unlikely of circumstances.",
+    {
+        "fr": "C’était une nuit sombre et orageuse. Les vents hurlaient et la pluie battait contre les fenêtres de la vieille maison décrépite. A l’intérieur, une jeune femme nommée Sarah était assise près de la cheminée, essayant de rester au chaud. Elle était bloquée dans la maison depuis des jours, incapable de sortir à cause de la tempête qui faisait rage à l’extérieur. Alors qu’elle fixait les flammes, Sarah ne pouvait s’empêcher de ressentir un sentiment de désespoir. Elle n’avait plus de nourriture et il n’y avait aucun moyen de contacter le monde extérieur pour obtenir de l’aide. Alors qu’elle pensait que les choses ne pouvaient pas être pires, elle a entendu frapper à la porte. Le coeur de Sarah s’emballe alors qu’elle s’approche de la porte, ne sachant pas qui ou quoi pourrait se trouver de l’autre côté. Elle a hésité un moment avant de tourner lentement la poignée et d’ouvrir la porte. Un homme qu’elle n’avait jamais vu auparavant se tenait là, trempé jusqu’aux os et tremblant de façon incontrôlable. Sans un mot, l’homme l’a dépassée et s’est dirigé vers la cheminée, tendant ses mains froides et humides vers la chaleur des flammes. Sarah a regardé, choquée, l’homme enlever ses vêtements mouillés et les suspendre près du feu pour les faire sécher. Alors que l’homme commence à se réchauffer, il se tourne vers Sarah et se présente comme un voyageur qui s’est perdu dans la tempête. Sarah n’en revenait pas de sa chance – enfin quelqu’un pour l’aider à traverser ce cauchemar. Ensemble, ils se sont efforcés de rassembler le peu de ressources qu’il leur restait et de tirer le meilleur parti de leur situation. Finalement, Sarah et l’étranger ont réussi à résister à la tempête et à traverser la longue nuit noire. Et alors que le soleil se levait sur un nouveau jour, Sarah savait qu’elle serait toujours reconnaissante pour l’amitié inattendue qui s’était formée dans les circonstances les plus improbables.",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "Coffee Lover",
+        "As soon as she woke up in the morning, the first thing that crossed Sarah’s mind was coffee. She was a true coffee lover, and there was nothing she loved more than the rich, aromatic taste of a perfectly brewed cup. Sarah’s day wasn’t complete without at least two cups of coffee, and she made sure to plan her days around her coffee breaks. She would wake up early, take a quick shower, and then head straight to the kitchen to start brewing. As she waited for the coffee to drip through the machine, Sarah would mentally plan out her day. She would go over her to-do list, review her schedule, and figure out what needed to be done. And as she took her first sip of the hot, steaming liquid, Sarah felt a sense of clarity and focus wash over her. But Sarah’s love for coffee went beyond just the morning ritual. She loved trying new coffee shops and experimenting with different beans and brewing methods. She even had a collection of rare and exotic coffee beans that she kept in a special cabinet in her kitchen. For Sarah, coffee was more than just a drink – it was a way of life. And she knew that no matter where she went or what she did, she would always have a special place in her heart for the humble cup of coffee.",
+    {
+        "fr": "Dès qu’elle se réveillait le matin, la première chose qui traversait l’esprit de Sarah était le café. C’était une vraie amatrice de café, et il n’y avait rien qu’elle aimait plus que le goût riche et aromatique d’une tasse parfaitement préparée. La journée de Sarah n’était pas complète sans au moins deux tasses de café, et elle s’assurait de planifier ses journées en fonction de ses pauses café. Elle se réveillait tôt, prenait une douche rapide, puis se dirigeait directement vers la cuisine pour commencer à préparer le café. En attendant que le café s’écoule dans la machine, Sarah planifiait mentalement sa journée. Elle passait en revue sa liste de tâches, son emploi du temps et déterminait ce qu’elle devait faire. Et lorsqu’elle buvait sa première gorgée de ce liquide chaud et fumant, Sarah sentait un sentiment de clarté et de concentration l’envahir. Mais l’amour de Sarah pour le café allait au-delà du simple rituel matinal. Elle aimait essayer de nouveaux cafés et expérimenter différents grains et méthodes de préparation. Elle avait même une collection de grains de café rares et exotiques qu’elle conservait dans un meuble spécial de sa cuisine. Pour Sarah, le café était plus qu’une simple boisson, c’était un mode de vie. Et elle savait que, peu importe où elle allait ou ce qu’elle faisait, elle aurait toujours une place spéciale dans son coeur pour l’humble tasse de café.",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ],
+    [
+        "",
+        "",
+    {
+        "fr": "",
+        "de": "",
+        "ru": ""
+    }
+    ]
 ]

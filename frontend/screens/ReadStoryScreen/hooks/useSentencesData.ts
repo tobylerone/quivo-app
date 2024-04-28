@@ -12,6 +12,7 @@ interface IUseSentencesDataProps {
 export default function useSentencesData({storyIndex, currentLanguageCode}: IUseSentencesDataProps){
 
     const [sentencesData, setSentencesData] = useState<Record<string, string|string[]>[] | null>(null);
+    const [numSentences, setNumSentences] = useState<number|null>(null);
 
     useEffect(() => {
 
@@ -29,8 +30,9 @@ export default function useSentencesData({storyIndex, currentLanguageCode}: IUse
         });
 
         setSentencesData(data);
+        setNumSentences(data.length);
 
     }, []);
 
-    return { sentencesData }; 
+    return { sentencesData, numSentences }; 
 }

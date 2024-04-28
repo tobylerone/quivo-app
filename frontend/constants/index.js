@@ -48,8 +48,8 @@ export const H3FONTSIZE = 16;
 export const CONTENTFONTSIZE = 14;
 
 // Limites d'utilisation
-//export const STREAKDAILYWORDS = 10;
 export const MAXDAILYWORDS = 500;
+export const WORDSPERAD = 10;
 
 // LearnScreen. Move there
 export const DOUBLETAPDELAY = 200; // en millisecondes

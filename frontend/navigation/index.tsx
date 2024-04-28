@@ -29,7 +29,7 @@ import FollowListScreen from "../screens/FollowListScreen";
 import FaqScreen from "../screens/FaqScreen";
 import ProgressScreen from "../screens/ProgressScreen";
 import LevelScreen from "../screens/LevelScreen";
-import StreakScreen from "../screens/StreakScreen";
+import ShowAdScreen from "../screens/ShowAdScreen";
 import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
 import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
@@ -202,9 +202,12 @@ function MainNavigator() {
                 options={{ headerShown: false }}
             />
             <MainStack.Screen
-                name="Streak"
-                component={StreakScreen as any}
-                options={{ headerShown: false }}
+                name="ShowAd"
+                component={ShowAdScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom'
+                 }}
             />
             <MainStack.Screen
                 name="GetPremium"

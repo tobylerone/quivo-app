@@ -30,7 +30,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser } = useContext(UserContext);
 
-    const completedStories = 64;
+    const completedStories = 5;
 
     const storyIndexColors: Record<number, string[]> = {
         0: [constants.GREENREGULAR, constants.GREENLIGHT],
@@ -53,12 +53,13 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
             height: 7,
             borderRadius: 4,
             backgroundColor: index < completedStories ? color : constants.GREY,
-            marginBottom: 5
+            //marginBottom: 5,
+            marginLeft: 'auto',
+            marginRight: 'auto',
         }}></View>
     );
 
     const renderItem = (index: number) => {
-        
         const colorRecord = storyIndexColors[Math.floor(0.1 * (index)) * 10];
         const primaryColor = colorRecord[0];
         const secondaryColor = colorRecord[1];
@@ -75,18 +76,28 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                 marginBottom: 10,
                 marginLeft: Math.abs(((index + 4) % 8) - 4) * 10 + '%'
             }}>
-                {index > 0 && <View
+                <View
                     style={{
                         //borderColor: index < completedStories + 1 ? constants.PRIMARYCOLORSHADOW : constants.GREY,
                         transform: [{
                             rotate: ((index - 1) % 8) < 4 ? '-15deg' : '15deg'
                         }],
-                        marginLeft: ((index - 1) % 8) < 4 ? '40%' : '55%',
+                        marginLeft: ((index - 1) % 8) < 4 ? '30%' : '50%',
                         ...styles.line
                     }}>
-                    {[0, 1, 2, 3].map(() => renderDot(index, primaryColor, completedStories))}
+                    {/*[0, 1, 2, 3].map(() => renderDot(index, primaryColor, completedStories))*/}
+                    {renderDot(index, primaryColor, completedStories)}
+                    <Text style={{
+                        fontFamily: constants.FONTFAMILYBOLD,
+                        fontSize: constants.H2FONTSIZE,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        transform: [{
+                            rotate: ((index - 1) % 8) < 4 ? '15deg' : '-15deg'
+                        }]
+                        }}>{index + 1}</Text>
+                    {renderDot(index, primaryColor, completedStories)}
                 </View>
-                }
                 {(index % 4 == 0 && index % 8 != 0) &&
                     <View style={{
                         width: 80,
@@ -162,7 +173,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
         <>
         <SafeAreaView style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>Stories</Text>
+                <Text style={styles.titleText}>Stories ({completedStories}/30)</Text>
             </View>
             <ScrollView
                 bounces={false}
@@ -198,11 +209,9 @@ const styles = StyleSheet.create({
     },
     line: {
         height: 70,
-        width: 7,
+        width: 50,
         flexDirection: 'column',
-        //borderLeftWidth: 7,
-        //borderStyle: 'dotted',
-        marginTop: -42,
-        marginBottom: -15
+        marginTop: -37,
+        marginBottom: -10
     }
 });

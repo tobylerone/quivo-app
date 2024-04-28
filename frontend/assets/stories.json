@@ -1,5 +1,41 @@
 [
     [
+        "Marie's Trip",
+        "Marie is a young girl who loves to travel. One day, she decided to visit the Eiffel Tower in Paris. She took a plane, a taxi, and walked to get there. She was amazed by the beauty of the tower. She took many photos and ate a delicious crepe. It was an unforgettable day for Marie.",
+        {
+            "fr": "Marie est une jeune fille qui aime voyager. Un jour, elle a décidé de visiter la Tour Eiffel à Paris. Elle a pris un avion, un taxi et a marché pour y arriver. Elle a été émerveillée par la beauté de la tour. Elle a pris beaucoup de photos et a mangé une crêpe délicieuse. C’était une journée inoubliable pour Marie.",
+            "de": "Marie ist ein junges Mädchen, das gerne reist. Eines Tages beschloss sie, den Eiffelturm in Paris zu besuchen. Sie nahm ein Flugzeug, ein Taxi und ging dorthin. Sie war erstaunt über die Schönheit des Turms. Sie machte viele Fotos und aß einen leckeren Crêpe. Es war ein unvergesslicher Tag für Marie.",
+            "ru": "Мари является молодой девушкой, которая любит путешествовать. Однажды она решила посетить Эйфелеву башню в Париже. Она села на самолет, взяла такси и шла туда пешком. Она была поражена красотой башни. Она сделала много фотографий и съела вкусный блин. Это был незабываемый день для Мари."
+        }
+    ],
+    [
+        "The Secret Garden",
+        "Paul is a passionate gardener. He has a secret garden full of beautiful flowers and plants. Every morning, he waters his plants and talks to them. He believes that this helps them grow. One day, a butterfly came to visit his garden. Paul was very happy and decided to plant more flowers to attract more butterflies.",
+        {
+            "fr": "Paul est un jardinier passionné. Il a un jardin secret plein de belles fleurs et de plantes. Chaque matin, il arrose ses plantes et parle avec elles. Il croit que cela les aide à pousser. Un jour, un papillon est venu visiter son jardin. Paul était très heureux et a décidé de planter plus de fleurs pour attirer plus de papillons.",
+            "de": "Paul ist ein leidenschaftlicher Gärtner. Er hat einen geheimen Garten voller schöner Blumen und Pflanzen. Jeden Morgen gießt er seine Pflanzen und spricht mit ihnen. Er glaubt, dass dies ihnen hilft zu wachsen. Eines Tages kam ein Schmetterling, um seinen Garten zu besuchen. Paul war sehr glücklich und beschloss, mehr Blumen zu pflanzen, um mehr Schmetterlinge anzuziehen.",
+            "ru": "Павел - страстный садовод. У него есть секретный сад, полный красивых цветов и растений. Каждое утро он поливает свои растения и разговаривает с ними. Он верит, что это помогает им расти. Однажды бабочка пришла посетить его сад. Павел был очень счастлив и решил посадить больше цветов, чтобы привлечь больше бабочек."
+        }
+    ], 
+    [
+        "Pierre's Adventure",
+        "Pierre is a brave little boy. He decided to go on an adventure in the forest near his house. He saw birds, squirrels, and even a deer. He climbed trees and jumped over streams. At the end of the day, he came home with incredible stories to tell.",
+        {
+            "fr": "Pierre est un petit garçon courageux. Il a décidé de partir à l’aventure dans la forêt près de sa maison. Il a vu des oiseaux, des écureuils et même un cerf. Il a grimpé aux arbres et a sauté par-dessus les ruisseaux. À la fin de la journée, il est rentré chez lui avec des histoires incroyables à raconter.",
+            "de": "Pierre ist ein tapferer kleiner Junge. Er beschloss, ein Abenteuer im Wald in der Nähe seines Hauses zu erleben. Er sah Vögel, Eichhörnchen und sogar ein Reh. Er kletterte auf Bäume und sprang über Bäche. Am Ende des Tages kam er mit unglaublichen Geschichten nach Hause.",
+            "ru": "Пьер - смелый маленький мальчик. Он решил отправиться в приключение в лесу возле своего дома. Он видел птиц, белок и даже оленя. Он лазил по деревьям и прыгал через ручьи. В конце дня он вернулся домой с невероятными историями."
+        }
+    ],
+    [
+        "Grandma's Recipe",
+        "Grandmother has a secret apple pie recipe. She uses fresh apples, sugar, cinnamon, and homemade dough. One day, she decided to share her recipe with her granddaughter, Julie. Julie was surprised by the delicious taste of the pie. Since that day, they prepare the pie together every Sunday.",
+        {
+            "fr": "Grand-mère a une recette secrète de tarte aux pommes. Elle utilise des pommes fraîches, du sucre, de la cannelle et une pâte maison. Un jour, elle a décidé de partager sa recette avec sa petite-fille, Julie. Julie a été surprise par le goût délicieux de la tarte. Depuis ce jour, elles préparent la tarte ensemble chaque dimanche.",
+            "de": "Großmutter hat ein geheimes Apfelkuchenrezept. Sie verwendet frische Äpfel, Zucker, Zimt und selbstgemachten Teig. Eines Tages beschloss sie, ihr Rezept mit ihrer Enkelin Julie zu teilen. Julie war überrascht von dem köstlichen Geschmack des Kuchens. Seit diesem Tag bereiten sie den Kuchen jeden Sonntag gemeinsam zu.",
+            "ru": "Бабушка имеет секретный рецепт яблочного пирога. Она использует свежие яблоки, сахар, корицу и домашнее тесто. Однажды она решила поделиться своим рецептом с внучкой Джули. Джули была удивлена вкусом пирога. С тех пор они готовят пирог вместе каждое воскресенье."
+        }
+    ],
+    [
         "The Lost Toy",
         "A boy named Tim had a toy. It was a red car. He lost it one day. He was very sad. He looked for it everywhere. His sister found it under the bed. She gave it to Tim. He was very happy. He thanked his sister. He played with his car again.",
         {

@@ -30,7 +30,7 @@ import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, streakLimitReached, userStreak, setUserStreak } = useContext(UserContext);
+    const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, userStreak, setUserStreak } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
     const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
@@ -52,6 +52,12 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     useEffect(() => {
         setActiveWords([]);
     }, [currentItem]);
+
+    useEffect(() => {
+        if (dailyWordCount % constants.WORDSPERAD == 0) {
+            navigation.navigate('ShowAd');
+        }
+    }, [dailyWordCount]);
     
     const popupItemData = [
         {title: '1000 most common words'},

@@ -23,7 +23,7 @@ interface ILanguage {
 }
 
 // Create a provider component
-export const AuthProvider = ({ children }: {children: ReactNode }) => {
+export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
     // TODO: This should be stored in the database for each user
@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
-    const [streakLimitReached, setStreakLimitReached] = useState<boolean>(false);
     const [userStreak, setUserStreak] = useState<number>(0);
     const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
     const [userAvatarId, setUserAvatarId] = useState<number|null>(null);    
@@ -51,15 +50,6 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             setUserAvatarId(currentUser.avatar_id);
         }
     }, [currentUser]);
-
-    useEffect(() => {
-        // Probably don't need to do this check every time
-        if (dailyWordCount >= 10) {
-            if(!streakLimitReached) setStreakLimitReached(true);
-        } else {
-            setStreakLimitReached(false);
-        }
-    }, [dailyWordCount]);
 
     useEffect(() => {
         if (currentUser && currentLanguageCode) {
@@ -213,7 +203,6 @@ export const AuthProvider = ({ children }: {children: ReactNode }) => {
             monthlyWordCounts,
             dailyWordCount,
             userStreak,
-            streakLimitReached,
             updateCurrentLanguageCode,
             updateUserData,
             setKnownWordsPercentage,

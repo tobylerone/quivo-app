@@ -5,7 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import * as constants from '../../constants';
 import NavBar from "../../components/NavBar";
 
-export default function StreakScreen({navigation}: NativeStackHeaderProps) {
+export default function ShowAdScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguage } = useContext(UserContext);
 

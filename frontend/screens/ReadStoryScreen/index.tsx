@@ -1,13 +1,14 @@
 import { StyleSheet, SafeAreaView, TouchableOpacity, View, Text, Image, ScrollView } from "react-native";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons';
+import { faX, faCheck } from '@fortawesome/free-solid-svg-icons';
 // Constants
 import * as constants from "../../constants";
 // Contexts
 import UserContext from "../../contexts/UserContext";
 // Components
+import RaisedButton from "../../components/RaisedButton";
 import SentenceReaderPanel from "../../components/SentenceReaderPanel";
 // Interfaces
 import { ISentence } from "../../interfaces";
@@ -22,8 +23,16 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
     const { currentUser, currentLanguageCode } = useContext(UserContext);
     const { storyIndex, primaryColor } = route.params;
 
-    const { sentencesData } = useSentencesData({storyIndex, currentLanguageCode});
+    const { sentencesData, numSentences } = useSentencesData({storyIndex, currentLanguageCode});
     const [currentSentenceIndex, setCurrentSentenceIndex] = useState<number>(0);
+    const [completedStoryButtonVisible, setCompletedStoryButtonVisible] = useState<boolean>(false);
+    
+    useEffect(() => {
+        // TODO: store sentencesDAta
+        if (currentSentenceIndex + 1 == numSentences) {
+            setCompletedStoryButtonVisible(true);
+        }
+    }, [currentSentenceIndex]);
     
     const renderProgressCircle = (i: number) => (
         <View style={{
@@ -52,7 +61,10 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
                     (_, i) => i).map((i) => renderProgressCircle(i)
                 )}
             </View>
-            <View style={styles.sentenceReaderContainer}>
+            <View style={{
+                marginBottom: completedStoryButtonVisible ? -173 : 20,
+                ...styles.sentenceReaderContainer
+                }}>
                 <SentenceReaderPanel
                     navigation={navigation}
                     primaryColor={primaryColor}
@@ -61,6 +73,28 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
                     onSentenceReaderRightSwipe={() => setCurrentSentenceIndex((idx) => (idx - 1))}
                 />
             </View>
+            {completedStoryButtonVisible && 
+            <View style={styles.completedStoryButtonContainer}>
+                <RaisedButton
+                    onPress={() => navigation.navigate('Leaderboard')}
+                    options={{
+                        ...RaisedButton.defaultProps.options,
+                        width: '100%',
+                        height: 70,
+                        borderWidth: 3,
+                        borderRadius: 20,
+                        borderColor: primaryColor,
+                        backgroundColor: constants.TERTIARYCOLOR,
+                        shadowColor: primaryColor,
+                    }}
+                >
+                    <View style={styles.completedStoryButtonChildrenContainer}>
+                        <Text style={styles.completedStoryButtonText}>Mark as complete</Text>
+                        <FontAwesomeIcon icon={faCheck} size={35} color={primaryColor} />
+                    </View>
+                </RaisedButton>
+            </View>
+            }
         </SafeAreaView>
         }
     </>);
@@ -110,7 +144,27 @@ const styles = StyleSheet.create({
         marginRight: 'auto'
     },
     sentenceReaderContainer: {
-        flex: 1,
-        marginBottom: 20
+        flex: 1
+    },
+    completedStoryButtonContainer: {
+        width: 260,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: 120
+    },
+    completedStoryButtonChildrenContainer: {
+        flexDirection: 'row',
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    completedStoryButtonText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H2FONTSIZE,
+        color: constants.BLACK,
+        marginRight: 10,
+        marginTop: 'auto',
+        marginBottom: 'auto'
     }
 });

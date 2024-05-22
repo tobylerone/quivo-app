@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     },
     hiddenFlagsIconText: {
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.TERTIARYCOLOR,
+        color: constants.PRIMARYCOLOR,
         fontSize: constants.H2FONTSIZE,
         marginTop: 'auto',
         marginBottom: 'auto'

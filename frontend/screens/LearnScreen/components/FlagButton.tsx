@@ -20,7 +20,8 @@ export default function FlagButton({ item }: IFlagButtonProps){
         'ru': require('../../../assets/ru.png'),
         'de': require('../../../assets/de.png'),
         'es': require('../../../assets/es.png'),
-        'fr': require('../../../assets/fr.png')
+        'fr': require('../../../assets/fr.png'),
+        'th': require('../../../assets/th.png'),
     };
 
     const handlePress = () => {

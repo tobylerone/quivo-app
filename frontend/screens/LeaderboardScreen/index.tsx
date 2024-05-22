@@ -27,10 +27,13 @@ min_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
 */
 
 export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
+    
+    const { currentUser, currentLanguageCompletedStories } = useContext(UserContext);
+    const [scrolledIndex, setScrolledIndex] = useState(currentLanguageCompletedStories);
 
-    const { currentUser } = useContext(UserContext);
-
-    const completedStories = 5;
+    const itemHeight = 160;
+    const visibleStories = currentUser.is_premium ? stories : stories.slice(0, 5);
+    const numStories = stories.length;
 
     const storyIndexColors: Record<number, string[]> = {
         0: [constants.GREENREGULAR, constants.GREENLIGHT],
@@ -66,10 +69,8 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
         return (
         <View style={{
             backgroundColor: secondaryColor,
-            paddingHorizontal: 16,
-            paddingBottom: 18,
-            paddingTop: 15,
-            marginBottom: -1
+            height: itemHeight,
+            ...styles.itemContainer
             }}>
             <View style={{
                 width: '60%',
@@ -86,17 +87,20 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                         ...styles.line
                     }}>
                     {/*[0, 1, 2, 3].map(() => renderDot(index, primaryColor, completedStories))*/}
-                    {renderDot(index, primaryColor, completedStories)}
+                    {renderDot(index, primaryColor, currentLanguageCompletedStories)}
                     <Text style={{
                         fontFamily: constants.FONTFAMILYBOLD,
                         fontSize: constants.H2FONTSIZE,
+                        color: constants.BLACK,
                         marginLeft: 'auto',
                         marginRight: 'auto',
+                        marginTop: 5,
+                        marginBottom: 5,
                         transform: [{
                             rotate: ((index - 1) % 8) < 4 ? '15deg' : '-15deg'
                         }]
                         }}>{index + 1}</Text>
-                    {renderDot(index, primaryColor, completedStories)}
+                    {renderDot(index, primaryColor, currentLanguageCompletedStories)}
                 </View>
                 {(index % 4 == 0 && index % 8 != 0) &&
                     <View style={{
@@ -106,7 +110,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                         marginBottom: 'auto',
                         marginTop: 'auto',
                         left: '-55%',
-                        top: 10
+                        top: 30
                     }}>
                         <Image
                             source={avatarImageMap[(index / 4) + 1]}
@@ -126,24 +130,25 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                     )}
                     options={{
                         ...RaisedButton.defaultProps.options,
+                        disabled: index <= currentLanguageCompletedStories ? false : true,
                         width: '100%',
                         height: 80,
                         borderWidth: 3,
                         borderRadius: 40,
-                        borderColor: index < completedStories ? primaryColor : constants.GREY,
+                        borderColor: index <= currentLanguageCompletedStories ? primaryColor : constants.GREY,
                         backgroundColor: constants.TERTIARYCOLOR,
-                        shadowColor: index < completedStories ? primaryColor : constants.GREY,
+                        shadowColor: index <= currentLanguageCompletedStories ? primaryColor : constants.GREY,
                     }}
                 >
                     <Text style={{
                     fontFamily: constants.FONTFAMILYBOLD,
                     fontSize: constants.H2FONTSIZE,
-                    color: index < completedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
+                    color: index <= currentLanguageCompletedStories ? constants.PRIMARYCOLORSHADOW : constants.GREY,
                     marginLeft: 'auto',
                     marginRight: 'auto',
                     marginTop: 'auto',
                     marginBottom: 'auto'
-                }}>{stories[index][0]}</Text>
+                }}>{visibleStories[index][0]}</Text>
                 </RaisedButton>
                 {(index % 8 == 0) &&
                     <View style={{
@@ -153,7 +158,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
                         marginBottom: 'auto',
                         marginTop: 'auto',
                         left: '120%',
-                        top: index == 0 ? 0 : 10
+                        top: 40
                     }}>
                         <Image
                             source={avatarImageMap[(index / 4) + 1]}
@@ -168,21 +173,61 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
         </View>
         );
     }
+
+    const handleScroll = (event) => {
+        const scrollTop = event.nativeEvent.contentOffset.y; // get current scroll position
+        const currentIndex = Math.floor(scrollTop / itemHeight); // calculate index
+        setScrolledIndex(currentIndex);
+      };
     
     return (
         <>
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{
+            backgroundColor: storyIndexColors[Math.floor(0.1 * (scrolledIndex)) * 10][1],
+            ...styles.container
+            }}>
             <View style={styles.titleContainer}>
-                <Text style={styles.titleText}>Stories ({completedStories}/30)</Text>
+                <Text style={styles.titleText}>Stories ({currentLanguageCompletedStories}/{numStories})</Text>
             </View>
             <ScrollView
+                onScroll={handleScroll}
                 bounces={false}
                 showsVerticalScrollIndicator={false} 
                 showsHorizontalScrollIndicator={false}
                 overScrollMode="never"
                 removeClippedSubviews={true}
             >
-                {stories.map((_, index) => renderItem(index))}
+                {visibleStories.map((_, index) => renderItem(index))}
+                {!currentUser.is_premium &&
+                    <View style={styles.reservedPremiumContainer}>
+                        <Text style={styles.reservedPremiumText}>Upgrade to premium for more stories...</Text>
+                        <View style={styles.reservedPremiumButtonContainer}>
+                            <RaisedButton
+                            onPress={() => navigation.navigate('GetPremium')}
+                            options={{
+                                ...RaisedButton.defaultProps.options,
+                                width: 200,
+                                height: 80,
+                                borderWidth: 3,
+                                borderRadius: 40,
+                                borderColor: constants.PURPLEREGULAR,
+                                backgroundColor: constants.TERTIARYCOLOR,
+                                shadowColor: constants.PURPLEREGULAR,
+                            }}
+                        >
+                            <Text style={{
+                            fontFamily: constants.FONTFAMILYBOLD,
+                            fontSize: constants.H2FONTSIZE,
+                            color: constants.PRIMARYCOLORSHADOW,
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            marginTop: 'auto',
+                            marginBottom: 'auto'
+                        }}>Get Premium</Text>
+                        </RaisedButton>
+                    </View>
+                </View> 
+                }
             </ScrollView>
         </SafeAreaView>
         <BottomNavBar hilighted='Stories' navigation={navigation} />
@@ -193,8 +238,7 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 50,
-        marginBottom: 115,
-        backgroundColor: constants.GREENLIGHT
+        marginBottom: 115
     },
     titleContainer: {
         marginLeft: 'auto',
@@ -207,11 +251,38 @@ const styles = StyleSheet.create({
         color: constants.BLACK,
         marginBottom: 10
     },
+    itemContainer: {
+        paddingHorizontal: 16,
+        paddingBottom: 18,
+        paddingTop: 15,
+        marginBottom: -1
+    },
     line: {
         height: 70,
         width: 50,
         flexDirection: 'column',
-        marginTop: -37,
-        marginBottom: -10
+        marginTop: -32,
+        marginBottom: 0
+    },
+    reservedPremiumContainer: {
+        height: 250,
+        backgroundColor: constants.GREENLIGHT
+    },
+    reservedPremiumText: {
+        fontFamily: constants.FONTFAMILYBOLD,
+        fontSize: constants.H1FONTSIZE,
+        color: constants.BLACK,
+        //backgroundColor: constants.PURPLELIGHT,
+        borderRadius: 20,
+        padding: 20,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    reservedPremiumButtonContainer: {
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        marginBottom: 'auto',
     }
 });

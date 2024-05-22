@@ -2,7 +2,7 @@ import { StyleSheet, SafeAreaView, TouchableOpacity, View, Text, Image, ScrollVi
 import { useContext, useEffect, useState } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faX, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faX, faCheck, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 // Constants
 import * as constants from "../../constants";
 // Contexts
@@ -20,7 +20,7 @@ import stories from '../../assets/stories.json';
 
 export default function ReadStoryScreen({route, navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, currentLanguageCode } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, currentLanguageCompletedStories, setCurrentLanguageCompletedStories } = useContext(UserContext);
     const { storyIndex, primaryColor } = route.params;
 
     const { sentencesData, numSentences } = useSentencesData({storyIndex, currentLanguageCode});
@@ -42,6 +42,14 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
             ...styles.progressCircle
         }}></View>
     );
+
+    const handleCompletedStoryButtonPress = () => {
+        console.log('pressed');
+        if (storyIndex == currentLanguageCompletedStories) {
+            setCurrentLanguageCompletedStories(storyIndex + 1);
+        }
+        navigation.navigate('Stories');
+    }
 
     return (<>
         {sentencesData &&
@@ -71,12 +79,13 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
                     sentencesData={sentencesData}
                     onSentenceReaderLeftSwipe={() => setCurrentSentenceIndex((idx) => (idx + 1))}
                     onSentenceReaderRightSwipe={() => setCurrentSentenceIndex((idx) => (idx - 1))}
+                    marginBottom={25}
                 />
             </View>
             {completedStoryButtonVisible && 
             <View style={styles.completedStoryButtonContainer}>
                 <RaisedButton
-                    onPress={() => navigation.navigate('Leaderboard')}
+                    onPress={() => handleCompletedStoryButtonPress()}
                     options={{
                         ...RaisedButton.defaultProps.options,
                         width: '100%',
@@ -89,8 +98,15 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
                     }}
                 >
                     <View style={styles.completedStoryButtonChildrenContainer}>
-                        <Text style={styles.completedStoryButtonText}>Mark as complete</Text>
-                        <FontAwesomeIcon icon={faCheck} size={35} color={primaryColor} />
+                            <FontAwesomeIcon
+                                icon={storyIndex == currentLanguageCompletedStories ? faCheck : faArrowLeft}
+                                size={35}
+                                color={primaryColor}
+                            />
+                            <Text style={styles.completedStoryButtonText}>
+                            {storyIndex == currentLanguageCompletedStories
+                            ? 'Mark as complete' : 'Back to stories'}
+                            </Text>
                     </View>
                 </RaisedButton>
             </View>
@@ -163,7 +179,7 @@ const styles = StyleSheet.create({
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
         color: constants.BLACK,
-        marginRight: 10,
+        marginLeft: 10,
         marginTop: 'auto',
         marginBottom: 'auto'
     }

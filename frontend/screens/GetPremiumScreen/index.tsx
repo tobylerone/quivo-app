@@ -23,21 +23,24 @@ export default function GetPremiumScreen({navigation}: NativeStackHeaderProps){
             <Image style={styles.parrotImage} source={require('../../assets/avatars/black-and-white-med.png')} />
         </View>
         <View style={styles.subtitleContainer}>
-            <Text style={[styles.subtitleText, styles.subtitleText1]}>Pay $2.99 a month and enjoy:</Text>
-            <Text style={[styles.subtitleText, styles.subtitleText2]}>· No more ads</Text>
-            <Text style={[styles.subtitleText, styles.subtitleText2]}>· No daily word limit</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText2]}>• No more ads</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText2]}>• Unlimited daily sentences</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText2]}>• Access to dozens of short stories</Text>
+            <Text style={[styles.subtitleText, styles.subtitleText1]}>7 days free, then $43/yr</Text>
         </View>
         <View style={styles.adButtonContainer}>
             <RaisedButton
                 onPress={() => {}}
                 options={{
                     ...RaisedButton.defaultProps.options,
-                    backgroundColor: constants.PRIMARYCOLOR,
-                    width: 200,
+                    backgroundColor: constants.TERTIARYCOLOR,
+                    borderColor: constants.PURPLEREGULAR,
+                    shadowColor: constants.PURPLEREGULAR,
+                    width: 250,
                     height: 50
                 }}
             >
-                <Text style={styles.adButtonText}>Get Premium</Text>
+                <Text style={styles.adButtonText}>Start 7-day free trial</Text>
             </RaisedButton>
         </View>
     </View>
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
         paddingTop: 50,
         paddingHorizontal: 16,
         height: '100%',
-        backgroundColor: constants.LIGHTBLUE
+        backgroundColor: constants.PURPLELIGHT
     },
     crossContainer: {
         height: 50,
@@ -105,7 +108,7 @@ const styles = StyleSheet.create({
     adButtonText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.TERTIARYCOLOR,
+        color: constants.PURPLEREGULAR,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 'auto',
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     },
     adButtonShadow: {
         backgroundColor: constants.PRIMARYCOLORSHADOW,
-        width: 250,
+        width: 280,
         height: 70,
         marginBottom: -77,
         borderRadius: 10,
@@ -135,9 +138,10 @@ const styles = StyleSheet.create({
     },
     subtitleText1: {
         fontFamily: constants.FONTFAMILYBOLD,
-        marginBottom: 10
+        marginTop: 15
     },
     subtitleText2: {
         fontFamily: constants.FONTFAMILY,
+        marginBottom: 5
     }
 });

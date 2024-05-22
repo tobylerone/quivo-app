@@ -29,6 +29,7 @@ class AppUserManager(BaseUserManager):
 
 class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
+	is_premium = models.BooleanField(default=False)
 	email = models.EmailField(max_length=50, unique=True)
 	username = models.CharField(max_length=50, unique=True)
 	avatar_id = models.IntegerField(default=0)
@@ -86,4 +87,5 @@ class UserWord(models.Model):
     word_fr = models.ForeignKey('language_app.FrWordData', on_delete=models.CASCADE, null=True)
     word_de = models.ForeignKey('language_app.DeWordData', on_delete=models.CASCADE, null=True)
     word_ru = models.ForeignKey('language_app.RuWordData', on_delete=models.CASCADE, null=True)
+    word_th = models.ForeignKey('language_app.ThWordData', on_delete=models.CASCADE, null=True)
     known_date = models.DateTimeField(auto_now_add=True)

@@ -41,9 +41,9 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
               action: () => {navigation.navigate('ChangeUserDetails')}
             },
             {
-              text: "Upgrade to premium",
+              text: currentUser.is_premium ? "Cancel Subscription" : "Upgrade to premium",
               arrow: true,
-              color: constants.GREENREGULAR,
+              color: currentUser.is_premium ? constants.ERRORCOLOR : constants.GREENREGULAR,
               action: () => {navigation.navigate('GetPremium')}
             },
             { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     list: {
       borderWidth: 3,
-      borderColor: constants.PURPLEREGULAR,
+      borderColor: constants.PURPLELIGHT,
       borderRadius: 10,
       overflow: 'hidden'
     },
@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     header: {
         fontSize: constants.H2FONTSIZE + 2,
         fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.TERTIARYCOLOR,
+        color: constants.BLACK,
         padding: 10,
-        backgroundColor: constants.PURPLEREGULAR
+        backgroundColor: constants.PURPLELIGHT
     },
     itemText: {
       fontSize: constants.H2FONTSIZE,

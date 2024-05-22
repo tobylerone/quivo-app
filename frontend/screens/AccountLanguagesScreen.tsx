@@ -33,6 +33,7 @@ const LanguageItem = ({ item, navigation, addButton }: ILanguageItem) => {
         'de': require('../assets/de.png'),
         'es': require('../assets/es.png'),
         'fr': require('../assets/fr.png'),
+        'th': require('../assets/th.png')
     };
 
     const handlePress = async(

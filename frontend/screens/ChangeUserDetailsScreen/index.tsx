@@ -44,9 +44,9 @@ export default function ChangeUserDetailsScreen({navigation}: NativeStackHeaderP
                     options={{
                         ...RaisedButton.defaultProps.options,
                         width: 120,
-                        borderColor: constants.ORANGE,
-                        backgroundColor: constants.ORANGE,
-                        shadowColor: constants.ORANGESHADOW,
+                        borderColor: constants.PURPLEREGULAR,
+                        backgroundColor: constants.TERTIARYCOLOR,
+                        shadowColor: constants.PURPLEREGULAR,
                     }}
                 >
                     <Text style={styles.submitButtonText}>Update</Text>
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         paddingTop: 50,
         height: '100%',
         paddingHorizontal: 20,
-        backgroundColor: constants.LIGHTBLUE
+        backgroundColor: constants.PURPLELIGHT
     },
     textInputContainer: {
         backgroundColor: constants.TERTIARYCOLOR,
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     submitButtonText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.TERTIARYCOLOR,
+        color: constants.BLACK,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 'auto',

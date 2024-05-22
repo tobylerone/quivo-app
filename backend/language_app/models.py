@@ -14,6 +14,7 @@ class BaseSentence(models.Model):
 
     #id = models.BigAutoField(primary_key=True)
     sentence = models.TextField(null=True)
+    split_sentence = models.JSONField(null=True)
     translated_sentence = models.TextField(null=True)
     cluster = models.IntegerField(null=True)
     words = models.JSONField(null=True)
@@ -31,6 +32,9 @@ class DeSentence(BaseSentence):
 class RuSentence(BaseSentence):
     pass
 
+class ThSentence(BaseSentence):
+    pass
+
 class BaseWordData(models.Model):
 
     class Meta:
@@ -38,6 +42,7 @@ class BaseWordData(models.Model):
 
     rank = models.DecimalField(decimal_places=1, max_digits=10, null=True)
     word = models.TextField(null=True)
+    translation = models.TextField(null=True)
     frequency = models.DecimalField(decimal_places=1, max_digits=10, null=True)
 
 class FrWordData(BaseWordData):
@@ -47,4 +52,7 @@ class DeWordData(BaseWordData):
     pass
 
 class RuWordData(BaseWordData):
+    pass
+
+class ThWordData(BaseWordData):
     pass

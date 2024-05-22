@@ -225,7 +225,7 @@ export default function Word ({navigation, primaryColor, word, wordData, textCol
                     }}>
                     <View style={styles.translationContainer}>
                         <View style={styles.targetLanguageContainer}>
-                            {currentLanguageCode === 'ru' &&
+                            {['ru'].includes(currentLanguageCode) &&
                                 <Text style={styles.transliterationText}>{capitalizeFirstLetter(transliterate(wordData.word))}</Text>
                             }
                             <Text style={{
@@ -234,7 +234,7 @@ export default function Word ({navigation, primaryColor, word, wordData, textCol
                                 {capitalizeFirstLetter(wordData.word)}:
                             </Text>
                         </View>
-                        <Text style={styles.translationText}>Translation</Text>
+                    <Text style={styles.translationText}>{wordData.translation}</Text>
                     </View>
                     <View style={styles.additionalDataContainer}>
                         <FrequencyBar frequency_rank={wordData.rank} />
@@ -249,7 +249,8 @@ export default function Word ({navigation, primaryColor, word, wordData, textCol
                 <Text
                     style={{
                         ...styles.mainText,
-                        color: textColor
+                        color: textColor,
+                        textDecorationLine: wordTranslationVisible ? 'underline': 'none'
                     }}
                     ref={wordRef}
                     >

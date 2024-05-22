@@ -67,21 +67,22 @@ export default function LevelScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         marginTop: 50,
-        marginHorizontal: 16
+        marginHorizontal: 20,
     },
     itemsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignContent: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginHorizontal: -10
     },
     itemContainer: {
         flexDirection: 'column',
         overflow: 'hidden',
-        margin: 5,
+        margin: '1%',
         borderRadius: 10,
-        width: 80,
-        height: 100
+        width: '22%',
+        height: 100,
     },
     itemProgressBackground: {
         backgroundColor: constants.PURPLEREGULAR,

@@ -8,58 +8,37 @@ import { } from '@fortawesome/free-regular-svg-icons';
 import * as constants from "../../constants";
 // Assets
 import { flagImageSources } from "../../assets/img/imageSources";
-// Utils
-import { speak } from '../../utils/text';
 // Contexts
 import UserContext from '../../contexts/UserContext';
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
-import CheckBox from '../../components/CheckBox';
 import FlagButton from './components/FlagButton';
-import RaisedButton from "../../components/RaisedButton";
-import ToggleButton from "../../components/ToggleButton";
+import SentenceReaderPanel from "../../components/SentenceReaderPanel";
 // Hooks
-import { useSwipe } from "./hooks/useSwipe";
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
-import useFetchItems from './hooks/useFetchItems';
 import useLevelData from './hooks/useLevelData';
-import useFetchWordsData from "./hooks/useFetchWordsData";
-import useSentenceComponents from "./hooks/useSentenceComponents";
 import useFilterPopupVisible from "./hooks/useFilterPopupVisible";
-import useKnownWords from "./hooks/useKnownWords";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, userStreak, setUserStreak } = useContext(UserContext);
-    
-    const [translationVisible, setTranslationVisible] = useState(false);
-    const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
 
-    const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
-    const { currentItem, changeItem } = useFetchItems();
     const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
-    const { wordsData } = useFetchWordsData(currentItem);
 
-    const [primaryColor, setPrimaryColor] = useState(constants.BLACK);
+    const [primaryColor, setPrimaryColor] = useState(constants.PURPLEREGULAR);
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);
-
-    // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
-    // up
-    useEffect(() => {
-        setActiveWords([]);
-    }, [currentItem]);
+    //const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);
 
     useEffect(() => {
-        if (dailyWordCount % constants.WORDSPERAD == 0) {
+        if (dailyWordCount !== 0 && dailyWordCount % constants.WORDSPERAD == 0) {
             navigation.navigate('ShowAd');
         }
     }, [dailyWordCount]);
     
-    const popupItemData = [
+    /*const popupItemData = [
         {title: '1000 most common words'},
         {title: '2000 most common words'},
         {title: '5000 most common words'},
@@ -69,29 +48,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         {title: 'Politics'},
         {title: 'Finance'},
     ];
-
-    // Handle swiping between sentences
-    function onSwipeLeft() {
-        //setPrimaryColor(primaryColorOptions[Math.floor(Math.random() * numPrimaryColorOptions)])
-        changeItem()
-    }
-    function onSwipeRight() {}
-
-    const renderPopupItem = (item: Record<string, string>) => (
-        <View style={[styles.checkBoxContainer, styles.shadow]}>
-            <CheckBox initiallySelected={item.initiallySelected ? true : false} size={30} />
-            <Text style={styles.checkBoxLabel}>{item.title}</Text>
-        </View>
-    );
-
-    const renderStreakCircle = (i: number) => (
-        <View style={{
-            backgroundColor: dailyWordCount >= i
-                ? constants.PRIMARYCOLOR
-                : constants.LIGHTGREY,//constants.GREEN + '44',
-            ...styles.streakCircle
-        }}></View>
-    );
+    */
 
     return (
     <>
@@ -183,59 +140,13 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 </TouchableOpacity>
             </View>
         </Animated.View>
-        <View
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-            style={styles.contentContainer}
-            >
-            {currentItem &&
-            <View style={styles.sentenceContainer}>
-                <View style={{
-                    display: translationVisible ? "visible": "none",
-                    ...styles.translatedSentence
-                    }}>
-                    <Text style={{color: primaryColor, ...styles.mainText}}>{currentItem.translated_sentence}</Text>
-                </View>
-                <View style={{
-                    display: translationVisible ? "none": "visible",
-                    ...styles.realSentence
-                    }}>
-                    {sentenceComponents}
-                </View>
-            </View>
-            }
-        </View>
-        <View style={styles.bottomContainer}>
-            <TouchableOpacity
-                activeOpacity={1}
-                style={[styles.translateButton, styles.shadow]}
-                onPressIn={() => setTranslationVisible(true)}
-                onPressOut={() => setTranslationVisible(false)}
-                >
-                <FontAwesomeIcon icon={faLanguage} size={30} color={primaryColor} />
-            </TouchableOpacity>
-            <TouchableOpacity
-                activeOpacity={1}
-                style={[styles.speakButton, styles.shadow]}
-                onPress={() => {
-                    speak(currentItem.sentence, currentLanguageCode)
-                }}
-                >
-                <FontAwesomeIcon icon={faCommentDots} size={30} color={primaryColor} />
-            </TouchableOpacity>
-            <View style={styles.autoplayContainer}>
-                <Text style={styles.autoplayText}>Autoplay</Text>
-                <View style={styles.toggleButtonContainer}>
-                    <ToggleButton
-                        initiallySelected={autoDictEnabled}
-                        size={20}
-                        onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
-                        primaryColor={primaryColor}
-                        secondaryColor={primaryColor + '55'}
-                    />
-                </View>
-            </View>
-        </View>
+        <SentenceReaderPanel
+            navigation={navigation}
+            primaryColor={primaryColor}
+            onSentenceReaderLeftSwipe={() => {}}
+            onSentenceReaderRightSwipe={() => {}}
+            marginBottom={75}
+        />
         {/*<Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>
             <Text style={styles.filterPopupHeader}>Filter Sentences</Text>
             {popupItemData.map((item) => renderPopupItem(item))}
@@ -267,7 +178,6 @@ const styles= StyleSheet.create({
         flexDirection: 'column',
         height: 40,
         borderRadius: 10,
-        paddingLeft: 10,
         paddingRight: 10
     },
     levelTextContainer: {

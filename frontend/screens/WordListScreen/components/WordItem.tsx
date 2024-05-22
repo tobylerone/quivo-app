@@ -14,6 +14,7 @@ interface IWord {
     id: number,
     rank: number,
     word: string,
+    translation: string,
     frequency: number,
     user_knows: boolean
 }
@@ -137,6 +138,14 @@ export default function WordItem({navigation, item, primaryColor, showKnownWords
                     {capitalizeFirstLetter(item.word)}
                 </Text>
             </View>
+            <View style={{marginLeft: 'auto', ...styles.word}}>
+                <Text style={{
+                    color: styling.color,
+                    ...styles.wordText,
+                    }}>
+                    {item.translation}
+                </Text>
+            </View>
         </TouchableOpacity>
     }</>);
 };
@@ -159,7 +168,7 @@ const styles = StyleSheet.create({
     },
     word: {
         marginTop: 'auto',
-        marginBottom: 'auto'
+        marginBottom: 'auto',
     },
     wordText: {
         fontFamily: constants.FONTFAMILYBOLD,

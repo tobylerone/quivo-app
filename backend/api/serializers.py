@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow, UserWord
-from language_app.models import FrSentence, DeSentence, RuSentence, FrWordData, DeWordData, RuWordData, Language
+from language_app.models import FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Language
 
 UserModel = get_user_model()
 
@@ -77,6 +77,7 @@ class UserSerializer(serializers.ModelSerializer):
 		model = UserModel
 		fields = (
 			'user_id',
+			'is_premium',
 			'email',
 			'username',
 			'avatar_id',
@@ -162,6 +163,7 @@ class BaseSentenceModelSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "sentence",
+			"split_sentence",
             "translated_sentence",
             "words",
 			"average_count",
@@ -182,6 +184,11 @@ class RuSentenceModelSerializer(BaseSentenceModelSerializer):
 		model=RuSentence
 
 
+class ThSentenceModelSerializer(BaseSentenceModelSerializer):
+	class Meta(BaseSentenceModelSerializer.Meta):
+		model=ThSentence
+
+
 class BaseWordDataModelSerializer(serializers.ModelSerializer):
 
 	user_knows = serializers.SerializerMethodField()
@@ -191,6 +198,7 @@ class BaseWordDataModelSerializer(serializers.ModelSerializer):
             "id",
             "rank",
             "word",
+			"translation",
             "frequency",
 			"user_knows"
             )
@@ -238,3 +246,9 @@ class RuWordDataModelSerializer(BaseWordDataModelSerializer):
 
 	class Meta(BaseWordDataModelSerializer.Meta):
 		model = RuWordData
+
+
+class ThWordDataModelSerializer(BaseWordDataModelSerializer):
+
+	class Meta(BaseWordDataModelSerializer.Meta):
+		model = ThWordData

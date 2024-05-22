@@ -13,7 +13,8 @@ interface IUser {
     known_words_count: object,
     user_id: number,
     user_is_following: boolean,
-    username: string
+    username: string//,
+    //completed_stories: Record<string, number>
 }
 
 interface ILanguage {
@@ -24,6 +25,9 @@ interface ILanguage {
 
 // Create a provider component
 export const AuthProvider = ({ children }: {children: ReactNode}) => {
+
+    // TODO: Clean up the user context
+
     const [currentUser, setCurrentUser] = useState<IUser|null>(null);
     const [knownLanguages, setKnownLanguages] = useState<ILanguage[]>([]);
     // TODO: This should be stored in the database for each user
@@ -36,7 +40,9 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
     const [userStreak, setUserStreak] = useState<number>(0);
     const [currentLanguageCode, setCurrentLanguageCode] = useState<string|null>(null);
-    const [userAvatarId, setUserAvatarId] = useState<number|null>(null);    
+    const [userAvatarId, setUserAvatarId] = useState<number|null>(null); 
+    // This should be associated with the currentUser account
+    const [currentLanguageCompletedStories, setCurrentLanguageCompletedStories] = useState<number>(0);   
 
     useEffect(() => {
         updateUserData();
@@ -203,6 +209,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             monthlyWordCounts,
             dailyWordCount,
             userStreak,
+            currentLanguageCompletedStories,
             updateCurrentLanguageCode,
             updateUserData,
             setKnownWordsPercentage,
@@ -212,6 +219,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             setNarrationSpeed,
             setDailyWordCount,
             setUserStreak,
+            setCurrentLanguageCompletedStories,
             submitRegistration,
             submitLogin,
             submitLogout

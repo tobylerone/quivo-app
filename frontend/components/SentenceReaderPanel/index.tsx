@@ -24,10 +24,18 @@ interface ISentenceReaderProps {
     primaryColor?: string,
     sentencesData?: ISentence[] | null,
     onSentenceReaderLeftSwipe: Function,
-    onSentenceReaderRightSwipe: Function
+    onSentenceReaderRightSwipe: Function,
+    marginBottom: number
 }
 
-export default function SentenceReaderPanel({navigation, primaryColor = constants.PRIMARYCOLOR, sentencesData = null, onSentenceReaderLeftSwipe, onSentenceReaderRightSwipe}: ISentenceReaderProps) {
+export default function SentenceReaderPanel({
+    navigation,
+    primaryColor = constants.PRIMARYCOLOR,
+    sentencesData = null,
+    onSentenceReaderLeftSwipe,
+    onSentenceReaderRightSwipe,
+    marginBottom = 25
+}: ISentenceReaderProps) {
 
     const { currentLanguageCode } = useContext(UserContext);
     
@@ -82,7 +90,10 @@ export default function SentenceReaderPanel({navigation, primaryColor = constant
         </View>
         }
     </View>
-    <View style={styles.bottomContainer}>
+    <View style={{
+        marginBottom: marginBottom,
+        ...styles.bottomContainer
+        }}>
         <TouchableOpacity
             activeOpacity={1}
             style={[styles.translateButton, styles.shadow]}
@@ -130,7 +141,6 @@ const styles= StyleSheet.create({
         paddingHorizontal: 10,
         height: 50,
         //marginTop: -80,
-        marginBottom: 25,
         marginLeft: 'auto',
         marginRight: 10,
         borderRadius: 10,

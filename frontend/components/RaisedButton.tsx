@@ -14,6 +14,7 @@ interface IRaisedButtonProps {
     options?: {
         width?: number,
         height?: number,
+        disabled?: boolean,
         borderWidth?: number,
         borderRadius?: number,
         backgroundColor?: string,
@@ -29,6 +30,7 @@ RaisedButton.propTypes = {
     options: PropTypes.shape({
         width: PropTypes.number,
         height: PropTypes.number,
+        disabled: PropTypes.bool,
         borderWidth: PropTypes.number,
         borderRadius: PropTypes.number,
         backgroundColor: PropTypes.string,
@@ -43,6 +45,7 @@ RaisedButton.defaultProps = {
         flexDirection: 'row',
         width: 100,
         height: 50,
+        disabled: false,
         borderWidth: 3,
         borderRadius: 10,
         backgroundColor: constants.PRIMARYCOLOR,
@@ -96,6 +99,7 @@ export default function RaisedButton(
                     marginTop: isPressedDown ? options?.raisedHeight : 0
                 }}
                 onPress={() => {}}
+                disabled={options.disabled}
                 >
                 {children}
             </TouchableOpacity>

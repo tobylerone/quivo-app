@@ -41,9 +41,15 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
 
     useEffect(() => {
         console.log('Sentence re-render triggered');
-        createSentenceComponents(currentItem, wordsData).then(components => {
-            setSentenceComponents(components);
-        });
+        if (currentLanguageCode !== 'th') {
+            createSentenceComponents().then(components => {
+                setSentenceComponents(components);
+            });
+        } else {
+            createThaiSentenceComponents().then(components => {
+                setSentenceComponents(components);
+            });
+        }
     }, [activeWords])
 
     const getFullWord = (word: string) => {
@@ -123,6 +129,44 @@ export default function useSentenceComponents(navigation, currentItem, wordsData
         };
         return sentenceComponents;
     };
+
+    const createThaiSentenceComponents = async() => {
+        
+        const sentenceComponents: Element[] = [];
+        const sentenceLength = currentItem.sentence.length;
+        
+        if (sentenceLength == 0) {
+            return <Text></Text>;
+        }
+
+        // Loop through words
+        currentItem.split_sentence.forEach((particle, index) => {
+            
+            if (wordsData.hasOwnProperty(particle)) {
+                sentenceComponents.push(<Word
+                    navigation={navigation}
+                    primaryColor={constants.BLACK}
+                    word={particle}
+                    wordData={wordsData[particle]}
+                    textColor={activeWords.includes(particle) ? primaryColor : primaryColor + '55'}
+                    onPress={handleWordPress}
+                    isFirstWord={index==0}
+                    screenWidth={screenWidth}
+                    index={index}
+                    key={`${currentItem.id}-${index}`}
+                />);
+            } else {
+                sentenceComponents.push(<Text style={{
+                    color: primaryColor + '55',
+                    fontSize: constants.H1FONTSIZE + 7,
+                    fontFamily: constants.FONTFAMILYBOLD,
+                    textAlign: "center" 
+                }} key={index}>{index==0 ? capitalizeFirstLetter(particle) : particle}</Text>);
+            }
+        });
+        
+        return sentenceComponents;
+    }
 
     return { sentenceComponents, setActiveWords };
 }

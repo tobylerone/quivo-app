@@ -11,7 +11,8 @@ export default function SetKnownWordsPanel() {
     const exampleSentences: Record<string, string> = {
         'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
         'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.',
-        'ru': 'Мама всегда говорила, что жизнь похожа на коробку шоколадных конфет: никогда не знаешь, какую конфету ты достанешь.'
+        'ru': 'Мама всегда говорила, что жизнь похожа на коробку шоколадных конфет: никогда не знаешь, какую конфету ты достанешь.',
+        'th': 'มชอบที่จะเดินเล่นในสวนสาธารณะหลังจากที่ทำงานเสร็จเพื่อผ่อนคลายและสัมผัสกับธรรมชาติที่สวยงาม'
     }
 
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
@@ -24,7 +25,11 @@ export default function SetKnownWordsPanel() {
     }, [knownWordsPercentage, currentLanguageCode]);
 
     useEffect(() => {
-        let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguageCode]);
+        let components: React.JSX.Element[] = (
+            currentLanguageCode == 'th'
+            ? formatThaiSentence(exampleSentences[currentLanguageCode])
+            : formatSentence(exampleSentences[currentLanguageCode])
+        );
         setSentenceComponents(components);
     }, [activeWordMask]);
 
@@ -73,6 +78,46 @@ export default function SetKnownWordsPanel() {
         };
 
         return sentenceComponents;
+    }
+
+    const formatThaiSentence = (sentence: string) => {
+        
+        /*const sentenceComponents: Element[] = [];
+        const sentenceLength = sentence.length;
+        
+        if (sentenceLength == 0) {
+            return <Text></Text>;
+        }
+
+        // Loop through words
+        currentItem.split_sentence.forEach((particle, index) => {
+            
+            if (wordsData.hasOwnProperty(particle)) {
+                sentenceComponents.push(<Word
+                    navigation={navigation}
+                    primaryColor={constants.BLACK}
+                    word={particle}
+                    wordData={wordsData[particle]}
+                    textColor={activeWords.includes(particle) ? primaryColor : primaryColor + '55'}
+                    onPress={handleWordPress}
+                    isFirstWord={index==0}
+                    screenWidth={screenWidth}
+                    index={index}
+                    key={`${currentItem.id}-${index}`}
+                />);
+            } else {
+                sentenceComponents.push(<Text style={{
+                    color: primaryColor + '55',
+                    fontSize: constants.H1FONTSIZE + 7,
+                    fontFamily: constants.FONTFAMILYBOLD,
+                    textAlign: "center" 
+                }} key={index}>{index==0 ? capitalizeFirstLetter(particle) : particle}</Text>);
+            }
+        });
+
+        return sentenceComponents;
+        */
+       return [];
     }
 
     function createInitialActiveWordMask(num_words: number, percentage: number) {

@@ -69,7 +69,7 @@ export default function FeedbackScreen({navigation}: NativeStackHeaderProps){
             <Text style={styles.titleText}>Have some suggestions?</Text>
         </View>
         <View style={styles.starsContainer}>
-            {[1, 2, 3, 4, 5].map((id) => <Star id={id} isActive={starScore >= id ? true : false} onPress={handleStarPress} />)}
+            {[1, 2, 3, 4, 5].map((id) => <Star key={id} id={id} isActive={starScore >= id ? true : false} onPress={handleStarPress} />)}
         </View>
         <View style={styles.subtitleContainer}>
             <Text style={styles.subtitleText}>Spot a bug, or just have an idea for a new feature? Let us know! It may just make it into our next update.</Text>

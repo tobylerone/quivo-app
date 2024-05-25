@@ -253,6 +253,8 @@ export default function Word ({navigation, word, wordData, textColor, textBackgr
                         ...styles.mainText,
                         backgroundColor: textBackgroundColor,
                         borderRadius: 15,
+                        //paddingHorizontal:  5,
+                        //marginHorizontal: 0,
                         color: textColor
                     }}
                     ref={wordRef}

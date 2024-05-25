@@ -97,6 +97,7 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
                     borderColor: color,
                     ...styles.subsectionContainer
                 }}
+                key={level}
                 >
                 <View style={{
                     backgroundColor: color,

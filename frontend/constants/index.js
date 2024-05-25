@@ -6,7 +6,7 @@ export const SCREEN_WIDTH = Dimensions.get('window').width;
 //export const HOST_ADDRESS = "http://192.168.0.22";
 //export const HOST_ADDRESS = "http://10.159.139.194";
 //export const HOST_ADDRESS = "http://192.168.202.50";
-export const HOST_ADDRESS = "http://10.11.14.149";
+export const HOST_ADDRESS = "http://192.168.11.12";
 
 // Schémas
 export const PRIMARYCOLOR = "#297A90";//"#66A599"

@@ -43,7 +43,7 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
         console.log('Sentence re-render triggered');
         createSentenceComponents(currentItem, wordsData).then(components => {
             setSentenceComponents(components);
-        });
+        }).catch((e) => {console.log(e)});
     }, [activeWords])
 
     const getFullWord = (word: string) => {

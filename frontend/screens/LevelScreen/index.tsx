@@ -25,10 +25,13 @@ export default function LevelScreen({navigation}: NativeStackHeaderProps) {
     );
 
     const renderLevelItem = (bucketSize: number, itemLevel: number) => (
-        <View style={{
-            backgroundColor: itemLevel < level ? constants.PURPLEREGULAR : constants.PURPLEREGULAR + '55',
-            ...styles.itemContainer
-        }}>
+        <View 
+            style={{
+                backgroundColor: itemLevel < level ? constants.PURPLEREGULAR : constants.PURPLEREGULAR + '55',
+                ...styles.itemContainer
+            }}
+            key={itemLevel}
+        >
             {itemLevel == level && 
             <View style={{
                 width: 80 * (knownWordsInLevel / bucketSize),

@@ -49,7 +49,7 @@ export default function FaqScreen({navigation}: NativeStackHeaderProps) {
                 overScrollMode="never"
                 removeClippedSubviews={true}
             >
-                {data.map((item, idx) => <QACard item={data[idx]} />)}
+                {data.map((item, idx) => <QACard key={idx} item={data[idx]} />)}
             </ScrollView>
         </SafeAreaView>
     );

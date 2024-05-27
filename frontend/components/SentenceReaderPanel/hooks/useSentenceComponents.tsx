@@ -118,7 +118,8 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
                     fontSize: constants.H1FONTSIZE + 7,
                     fontFamily: constants.FONTFAMILYBOLD,
                     textAlign: "center" 
-                }} key={i}>{i==0 ? capitalizeFirstLetter(word) : word}</Text>);
+                }} key={`${currentItem.id}-${i}`}
+                >{i==0 ? capitalizeFirstLetter(word) : word}</Text>);
             }
         };
         return sentenceComponents;

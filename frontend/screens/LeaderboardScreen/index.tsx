@@ -67,11 +67,14 @@ export default function StoriesScreen({navigation}: NativeStackHeaderProps) {
         const primaryColor = colorRecord[0];
         const secondaryColor = colorRecord[1];
         return (
-        <View style={{
-            backgroundColor: secondaryColor,
-            height: itemHeight,
-            ...styles.itemContainer
-            }}>
+        <View
+            style={{
+                backgroundColor: secondaryColor,
+                height: itemHeight,
+                ...styles.itemContainer
+            }}
+            key={index}
+            >
             <View style={{
                 width: '60%',
                 marginBottom: 10,

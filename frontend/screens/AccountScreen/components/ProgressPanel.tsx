@@ -42,6 +42,7 @@ export default function ProgressPanel() {
                 setLabels(labelsMap[tabTitle]);
             }}
             style={{backgroundColor: activeTab === tabTitle ? constants.BLUEREGULAR : constants.TERTIARYCOLOR, ...styles.titleTab}}
+            key={tabTitle}
         >
             <Text style={{color: activeTab === tabTitle ? constants.TERTIARYCOLOR : constants.BLUEREGULAR, ...styles.titleText}}>{tabTitle}</Text>
         </TouchableOpacity>

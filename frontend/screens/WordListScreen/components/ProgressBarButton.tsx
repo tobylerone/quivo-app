@@ -35,6 +35,7 @@ export default function ProgressBarButton({id, primaryColor, label, currentValue
     return (
         <TouchableOpacity
             activeOpacity={1}
+            key={id}
             style={{
                 borderColor: borderColor,
                 backgroundColor: primaryColor + '33',

@@ -22,6 +22,7 @@ export default function LeaderboardPanel({navigation}: ILeaderboardPanelProps) {
     const renderItem = (navigation: any, user: any, idx: number) => (
         <TouchableOpacity
             activeOpacity={1}
+            key={idx}
             style={{
                 backgroundColor: user.user_id === currentUser.user_id
                     ? constants.ORANGELIGHT

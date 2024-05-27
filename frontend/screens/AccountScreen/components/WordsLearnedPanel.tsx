@@ -16,7 +16,7 @@ export default function WordsLearnedPanel({navigation}: IWordsLearnedPanelProps)
     const { currentUser, wordCounts } = useContext(UserContext);
 
     const renderBar = (title: string, total: number, value: number) => (
-        <View style={styles.barContainer}>
+        <View style={styles.barContainer} key={title}>
             <Text style={styles.barCountText}>{value}</Text>
             <View style={styles.barBackground} >
                 <View style={{

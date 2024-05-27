@@ -53,7 +53,7 @@ export default function LearnCyrillicScreen({navigation}: NativeStackHeaderProps
     ]
 
     const renderItem = (item: Record<string, string>) => (
-        <View style={styles.itemContainer}>
+        <View style={styles.itemContainer} key={item.letter}>
             <RaisedButton
                 onPress={() => speak(item.letter.charAt(0), 'ru')}
                 options={{

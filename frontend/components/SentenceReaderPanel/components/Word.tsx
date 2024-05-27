@@ -52,6 +52,7 @@ interface IWordProps {
     wordData: IWordData,
     textColor: string,
     textBackgroundColor: string,
+    primaryColor: string,
     onPress: Function,
     isFirstWord: boolean,
     screenWidth: number,
@@ -59,7 +60,7 @@ interface IWordProps {
     key: string
 }
 
-export default function Word ({navigation, word, wordData, textColor, textBackgroundColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
+export default function Word ({navigation, word, wordData, textColor, textBackgroundColor, primaryColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
 
     const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
 
@@ -214,16 +215,13 @@ export default function Word ({navigation, word, wordData, textColor, textBackgr
         setLastPress(currentTime);
 
     }
+
     return (
         <View>
             {wordTranslationVisible && (<>
                 <View style={{
                     width: infoBoxWidth,
-                    marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
-                    ...styles.infoBoxShadow
-                    }}></View>
-                <View style={{
-                    width: infoBoxWidth,
+                    backgroundColor: primaryColor,
                     marginLeft: (wordWidth-infoBoxWidth)/2 + infoBoxXAdjust,
                     ...styles.infoBox
                     }}>
@@ -292,18 +290,7 @@ export default function Word ({navigation, word, wordData, textColor, textBackgr
         fontSize: constants.H1FONTSIZE + 7,
         fontFamily: constants.FONTFAMILYBOLD
     },
-    infoBoxShadow: {
-        backgroundColor: constants.PRIMARYCOLORSHADOW,
-        height: 80,
-        borderRadius: 20,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: -83
-    },
     infoBox: {
-        backgroundColor: constants.PRIMARYCOLOR,
         height: 80,
         borderRadius: 20,
         flexDirection: 'column',

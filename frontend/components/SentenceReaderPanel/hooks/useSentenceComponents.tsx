@@ -104,6 +104,7 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
                     wordData={wordsData[fullWord]}
                     textColor={activeWords.includes(fullWord) ? constants.BLACK : constants.BLACK + '55'}
                     textBackgroundColor={activeWords.includes(fullWord) ? primaryColor + '55': constants.TERTIARYCOLOR}
+                    primaryColor={primaryColor}
                     onPress={handleWordPress}
                     isFirstWord={i==0}
                     screenWidth={screenWidth}

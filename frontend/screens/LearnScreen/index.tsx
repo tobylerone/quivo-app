@@ -18,6 +18,7 @@ import SentenceReaderPanel from "../../components/SentenceReaderPanel";
 import useLanguagePopupVisible from "./hooks/useLanguagePopupVisible";
 import useLevelData from './hooks/useLevelData';
 import useFilterPopupVisible from "./hooks/useFilterPopupVisible";
+import usePrimaryColor from "./hooks/usePrimaryColor";
 
 export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
@@ -26,8 +27,7 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
     const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
     const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
-
-    const [primaryColor, setPrimaryColor] = useState(constants.PURPLEREGULAR);
+    const { primaryColor } = usePrimaryColor(currentLanguageCode);
     
     // TODO: This hook returns jsx which needs fixing
     //const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);

@@ -20,8 +20,8 @@ export default function LevelScreen({navigation}: NativeStackHeaderProps) {
     const {buckets, cumBuckets} = generateBuckets(30000, 100, 50);
     const { level, knownWordsInLevel} = calcLevel(knownWords, 30000);
 
-    const renderImage = (image: PNG) => (
-        <Image source={image} style={styles.avatarImage} />
+    const renderImage = (imageCode: number, image: PNG) => (
+        <Image key={imageCode} source={image} style={styles.avatarImage} />
     );
 
     const renderLevelItem = (bucketSize: number, itemLevel: number) => (
@@ -44,7 +44,7 @@ export default function LevelScreen({navigation}: NativeStackHeaderProps) {
             </Text>
             {avatarLevelUnlock.hasOwnProperty(itemLevel) &&
             <View style={styles.avatarImagesContainer}>
-                {avatarLevelUnlock[itemLevel].map(imageCode => renderImage(avatarImageMap[imageCode]))}
+                {avatarLevelUnlock[itemLevel].map(imageCode => renderImage(imageCode, avatarImageMap[imageCode]))}
             </View>
             }
         </View>

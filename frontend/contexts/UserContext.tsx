@@ -33,8 +33,9 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     // TODO: This should be stored in the database for each user
     const [knownWordsPercentage, setKnownWordsPercentage] = useState<(20|30|40|50|60|70|80)>(50);
     const [knownWords, setKnownWords] = useState<number>(0);
-    const [soundActive, setSoundActive] = useState<boolean>(true); // TODO: Link this to the user account on the backend
-    const [narrationSpeed, setNarrationSpeed] = useState<0|1|2>(1) // TODO: link this to user account on the backend
+    const [soundActive, setSoundActive] = useState<boolean>(true);
+    const [narrationSpeed, setNarrationSpeed] = useState<0.8|1|1.2>(1);
+    const [autoplayEnabled, setAutoPlayEnabled] = useState<boolean>(true);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
@@ -52,6 +53,9 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
         if(currentUser){
             getCurrentLanguageCode();
             getKnownLanguages();
+            setSoundActive(currentUser.sound_enabled);
+            setAutoPlayEnabled(currentUser.autoplayEnabled);
+            setNarrationSpeed(currentUser.narration_speed);
             setUserStreak(currentUser.streak);
             setUserAvatarId(currentUser.avatar_id);
         }
@@ -205,6 +209,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             knownWords,
             soundActive,
             narrationSpeed,
+            autoplayEnabled,
             wordCounts,
             monthlyWordCounts,
             dailyWordCount,
@@ -217,6 +222,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             setKnownWords,
             setSoundActive,
             setNarrationSpeed,
+            setAutoPlayEnabled,
             setDailyWordCount,
             setUserStreak,
             setCurrentLanguageCompletedStories,

@@ -121,6 +121,7 @@ export default function WordItem({navigation, item, primaryColor, showKnownWords
                 backgroundColor: styling.backgroundColor,
                 ...styles.wordItem
             }}
+            key={item.rank}
             activeOpacity={1}
             onPress={() => {handlePress()}}
             >

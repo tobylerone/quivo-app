@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: constants.TERTIARYCOLOR
   },
   image: {
     marginBottom: 40,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     color: constants.ERRORCOLOR
   },
   inputView: {
-    backgroundColor: constants.SECONDARYCOLOR,
+    backgroundColor: constants.PRIMARYCOLORLIGHT,
     borderRadius: 10,
     width: "70%",
     height: 50,

@@ -78,6 +78,10 @@ class UserSerializer(serializers.ModelSerializer):
 		fields = (
 			'user_id',
 			'is_premium',
+			'has_given_feedback',
+			'sound_enabled',
+			'autoplay_enabled',
+			'narration_speed',
 			'email',
 			'username',
 			'avatar_id',

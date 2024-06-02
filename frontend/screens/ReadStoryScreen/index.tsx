@@ -35,16 +35,19 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
     }, [currentSentenceIndex]);
     
     const renderProgressCircle = (i: number) => (
-        <View style={{
-            backgroundColor: currentSentenceIndex >= i
-                ? primaryColor
-                : constants.LIGHTGREY,
-            ...styles.progressCircle
-        }}></View>
+        <View
+            style={{
+                backgroundColor: currentSentenceIndex >= i
+                    ? primaryColor
+                    : constants.LIGHTGREY,
+                ...styles.progressCircle
+            }}
+            key={i}
+        >
+        </View>
     );
 
     const handleCompletedStoryButtonPress = () => {
-        console.log('pressed');
         if (storyIndex == currentLanguageCompletedStories) {
             setCurrentLanguageCompletedStories(storyIndex + 1);
         }

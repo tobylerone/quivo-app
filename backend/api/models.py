@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class AppUserManager(BaseUserManager):
 
@@ -30,6 +30,16 @@ class AppUserManager(BaseUserManager):
 class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
 	is_premium = models.BooleanField(default=False)
+	has_given_feedback = models.BooleanField(default=False)
+	sound_enabled = models.BooleanField(default=True)
+	autoplay_enabled = models.BooleanField(default=True)
+	narration_speed = models.FloatField(
+        default=1,
+        validators=[
+            MaxValueValidator(1.2),
+            MinValueValidator(0.8),
+        ]
+    )
 	email = models.EmailField(max_length=50, unique=True)
 	username = models.CharField(max_length=50, unique=True)
 	avatar_id = models.IntegerField(default=0)

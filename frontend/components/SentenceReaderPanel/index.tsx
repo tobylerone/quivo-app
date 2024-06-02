@@ -37,10 +37,9 @@ export default function SentenceReaderPanel({
     marginBottom = 25
 }: ISentenceReaderProps) {
 
-    const { currentLanguageCode } = useContext(UserContext);
+    const { currentLanguageCode, autoPlayEnabled, setAutoPlayEnabled } = useContext(UserContext);
     
     const [translationVisible, setTranslationVisible] = useState(false);
-    const [autoDictEnabled, setAutoDictEnabled] = useState<boolean>(true);
 
     const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
     
@@ -49,7 +48,7 @@ export default function SentenceReaderPanel({
     const { wordsData } = useFetchWordsData(currentItem);
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoDictEnabled);
+    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoPlayEnabled);
 
     // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
     // up
@@ -115,11 +114,11 @@ export default function SentenceReaderPanel({
             <Text style={styles.autoplayText}>Autoplay</Text>
             <View style={styles.toggleButtonContainer}>
                 <ToggleButton
-                    initiallySelected={autoDictEnabled}
+                    initiallySelected={autoPlayEnabled}
                     size={20}
                     primaryColor={primaryColor}
                     secondaryColor={primaryColor + '55'}
-                    onValueChange={() => setAutoDictEnabled(!autoDictEnabled)}
+                    onValueChange={() => setAutoPlayEnabled(!autoPlayEnabled)}
                 />
             </View>
         </View>

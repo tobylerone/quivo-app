@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: constants.TERTIARYCOLOR
   },
   parrot: {
     width: 100,
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     color: constants.ERRORCOLOR
   },
   inputView: {
-    backgroundColor: constants.SECONDARYCOLOR,
+    backgroundColor: constants.PRIMARYCOLORLIGHT,
     borderRadius: 10,
     width: "70%",
     height: 50,
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     marginBottom: 'auto',
     fontSize: constants.H3FONTSIZE,
     fontFamily: constants.FONTFAMILY,
-    color: constants.BLACK
+    color: constants.PRIMARYCOLOR
   },
   forgotButton: {
     height: 30,

@@ -12,7 +12,7 @@ interface IRaisedButtonProps {
     children: React.ReactNode,
     onPress: Function,
     options?: {
-        width?: number,
+        width?: number | string,
         height?: number,
         disabled?: boolean,
         borderWidth?: number,

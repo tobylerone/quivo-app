@@ -83,7 +83,7 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
     const level = calcLevel(maxWordNum, 30000).level;
     
     const renderSubsection = (
-        level: (0|5|10|15|20|25|30|35|40|45|50), // TODO: Get this from avatarMap keys
+        level: number, // TODO: Get this from avatarMap keys
         avatarIds: number[],
         userLevel: number
     ) => {
@@ -133,7 +133,7 @@ export default function AvatarScreen({navigation}: NativeStackHeaderProps) {
             overScrollMode="never"
             removeClippedSubviews={true}
         >
-            {Object.entries(avatarLevelUnlock).map(([key, value]) => renderSubsection(key, value, level))}
+            {Object.entries(avatarLevelUnlock).map(([key, value]) => renderSubsection(+key, value, level))}
         </ScrollView>
     </SafeAreaView>
     );

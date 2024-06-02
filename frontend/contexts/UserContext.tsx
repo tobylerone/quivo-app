@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [knownWords, setKnownWords] = useState<number>(0);
     const [soundActive, setSoundActive] = useState<boolean>(true);
     const [narrationSpeed, setNarrationSpeed] = useState<0.8|1|1.2>(1);
-    const [autoplayEnabled, setAutoPlayEnabled] = useState<boolean>(true);
+    const [autoplayEnabled, setAutoplayEnabled] = useState<boolean>(true);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
     const [monthlyWordCounts, setMonthlyWordCounts] = useState<number[]>(null);
     const [dailyWordCount, setDailyWordCount] = useState<number>(0);
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             getCurrentLanguageCode();
             getKnownLanguages();
             setSoundActive(currentUser.sound_enabled);
-            setAutoPlayEnabled(currentUser.autoplayEnabled);
+            setAutoplayEnabled(currentUser.autoplay_enabled);
             setNarrationSpeed(currentUser.narration_speed);
             setUserStreak(currentUser.streak);
             setUserAvatarId(currentUser.avatar_id);
@@ -222,7 +222,7 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             setKnownWords,
             setSoundActive,
             setNarrationSpeed,
-            setAutoPlayEnabled,
+            setAutoplayEnabled,
             setDailyWordCount,
             setUserStreak,
             setCurrentLanguageCompletedStories,

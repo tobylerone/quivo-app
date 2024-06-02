@@ -8,6 +8,8 @@ import FollowButton from "../components/FollowButton";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+// Assets
+import { flagImageSources } from "../assets/img/imageSources";
 // Constants
 import * as constants from "../constants";
 // Components
@@ -27,19 +29,17 @@ interface IUser {
 }
 
 interface IUserListItem {
+    index: number,
     user: IUser,
     navigation: any
 }
 
-const UserListItem = ({user, navigation}: IUserListItem) => {
+const UserListItem = ({index, user, navigation}: IUserListItem) => {
 
     const { currentUser, setCurrentUser } = useContext(UserContext);
-
-    const flagImageSources: Record<string, PNG> = {
-        'fr': require('../assets/fr.png'),
-        'de': require('../assets/de.png'),
-        'ru': require('../assets/ru.png')
-    }
+    
+    // Get an ordered list of the codes of theuser's top three languages 
+    const topLanguageCodes = Object.entries(user.known_words_count).sort((a, b) => b[1] - a[1]).map(([key]) => key).slice(0, 3);
 
     // Current user check not super robust
     // This is pretty much the same as FollowListScreen's FollowItem so should
@@ -47,7 +47,11 @@ const UserListItem = ({user, navigation}: IUserListItem) => {
     return (
         <>
         {user.user_id !== currentUser.user_id &&
-        <View style={styles.userListItem}>
+        <View
+            style={{
+                borderTopWidth: index > 0 ? 3 : 0,
+                ...styles.userListItem}}
+            >
             <TouchableOpacity
                 activeOpacity={1}
                 style={styles.leftBoxContainer}
@@ -61,7 +65,7 @@ const UserListItem = ({user, navigation}: IUserListItem) => {
                     </Text>
                 </View>
                 <FlatList
-                    data={Object.keys(user.known_words_count)}
+                    data={topLanguageCodes}
                     //style={styles.languagePopupList}
                     bounces={false}
                     horizontal={true}
@@ -123,7 +127,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
     return (
         <SafeAreaView style={styles.container}>
             <NavBar title={'Search For Users'} navigation={navigation}/>
-            <View style={styles.searchFieldContainer}>
+            <View style={[styles.searchFieldContainer, styles.shadow]}>
                 <View style={styles.searchBarContainer}>
                 <TextInput
                 style={styles.searchInput}
@@ -139,10 +143,13 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                             ...RaisedButton.defaultProps.options,
                             width: 50,
                             height: 50,
+                            backgroundColor: constants.TERTIARYCOLOR,
+                            borderColor: constants.PURPLEREGULAR,
+                            shadowColor: constants.PURPLEREGULAR
                         }}
                     >
                         <View style={styles.searchButtonIconContainer}>
-                            <FontAwesomeIcon icon={faSearch} size={25} color={constants.TERTIARYCOLOR} />
+                            <FontAwesomeIcon icon={faSearch} size={25} color={constants.PURPLEREGULAR} />
                         </View>
                     </RaisedButton>
                 </View>
@@ -161,7 +168,7 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
                     showsHorizontalScrollIndicator={false}
                     overScrollMode="never"
                     removeClippedSubviews={true}
-                    renderItem={({item}: {item: IUser}) => <UserListItem user={item} navigation={navigation} />}
+                    renderItem={({item, index}: {item: IUser, index: number}) => <UserListItem index={index} user={item} navigation={navigation} />}
                 />
             : <>{/*<ActivityIndicator style={styles.activityIndicator} size="large" color={constants.PRIMARYCOLOR} />*/}</>
             }
@@ -172,14 +179,15 @@ export default function SearchUserScreen({navigation}: NativeStackHeaderProps) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginHorizontal: 20,
-        marginTop: 50
+        paddingHorizontal: 20,
+        paddingTop: 50,
+        backgroundColor: constants.TERTIARYCOLOR
     },
     searchFieldContainer: {
         flexDirection: 'row',
-        backgroundColor: constants.SECONDARYCOLOR,
         borderRadius: 10,
-        marginBottom: 20
+        marginBottom: 20,
+        backgroundColor: constants.TERTIARYCOLOR
     },
     searchBarContainer: {
         width: '100%'
@@ -207,7 +215,7 @@ const styles = StyleSheet.create({
     noUsersMessageText: {
         fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.H2FONTSIZE,
-        color: constants.PRIMARYCOLOR,
+        color: constants.BLACK,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: 10
@@ -220,14 +228,14 @@ const styles = StyleSheet.create({
     },
     userList: {
         height: "100%",
-        marginTop: 10,
     },
     userListItem: {
         flexDirection: "row",
         justifyContent: 'space-between',
-        backgroundColor: constants.SECONDARYCOLOR,
-        borderRadius: 10,
-        marginBottom: 5,
+        backgroundColor: constants.TERTIARYCOLOR,
+        borderTopColor: constants.PURPLELIGHT,
+        //borderRadius: 10,
+        //marginBottom: 5,
         padding: 10
     },
     username: {
@@ -236,12 +244,12 @@ const styles = StyleSheet.create({
     },
     usernameText: {
         fontSize: constants.H2FONTSIZE,
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
         color: constants.BLACK
     },
     knownWordsPill: {
         flexDirection: "row",
-        backgroundColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.PURPLELIGHT,
         height: 30,
         marginTop: 'auto',
         marginBottom: 'auto',
@@ -255,9 +263,9 @@ const styles = StyleSheet.create({
 
     },
     knownWordsText: {
-        fontFamily: constants.FONTFAMILY,
+        fontFamily: constants.FONTFAMILYBOLD,
         fontSize: constants.CONTENTFONTSIZE,
-        color: constants.TERTIARYCOLOR,
+        color: constants.BLACK,
         marginTop: 'auto',
         marginBottom: 'auto'
     },
@@ -278,7 +286,6 @@ const styles = StyleSheet.create({
     },
     followButton: {
         alignSelf: "flex-end",
-        backgroundColor: constants.PRIMARYCOLOR,
         padding: 10,
         borderRadius: 10
     },
@@ -288,5 +295,15 @@ const styles = StyleSheet.create({
     },
     activityIndicator: {
         marginTop: 20
+    },
+    shadow: {
+        shadowColor: constants.BLACK,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowOpacity: 0.15,
+        shadowRadius: 1,
+        elevation: 5
     }
 });

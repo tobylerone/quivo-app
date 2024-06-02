@@ -439,7 +439,8 @@ class UserViewSet(generics.ListAPIView):
 		search_term = self.request.query_params.get('search', None)
         
 		if search_term is not None:
-			queryset = queryset.filter(Q(username__icontains=search_term))
+			# Limit to just the first 10 results for now
+			queryset = queryset.filter(Q(username__icontains=search_term))[:10]
 
 		return queryset
 

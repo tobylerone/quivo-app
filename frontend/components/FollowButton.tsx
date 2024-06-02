@@ -91,11 +91,11 @@ const styles = StyleSheet.create({
     },
     followButton: {
         backgroundColor: constants.SECONDARYCOLOR,
-        borderColor: constants.PRIMARYCOLOR
+        borderColor: constants.PURPLEREGULAR
     },
     unfollowButton: {
-        backgroundColor: constants.PRIMARYCOLOR,
-        borderColor: constants.PRIMARYCOLOR,
+        backgroundColor: constants.PURPLEREGULAR,
+        borderColor: constants.PURPLEREGULAR,
         color: constants.TERTIARYCOLOR
     },
     buttonText: {
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         marginBottom: 'auto'
     },
     followButtonText: {
-        color: constants.PRIMARYCOLOR
+        color: constants.BLACK
     },
     unfollowButtonText: {
         color: constants.TERTIARYCOLOR

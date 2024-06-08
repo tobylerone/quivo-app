@@ -28,7 +28,8 @@ urlpatterns = [
     path('sentences/<int:perc_known_words>', views.SentencesViewSet.as_view({'get': 'list'}), name='sentences'),
 	path('follow/<int:follower_id>/<int:followee_id>', views.UserFollowView.as_view(), name='follow-user'),
     path('unfollow/<int:follower_id>/<int:followee_id>', views.UserUnfollowView.as_view(), name='unfollow-user'),
-	path('csrf', views.csrf, name='csrf'),
+	path('suggestion', views.SuggestionView.as_view(), name='suggestion'),
+    path('csrf', views.csrf, name='csrf'),
     
 	# Phrases
 

@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow, UserWord
 
-from language_app.models import Language, FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData
+from language_app.models import Language, FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Suggestion
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
@@ -35,7 +35,8 @@ from .serializers import (
     FrWordDataModelSerializer,
 	DeWordDataModelSerializer,
 	RuWordDataModelSerializer,
-	ThWordDataModelSerializer
+	ThWordDataModelSerializer,
+	SuggestionModelSerializer
 	)
 
 from .validations import custom_validation, validate_username, validate_password
@@ -595,6 +596,21 @@ class WordDataView(APIView):
 		word_data = {k: v for d in serializer.data for k, v in d.items()}
 
 		return Response(word_data)
+
+
+class SuggestionView(APIView):
+	
+		def post(self, request, *args, **kwargs):
+
+			serializer = SuggestionModelSerializer(data=request.data)
+
+			if serializer.is_valid():
+				
+				suggestion = serializer.save()
+				return Response({"status": "success"})
+			else:
+				print(serializer.errors)
+				return Response(serializer.errors, status=400)
 
 
 def csrf(request):

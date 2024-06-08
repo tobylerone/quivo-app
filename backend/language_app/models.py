@@ -56,3 +56,8 @@ class RuWordData(BaseWordData):
 
 class ThWordData(BaseWordData):
     pass
+
+
+class Suggestion(models.Model):
+    score = models.IntegerField(null=True)
+    suggestion = models.TextField(null=True)

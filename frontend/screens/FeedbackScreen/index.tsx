@@ -9,6 +9,7 @@ import { text } from '@fortawesome/fontawesome-svg-core';
 import { renderNode } from 'react-native-elements/dist/helpers';
 // Components
 import RaisedButton from '../../components/RaisedButton';
+import client from "../../utils/axios"
 
 interface IStarProps {
     id: number,
@@ -52,10 +53,31 @@ export default function FeedbackScreen({navigation}: NativeStackHeaderProps){
     type StarScore = [0, 1, 2, 3, 4, 5][number];
     
     const [starScore, setStarScore] = useState<StarScore>(0);
+    const [suggestionText, setSuggestionText] = useState<string>('');
 
     function handleStarPress(starId: StarScore) {
         setStarScore(starId);
     }
+
+    const handleSubmit = () => {
+
+        console.log('Submitting');
+        
+        return new Promise((resolve, reject) => {
+
+            client.post(
+            "/api/suggestion",
+            {
+                score: starScore,
+                suggestion: suggestionText,
+            }
+            ).then(function(res) {
+                console.log('Suggestion successfully submitted');
+            }).catch(function(error) {
+                console.log('Suggestion could not be sent');
+            });
+        });
+    };
     
     return (
     <View style={styles.container}>
@@ -80,12 +102,13 @@ export default function FeedbackScreen({navigation}: NativeStackHeaderProps){
             numberOfLines={10}
             style={styles.textInput}
             placeholder="Tell us your thoughts..."
+            onChangeText={setSuggestionText}
             //selection={{start: 0, end: 0}}
             />
         </View>
         <View style={styles.submitButtonContainer}>
             <RaisedButton
-                    onPress={() => {}}
+                    onPress={() => handleSubmit()}
                     options={{
                         ...RaisedButton.defaultProps.options,
                         width: 200,

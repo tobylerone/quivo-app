@@ -60,8 +60,6 @@ export default function FeedbackScreen({navigation}: NativeStackHeaderProps){
     }
 
     const handleSubmit = () => {
-
-        console.log('Submitting');
         
         return new Promise((resolve, reject) => {
 
@@ -73,6 +71,7 @@ export default function FeedbackScreen({navigation}: NativeStackHeaderProps){
             }
             ).then(function(res) {
                 console.log('Suggestion successfully submitted');
+                navigation.goBack();
             }).catch(function(error) {
                 console.log('Suggestion could not be sent');
             });

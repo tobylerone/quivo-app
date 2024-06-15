@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
 from .models import UserFollow, UserWord
-from language_app.models import FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Language, Suggestion
+from language_app.models import FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Language, Suggestion, Faq
 
 UserModel = get_user_model()
 
@@ -262,3 +262,9 @@ class SuggestionModelSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Suggestion
 		fields = ("score", "suggestion")
+
+
+class FaqModelSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Faq
+		fields = ("question", "answer")

@@ -61,3 +61,7 @@ class ThWordData(BaseWordData):
 class Suggestion(models.Model):
     score = models.IntegerField(null=True)
     suggestion = models.TextField(null=True)
+
+class Faq(models.Model):
+    question = models.TextField(null=False)
+    answer = models.TextField(null=False)

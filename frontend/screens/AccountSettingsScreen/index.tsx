@@ -56,7 +56,6 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             title: "General",
             data: [
               { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
-              { text: "Dark mode", action: () => {} },
               {
                 text: 'Narration speed',
                 subtext: 

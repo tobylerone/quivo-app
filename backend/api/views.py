@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from .models import AppUser, UserFollow, UserWord
 
-from language_app.models import Language, FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Suggestion
+from language_app.models import Language, FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Suggestion, Faq
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
@@ -36,7 +36,8 @@ from .serializers import (
 	DeWordDataModelSerializer,
 	RuWordDataModelSerializer,
 	ThWordDataModelSerializer,
-	SuggestionModelSerializer
+	SuggestionModelSerializer,
+	FaqModelSerializer
 	)
 
 from .validations import custom_validation, validate_username, validate_password
@@ -611,6 +612,11 @@ class SuggestionView(APIView):
 			else:
 				print(serializer.errors)
 				return Response(serializer.errors, status=400)
+
+
+class FaqViewSet(viewsets.ModelViewSet):
+	queryset = Faq.objects.all()
+	serializer_class = FaqModelSerializer
 
 
 def csrf(request):

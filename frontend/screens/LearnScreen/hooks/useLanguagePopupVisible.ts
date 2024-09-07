@@ -20,5 +20,5 @@ export default function useLanguagePopupVisible(){
         }
     };
 
-    return { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup };
+    return { languagePopupVisible, setLanguagePopupVisible, languagePopupAnimation, toggleLanguagePopup };
 }

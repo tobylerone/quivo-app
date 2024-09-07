@@ -53,7 +53,7 @@ export default function useFetchItems(sentencesData?: ISentence[] | null){
     };
 
     const changeItem = (increment: 1|-1) => {
-
+        
         // Can only decrement in storyMode
         if (!isStoryMode && increment == -1) return;
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, FlatList, Image, Animated, Dimensions, Touchable } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLanguage, faPlus, faCommentDots, faSliders } from '@fortawesome/free-solid-svg-icons';
@@ -24,14 +24,14 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
 
     const { currentUser, knownLanguages, currentLanguageCode, knownWords, dailyWordCount, userStreak, setUserStreak } = useContext(UserContext);
 
-    const { languagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
+    const { languagePopupVisible, setLanguagePopupVisible, languagePopupAnimation, toggleLanguagePopup } = useLanguagePopupVisible();
     const { filterPopupVisible, filterPopupAnimation, toggleFilterPopup } = useFilterPopupVisible();
     const { level, wordsInLevel, knownWordsInLevel} = useLevelData(knownWords);
     const { primaryColor } = usePrimaryColor(currentLanguageCode);
     
     // TODO: This hook returns jsx which needs fixing
     //const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, currentItem, wordsData, autoDictEnabled, primaryColor);
-
+    
     useEffect(() => {
         if (dailyWordCount !== 0 && dailyWordCount % constants.WORDSPERAD == 0) {
             navigation.navigate('ShowAd');
@@ -143,8 +143,8 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
         <SentenceReaderPanel
             navigation={navigation}
             primaryColor={primaryColor}
-            onSentenceReaderLeftSwipe={() => {}}
-            onSentenceReaderRightSwipe={() => {}}
+            onSentenceReaderLeftSwipe={() => {if(languagePopupVisible){toggleLanguagePopup()}}}
+            onSentenceReaderRightSwipe={() => {if(languagePopupVisible){toggleLanguagePopup()}}}
             marginBottom={75}
         />
         {/*<Animated.View style={[styles.filterPopupContainer, { top: filterPopupAnimation }]}>

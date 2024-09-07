@@ -10,7 +10,7 @@ import * as constants from '../../../constants'
 // Components
 import Word from "../components/Word";
 
-export default function useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoDictEnabled){
+export default function useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoDictEnabled, setSentenceVisible){
     // NOTE: This hook should not contain tsx
 
     const { currentLanguageCode } = useContext(UserContext);
@@ -43,8 +43,13 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
         console.log('Sentence re-render triggered');
         createSentenceComponents(currentItem, wordsData).then(components => {
             setSentenceComponents(components);
+            setSentenceVisible(true);
         }).catch((e) => {console.log(e)});
     }, [activeWords])
+
+    useEffect(() => {
+        //setSentenceVisible(true);
+    }, [sentenceComponents])
 
     const getFullWord = (word: string) => {
         

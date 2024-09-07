@@ -29,7 +29,7 @@ ALLOWED_HOSTS = [
     "192.168.0.22",
     "10.159.139.194",
     "192.168.202.50",
-    "10.101.2.156" # eurostar
+    "192.168.10.114" # train
     ]
 
 CORS_ALLOWED_ORIGINS = [f"http://{host}" for host in ALLOWED_HOSTS]

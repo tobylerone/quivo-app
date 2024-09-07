@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, SafeAreaView, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faLanguage, faPlus, faCommentDots } from '@fortawesome/free-solid-svg-icons';
 import { } from '@fortawesome/free-regular-svg-icons';
@@ -34,11 +34,12 @@ export default function SentenceReaderPanel({
     sentencesData = null,
     onSentenceReaderLeftSwipe,
     onSentenceReaderRightSwipe,
-    marginBottom = 25
+    marginBottom = 25,
 }: ISentenceReaderProps) {
 
     const { currentLanguageCode, autoplayEnabled, setAutoplayEnabled } = useContext(UserContext);
     
+    const [sentenceVisible, setSentenceVisible] = useState(false);
     const [translationVisible, setTranslationVisible] = useState(false);
 
     const { onTouchStart, onTouchEnd } = useSwipe(onSwipeLeft, onSwipeRight, 6);
@@ -48,20 +49,23 @@ export default function SentenceReaderPanel({
     const { wordsData } = useFetchWordsData(currentItem);
     
     // TODO: This hook returns jsx which needs fixing
-    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoplayEnabled);
+    const { sentenceComponents, setActiveWords } =  useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoplayEnabled, setSentenceVisible);
     
     // TODO: Had to do extra useEffect to avoid circular dependency, but this whole screen needs cleaning
     // up
     useEffect(() => {
         setActiveWords([]);
+        setSentenceVisible(true);
     }, [currentItem]);
 
     // Handle swiping between sentences
     function onSwipeLeft() {
+        setSentenceVisible(false)
         onSentenceReaderLeftSwipe();
         changeItem(1);
     }
     function onSwipeRight() {
+        setSentenceVisible(false);
         onSentenceReaderRightSwipe(1);
         changeItem(-1);
     }
@@ -72,7 +76,7 @@ export default function SentenceReaderPanel({
         onTouchEnd={onTouchEnd}
         style={styles.contentContainer}
         >
-        {currentItem &&
+        {currentItem && sentenceVisible ? 
         <View style={styles.sentenceContainer}>
             <View style={{
                 display: translationVisible ? "visible": "none",
@@ -87,7 +91,7 @@ export default function SentenceReaderPanel({
                 {sentenceComponents}
             </View>
         </View>
-        }
+        : <ActivityIndicator size="large" color={primaryColor} />}
     </View>
     <View style={{
         marginBottom: marginBottom,

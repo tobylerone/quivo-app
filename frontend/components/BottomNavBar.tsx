@@ -45,10 +45,9 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
         buttons.splice(1, 0, {
             inactiveImage: require('../assets/icons/cyrillic-inactive-small.png'),
             activeImage: require('../assets/icons/cyrillic-active-small.png'),
-            navigateTo: 'LearnConsonants'
+            navigateTo: 'LearnAlphabet'
         });
     }
-
 
     const buttonWidth = currentLanguageCode === 'ru' || currentLanguageCode == 'th' ? '20%' : '25%';
     

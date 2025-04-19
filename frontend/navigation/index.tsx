@@ -32,8 +32,7 @@ import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
 import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
-import LearnConsonantsScreen from "../screens/LearnConsonantsScreen";
-import LearnVowelsScreen from "../screens/LearnVowelsScreen";
+import LearnAlphabetScreen from "../screens/LearnAlphabetScreen";
 import GetPremiumScreen from "../screens/GetPremiumScreen";
 import StoriesScreen from "../screens/LeaderboardScreen";
 import ReadStoryScreen from "../screens/ReadStoryScreen";
@@ -142,21 +141,13 @@ function MainNavigator() {
                 }}
             />      
             <MainStack.Screen
-                name="LearnConsonants"
-                component={LearnConsonantsScreen as any}
+                name="LearnAlphabet"
+                component={LearnAlphabetScreen as any}
                 options={{
                     headerShown: false,
                     animation: 'none'
                 }}
             />
-                        <MainStack.Screen
-                name="LearnVowels"
-                component={LearnVowelsScreen as any}
-                options={{
-                    headerShown: false,
-                    animation: 'none'
-                }}
-            />  
             <MainStack.Screen
                 name="AccountSettings"
                 component={AccountSettingsScreen as any}

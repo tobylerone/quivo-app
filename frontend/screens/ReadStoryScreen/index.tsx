@@ -28,11 +28,13 @@ export default function ReadStoryScreen({route, navigation}: NativeStackHeaderPr
     const [completedStoryButtonVisible, setCompletedStoryButtonVisible] = useState<boolean>(false);
     
     useEffect(() => {
+        console.log(currentSentenceIndex);
+        //console.log(sentencesData)
+        //console.log(sentencesData[currentSentenceIndex]);
         // TODO: store sentencesDAta
         if (currentSentenceIndex + 1 == numSentences) {
             setCompletedStoryButtonVisible(true);
-        }
-    }, [currentSentenceIndex]);
+        }    }, [currentSentenceIndex]);
     
     const renderProgressCircle = (i: number) => (
         <View

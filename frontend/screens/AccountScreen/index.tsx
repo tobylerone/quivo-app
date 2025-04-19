@@ -11,9 +11,7 @@ import { avatarImageMap } from "../../assets/avatars/avatarMaps";
 // Components
 import BottomNavBar from '../../components/BottomNavBar';
 import ComprehensionPercPanel from "./components/ComprehensionPercPanel";
-import ProgressPanel from './components/ProgressPanel';
 import WordsLearnedPanel from "./components/WordsLearnedPanel";
-import LeaderboardPanel from './components/LeaderboardPanel';
 // Utils
 import { calcLevel } from "../../utils/functions";
 
@@ -50,26 +48,6 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
             removeClippedSubviews={true}
         >
             <View style={styles.topContainer}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => navigation.navigate("SearchUser")}
-                    style={styles.addUserButtonContainer}
-                    >
-                    <View style={styles.addUserButton}>
-                        <FontAwesomeIcon icon={faUserPlus} size={constants.H1FONTSIZE} color={constants.BLACK} />
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => navigation.navigate("AccountSettings")}
-                    style={styles.settingsButtonContainer}
-                    >
-                    <View style={styles.settingsButton}>
-                        <FontAwesomeIcon icon={faGear} size={constants.H1FONTSIZE} color={constants.BLACK} />
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.profileContainer}>
                 <View style={styles.profileImageAndLevelContainer}>
                     <View style={styles.profileImageShadow}>
                     </View>
@@ -87,83 +65,26 @@ export default function AccountScreen({navigation}: NativeStackHeaderProps) {
                         <Text style={styles.profileLevelText}>Lv. {level}</Text>
                     </View>
                 </View>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => navigation.navigate("AccountSettings")}
+                    style={styles.settingsButtonContainer}
+                    >
+                    <View style={styles.settingsButton}>
+                        <FontAwesomeIcon icon={faGear} size={constants.H1FONTSIZE} color={constants.BLACK} />
+                    </View>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.profileContainer}>
                 <View style={styles.profileNameBubble}>
                     <View style={styles.profileNameContainer}>
                         <Text style={styles.profileName}>{currentUser.username}</Text>
                     </View>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => navigation.navigate("AccountLanguages")}
-                        >
-                        <View style={styles.flagContainer}>
-                            <FlatList
-                                data={visibleFlags}
-                                //style={styles.languagePopupList}
-                                bounces={false}
-                                horizontal={true}
-                                renderItem={({item}) => (
-                                    <View>
-                                        <View style={styles.flagImageContainer}>
-                                            <Image
-                                                source={flagImageSources[item]}
-                                                style={styles.flagImage}
-                                            />
-                                        </View>
-                                        <Text>
-                                            {knownWords}
-                                        </Text>
-                                    </View>
-                                )}
-                            />
-                            {numHiddenFlags > 0 &&
-                                <View style={styles.hiddenFlagsIcon}>
-                                    <Text style={styles.hiddenFlagsIconText}>+{numHiddenFlags}</Text>
-                                </View>
-                            }
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={styles.middleContainer}>
-                <View style={styles.middleContainerColumn}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => navigation.navigate("WordList")}
-                        >
-                        <View style={styles.knownWordsContainer}>
-                            <Text style={styles.knownWords}>{knownWords.toLocaleString("en-US")}</Text>
-                            <Text style={styles.knownWordsSubheader}>Words</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.middleContainerColumn}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => navigation.navigate("FollowList", {initialTab: "followers"})}
-                        >
-                        <View style={styles.followCountContainer}>
-                            <Text style={styles.followCount}>{ currentUser.followers_count }</Text>
-                            <Text style={styles.followCountSubheader}>Followers</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.middleContainerColumn}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={() => navigation.navigate("FollowList", {initialTab: "following"})}
-                        >
-                        <View style={styles.followCountContainer}>
-                            <Text style={styles.followCount}>{ currentUser.following_count }</Text>
-                            <Text style={styles.followCountSubheader}>Following</Text>
-                        </View>
-                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.mainContainer}>
                 <ComprehensionPercPanel navigation={navigation} />
-                <ProgressPanel />
                 <WordsLearnedPanel navigation={navigation} />
-                <LeaderboardPanel navigation={navigation} />
             </View>
         </ScrollView>
         <BottomNavBar hilighted='Account' navigation={navigation} />
@@ -228,9 +149,11 @@ const styles = StyleSheet.create({
         marginBottom: 'auto'
     },
     profileImageAndLevelContainer: {
-        width: 100,
-        marginLeft: 'auto',
-        marginRight: 'auto'
+        alignSelf: 'flex-start',
+        backgroundColor: constants.SECONDARYCOLOR,
+        width: 60,
+        height: 60,
+        borderRadius: 10
     },
     profileImageShadow: {
         width: 100,
@@ -277,6 +200,8 @@ const styles = StyleSheet.create({
     },
     profileNameBubble: {
         height: 56,
+        marginTop: -56,
+        marginBottom: 40,
         backgroundColor: constants.PRIMARYCOLORLIGHT,
         borderWidth: 3,
         borderColor: constants.PRIMARYCOLOR + '55',
@@ -300,31 +225,6 @@ const styles = StyleSheet.create({
         fontSize: constants.H2FONTSIZE,
         fontFamily: constants.FONTFAMILYBOLD,
         color: constants.PRIMARYCOLOR
-    },
-    flagContainer: {
-        flexDirection: 'row'
-    },
-    flagImageContainer: {
-        borderRadius: 10,
-        borderWidth: 4,
-        borderColor: constants.PRIMARYCOLORLIGHT,
-        overflow: "hidden",
-        height: "100%",
-        width: 40,
-    },
-    flagImage: {
-        width: "100%",
-        height: "100%",
-    },
-    hiddenFlagsIcon: {
-        marginHorizontal: 3
-    },
-    hiddenFlagsIconText: {
-        fontFamily: constants.FONTFAMILYBOLD,
-        color: constants.PRIMARYCOLOR,
-        fontSize: constants.H2FONTSIZE,
-        marginTop: 'auto',
-        marginBottom: 'auto'
     },
     knownWordsContainer: {
         marginLeft: "auto",

@@ -92,7 +92,14 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
             'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g,
         }
         
-        const splitSentence = currentItem.sentence.match(regex[currentLanguageCode]) || [];
+        if (currentLanguageCode == 'th') {
+            // If thai, just get the words from currentItem. Why can't we do this for the other
+            // languages?
+            splitSentence = currentItem.words;
+        }
+        else {
+            splitSentence = currentItem.sentence.match(regex[currentLanguageCode]) || [];
+        }
         const sentenceComponents = [];
 
         for (let i = 0; i < splitSentence.length; i++) {

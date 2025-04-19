@@ -234,7 +234,7 @@ export default function Word ({navigation, word, wordData, textColor, textBackgr
                                 {capitalizeFirstLetter(wordData.word)}:
                             </Text>
                         </View>
-                        <Text style={styles.translationText}>Translation</Text>
+                        <Text style={styles.translationText}>{wordData.translation}</Text>
                     </View>
                     <View style={styles.additionalDataContainer}>
                         <FrequencyBar frequency_rank={wordData.rank} />

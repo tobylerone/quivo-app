@@ -37,33 +37,11 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
             navigation.navigate('ShowAd');
         }
     }, [dailyWordCount]);
-    
-    /*const popupItemData = [
-        {title: '1000 most common words'},
-        {title: '2000 most common words'},
-        {title: '5000 most common words'},
-        {title: 'Art and culture'},
-        {title: 'Technology'},
-        {title: 'Fashion'},
-        {title: 'Politics'},
-        {title: 'Finance'},
-    ];
-    */
 
     return (
     <>
     <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
-            {/*<TouchableOpacity
-                style={styles.streakContainer}
-                onPress={() => {navigation.navigate('Streak')}}
-                >
-                <View style={styles.streakImagesContainer}>
-                    <View style={styles.streakImageContainer}><Image style={[styles.streakImage, styles.streakImageEmpty]} source={require('../../assets/streak-rocket-empty.png')} /></View>
-                    <View style={{overflow: 'hidden', height: dailyWordCount <= 10 ? Math.round(28 * dailyWordCount / 10) : 28, marginLeft: -28, ...styles.streakImageContainer}}><Image style={styles.streakImage} source={require('../../assets/streak-rocket-full.png')} /></View>
-                </View>
-                <Text style={styles.streakNumberText}>{userStreak}</Text>
-            </TouchableOpacity>*/}
             <TouchableOpacity
                 style={styles.levelBox}
                 onPress={() => {navigation.navigate('Level')}}
@@ -84,13 +62,6 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                 </View>
             </TouchableOpacity>
             <View style={styles.topButtonsContainer}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    style={[styles.filterButton, styles.shadow]}
-                    onPress={() => {navigation.navigate('Slider')}}
-                >
-                    <FontAwesomeIcon style={styles.filterButtonIcon} icon={faSliders} size={25} color={primaryColor} />
-                </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => { toggleLanguagePopup() }}

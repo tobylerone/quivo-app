@@ -28,24 +28,14 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
         {
             title: "Account",
             data: [
-            {
-              text: 'Change username',
-              arrow: true,
-              subtext: currentUser.username,
-              action: () => {navigation.navigate('ChangeUserDetails')}
-            },
-            {
-              text: 'Change email',
-              arrow: true,
-              subtext: currentUser.email,
-              action: () => {navigation.navigate('ChangeUserDetails')}
-            },
-            {
-              text: currentUser.is_premium ? "Cancel Subscription" : "Upgrade to premium",
-              arrow: true,
-              color: currentUser.is_premium ? constants.ERRORCOLOR : constants.GREENREGULAR,
-              action: () => {navigation.navigate('GetPremium')}
-            },
+              ...(!currentUser.is_premium ? [
+                {
+                    text: "Remove Ads",
+                    arrow: true,
+                    color: constants.GREENREGULAR,
+                    action: () => {navigation.navigate('GetPremium')}
+                }
+            ] : []),
             { text: "Log out", arrow: false, color: constants.ERRORCOLOR, action: () => {
               console.log("Logging out")
               submitLogout()
@@ -69,14 +59,6 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                 subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.GREENREGULAR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,
                 action: () => setSoundActive(!soundActive)
               },
-            ],
-        },
-        {
-            title: "Social",
-            data: [
-            { text: "Rate and comment", arrow: false, action: () => {} },
-            { text: "Give feedback", arrow: false, color: constants.GREENREGULAR, action: () => {navigation.navigate('Feedback')} },
-            { text: "Privacy Policy", arrow: true, action: () => {} }, // Can create one here: https://termly.io/resources/templates/privacy-policy-template/
             ],
         },
         ];

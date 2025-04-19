@@ -22,8 +22,6 @@ import AccountScreen from "../screens/AccountScreen";
 import OtherUserAccountScreen from "../screens/OtherUserAccountScreen";
 import AccountSettingsScreen from "../screens/AccountSettingsScreen";
 import ChangeUserDetailsScreen from "../screens/ChangeUserDetailsScreen";
-import SearchUserScreen from "../screens/SearchUserScreen";
-import AccountLanguagesScreen from "../screens/AccountLanguagesScreen";
 import WordListScreen from "../screens/WordListScreen";
 import FollowListScreen from "../screens/FollowListScreen";
 import FaqScreen from "../screens/FaqScreen";
@@ -34,7 +32,8 @@ import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
 import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
-import LearnCyrillicScreen from "../screens/LearnCyrillicScreen";
+import LearnConsonantsScreen from "../screens/LearnConsonantsScreen";
+import LearnVowelsScreen from "../screens/LearnVowelsScreen";
 import GetPremiumScreen from "../screens/GetPremiumScreen";
 import StoriesScreen from "../screens/LeaderboardScreen";
 import ReadStoryScreen from "../screens/ReadStoryScreen";
@@ -143,8 +142,16 @@ function MainNavigator() {
                 }}
             />      
             <MainStack.Screen
-                name="LearnCyrillic"
-                component={LearnCyrillicScreen as any}
+                name="LearnConsonants"
+                component={LearnConsonantsScreen as any}
+                options={{
+                    headerShown: false,
+                    animation: 'none'
+                }}
+            />
+                        <MainStack.Screen
+                name="LearnVowels"
+                component={LearnVowelsScreen as any}
                 options={{
                     headerShown: false,
                     animation: 'none'
@@ -161,16 +168,6 @@ function MainNavigator() {
             <MainStack.Screen
                 name="ChangeUserDetails"
                 component={ChangeUserDetailsScreen as any}
-                options={{headerShown: false}}
-            />
-            <MainStack.Screen
-                name="SearchUser"
-                component={SearchUserScreen as any}
-                options={{headerShown: false}}
-            />
-            <MainStack.Screen
-                name="AccountLanguages"
-                component={AccountLanguagesScreen as any}
                 options={{headerShown: false}}
             />
             <MainStack.Screen

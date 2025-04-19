@@ -41,17 +41,16 @@ export default function BottomNavBar({hilighted, navigation}: IBottomNavBarProps
         },
     ];
 
-    // Should make this a custom hook so can update when language code
-    // changes
-    if (currentLanguageCode === 'ru') {
+    if (currentLanguageCode === 'th') {
         buttons.splice(1, 0, {
             inactiveImage: require('../assets/icons/cyrillic-inactive-small.png'),
             activeImage: require('../assets/icons/cyrillic-active-small.png'),
-            navigateTo: 'LearnCyrillic'
+            navigateTo: 'LearnConsonants'
         });
     }
 
-    const buttonWidth = currentLanguageCode === 'ru' ? '20%' : '25%';
+
+    const buttonWidth = currentLanguageCode === 'ru' || currentLanguageCode == 'th' ? '20%' : '25%';
     
     const renderButton = (inactiveImage: Image, activeImage: Image, navigateTo: string) => (
         <>

@@ -56,6 +56,8 @@ export default function SentenceReaderPanel({
     useEffect(() => {
         setActiveWords([]);
         setSentenceVisible(true);
+        console.log('Current item:');
+        console.log(currentItem);
     }, [currentItem]);
 
     // Handle swiping between sentences

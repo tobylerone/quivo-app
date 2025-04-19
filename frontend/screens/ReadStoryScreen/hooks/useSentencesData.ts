@@ -17,15 +17,26 @@ export default function useSentencesData({storyIndex, currentLanguageCode}: IUse
     useEffect(() => {
 
         const story = stories[storyIndex];
-        const currentLanguageSentences: string[] = story[2][currentLanguageCode].split(/[.!?]/).filter(Boolean);
-        const translatedSentences: string[] = story[1].split(/[.!?]/).filter(Boolean);
-    
-        const data: Record<string, string|string[]>[] = currentLanguageSentences.map((sentence, idx) => {
+        if (currentLanguageCode == 'th') {
+            currentLanguageSentences = story[2][currentLanguageCode].split(/[|||]/).filter(Boolean);
+        } else {
+            currentLanguageSentences = story[2][currentLanguageCode].split(/[.!?]/).filter(Boolean);
+        }
+            const translatedSentences: string[] = story[1].split(/[.!?]/).filter(Boolean);
+        
+        console.log(currentLanguageSentences); 
+         
+            const data: Record<string, string|string[]>[] = currentLanguageSentences.map((sentence, idx) => {
+            if (currentLanguageCode == 'th') {
+                currentLanguageWords = story[3][currentLanguageCode][idx];
+            } else {
+                currentLanguageWords = splitSentence(sentence, currentLanguageCode);
+            }
             
             return ({
-            "sentence": sentence,
+            "sentence": sentence.trim(),
             "translated_sentence": translatedSentences[idx],
-            "words": splitSentence(sentence, currentLanguageCode)
+            "words": currentLanguageWords
             });
         });
 

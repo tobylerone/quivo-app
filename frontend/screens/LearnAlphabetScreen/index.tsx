@@ -17,7 +17,7 @@ export default function LearnAlphabetScreen({navigation}: NativeStackHeaderProps
 
     const [activeTab, setActiveTab] = useState<string>('Vowels');
 
-    const TABS = ['Vowels', 'Consonants'];
+    const TABS = ['Consonants', 'Vowels'];
 
     const vowelButtonDims = [90, 55];
     const consonantButtonDims = [50, 55];
@@ -64,16 +64,25 @@ Thai also has unique vowel combinations and symbols, such as:
 ฦๅ (luue)
     */
     
-    const shortVowels = [
+    const shortLongPairsVowels = [
         {"letter": "อะ", "transliteration": "a"},
+        {"letter": "อา", "transliteration": "aa"},
         {"letter": "อิ", "transliteration": "i"},
+        {"letter": "อี", "transliteration": "ii"},
         {"letter": "อึ", "transliteration": "ue"},
-        {"letter": "อุ", "transliteration": "u"},       
+        {"letter": "อือ", "transliteration": "uue"},
+        {"letter": "อุ", "transliteration": "u"},
+        {"letter": "อู", "transliteration": "uu"},  
         {"letter": "เอะ", "transliteration": "e"},
+        {"letter": "เอ", "transliteration": "ee"},
         {"letter": "แอะ", "transliteration": "ae"},
+        {"letter": "แอ", "transliteration": "aae"},
         {"letter": "โอะ", "transliteration": "o"},
+        {"letter": "โอ", "transliteration": "oo"},
         {"letter": "เอาะ", "transliteration": "aw"},
-        {"letter": "เออะ", "transliteration": "oe"}
+        {"letter": "ออ", "transliteration": "aaw"},
+        {"letter": "เออะ", "transliteration": "oe"},
+        {"letter": "เออ", "transliteration": "eer"}
     ];
 
     const highClassConsonants = [
@@ -132,7 +141,6 @@ Thai also has unique vowel combinations and symbols, such as:
         {"letter": "ว", "transliteration": "wɔɔ wǎaen"}
     ];
 
-
     const renderItem = (item: Record<string, string>, width: number, height: number) => (
         <View style={styles.itemContainer} key={item.letter}>
             <RaisedButton
@@ -172,12 +180,6 @@ Thai also has unique vowel combinations and symbols, such as:
         <View style={styles.titleBar}>
             {TABS.map(tabTitle => renderTabButton(tabTitle))}
         </View>
-        {activeTab == 'Vowels' && <View>
-            <View style={styles.subTitleContainer}>
-                <Text style={styles.subTitleText}>Short</Text>
-            </View>
-            <View style={styles.itemsContainer}>{shortVowels.map((item) => renderItem(item, vowelButtonDims[0], vowelButtonDims[1]))}</View>
-        </View>}
         {activeTab == 'Consonants' && <View>
             <View style={styles.subTitleContainer}>
                 <Text style={styles.subTitleText}>High Class</Text>
@@ -196,8 +198,14 @@ Thai also has unique vowel combinations and symbols, such as:
             </View>
             <View style={styles.itemsContainer}>{unpairedLowClassConsonants.map((item) => renderItem(item, consonantButtonDims[0], consonantButtonDims[1]))}</View>
         </View>}
+        {activeTab == 'Vowels' && <View>
+            <View style={styles.subTitleContainer}>
+                <Text style={styles.subTitleText}>Short / Long Pairs</Text>
+            </View>
+            <View style={styles.itemsContainer}>{shortLongPairsVowels.map((item) => renderItem(item, vowelButtonDims[0], vowelButtonDims[1]))}</View>
+        </View>}
     </View>
-    <BottomNavBar hilighted='LearnVowels' navigation={navigation} />
+    <BottomNavBar hilighted='LearnAlphabet' navigation={navigation} />
     </>
     );
 }

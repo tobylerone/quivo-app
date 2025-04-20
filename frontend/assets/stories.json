@@ -6,7 +6,7 @@
             "fr": "Marie est une jeune fille qui aime voyager. Un jour, elle a décidé de visiter la Tour Eiffel à Paris. Elle a pris un avion, un taxi et a marché pour y arriver. Elle a été émerveillée par la beauté de la tour. Elle a pris beaucoup de photos et a mangé une crêpe délicieuse. C’était une journée inoubliable pour Marie.",
             "de": "Marie ist ein junges Mädchen, das gerne reist. Eines Tages beschloss sie, den Eiffelturm in Paris zu besuchen. Sie nahm ein Flugzeug, ein Taxi und ging dorthin. Sie war erstaunt über die Schönheit des Turms. Sie machte viele Fotos und aß einen leckeren Crêpe. Es war ein unvergesslicher Tag für Marie.",
             "ru": "Мари является молодой девушкой, которая любит путешествовать. Однажды она решила посетить Эйфелеву башню в Париже. Она села на самолет, взяла такси и шла туда пешком. Она была поражена красотой башни. Она сделала много фотографий и съела вкусный блин. Это был незабываемый день для Мари.",
-            "th": "มารีเป็นเด็กผู้หญิงวัยรุ่นที่รักการเดินทาง|||วันหนึ่งเธอตัดสินใจไปเยี่ยมหอไอเฟลที่กรุงปารีส|||เธอนั่งเครื่องบิน ต่อแท็กซี่ และเดินเท้าไปจนถึงที่นั่น|||เธอรู้สึกตื่นตาตื่นใจกับความงดงามของหอไอเฟล|||เธอถ่ายรูปไว้มากมายและกินเครปแสนอร่อย|||มันเป็นวันที่มารีไม่มีวันลืมเลย"
+            "th": "มารีเป็นเด็กผู้หญิงวัยรุ่นที่รักการเดินทาง. วันหนึ่งเธอตัดสินใจไปเยี่ยมหอไอเฟลที่กรุงปารีส. เธอนั่งเครื่องบิน ต่อแท็กซี่ และเดินเท้าไปจนถึงที่นั่น. เธอรู้สึกตื่นตาตื่นใจกับความงดงามของหอไอเฟล. เธอถ่ายรูปไว้มากมายและกินเครปแสนอร่อย. มันเป็นวันที่มารีไม่มีวันลืมเลย."
         
         },
         {
@@ -26,7 +26,18 @@
         {
             "fr": "Paul est un jardinier passionné. Il a un jardin secret plein de belles fleurs et de plantes. Chaque matin, il arrose ses plantes et parle avec elles. Il croit que cela les aide à pousser. Un jour, un papillon est venu visiter son jardin. Paul était très heureux et a décidé de planter plus de fleurs pour attirer plus de papillons.",
             "de": "Paul ist ein leidenschaftlicher Gärtner. Er hat einen geheimen Garten voller schöner Blumen und Pflanzen. Jeden Morgen gießt er seine Pflanzen und spricht mit ihnen. Er glaubt, dass dies ihnen hilft zu wachsen. Eines Tages kam ein Schmetterling, um seinen Garten zu besuchen. Paul war sehr glücklich und beschloss, mehr Blumen zu pflanzen, um mehr Schmetterlinge anzuziehen.",
-            "ru": "Павел - страстный садовод. У него есть секретный сад, полный красивых цветов и растений. Каждое утро он поливает свои растения и разговаривает с ними. Он верит, что это помогает им расти. Однажды бабочка пришла посетить его сад. Павел был очень счастлив и решил посадить больше цветов, чтобы привлечь больше бабочек."
+            "ru": "Павел - страстный садовод. У него есть секретный сад, полный красивых цветов и растений. Каждое утро он поливает свои растения и разговаривает с ними. Он верит, что это помогает им расти. Однажды бабочка пришла посетить его сад. Павел был очень счастлив и решил посадить больше цветов, чтобы привлечь больше бабочек.",
+            "th": "พอลเป็นคนสวนที่หลงใหลในงานของเขา. เขามีสวนลับที่เต็มไปด้วยดอกไม้และพืชที่สวยงาม. ทุกเช้าเขารดน้ำต้นไม้และพูดคุยกับพวกมัน. เขาเชื่อว่าสิ่งนี้ช่วยให้พวกมันเติบโต. วันหนึ่งมีผีเสื้อมาที่สวนของเขา. พอลมีความสุขมากและตัดสินใจปลูกดอกไม้เพิ่มเพื่อดึงดูดผีเสื้อให้มากขึ้น"
+        },
+        {
+            "th": [
+                ["พอล", "เป็น", "คนสวน", "ที่", "หลงใหล", "ใน", "งาน", "ของ", "เขา"],
+                ["เขา", "มี", "สวนลับ", "ที่", "เต็มไปด้วย", "ดอกไม้", "และ", "พืช", "ที่", "สวยงาม"],
+                ["ทุก", "เช้า", "เขา", "รดน้ำ", "ต้นไม้", "และ", "พูดคุย", "กับ", "พวกมัน"],
+                ["เขา", "เชื่อว่า", "สิ่งนี้", "ช่วย", "ให้", "พวกมัน", "เติบโต"],
+                ["วันหนึ่ง", "มี", "ผีเสื้อ", "มา", "ที่", "สวน", "ของ", "เขา"],
+                ["พอล", "มี", "ความสุข", "มาก", "และ", "ตัดสินใจ", "ปลูก", "ดอกไม้", "เพิ่ม", "เพื่อ", "ดึงดูด", "ผีเสื้อ", "ให้", "มากขึ้น"]
+            ]
         }
     ], 
     [
@@ -35,7 +46,18 @@
         {
             "fr": "Pierre est un petit garçon courageux. Il a décidé de partir à l’aventure dans la forêt près de sa maison. Il a vu des oiseaux, des écureuils et même un cerf. Il a grimpé aux arbres et a sauté par-dessus les ruisseaux. À la fin de la journée, il est rentré chez lui avec des histoires incroyables à raconter.",
             "de": "Pierre ist ein tapferer kleiner Junge. Er beschloss, ein Abenteuer im Wald in der Nähe seines Hauses zu erleben. Er sah Vögel, Eichhörnchen und sogar ein Reh. Er kletterte auf Bäume und sprang über Bäche. Am Ende des Tages kam er mit unglaublichen Geschichten nach Hause.",
-            "ru": "Пьер - смелый маленький мальчик. Он решил отправиться в приключение в лесу возле своего дома. Он видел птиц, белок и даже оленя. Он лазил по деревьям и прыгал через ручьи. В конце дня он вернулся домой с невероятными историями."
+            "ru": "Пьер - смелый маленький мальчик. Он решил отправиться в приключение в лесу возле своего дома. Он видел птиц, белок и даже оленя. Он лазил по деревьям и прыгал через ручьи. В конце дня он вернулся домой с невероятными историями.",
+            "th": "ปิแอร์เป็นเด็กชายตัวเล็กที่กล้าหาญ. เขาตัดสินใจออกผจญภัยในป่าใกล้บ้านของเขา. เขาเห็นนก กระรอก และแม้แต่กวาง. เขาปีนต้นไม้และกระโดดข้ามลำธาร. เมื่อสิ้นสุดวันเขากลับบ้านพร้อมเรื่องราวที่น่าทึ่งที่จะเล่า"
+        },
+        {
+            "th": [
+                ["ปิแอร์", "เป็น", "เด็กชาย", "ตัวเล็ก", "ที่", "กล้าหาญ"],
+                ["เขา", "ตัดสินใจ", "ออก", "ผจญภัย", "ใน", "ป่า", "ใกล้", "บ้าน", "ของ", "เขา"],
+                ["เขา", "ตัดสินใจ", "ออก", "ผจญภัย", "ใน", "ป่า", "ใกล้", "บ้าน", "ของ", "เขา"],
+                ["เขา", "เห็น", "นก", "กระรอก", "และ", "แม้แต่", "กวาง"],
+                ["เขา", "ปีน", "ต้นไม้", "และ", "กระโดด", "ข้าม", "ลำธาร"],
+                ["เมื่อ", "สิ้นสุด", "วัน", "เขา", "กลับบ้าน", "พร้อม", "เรื่องราว", "ที่", "น่าทึ่ง", "ที่จะ", "เล่า"]
+            ]
         }
     ],
     [

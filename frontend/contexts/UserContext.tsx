@@ -34,6 +34,8 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
     const [knownWordsPercentage, setKnownWordsPercentage] = useState<(20|30|40|50|60|70|80)>(50);
     const [knownWords, setKnownWords] = useState<number>(0);
     const [soundActive, setSoundActive] = useState<boolean>(true);
+    const [wordSeparationOn, setWordSeparationOn] = useState<boolean>(true);
+    const [modernFont, setModernFont] = useState<boolean>(true);
     const [narrationSpeed, setNarrationSpeed] = useState<0.8|1|1.2>(1);
     const [autoplayEnabled, setAutoplayEnabled] = useState<boolean>(true);
     const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
@@ -208,6 +210,8 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             userAvatarId,
             knownWords,
             soundActive,
+            wordSeparationOn,
+            modernFont,
             narrationSpeed,
             autoplayEnabled,
             wordCounts,
@@ -221,6 +225,8 @@ export const AuthProvider = ({ children }: {children: ReactNode}) => {
             setUserAvatarId,
             setKnownWords,
             setSoundActive,
+            setWordSeparationOn,
+            setModernFont,
             setNarrationSpeed,
             setAutoplayEnabled,
             setDailyWordCount,

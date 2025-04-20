@@ -18,7 +18,7 @@ export default function useSentencesData({storyIndex, currentLanguageCode}: IUse
 
         const story = stories[storyIndex];
         if (currentLanguageCode == 'th') {
-            currentLanguageSentences = story[2][currentLanguageCode].split(/[|||]/).filter(Boolean);
+            currentLanguageSentences = story[2][currentLanguageCode].split(/[.]/).filter(Boolean);
         } else {
             currentLanguageSentences = story[2][currentLanguageCode].split(/[.!?]/).filter(Boolean);
         }
@@ -32,7 +32,7 @@ export default function useSentencesData({storyIndex, currentLanguageCode}: IUse
             } else {
                 currentLanguageWords = splitSentence(sentence, currentLanguageCode);
             }
-            
+
             return ({
             "sentence": sentence.trim(),
             "translated_sentence": translatedSentences[idx],

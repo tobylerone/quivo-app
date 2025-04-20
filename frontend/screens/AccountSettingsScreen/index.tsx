@@ -6,22 +6,16 @@ import UserContext from '../../contexts/UserContext';
 import NavBar from "../../components/NavBar";
 import { FontAwesome } from "@expo/vector-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPersonCane, faPersonWalking, faPersonBiking, faVolumeHigh, faVolumeMute } from "@fortawesome/free-solid-svg-icons";
+import { faPersonCane, faPersonWalking, faPersonBiking, faVolumeHigh, faVolumeMute, faCheckCircle, faCross } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettingsScreen({navigation}: NativeStackHeaderProps) {
 
-    const { currentUser, submitLogout, soundActive, setSoundActive, narrationSpeed, setNarrationSpeed } = useContext(UserContext);
+    const { currentUser, submitLogout, soundActive, setSoundActive, narrationSpeed, setNarrationSpeed, wordSeparationOn, setWordSeparationOn, modernFont, setModernFont } = useContext(UserContext);
     
     const narrationSpeedTitle: Record<number, string> = {
       0.8: 'Slow',
       1: 'Normal',
       1.2: 'Fast'
-    }
-
-    const narrationSpeedIcons: Record<number, IconDefinition> = {
-      0.8: faPersonCane,
-      1: faPersonWalking,
-      1.2: faPersonBiking
     }
     
     const DATA = [
@@ -46,6 +40,11 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
             title: "General",
             data: [
               { text: "FAQs", arrow: true, action: () => {navigation.navigate('Faqs')} },
+            ]
+        },
+        {
+          title: "Preferences",
+          data: [
               {
                 text: 'Narration speed',
                 subtext: 
@@ -55,9 +54,20 @@ export default function AccountSettingsScreen({navigation}: NativeStackHeaderPro
                   </>,
                 action: () => setNarrationSpeed(narrationSpeed == 1.2 ? 0.8 : narrationSpeed + 0.2)
               },
-              { text: soundActive ? "Sound on" : "Sound off",
+              {
+                text: soundActive ? "Sound on" : "Sound off",
                 subtext: soundActive ? <FontAwesomeIcon icon={faVolumeHigh} size={20} color={constants.GREENREGULAR} /> : <FontAwesomeIcon icon={faVolumeMute} size={20} color={constants.ERRORCOLOR} />,
                 action: () => setSoundActive(!soundActive)
+              },
+              {
+                text: "Show word separation",
+                subtext: wordSeparationOn ? <Text style={{color: constants.GREENREGULAR, fontFamily: constants.FONTFAMILYBOLD, fontSize: 20}}>True</Text> : <Text style={{color: constants.ERRORCOLOR, fontFamily: constants.FONTFAMILYBOLD, fontSize: 20}}>False</Text>,
+                action: () => setWordSeparationOn(!wordSeparationOn)
+              },
+              {
+                text: "Font style",
+                subtext: modernFont ? <Text style={{color: constants.PRIMARYCOLORSHADOW, fontFamily: constants.FONTFAMILYBOLD, fontSize: 20}}>Modern</Text> : <Text style={{color: constants.PRIMARYCOLORSHADOW, fontFamily: constants.FONTFAMILYBOLD, fontSize: 20}}>Traditional</Text>,
+                action: () => setModernFont(!modernFont)
               },
             ],
         },

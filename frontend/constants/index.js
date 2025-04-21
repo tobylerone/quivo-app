@@ -3,7 +3,7 @@ import {Dimensions} from 'react-native'
 export const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // N'oublie pas de specifier addresse ip:8000 apres le manage.py au backend
-//export const HOST_ADDRESS = "http://10.101.2.157";
+//export const HOST_ADDRESS = "http://192.168.200.31";
 export const HOST_ADDRESS = "http://192.168.0.14";
 
 // Schémas

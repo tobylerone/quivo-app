@@ -106,7 +106,7 @@ Thai also has unique vowel combinations and symbols, such as:
         {"letter": "ฏ", "transliteration": "dtɔ̌ɔ bpà-dtàk"},
         {"letter": "ด", "transliteration": "dɔ̌ɔ dèk"},
         {"letter": "ต", "transliteration": "dtɔ̌ɔ dtào"},
-        {"letter": "บ", "transliteration": "bɔ̌ɔ bai-máai"},
+        {"letter": "บ", "transliteration": "bɔ̌ɔ bai-máai", "speakstring": "บูใบไม้"},
         {"letter": "ป", "transliteration": "bpɔ̌ɔ bplaa"},
         {"letter": "อ", "transliteration": "ɔ̌ɔ àang"},
     ];
@@ -144,7 +144,7 @@ Thai also has unique vowel combinations and symbols, such as:
     const renderItem = (item: Record<string, string>, width: number, height: number) => (
         <View style={styles.itemContainer} key={item.letter}>
             <RaisedButton
-                onPress={() => speak(item.letter.charAt(0), 'th')}
+                onPress={() => speak(item.hasOwnProperty('speakstring') ? item.speakstring : item.letter.charAt(0), 'th')}
                 options={{
                     ...RaisedButton.defaultProps.options,
                     width: width,
@@ -188,7 +188,7 @@ Thai also has unique vowel combinations and symbols, such as:
             <View style={styles.subTitleContainer}>
                 <Text style={styles.subTitleText}>Middle Class</Text>
             </View>
-            <View style={styles.itemsContainer}>{middleClassConsonants.map((item) => renderItem(item, consonantButtonDims[0], consonantButtonDims[1]))}</View>
+            <View style={styles.itemsContainer}>{middleClassConsonants.map((item) => {console.log(item); return renderItem(item, consonantButtonDims[0], consonantButtonDims[1])})}</View>
             <View style={styles.subTitleContainer}>
                 <Text style={styles.subTitleText}>Paired Low Class</Text>
             </View>

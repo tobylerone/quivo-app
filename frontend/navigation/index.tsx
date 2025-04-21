@@ -28,13 +28,12 @@ import FaqScreen from "../screens/FaqScreen";
 import ProgressScreen from "../screens/ProgressScreen";
 import LevelScreen from "../screens/LevelScreen";
 import ShowAdScreen from "../screens/ShowAdScreen";
-import IncreaseStreakScreen from "../screens/IncreaseStreakScreen";
 import MaxWordsReachedScreen from "../screens/MaxWordsReachedScreen";
 import AvatarScreen from "../screens/AvatarScreen";
 import FeedbackScreen from "../screens/FeedbackScreen";
 import LearnAlphabetScreen from "../screens/LearnAlphabetScreen";
 import GetPremiumScreen from "../screens/GetPremiumScreen";
-import StoriesScreen from "../screens/LeaderboardScreen";
+import StoriesScreen from "../screens/StoriesScreen";
 import ReadStoryScreen from "../screens/ReadStoryScreen";
 import SliderScreen from "../screens/SliderScreen";
 
@@ -201,14 +200,6 @@ function MainNavigator() {
                 name="GetPremium"
                 component={GetPremiumScreen as any}
                 options={{ headerShown: false }}
-            />
-            <MainStack.Screen
-                name="IncreaseStreak"
-                component={IncreaseStreakScreen as any}
-                options={{
-                    headerShown: false,
-                    animation: 'slide_from_bottom'
-                }}
             />
             <MainStack.Screen
                 name="MaxWordsReached"

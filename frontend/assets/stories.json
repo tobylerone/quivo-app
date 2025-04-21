@@ -66,7 +66,17 @@
         {
             "fr": "Grand-mère a une recette secrète de tarte aux pommes. Elle utilise des pommes fraîches, du sucre, de la cannelle et une pâte maison. Un jour, elle a décidé de partager sa recette avec sa petite-fille, Julie. Julie a été surprise par le goût délicieux de la tarte. Depuis ce jour, elles préparent la tarte ensemble chaque dimanche.",
             "de": "Großmutter hat ein geheimes Apfelkuchenrezept. Sie verwendet frische Äpfel, Zucker, Zimt und selbstgemachten Teig. Eines Tages beschloss sie, ihr Rezept mit ihrer Enkelin Julie zu teilen. Julie war überrascht von dem köstlichen Geschmack des Kuchens. Seit diesem Tag bereiten sie den Kuchen jeden Sonntag gemeinsam zu.",
-            "ru": "Бабушка имеет секретный рецепт яблочного пирога. Она использует свежие яблоки, сахар, корицу и домашнее тесто. Однажды она решила поделиться своим рецептом с внучкой Джули. Джули была удивлена вкусом пирога. С тех пор они готовят пирог вместе каждое воскресенье."
+            "ru": "Бабушка имеет секретный рецепт яблочного пирога. Она использует свежие яблоки, сахар, корицу и домашнее тесто. Однажды она решила поделиться своим рецептом с внучкой Джули. Джули была удивлена вкусом пирога. С тех пор они готовят пирог вместе каждое воскресенье.",
+            "th": "คุณยายมีสูตรพายแอปเปิ้ลลับ. เธอใช้แอปเปิ้ลสด น้ำตาล อบเชย และแป้งทำเอง. วันหนึ่งเธอตัดสินใจแบ่งปันสูตรนี้กับหลานสาวของเธอชื่อจูลี่. จูลี่ประหลาดใจกับรสชาติอร่อยของพาย. ตั้งแต่วันนั้นพวกเขาทำพายด้วยกันทุกวันอาทิตย์"
+        },
+        {
+            "th": [
+                ["คุณยาย", "มี", "สูตร", "พาย", "แอปเปิ้ล", "ลับ"],
+                ["เธอ", "ใช้", "แอปเปิ้ล", "สด", "น้ำตาล", "อบเชย", "และ", "แป้ง", "ทำเอง"],
+                ["วันหนึ่ง", "เธอ", "ตัดสินใจ", "แบ่งปัน", "สูตรนี้", "กับ", "หลานสาว", "ของ", "เธอ", "ชื่อ", "จูลี่"],
+                ["จูลี่", "ประหลาดใจ", "กับ", "รสชาติ", "อร่อย", "ของ", "พาย"],
+                ["ตั้งแต่", "วันนั้น", "พวกเขา", "ทำ", "พาย", "ด้วยกัน", "ทุก", "วันอาทิตย์"]
+            ]
         }
     ],
     [
@@ -75,7 +85,22 @@
         {
             "fr": "Un garçon qui s'appelle Tim avait un jouet. C'était une voiture rouge. Un jour, il l'a perdue. Il était très triste. Il l'a cherchée partout. Sa soeur l'a trouvée sous le lit. Elle l'a donnée à Tim. Il était très content. Il a remercié sa soeur. Il a encore joué avec sa voiture.",
             "de": "",
-            "ru": ""
+            "ru": "",
+            "th": "เด็กชายชื่อทิมมีของเล่น. มันคือรถสีแดง. วันหนึ่งเขาทำมันหาย. เขาเสียใจมาก. เขามองหามันทุกที่. น้องสาวของเขาพบมันอยู่ใต้เตียง. เธอเอามันให้ทิม. เขามีความสุขมาก. เขาขอบคุณน้องสาวของเขา. เขาเล่นกับรถของเขาอีกครั้ง"
+        },
+        {
+            "th": [
+                ["เด็กชาย", "ชื่อ", "ทิม", "มี", "ของเล่น"],
+                ["มัน", "คือ", "รถ", "สีแดง"],
+                ["วันหนึ่ง", "เขา", "ทำ", "มัน", "หาย"],
+                ["เขา", "เสียใจ", "มาก"],
+                ["เขา", "มองหา", "มัน", "ทุกที่"],
+                ["น้องสาว", "ของ", "เขา", "พบ", "มัน", "อยู่", "ใต้", "เตียง"],
+                ["เธอ", "เอา", "มัน", "ให้", "ทิม"],
+                ["เขา", "มี", "ความสุข", "มาก"],
+                ["เขา", "ขอบคุณ", "น้องสาว", "ของ", "เขา"],
+                ["เขา", "เล่น", "กับ", "รถ", "ของ", "เขา", "อีกครั้ง"]
+            ]
         }
     ],
     [
@@ -89,7 +114,7 @@
     ],
     [
         "Language Ace",
-        "Once upon a time, there was a young woman named Mia. She had a deep passion for languages and cultures. One day, she decided to learn Spanish, inspired by its rich history and beautiful literature. She started with basic vocabulary, practicing every day without fail. Mia used flashcards, language apps, and even watched Spanish movies to improve her listening skills. She struggled with the grammar at first, but she was determined not to give up. Mia joined a local language exchange group where she met native Spanish speakers. This helped her immensely in understanding the nuances of the language. After a year of hard work, Mia became fluent in Spanish. Her journey taught her that with perseverance, one can indeed master a new language.",
+        "Once upon a time, there was a young woman named Mia. She had a deep passion for languages and cultures. One day, she decided to learn Spanish, inspired by its rich history and beautiful literature. She started with basic vocabulary, practicing every day without fail. Mia used flashcards, language apps, and even watched Spanish movies to improve her listening skills. She struggled with the grammar at first, but she was determined not to give up. Mia joined a local language exchange group where she met native Spanish speakers. This helped her immensely in understanding the nuances of the language. After a year of hard work, Mia became fluent in Spanish. Her journey taught her that with perseverance, it is possible to master a new language.",
         {
             "fr": "Il était une fois une jeune femme qui s'appelait Mia. Elle était passionnée par les langues et les cultures. Un jour, elle a décidé d'apprendre l'espagnol, inspirée par la richesse de son histoire et la beauté de sa littérature. Elle a commencé par apprendre le vocabulaire de base et a pratiqué tous les jours. Mia a utilisé des flashcards, des applications linguistiques et a même regardé des films espagnols pour améliorer sa compréhension orale. Au début, elle a eu du mal avec la grammaire, mais elle était déterminée à ne pas abandonner. Mia a rejoint un groupe local d'échange linguistique où elle a rencontré des locuteurs natifs espagnols. Cela l'a énormément aidée à comprendre les nuances de la langue. Après un an de travail acharné, Mia parle couramment l'espagnol. Son parcours lui a appris qu'avec de la persévérance, il est possible de maîtriser une nouvelle langue.",
             "de": "Es war einmal eine junge Frau namens Mia. Sie hatte eine große Leidenschaft für Sprachen und Kulturen. Eines Tages beschloss sie, Spanisch zu lernen, inspiriert von der reichen Geschichte und der schönen Literatur des Landes. Sie begann mit den Grundvokabeln und übte jeden Tag. Mia benutzte Karteikarten, Sprach-Apps und sah sich sogar spanische Filme an, um ihr Hörverständnis zu verbessern. Anfangs hatte sie Probleme mit der Grammatik, aber sie war fest entschlossen, nicht aufzugeben. Mia schloss sich einer lokalen Sprachaustauschgruppe an, wo sie spanische Muttersprachler traf. Das half ihr ungemein, die Nuancen der Sprache zu verstehen. Nach einem Jahr harter Arbeit sprach Mia fließend Spanisch. Ihre Reise lehrte sie, dass man mit Ausdauer tatsächlich eine neue Sprache beherrschen kann.",

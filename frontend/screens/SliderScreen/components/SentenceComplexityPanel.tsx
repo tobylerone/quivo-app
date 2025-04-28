@@ -3,19 +3,13 @@ import { useEffect, useState, useContext } from "react";
 import UserContext from '../../../contexts/UserContext';
 import Slider from '@react-native-community/slider';
 import * as constants from "../../../constants";
+// Components
+import ToggleButton from "../../../components/ToggleButton";
 
 export default function SentenceComplexityPanel() {
 
-    const { currentUser, currentLanguageCode } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, wordSeparationOn, setWordSeparationOn } = useContext(UserContext);
 
-    const exampleSentences: Record<string, string> = {
-        'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
-        'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.',
-        'ru': 'Мама всегда говорила, что жизнь похожа на коробку шоколадных конфет: никогда не знаешь, какую конфету ты достанешь.'
-    }
-
-    const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
-    const [activeWordMask, setActiveWordMask] = useState<(0 | 1)[]>([1,0,0,1,0,1,1,1,0,0,0,1,0,1,0,1,1,0,1,0]);
     const [sentenceComplexity, setSentenceComplexity] = useState<-2|-1|0|1|2>(0);
 
     const complexityLabels = {
@@ -65,6 +59,18 @@ export default function SentenceComplexityPanel() {
                 {complexityLabels[sentenceComplexity][1]}
             </Text>
         </View>
+        <View style={styles.wordSeparationContainer}>
+            <Text style={styles.wordSeparationText}>Separate words</Text>
+            <View style={styles.toggleButtonContainer}>
+                <ToggleButton
+                    initiallySelected={wordSeparationOn}
+                    size={20}
+                    primaryColor={constants.BLACK}
+                    secondaryColor={constants.BLACK + '55'}
+                    onValueChange={() => setWordSeparationOn(!wordSeparationOn)}
+                />
+            </View>
+        </View>
     </View>
     )
 }
@@ -113,5 +119,27 @@ const styles = StyleSheet.create({
         color: constants.BLACK,
         textAlign: 'center',
         marginHorizontal: 20
-    }
+    },
+    wordSeparationContainer: {
+        flexDirection: 'row',
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        height: 50,
+        marginBottom: 25,
+        marginLeft: 'auto',
+        marginRight: 10,
+        borderRadius: 10
+    },
+    wordSeparationText: {
+        fontFamily: constants.FONTFAMILY,
+        fontSize: constants.H3FONTSIZE,
+        color: constants.BLACK,
+        marginTop: 'auto',
+        marginBottom: 'auto',
+        marginRight: 5
+    },
+    toggleButtonContainer: {
+        marginTop: 'auto',
+        marginBottom: 'auto'
+    },
 });

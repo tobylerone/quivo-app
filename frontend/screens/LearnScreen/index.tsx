@@ -61,56 +61,14 @@ export default function LearnScreen({navigation}: NativeStackHeaderProps) {
                         }}></View>
                 </View>
             </TouchableOpacity>
-            <View style={styles.topButtonsContainer}>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => { toggleLanguagePopup() }}
-                    >
-                    <View style={[styles.flagImageContainer, styles.shadow]}>
-                        <Image
-                            source={flagImageSources[currentLanguageCode]}
-                            style={styles.flagImage}
-                        />
-                    </View>
-                </TouchableOpacity>
-                {/*<TouchableOpacity
-                    activeOpacity={1}
-                    style={styles.filterButton}
-                    onPress={() => { toggleFilterPopup() }}
-                    >
-                    <FontAwesomeIcon icon={faFilter} size={25} color={constants.BLACK} />
-                </TouchableOpacity>*/}
-            </View>
+            <TouchableOpacity
+                activeOpacity={1}
+                style={[styles.filterButton, styles.shadow]}
+                onPress={() => {navigation.navigate('Slider')}}
+            >
+                <FontAwesomeIcon style={styles.filterButtonIcon} icon={faSliders} size={25} color={primaryColor} />
+            </TouchableOpacity>
         </View>
-        <Animated.View style={{
-            height: languagePopupAnimation,
-            backgroundColor: primaryColor + '55',
-            ...styles.languagePopupAnimatedContainer
-            }}>
-            <View style={{
-                opacity: languagePopupVisible ? 1: 0,
-                ...styles.languagePopupContainer
-                }}>
-                <View style={styles.languagePopupListContainer}>
-                    <FlatList
-                        data={knownLanguages}
-                        style={styles.languagePopupList}
-                        bounces={false}
-                        horizontal={true}
-                        renderItem={({item}) => (
-                            <FlagButton item={item} />
-                        )}
-                    />
-                </View>
-                <TouchableOpacity
-                    activeOpacity={1}
-                    onPress={() => navigation.navigate("AccountLanguages")}
-                    style={styles.languagePopupAddButton}
-                    >
-                    <FontAwesomeIcon icon={faPlus} size={20} color={constants.TERTIARYCOLOR} />
-                </TouchableOpacity>
-            </View>
-        </Animated.View>
         <SentenceReaderPanel
             navigation={navigation}
             primaryColor={primaryColor}
@@ -316,7 +274,8 @@ const styles= StyleSheet.create({
         width: 50,
         borderRadius: 25,
         marginTop: -5,
-        marginRight: 10
+        marginRight: 10,
+        marginLeft: 'auto'
     },
     filterButtonIcon: {
         marginLeft: 'auto',

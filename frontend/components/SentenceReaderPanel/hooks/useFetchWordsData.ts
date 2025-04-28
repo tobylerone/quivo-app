@@ -23,8 +23,6 @@ export default function useFetchWordsData(currentItem){
                 words: currentItem.words,
                 withCredentials: true
             });
-            console.log('Words data:');
-            console.log(res.data);
             return res.data
         } catch (error) {
             console.error(error);

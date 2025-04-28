@@ -1,6 +1,6 @@
 Timer unit: 1e-07 s
 
-Total time: 0.302757 s
+Total time: 1.2051 s
 File: C:\Users\Toby Usher\Documents\dev\quivo-app\backend\api\views.py
 Function: post at line 324
 
@@ -9,52 +9,53 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
    324                                           	@profile
    325                                           	def post(self, request, *args, **kwargs):
    326                                           
-   327         6        805.0    134.2      0.0  		language_code = self.request.session.get('current_language_code')
+   327        26      21511.0    827.3      0.2  		language_code = self.request.session.get('current_language_code')
    328                                           		
-   329         6         73.0     12.2      0.0  		user_id = self.kwargs.get('user_id')
-   330         6         46.0      7.7      0.0  		word = self.kwargs.get('word')
+   329        26        740.0     28.5      0.0  		user_id = self.kwargs.get('user_id')
+   330        26        328.0     12.6      0.0  		word = self.kwargs.get('word')
    331                                           
    332                                           		#serializer = UserToggleKnownWordSerializer(data=request.data)
-   333         6       6660.0   1110.0      0.2  		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
+   333        26      83698.0   3219.2      0.7  		serializer = UserToggleKnownWordSerializer(data={'user_id': user_id, 'word': word})
    334                                           
-   335         6      24853.0   4142.2      0.8  		if serializer.is_valid():
+   335        26     423493.0  16288.2      3.5  		if serializer.is_valid():
    336                                           
-   337         6        179.0     29.8      0.0  			user_id = serializer.validated_data['user_id']
-   338         6        116.0     19.3      0.0  			word = serializer.validated_data['word']
+   337        26       1315.0     50.6      0.0  			user_id = serializer.validated_data['user_id']
+   338        26        656.0     25.2      0.0  			word = serializer.validated_data['word']
    339                                           
-   340        12         89.0      7.4      0.0  			word_data_model = {
-   341         6         48.0      8.0      0.0  				'fr': FrWordData,
-   342         6         31.0      5.2      0.0  				'de': DeWordData,
-   343         6         26.0      4.3      0.0  				'ru': RuWordData,
-   344         6         33.0      5.5      0.0  				'th': ThWordData
-   345         6         64.0     10.7      0.0  			}.get(language_code, 'fr') # Default to fr for now
+   340        52        713.0     13.7      0.0  			word_data_model = {
+   341        26        477.0     18.3      0.0  				'fr': FrWordData,
+   342        26        174.0      6.7      0.0  				'de': DeWordData,
+   343        26        190.0      7.3      0.0  				'ru': RuWordData,
+   344        26        175.0      6.7      0.0  				'th': ThWordData
+   345        26        445.0     17.1      0.0  			}.get(language_code, 'fr') # Default to fr for now
    346                                           
-   347         6     164126.0  27354.3      5.4  			user = AppUser.objects.get(user_id=user_id)
-   348         6     678908.0 113151.3     22.4  			word_obj = word_data_model.objects.get(word=word)
+   347        26    1346788.0  51799.5     11.2  			user = AppUser.objects.get(user_id=user_id)
+   348        26    1480813.0  56954.3     12.3  			word_obj = word_data_model.objects.get(word=word)
    349                                           
    350                                           			# Get the UserWord object for this user and word
-   351        18    1180900.0  65605.6     39.0  			user_word_obj, created = UserWord.objects.get_or_create(
-   352         6         29.0      4.8      0.0  				user=user,
-   353         6         84.0     14.0      0.0  				**{f'word_{language_code}': word_obj}
+   351        78    5192971.0  66576.6     43.1  			user_word_obj, created = UserWord.objects.get_or_create(
+   352        26        158.0      6.1      0.0  				user=user,
+   353        26        525.0     20.2      0.0  				**{f'word_{language_code}': word_obj}
    354                                           			)
    355                                           
    356                                           			# Check if a user knows a word
-   357         6         57.0      9.5      0.0  			if created:
-   358         6         44.0      7.3      0.0  				word_added = True
+   357        26        265.0     10.2      0.0  			if created:
+   358        26        217.0      8.3      0.0  				word_added = True
    359                                           				#user.known_words.add(user_word_obj)
    360                                           			else:
    361                                           				word_added = False
    362                                           				user.known_words.remove(user_word_obj)
    363                                           
-   364        11     536628.0  48784.4     17.7  			with open('output.txt', 'w') as stream:
-   365         5     426108.0  85221.6     14.1  				profile.print_stats(stream=stream)  
+   364        49     545384.0  11130.3      4.5  			with open('output.txt', 'w') as stream:
+   365        24    2881322.0 120055.1     23.9  				profile.print_stats(stream=stream)  
    366                                           
-   367        10       7608.0    760.8      0.3  			return Response({
-   368         5         32.0      6.4      0.0  				"status": "success",
-   369         5         20.0      4.0      0.0  				"word_added": word_added
+   367        48      68282.0   1422.5      0.6  			return Response({
+   368        24        257.0     10.7      0.0  				"status": "success",
+   369        24        135.0      5.6      0.0  				"word_added": word_added
    370                                           				})
    371                                           
    372                                           		else:
    373                                           
    374                                           			return Response(serializer.errors, status=400)
+
 

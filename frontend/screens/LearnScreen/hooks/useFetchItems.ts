@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import client from "../../../utils/axios";
 // Contexts
 import UserContext from "../../../contexts/UserContext";
+import { renderNode } from "react-native-elements/dist/helpers";
 
 export default function useFetchItems(){
 
@@ -21,9 +22,8 @@ export default function useFetchItems(){
         client.get("/api/sentences/" + knownWordsPercentage, { withCredentials: true })
         .then(function(res) {
             // Make sure each item's word field in converted from stringified
-            // json to real object   
+            // json to real object 
             const data = res.data.map(item => {
-
                 // Convert from postgresql array format
                 if (typeof item.words === 'string') {
                     item = { ...item, words: JSON.parse(item.words) };

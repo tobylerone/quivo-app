@@ -12,7 +12,7 @@ export default function SetKnownWordsPanel() {
         'fr': 'Malgré la pluie, Marie a décidé de sortir pour acheter des légumes frais au marché local ce matin.',
         'de': 'Obwohl es regnet, gehen wir spazieren, weil wir die frische Luft und die Schönheit der Natur sehr genießen.',
         'ru': 'Мама всегда говорила, что жизнь похожа на коробку шоколадных конфет: никогда не знаешь, какую конфету ты достанешь.',
-        'th': 'มชอบที่จะเดินเล่นในสวนสาธารณะหลังจากที่ทำงานเสร็จเพื่อผ่อนคลายและสัมผัสกับธรรมชาติที่สวยงาม'
+        'th': 'ฉันชอบเดินเล่นในสวนทุกเช้าเพราะอากาศสดชื่นและเสียงนกร้องทำให้ฉันรู้สึกผ่อนคลายและมีความสุขมากขึ้นทุกวัน'
     }
 
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
@@ -25,32 +25,38 @@ export default function SetKnownWordsPanel() {
     }, [knownWordsPercentage, currentLanguageCode]);
 
     useEffect(() => {
-        let components: React.JSX.Element[] = (
-            currentLanguageCode == 'th'
-            ? formatThaiSentence(exampleSentences[currentLanguageCode])
-            : formatSentence(exampleSentences[currentLanguageCode])
-        );
+        let components: React.JSX.Element[] = formatSentence(exampleSentences[currentLanguageCode]);
         setSentenceComponents(components);
     }, [activeWordMask]);
 
     function formatSentence(sentence: string) {
 
-        // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
-        const wordsRegex: Record<string, RegExp> = {
-            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
-            'de': /(?:[a-zA-ZäöüÄÖÜß]+)/g,
-            'ru': /(?:[А-Яа-яЁё]+)/g
-        };
-
-        const inclusiveRegex: Record<string, RegExp> = {
-            'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
-            'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g,
-            'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g
-        };
+        let words = [];
+        let splitSentence = [];
         
-        const words = sentence.match(wordsRegex[currentLanguageCode]) || [];
-        const splitSentence = sentence.match(inclusiveRegex[currentLanguageCode]) || [];
+        if (currentLanguageCode == 'th') {
+            words = ["ฉัน", "ชอบ", "เดินเล่น", "ใน", "สวน", "ทุก", "เช้า", "เพราะ", "อากาศ",
+                "สดชื่น", "และ", "เสียง", "นก", "ร้อง", "ทำให้", "ฉัน", "รู้สึก", "ผ่อนคลาย"];
+            splitSentence = ["ฉัน", "ชอบ", "เดินเล่น", "ใน", "สวน", "ทุก", "เช้า", "เพราะ", "อากาศ",
+                "สดชื่น", "และ", "เสียง", "นก", "ร้อง", "ทำให้", "ฉัน", "รู้สึก", "ผ่อนคลาย"];
+        } else {
+            // Want to match into one of two categories: valid french words (using same regex as one shown above) and everything else
+            const wordsRegex: Record<string, RegExp> = {
+                'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
+                'de': /(?:[a-zA-ZäöüÄÖÜß]+)/g,
+                'ru': /(?:[А-Яа-яЁё]+)/g
+            };
 
+            const inclusiveRegex: Record<string, RegExp> = {
+                'fr': /(?:[Aa]ujourd\'hui|[Pp]resqu\'île|[Qq]uelqu\'un|[Dd]\'accord|-t-|[a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+|[^a-zA-Z0-9éèêëÉÈÊËàâäÀÂÄôöÔÖûüùÛÜÙçÇîÎïÏ]+)/g,
+                'de': /(?:[a-zA-ZäöüÄÖÜß]+|[^a-zA-ZäöüÄÖÜß])/g,
+                'ru': /(?:[А-Яа-яЁё]+|[^А-Яа-яЁё])/g
+            };
+            
+            words = sentence.match(wordsRegex[currentLanguageCode]) || [];
+            splitSentence = sentence.match(inclusiveRegex[currentLanguageCode]) || [];
+        }
+        
         const sentenceComponents = [];
 
         let wordIndex = 0;
@@ -78,46 +84,6 @@ export default function SetKnownWordsPanel() {
         };
 
         return sentenceComponents;
-    }
-
-    const formatThaiSentence = (sentence: string) => {
-        
-        /*const sentenceComponents: Element[] = [];
-        const sentenceLength = sentence.length;
-        
-        if (sentenceLength == 0) {
-            return <Text></Text>;
-        }
-
-        // Loop through words
-        currentItem.split_sentence.forEach((particle, index) => {
-            
-            if (wordsData.hasOwnProperty(particle)) {
-                sentenceComponents.push(<Word
-                    navigation={navigation}
-                    primaryColor={constants.BLACK}
-                    word={particle}
-                    wordData={wordsData[particle]}
-                    textColor={activeWords.includes(particle) ? primaryColor : primaryColor + '55'}
-                    onPress={handleWordPress}
-                    isFirstWord={index==0}
-                    screenWidth={screenWidth}
-                    index={index}
-                    key={`${currentItem.id}-${index}`}
-                />);
-            } else {
-                sentenceComponents.push(<Text style={{
-                    color: primaryColor + '55',
-                    fontSize: constants.H1FONTSIZE + 7,
-                    fontFamily: constants.FONTFAMILYBOLD,
-                    textAlign: "center" 
-                }} key={index}>{index==0 ? capitalizeFirstLetter(particle) : particle}</Text>);
-            }
-        });
-
-        return sentenceComponents;
-        */
-       return [];
     }
 
     function createInitialActiveWordMask(num_words: number, percentage: number) {

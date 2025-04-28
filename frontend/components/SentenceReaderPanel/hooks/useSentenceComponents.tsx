@@ -13,7 +13,7 @@ import Word from "../components/Word";
 export default function useSentenceComponents(navigation, primaryColor, currentItem, wordsData, autoDictEnabled, setSentenceVisible){
     // NOTE: This hook should not contain tsx
 
-    const { currentLanguageCode } = useContext(UserContext);
+    const { currentLanguageCode, wordSeparationOn } = useContext(UserContext);
     const [sentenceComponents, setSentenceComponents] = useState<React.JSX.Element[]>([]);
     const [activeWords, setActiveWords] = useState([]);
     const screenWidth = useWindowDimensions().width;
@@ -130,7 +130,9 @@ export default function useSentenceComponents(navigation, primaryColor, currentI
                     color: constants.BLACK + '55',
                     fontSize: constants.H1FONTSIZE + 7,
                     fontFamily: constants.FONTFAMILYBOLD,
-                    textAlign: "center" 
+                    textAlign: "center",
+                    //textDecorationLine: 'underline',
+                    paddingHorizontal:  wordSeparationOn ? 3 : 0
                 }} key={`${currentItem.id}-${i}`}
                 >{i==0 ? capitalizeFirstLetter(word) : word}</Text>);
             }

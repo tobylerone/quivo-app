@@ -92,7 +92,7 @@ DATABASES = {
 #    }
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "quivo",
+        "NAME": "quivo_thai",
         "USER": "quivo_default",
         "PASSWORD": "s567tyug328726hj9j83",
         "HOST": "localhost",

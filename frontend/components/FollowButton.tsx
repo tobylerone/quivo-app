@@ -38,7 +38,6 @@ export default function FollowButton({ followee_id, initUserIsFollowing }: IFoll
             { withCredentials: true }
         ).then(function(res) {
             setUserIsFollowing(!userIsFollowing);
-            console.log(res.data)
         }).catch(function(e) {
             console.log(e.response.data)
         });

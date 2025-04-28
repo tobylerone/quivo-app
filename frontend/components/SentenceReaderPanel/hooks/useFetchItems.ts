@@ -31,15 +31,17 @@ export default function useFetchItems(sentencesData?: ISentence[] | null){
     }, [currentLanguageCode, knownWordsPercentage])
 
     const fetchData = async() => {
+        console.log('fetching data');
         client.get("/api/sentences/" + knownWordsPercentage, { withCredentials: true })
         .then(function(res) {
             // Make sure each item's word field in converted from stringified
             // json to real object   
             const data = res.data.map(item => {
-
                 // Convert from postgresql array format
                 if (typeof item.words === 'string') {
-                    item = { ...item, words: JSON.parse(item.words) };
+                    // TODO: Store as valid json in the table. For now change
+                    // single quotes to double before parsing
+                    item = { ...item, words: JSON.parse(item.words.replace(/'/g, '"')) };
                 }
                 return item;
             })

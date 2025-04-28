@@ -62,7 +62,7 @@ interface IWordProps {
 
 export default function Word ({navigation, word, wordData, textColor, textBackgroundColor, primaryColor, onPress, isFirstWord, screenWidth, index, key}: IWordProps) {
 
-    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached } = useContext(UserContext);
+    const { currentUser, currentLanguageCode, setKnownWords, dailyWordCount, setDailyWordCount, streakLimitReached, wordSeparationOn } = useContext(UserContext);
 
     const wordRef = useRef(null);
     //const [textColor, setTextColor] = useState(wordData.user_knows ? constants.PRIMARYCOLOR : constants.BLACK);
@@ -251,7 +251,8 @@ export default function Word ({navigation, word, wordData, textColor, textBackgr
                         ...styles.mainText,
                         backgroundColor: textBackgroundColor,
                         borderRadius: 15,
-                        //paddingHorizontal:  5,
+                        textDecorationLine: wordSeparationOn ? 'underline': 'none',
+                        paddingHorizontal: wordSeparationOn ? 3 : 0,
                         //marginHorizontal: 0,
                         color: textColor
                     }}

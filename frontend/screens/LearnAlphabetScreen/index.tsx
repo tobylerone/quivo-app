@@ -15,7 +15,7 @@ export default function LearnAlphabetScreen({navigation}: NativeStackHeaderProps
 
     const { currentUser, knownLanguages, currentLanguage, monthlyWordCounts } = useContext(UserContext);
 
-    const [activeTab, setActiveTab] = useState<string>('Vowels');
+    const [activeTab, setActiveTab] = useState<string>('Consonants');
 
     const TABS = ['Consonants', 'Vowels'];
 

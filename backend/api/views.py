@@ -14,36 +14,23 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from .models import AppUser, UserFollow, UserWord
+from .models import AppUser, UserWord
 
-from language_app.models import Language, FrSentence, DeSentence, RuSentence, ThSentence, FrWordData, DeWordData, RuWordData, ThWordData, Suggestion, Faq
+from language_app.models import Language, ThSentence, ThWordData
 from .serializers import (
     UserRegisterSerializer,
     UserLoginSerializer,
-    UserFollowSerializer,
 	UserToggleKnownWordSerializer,
-	UserAddLanguageSerializer,
 	UserChangeAvatarSerializer,
 	UserWordCountsSerializer,
 	UserMonthlyKnownWordsSerializer,
     UserSerializer,
 	LanguageModelSerializer,
-    FrSentenceModelSerializer,
-	DeSentenceModelSerializer,
-	RuSentenceModelSerializer,
 	ThSentenceModelSerializer,
-    FrWordDataModelSerializer,
-	DeWordDataModelSerializer,
-	RuWordDataModelSerializer,
 	ThWordDataModelSerializer,
-	SuggestionModelSerializer,
-	FaqModelSerializer
 	)
 
 from .validations import custom_validation, validate_username, validate_password
-
-import line_profiler
-profile = line_profiler.LineProfiler()
 
 class UserRegisterView(APIView):
 	permission_classes = (permissions.AllowAny,)
@@ -110,7 +97,7 @@ class UserChangeCurrentLanguageView(APIView):
 			language_code = request.data.get('language_code')
 
 			# TODO: Remove hard coding
-			if language_code in ['fr', 'de', 'ru', 'th']:
+			if language_code in ['th']:
 
 				request.session['current_language_code'] = language_code
 				return Response(status=status.HTTP_200_OK)
@@ -121,21 +108,6 @@ class UserChangeCurrentLanguageView(APIView):
 class UserGetCurrentLanguageView(APIView):
 	def get(self, request):
 		return Response(request.session['current_language_code'], status=200)
-
-
-class UserAddLanguageView(APIView):
-	
-		def post(self, request, *args, **kwargs):
-
-			serializer = UserAddLanguageSerializer(data=request.data)
-
-			if serializer.is_valid():
-				
-				user = serializer.save()
-				return Response({"status": "success"})
-			else:
-				print(serializer.errors)
-				return Response(serializer.errors, status=400)
 
 
 class UserChangeAvatarView(APIView):
@@ -157,33 +129,6 @@ class UserChangeAvatarView(APIView):
 		else:
 			print(serializer.errors)
 			return Response(serializer.errors, status=400)
-
-
-class UserIncrementStreakView(APIView):
-	def update(self, request, *args, **kwargs):
-		user_id = request.data.get('user_id')
-		user = AppUser.objects.get(user_id=user_id)
-
-		#serializer = UserIncrementStreakSerializer()
-		user.streak += 1
-		user.save()
-
-
-class UserKnownLanguagesView(generics.ListAPIView):
-
-	serializer_class = LanguageModelSerializer
-
-	def get_queryset(self):
-		user_id = self.kwargs['user_id']
-		user = AppUser.objects.get(user_id=user_id)
-		
-		return user.known_languages.all()
-	
-	# Why do I need this?
-	def get_serializer_context(self):
-		context = super().get_serializer_context()
-		context.update({"user": self.request.user})
-		return context
 
 
 class UserMonthlyKnownWordsView(generics.ListAPIView):
@@ -229,99 +174,9 @@ class UserMonthlyKnownWordsView(generics.ListAPIView):
 		#return queryset
 		return queryset_list
 
-class UserFollowingView(generics.ListAPIView):
-
-	serializer_class = UserSerializer
-
-	def get_queryset(self):
-		user_id = self.kwargs['user_id']
-		user = AppUser.objects.get(user_id=user_id)
-		
-		return user.following.all()
-	
-	def get_serializer_context(self):
-		context = super().get_serializer_context()
-		context.update({"user": self.request.user})
-		return context
-	
-
-class UserFollowersView(generics.ListAPIView):
-	serializer_class = UserSerializer
-
-	def get_queryset(self):
-		user_id = self.kwargs['user_id']
-		user = AppUser.objects.get(user_id=user_id)
-
-		return user.followed_by.all()
-	
-	def get_serializer_context(self):
-		context = super().get_serializer_context()
-		context.update({"user": self.request.user})
-		return context
-
-
-class UserWordsView(generics.ListAPIView):
-	serializerClass = FrWordDataModelSerializer
-
-	def get_queryset(self):
-		user_id = self.kwargs['user_id']
-		user = AppUser.objects.get(user_id=user_id)
-
-		return user.known_words.all()
-
-
-class UserFollowView(APIView):
-	def post(self, request, follower_id, followee_id):
-		serializer = UserFollowSerializer(
-			data={
-				'follower': follower_id,
-		 		'followee': followee_id
-				}
-			)
-
-		if serializer.is_valid():
-
-			# TODO: Ensure user can't follow themselves
-
-			# Get the follow record
-			follow_record = UserFollow.objects.filter(follower=follower_id, followee=followee_id)
-
-            # If the follow record already exists, don't replicate it
-			if follow_record.exists():
-				return Response({"message": "User already being followed by this account"}, status=status.HTTP_409_CONFLICT)
-			
-			serializer.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class UserUnfollowView(APIView):
-    def delete(self, request, follower_id, followee_id):
-        serializer = UserFollowSerializer(
-			data={
-				'follower': follower_id,
-		 		'followee': followee_id
-				}
-			)
-        if serializer.is_valid():
-
-            # Get the follow record
-            follow_record = UserFollow.objects.filter(follower=follower_id, followee=followee_id)
-
-            # If the follow record exists, delete it
-            if follow_record.exists():
-                follow_record.delete()
-                return Response({"message": "Successfully unfollowed"}, status=status.HTTP_200_OK)
-            
-            return Response({"message": "Follow record not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class UserToggleKnownWordView(APIView):
 
-	@profile
 	def post(self, request, *args, **kwargs):
 
 		language_code = self.request.session.get('current_language_code')
@@ -338,11 +193,8 @@ class UserToggleKnownWordView(APIView):
 			word = serializer.validated_data['word']
 
 			word_data_model = {
-				'fr': FrWordData,
-				'de': DeWordData,
-				'ru': RuWordData,
 				'th': ThWordData
-			}.get(language_code, 'fr') # Default to fr for now
+			}.get(language_code, 'th')
 
 			user = AppUser.objects.get(user_id=user_id)
 			word_obj = word_data_model.objects.get(word=word)
@@ -360,9 +212,6 @@ class UserToggleKnownWordView(APIView):
 			else:
 				word_added = False
 				user.known_words.remove(user_word_obj)
-
-			with open('output.txt', 'w') as stream:
-				profile.print_stats(stream=stream)  
 
 			return Response({
 				"status": "success",
@@ -393,11 +242,8 @@ class UserWordCountsView(APIView):
 			)
 
 		words_data_obj = {
-			'fr': FrWordData,
-			'de': DeWordData,
-			'ru': RuWordData,
 			'th': ThWordData
-		}.get(language_code, 'fr')
+		}.get(language_code, 'th')
         
 		# queryset contains all words in [Lang]WordData with annotation to say whether
 		# the current user knows each word
@@ -464,11 +310,8 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		language_code = self.request.session.get('current_language_code')
 		
 		return {
-			'fr': FrSentenceModelSerializer,
-			'de': DeSentenceModelSerializer,
-			'ru': RuSentenceModelSerializer,
 			'th': ThSentenceModelSerializer,
-			}.get(language_code, 'fr') # Default to fr for now
+			}.get(language_code, 'th')
 	
 	def get_queryset(self):
 
@@ -477,11 +320,8 @@ class SentencesViewSet(viewsets.ModelViewSet):
 		tolerance = 60
 		
 		model = {
-			'fr': FrSentence,
-			'de': DeSentence,
-			'ru': RuSentence,
 			'th': ThSentence
-			}.get(language_code, 'fr')
+			}.get(language_code, 'th')
 		
 		# Select a random offset.
 		# TODO: This could lead to related groups of sentences being fetched together
@@ -535,19 +375,6 @@ class WordDataView(APIView):
 	# Trop de donnees pour mettre dans l'url donc il faut utiliser post
 	def post(self, request, *args, **kwargs):
 
-		# This must be the same as map used to create word frequency dataset
-		shortened_word_map = {
-			'j': 'je',
-			'l': 'le', # Always replace with le for now. Figure out a better solution here
-			't': 'tu', # This will assign the t in a-t-on to tu for example, which will give tu a higher frequency than it should have, but it's only one very common word so I'm not going to address it
-			'd': 'de', # Need to check whether this is ever du
-			'c': 'ce',
-			's': 'se',
-			'qu': 'que',
-			'm': 'me',
-			'n': 'ne',
-		}
-
 		# Get current language from user session data
 		language_code = request.session.get('current_language_code')
 
@@ -556,11 +383,8 @@ class WordDataView(APIView):
 		end_index = request.data.get('end_index', 100)
 
 		model = {
-			'fr': FrWordData,
-			'de': DeWordData,
-			'ru': RuWordData,
 			'th': ThWordData
-		}.get(language_code, 'fr')
+		}.get(language_code, 'th')
 		
 		# Deux manieres de chercher des mots. Soit on peut specifier
 		# quels mots on veut chercher, soit on fournit deux index
@@ -572,19 +396,11 @@ class WordDataView(APIView):
 			# Remove duplicate words
 			unique_words = list(set(words))
 
-			if language_code == 'fr':
-
-				# Replace any shortened words with the full word
-				unique_words = [shortened_word_map.get(word, word) for word in unique_words]
-
 			queryset = model.objects.filter(word__in=unique_words)
 	
 		serializer_obj = {
-			'fr': FrWordDataModelSerializer,
-			'de': DeWordDataModelSerializer,
-			'ru': RuWordDataModelSerializer,
 			'th': ThWordDataModelSerializer
-		}.get(language_code, 'fr')
+		}.get(language_code, 'th')
 		
 		serializer = serializer_obj(
 			queryset,
@@ -597,26 +413,6 @@ class WordDataView(APIView):
 		word_data = {k: v for d in serializer.data for k, v in d.items()}
 
 		return Response(word_data)
-
-
-class SuggestionView(APIView):
-	
-		def post(self, request, *args, **kwargs):
-
-			serializer = SuggestionModelSerializer(data=request.data)
-
-			if serializer.is_valid():
-				
-				suggestion = serializer.save()
-				return Response({"status": "success"})
-			else:
-				print(serializer.errors)
-				return Response(serializer.errors, status=400)
-
-
-class FaqViewSet(viewsets.ModelViewSet):
-	queryset = Faq.objects.all()
-	serializer_class = FaqModelSerializer
 
 
 def csrf(request):

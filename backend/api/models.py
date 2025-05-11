@@ -30,43 +30,20 @@ class AppUserManager(BaseUserManager):
 class AppUser(AbstractBaseUser, PermissionsMixin):
 	user_id = models.AutoField(primary_key=True)
 	is_premium = models.BooleanField(default=False)
-	has_given_feedback = models.BooleanField(default=False)
-	sound_enabled = models.BooleanField(default=True)
-	autoplay_enabled = models.BooleanField(default=True)
-	narration_speed = models.FloatField(
-        default=1,
-        validators=[
-            MaxValueValidator(1.2),
-            MinValueValidator(0.8),
-        ]
-    )
 	email = models.EmailField(max_length=50, unique=True)
 	username = models.CharField(max_length=50, unique=True)
 	avatar_id = models.IntegerField(default=0)
-	streak = models.IntegerField(default=0)
 	last_current_language = models.CharField(
 		max_length=2,
 		unique=False,
-		default='fr'
-		) # User's language at last logout. Set default to fr for now
-	following = models.ManyToManyField(
-		'self',
-		through='UserFollow',
-		related_name='followed_by',
-		symmetrical=False
-		)
+		default='th'
+		) # User's language at last logout
 	known_languages = models.ManyToManyField('language_app.Language', blank=True) # Maybe make user need at least one
 	known_words = models.ManyToManyField('UserWord', blank=True)
 
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = []
 	objects = AppUserManager()
-
-	def following_count(self):
-		return self.following.count()
-	
-	def followers_count(self):
-		return self.followed_by.count()
 	
 	def known_words_count(self):
 	
@@ -86,16 +63,8 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 
 	def __str__(self):
 		return self.username
-	
-class UserFollow(models.Model):
-    follower = models.ForeignKey(AppUser, related_name='follower', on_delete=models.CASCADE)
-    followee = models.ForeignKey(AppUser, related_name='followee', on_delete=models.CASCADE)
-	# Maybe add a field for when followed
 
 class UserWord(models.Model):
     user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
-    word_fr = models.ForeignKey('language_app.FrWordData', on_delete=models.CASCADE, null=True)
-    word_de = models.ForeignKey('language_app.DeWordData', on_delete=models.CASCADE, null=True)
-    word_ru = models.ForeignKey('language_app.RuWordData', on_delete=models.CASCADE, null=True)
     word_th = models.ForeignKey('language_app.ThWordData', on_delete=models.CASCADE, null=True)
     known_date = models.DateTimeField(auto_now_add=True)

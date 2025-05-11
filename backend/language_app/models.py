@@ -23,15 +23,6 @@ class BaseSentence(models.Model):
     average_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
     min_count_rank = models.DecimalField(decimal_places=1, max_digits=20, null=True)
 
-class FrSentence(BaseSentence):
-    pass
-
-class DeSentence(BaseSentence):
-    pass
-
-class RuSentence(BaseSentence):
-    pass
-
 class ThSentence(BaseSentence):
     pass
 
@@ -45,23 +36,6 @@ class BaseWordData(models.Model):
     translation = models.TextField(null=True)
     frequency = models.DecimalField(decimal_places=1, max_digits=10, null=True)
 
-class FrWordData(BaseWordData):
-    pass
-
-class DeWordData(BaseWordData):
-    pass
-
-class RuWordData(BaseWordData):
-    pass
-
 class ThWordData(BaseWordData):
     pass
 
-
-class Suggestion(models.Model):
-    score = models.IntegerField(null=True)
-    suggestion = models.TextField(null=True)
-
-class Faq(models.Model):
-    question = models.TextField(null=False)
-    answer = models.TextField(null=False)
